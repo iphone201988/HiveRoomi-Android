@@ -24,6 +24,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
         when (Constants.userType) {
             1 -> {
                 binding.typeCheck = 1
+                
             }
 
             2 -> {
