@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/quiz_navigation">
+
+    <action
+        android:id="@+id/navigateToQuizFragment"
+        app:destination="@id/fragmentQuiz" />
+
+
+    <action
+        android:id="@+id/navigateToQuizQuestionFragment"
+        app:destination="@id/fragmentQuizQuestion" />
+ <action
+        android:id="@+id/navigateToPreferencesFragment"
+        app:destination="@id/fragmentPreferences" />
+ <action
+        android:id="@+id/navigateToQuizCompleteFragment"
+        app:destination="@id/fragmentQuizComplete" />
+
+
+    <fragment
+        android:id="@+id/fragmentQuiz"
+        android:name="com.tech.hive.ui.quiz.quiz.QuizFragment"
+        tools:layout="@layout/fragment_quiz" />
+    <fragment
+        android:id="@+id/fragmentQuizQuestion"
+        android:name="com.tech.hive.ui.quiz.question.QuizQuestionFragment"
+        tools:layout="@layout/fragment_quiz_question" />
+
+    <fragment
+        android:id="@+id/fragmentPreferences"
+        android:name="com.tech.hive.ui.quiz.bugget.PreferencesBudgetFragment"
+        tools:layout="@layout/fragment_preferences_budget" />
+
+    <fragment
+        android:id="@+id/fragmentQuizComplete"
+        android:name="com.tech.hive.ui.quiz.quiz_complete.QuizCompleteFragment"
+        tools:layout="@layout/fragment_quiz_complete" />
+</navigation>

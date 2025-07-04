@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="vm"
+            type="com.tech.hive.ui.notification.NotificationActivityVM" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        tools:context=".ui.notification.NotificationActivity">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/clHeader"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/_80sdp"
+            android:background="@drawable/top_bg"
+            android:paddingStart="@dimen/_5sdp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvTitle"
+                style="@style/TextView.SfBold"
+                android:layout_width="wrap_content"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="-5dp"
+                android:text="@string/notifications"
+                android:textSize="@dimen/_16ssp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@id/ivBack"/>
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/ivBack"
+                android:layout_width="@dimen/_26sdp"
+                android:layout_height="@dimen/_26sdp"
+                android:src="@drawable/arrow_up"
+                android:rotation="90"
+                android:padding="@dimen/_4sdp"
+                android:onClick="@{v->vm.onClick(v)}"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/tvTitle"
+                app:layout_constraintBottom_toBottomOf="@id/tvTitle"
+                app:tint="@color/white" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvNotification"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="@dimen/_12sdp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:layout_marginHorizontal="@dimen/_12sdp"
+            tools:listitem="@layout/notification_item_view"
+            app:layout_constraintTop_toBottomOf="@id/clHeader"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

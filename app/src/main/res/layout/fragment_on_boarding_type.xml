@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="vm"
+            type="com.tech.hive.ui.auth.boarding_type.OnBoardingTypeFragmentVM" />
+
+        <variable
+            name="selectType"
+            type="Integer" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.auth.boarding_type.OnBoardingTypeFragment">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/ivBack"
+            android:layout_width="@dimen/_35sdp"
+            android:layout_height="@dimen/_8sdp"
+            android:layout_marginStart="@dimen/_14sdp"
+            android:src="@drawable/iv_back"
+            android:visibility="invisible"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvSelectLanguage"
+            style="@style/TextView.PoppinsBold"
+            android:layout_marginTop="@dimen/_12sdp"
+            android:text="@string/welcome"
+            android:textColor="@color/black_24"
+            app:layout_constraintStart_toStartOf="@+id/ivBack"
+            app:layout_constraintTop_toBottomOf="@+id/ivBack" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvChoose"
+            style="@style/TextView.Regular"
+            android:layout_width="0dp"
+            android:layout_marginTop="-6dp"
+            android:text="@string/what_are_you_looking_for"
+            android:textColor="@color/black_24"
+            android:textSize="@dimen/_12ssp"
+            app:layout_constraintStart_toStartOf="@+id/ivBack"
+            app:layout_constraintTop_toBottomOf="@+id/tvSelectLanguage" />
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/clRoommate"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/_110sdp"
+            android:layout_marginTop="@dimen/_22sdp"
+            android:layout_marginEnd="@dimen/_14sdp"
+            android:background="@{selectType==1?@drawable/bg_radius_24_with_gradient:@drawable/bg_strock_with_radius_24}"
+            android:onClick="@{v->vm.onClick(v)}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/tvChoose"
+            app:layout_constraintTop_toBottomOf="@+id/tvChoose">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/ivRoommate"
+                android:layout_width="@dimen/_40sdp"
+                android:layout_height="@dimen/_40sdp"
+                android:layout_marginTop="@dimen/_22sdp"
+                android:src="@drawable/roommate_icon"
+                android:tint="@{selectType==1?@color/white:@color/black_24}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvEnglish"
+                style="@style/TextView.Semibold"
+                android:layout_marginTop="@dimen/_2sdp"
+                android:text="@string/looking_for_a_roommate"
+                android:textColor="@{selectType==1?@color/white:@color/black_24}"
+                app:layout_constraintEnd_toEndOf="@+id/ivRoommate"
+                app:layout_constraintStart_toStartOf="@+id/ivRoommate"
+                app:layout_constraintTop_toBottomOf="@+id/ivRoommate" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/clHome"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/_110sdp"
+            android:layout_marginTop="@dimen/_16sdp"
+            android:background="@{selectType==2?@drawable/bg_radius_24_with_gradient:@drawable/bg_strock_with_radius_24}"
+            android:onClick="@{v->vm.onClick(v)}"
+            app:layout_constraintEnd_toEndOf="@+id/clRoommate"
+            app:layout_constraintStart_toStartOf="@+id/clRoommate"
+            app:layout_constraintTop_toBottomOf="@+id/clRoommate">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/ivHome"
+                android:layout_width="@dimen/_40sdp"
+                android:layout_height="@dimen/_40sdp"
+                android:layout_marginTop="@dimen/_22sdp"
+                android:src="@drawable/home_icon"
+                android:tint="@{selectType==2?@color/white:@color/black_24}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvHome"
+                style="@style/TextView.Semibold"
+                android:layout_marginTop="@dimen/_2sdp"
+                android:text="@string/looking_for_a_home"
+                android:textColor="@{selectType==2?@color/white:@color/black_24}"
+                app:layout_constraintEnd_toEndOf="@+id/ivHome"
+                app:layout_constraintStart_toStartOf="@+id/ivHome"
+                app:layout_constraintTop_toBottomOf="@+id/ivHome" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/clOffering"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/_110sdp"
+            android:layout_marginTop="@dimen/_16sdp"
+            android:background="@{selectType==3?@drawable/bg_radius_24_with_gradient:@drawable/bg_strock_with_radius_24}"
+            android:onClick="@{v->vm.onClick(v)}"
+            app:layout_constraintEnd_toEndOf="@+id/clRoommate"
+            app:layout_constraintStart_toStartOf="@+id/clRoommate"
+            app:layout_constraintTop_toBottomOf="@+id/clHome">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/ivOffering"
+                android:layout_width="@dimen/_40sdp"
+                android:layout_height="@dimen/_40sdp"
+                android:layout_marginTop="@dimen/_22sdp"
+                android:src="@drawable/offering_icon"
+                android:tint="@{selectType==3?@color/white:@color/black_24}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvOffering"
+                style="@style/TextView.Semibold"
+                android:layout_marginTop="@dimen/_2sdp"
+                android:text="@string/room_home_offering"
+                android:textColor="@{selectType==3?@color/white:@color/black_24}"
+                app:layout_constraintEnd_toEndOf="@+id/ivOffering"
+                app:layout_constraintStart_toStartOf="@+id/ivOffering"
+                app:layout_constraintTop_toBottomOf="@+id/ivOffering" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/btnContinue"
+            style="@style/TextView.Medium"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/_40sdp"
+            android:layout_marginTop="@dimen/_12sdp"
+            android:layout_marginBottom="@dimen/_20sdp"
+            android:onClick="@{v->vm.onClick(v)}"
+            android:background="@drawable/btn_bg_color"
+            android:text="@string/continues"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/clHome"
+            app:layout_constraintStart_toStartOf="@+id/clHome" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

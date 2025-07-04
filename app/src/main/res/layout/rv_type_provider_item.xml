@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="bean"
+            type="com.tech.hive.data.model.Answer" />
+
+        <variable
+            name="callback"
+            type="com.tech.hive.base.SimpleRecyclerViewAdapter.SimpleCallback" />
+
+        <variable
+            name="pos"
+            type="Integer" />
+
+        <import type="android.view.View" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clProviderType"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="@{v-> callback.onItemClick(v,bean,pos)}">
+
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvAnswer"
+            style="@style/TextView.Medium2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_14sdp"
+            android:background="@{bean.selectedAnswer?@drawable/select_edittext_bg_color:@drawable/white_et_bg}"
+            android:gravity="center_vertical"
+            android:paddingVertical="@dimen/_12sdp"
+            android:paddingStart="@dimen/_15sdp"
+            android:paddingEnd="@dimen/_40sdp"
+            android:text="@{bean.answer}"
+            android:textSize="@dimen/_11ssp"
+            android:visibility="@{bean.type==1?View.VISIBLE:View.GONE}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/ivFirstQuiz"
+            android:layout_width="@dimen/_27sdp"
+            android:layout_height="@dimen/_27sdp"
+            android:layout_marginEnd="@dimen/_6sdp"
+            android:onClick="@{v-> callback.onItemClick(v,bean,pos)}"
+            android:padding="@dimen/_5sdp"
+            android:rotation="270"
+            android:src="@{bean.selectedAnswer?@drawable/selected_circle:@drawable/un_selected_circle}"
+            android:visibility="@{bean.type==1?View.VISIBLE:View.GONE}"
+            app:layout_constraintBottom_toBottomOf="@+id/tvAnswer"
+            app:layout_constraintEnd_toEndOf="@+id/tvAnswer"
+            app:layout_constraintTop_toTopOf="@+id/tvAnswer" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

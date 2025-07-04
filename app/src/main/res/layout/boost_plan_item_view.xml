@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="callback"
+            type="com.tech.hive.base.SimpleRecyclerViewAdapter.SimpleCallback" />
+        <variable
+            name="pos"
+            type="Integer" />
+        <variable
+            name="bean"
+            type="com.tech.hive.data.model.BoostPlanModel" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clMain"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="@{v->callback.onItemClick(v,bean,pos)}"
+        android:padding="@dimen/_10sdp"
+        android:layout_marginVertical="@dimen/_5sdp"
+        android:background="@{bean.selected==true?@drawable/plan_selected_bg:@drawable/plan_unselected_bg}">
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/TextView.Semibold"
+            android:textSize="@dimen/_14ssp"
+            android:textColor="@{bean.selected==true?@color/end_color:@color/black_24}"
+            android:gravity="start"
+            android:text="@{bean.duration}"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvPerDayCosting"
+            android:layout_width="0dp"
+            style="@style/TextView.Regular"
+            android:text="@{bean.perDayCost}"
+            android:gravity="start"
+            android:textColor="@color/black_24"
+            android:textSize="@dimen/_12ssp"
+            android:includeFontPadding="false"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/tvPrice"
+            app:layout_constraintTop_toBottomOf="@id/tvTitle" />
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvSave"
+            android:layout_width="0dp"
+            style="@style/TextView.Regular"
+            android:layout_marginTop="@dimen/_2sdp"
+            android:text="@{bean.saving}"
+            android:gravity="start"
+            android:includeFontPadding="false"
+            android:textColor="@color/black_24"
+            android:textSize="@dimen/_12ssp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/tvPrice"
+            app:layout_constraintTop_toBottomOf="@id/tvPerDayCosting" />
+        <TextView
+            android:id="@+id/tvPrice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/TextView.Semibold"
+            android:textSize="@dimen/_19ssp"
+            android:includeFontPadding="false"
+            android:textColor="@{bean.selected==true?@color/end_color:@color/black_24}"
+            android:gravity="start"
+            android:text="@{bean.price}"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

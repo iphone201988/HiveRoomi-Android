@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="callback"
+            type="com.tech.hive.base.utils.BaseCustomDialog.Listener" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/_12sdp"
+        android:background="@drawable/bg_strock_with_radius_24"
+        android:backgroundTint="@color/white">
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/TextView.Semibold"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:textSize="@dimen/_20ssp"
+            android:textColor="@color/start_color"
+            android:text="@string/want_more_visibility_nboost_your_listing"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvSubTitle1"
+            style="@style/TextView.Regular"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:text="@string/boost_1_point"
+            android:gravity="start"
+            android:textColor="@color/text_color_grey"
+            android:textSize="@dimen/_12ssp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvTitle" />
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvSubTitle2"
+            style="@style/TextView.Regular"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:text="@string/boost_2_point"
+            android:gravity="start"
+            android:textColor="@color/text_color_grey"
+            android:textSize="@dimen/_12ssp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvSubTitle1" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvBoostPlan"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_5sdp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/boost_plan_item_view"
+            tools:itemCount="3"
+            app:layout_constraintTop_toBottomOf="@id/tvSubTitle2"/>
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/btnBoost"
+            style="@style/TextView.Medium"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/_40sdp"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:background="@drawable/btn_bg_color"
+            android:text="@string/boost"
+            android:onClick="@{v->callback.onViewClick(v)}"
+            app:layout_constraintTop_toBottomOf="@id/rvBoostPlan"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/btnCancel"
+            style="@style/TextView.Medium"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/_40sdp"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:layout_marginBottom="@dimen/_5sdp"
+            android:background="@drawable/filter_bg"
+            android:onClick="@{v->callback.onViewClick(v)}"
+            android:text="@string/cancel"
+            android:textColor="@color/black_24"
+            app:layout_constraintTop_toBottomOf="@id/btnBoost"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

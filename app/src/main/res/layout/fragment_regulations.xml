@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="vm"
+            type="com.tech.hive.ui.auth.AuthActivityVM" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.auth.regulations.RegulationsFragment">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/ivBack"
+            android:layout_width="@dimen/_35sdp"
+            android:layout_height="@dimen/_18sdp"
+            android:layout_marginStart="@dimen/_14sdp"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:src="@drawable/iv_back"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/ivBeeLogo"
+            android:layout_width="@dimen/_50sdp"
+            android:layout_height="@dimen/_50sdp"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:src="@drawable/ic_bee"
+            app:layout_constraintStart_toStartOf="@+id/ivBack"
+            app:layout_constraintTop_toBottomOf="@+id/ivBack" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvSelectLanguage"
+            style="@style/TextView.PoppinsBold"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:text="@string/welcome_to_hive_roomi"
+            android:textColor="@color/black_24"
+            android:textSize="@dimen/_18sdp"
+            app:layout_constraintStart_toStartOf="@+id/ivBack"
+            app:layout_constraintTop_toBottomOf="@+id/ivBeeLogo" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvChoose"
+            style="@style/TextView.Regular"
+            android:text="@string/here_are_simple_rules_to_keep_in_mind"
+            android:textColor="@color/black_24"
+            android:textSize="@dimen/_12ssp"
+            app:layout_constraintStart_toStartOf="@+id/ivBack"
+            app:layout_constraintTop_toBottomOf="@+id/tvSelectLanguage" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvNot"
+            style="@style/TextView.Semibold"
+            android:layout_marginTop="@dimen/_12sdp"
+            android:text="@string/don_t_pretend_to_be_someone_you_re_not"
+            android:textColor="@color/black_24"
+            android:textSize="@dimen/_12ssp"
+            app:layout_constraintStart_toStartOf="@+id/ivBack"
+            app:layout_constraintTop_toBottomOf="@+id/tvChoose" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvNotDesc"
+            style="@style/TextView.Regular"
+            android:layout_width="0dp"
+            android:layout_marginEnd="@dimen/_14sdp"
+            android:gravity="start"
+            android:text="@string/make_sure_your_photo_age_and_blog_reflect_who_you_really_are"
+            android:textColor="@color/black_24"
+            android:textSize="@dimen/_12ssp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/ivBack"
+            app:layout_constraintTop_toBottomOf="@+id/tvNot" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvCareful"
+            style="@style/TextView.Semibold"
+            android:layout_marginTop="@dimen/_12sdp"
+            android:text="@string/be_careful"
+            android:textColor="@color/black_24"
+            android:textSize="@dimen/_12ssp"
+            app:layout_constraintStart_toStartOf="@+id/ivBack"
+            app:layout_constraintTop_toBottomOf="@+id/tvNotDesc" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvCarefulDesc"
+            style="@style/TextView.Regular"
+            android:layout_width="0dp"
+            android:layout_marginEnd="@dimen/_14sdp"
+            android:gravity="start"
+            android:text="@string/don_t_be_too_quick_to_reveal_you_personal_information_enjoy_responsibly"
+            android:textColor="@color/black_24"
+            android:textSize="@dimen/_12ssp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/ivBack"
+            app:layout_constraintTop_toBottomOf="@+id/tvCareful" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvBehave"
+            style="@style/TextView.Semibold"
+            android:layout_marginTop="@dimen/_12sdp"
+            android:text="@string/behave_properly"
+            android:textColor="@color/black_24"
+            android:textSize="@dimen/_12ssp"
+            app:layout_constraintStart_toStartOf="@+id/ivBack"
+            app:layout_constraintTop_toBottomOf="@+id/tvCarefulDesc" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvBehaveDesc"
+            style="@style/TextView.Regular"
+            android:layout_width="0dp"
+            android:layout_marginEnd="@dimen/_14sdp"
+            android:gravity="start"
+            android:text="@string/treat_everyone_you_meet_on_the_app_the_way_you_would_want_them_to_treat_you"
+            android:textColor="@color/black_24"
+            android:textSize="@dimen/_12ssp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/ivBack"
+            app:layout_constraintTop_toBottomOf="@+id/tvBehave" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvPretend"
+            style="@style/TextView.Semibold"
+            android:layout_marginTop="@dimen/_12sdp"
+            android:text="@string/don_t_pretend_nothing_is_happening"
+            android:textColor="@color/black_24"
+            android:textSize="@dimen/_12ssp"
+            app:layout_constraintStart_toStartOf="@+id/ivBack"
+            app:layout_constraintTop_toBottomOf="@+id/tvBehaveDesc" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvPretendDesc"
+            style="@style/TextView.Regular"
+            android:layout_width="0dp"
+            android:layout_marginEnd="@dimen/_14sdp"
+            android:gravity="start"
+            android:text="@string/always_report_inappropriate_behavior"
+            android:textColor="@color/black_24"
+            android:textSize="@dimen/_12ssp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/ivBack"
+            app:layout_constraintTop_toBottomOf="@+id/tvPretend" />
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/btnAccept"
+            style="@style/TextView.Medium"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/_40sdp"
+            android:layout_marginBottom="@dimen/_20sdp"
+            android:background="@drawable/btn_bg_color"
+            android:onClick="@{v->vm.onClick(v)}"
+            android:text="@string/i_accept"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/tvPretendDesc"
+            app:layout_constraintStart_toStartOf="@+id/tvPretendDesc" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

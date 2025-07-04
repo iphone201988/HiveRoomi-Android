@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
+
+        <data>
+
+            <variable
+                name="vm"
+                type="com.tech.hive.ui.quiz.question.QuizQuestionFragmentVM" />
+        </data>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            tools:context=".ui.quiz.question.QuizQuestionFragment">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/ivBack"
+                android:layout_width="@dimen/_40sdp"
+                android:layout_height="@dimen/_20sdp"
+                android:layout_marginStart="@dimen/_14sdp"
+                android:onClick="@{v->vm.onClick(v)}"
+                android:layout_marginTop="@dimen/_30sdp"
+                android:src="@drawable/iv_back"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/passwordStrengthBar"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_8sdp"
+                android:layout_marginHorizontal="@dimen/_14sdp"
+                android:background="@drawable/progress_bar_colors"
+                android:layout_marginTop="@dimen/_20sdp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/ivBack">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <androidx.constraintlayout.widget.Guideline
+                        android:id="@+id/progressionGuideline"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        app:layout_constraintGuide_percent="0"
+                        />
+
+                    <View
+                        android:id="@+id/viewBackgroundProgression"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_margin="1dp"
+                        android:background="@drawable/gradient_statistics_progression"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/progressionGuideline"
+                        app:layout_constraintHorizontal_bias="0"
+                        android:progress="100"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvSelectLanguage"
+                style="@style/TextView.PoppinsBold"
+                android:layout_marginTop="@dimen/_12sdp"
+                android:gravity="start"
+                android:text="@string/lifestyle_compatibility_quiz"
+                android:textColor="@color/black_24"
+                app:layout_constraintStart_toStartOf="@+id/ivBack"
+                app:layout_constraintTop_toBottomOf="@+id/passwordStrengthBar" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvChoose"
+                style="@style/TextView.Regular"
+                android:layout_width="0dp"
+                android:layout_marginTop="-6dp"
+                android:layout_marginEnd="@dimen/_22sdp"
+                android:gravity="start"
+                android:text="@string/this_helps_us_match_you_with_the_most_compatible_people"
+                android:textColor="@color/black_24"
+                android:textSize="@dimen/_11ssp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/ivBack"
+                app:layout_constraintTop_toBottomOf="@+id/tvSelectLanguage" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tcCompleteLater"
+                style="@style/TextView.Medium"
+                android:layout_width="0dp"
+                android:text="Complete later >>"
+                android:onClick="@{v->vm.onClick(v)}"
+                android:layout_marginTop="@dimen/_6sdp"
+                android:textColor="@color/end_color"
+                android:textSize="@dimen/_11ssp"
+                app:layout_constraintEnd_toEndOf="@+id/passwordStrengthBar"
+                app:layout_constraintTop_toBottomOf="@+id/tvChoose" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvQuestion"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginHorizontal="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_16sdp"
+                android:overScrollMode="never"
+                android:nestedScrollingEnabled="false"
+                android:clipToPadding="false"
+                app:layout_constraintBottom_toTopOf="@+id/btnNext"
+                android:orientation="vertical"
+                android:paddingBottom="@dimen/_15sdp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tcCompleteLater"
+                tools:itemCount="4"
+                tools:listitem="@layout/rv_qustion_item" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/btnNext"
+                style="@style/TextView.Medium"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/_40sdp"
+                android:layout_marginHorizontal="@dimen/_15sdp"
+                android:layout_marginBottom="@dimen/_20sdp"
+                android:background="@drawable/btn_bg_color"
+                android:onClick="@{v->vm.onClick(v)}"
+                android:text="@string/next"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </layout>

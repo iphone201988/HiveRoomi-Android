@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="vm"
+            type="com.tech.hive.ui.room_offering.basic_details.BasicDetailsVM" />
+        <variable
+            name="priceType"
+            type="String" />
+        <variable
+            name="utilityPriceType"
+            type="String" />
+        <variable
+            name="depositType"
+            type="String" />
+        <variable
+            name="contractType"
+            type="String" />
+        <variable
+            name="availableType"
+            type="String" />
+        <variable
+            name="stayType"
+            type="String" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.roomOffering.basicDetails.PriceTermsActivity">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/clHeader"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/_105sdp"
+            android:background="@drawable/top_bg"
+            android:paddingHorizontal="@dimen/_12sdp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/ivBack"
+                android:layout_width="@dimen/_35sdp"
+                android:layout_height="@dimen/_18sdp"
+                android:onClick="@{v->vm.onClick(v)}"
+                android:layout_marginTop="@dimen/_30sdp"
+                android:src="@drawable/ic_back_white"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+            <TextView
+                android:id="@+id/tvTitle"
+                style="@style/TextView.Bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/price_amp_terms"
+                android:textSize="@dimen/_22sdp"
+                android:layout_marginTop="@dimen/_6sdp"
+                app:layout_constraintTop_toBottomOf="@id/ivBack"
+                app:layout_constraintStart_toStartOf="parent"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginBottom="@dimen/_10sdp"
+            app:layout_constraintBottom_toTopOf="@id/btnContinue"
+            app:layout_constraintTop_toBottomOf="@id/clHeader">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvPrice"
+                    style="@style/TextView.Regular"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:layout_marginHorizontal="@dimen/_12sdp"
+                    android:text="@string/price"
+                    android:textColor="@color/black_24"
+                    android:textSize="@dimen/_12ssp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/etPrice"
+                    style="@style/EditText"
+                    android:layout_marginHorizontal="@dimen/_12sdp"
+                    android:layout_marginTop="@dimen/_6sdp"
+                    android:background="@{priceType.isEmpty()?@drawable/unselect_edit_text_bg_color:@drawable/select_edittext_bg_color}"
+                    android:hint="price"
+                    android:imeOptions="actionNext"
+                    android:nextFocusForward="@id/etUtilityPrice"
+                    android:inputType="numberDecimal"
+                    android:paddingStart="@dimen/_10sdp"
+                    android:paddingEnd="@dimen/_40sdp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvPrice" />
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvUtilityPrice"
+                    style="@style/TextView.Regular"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:text="@string/utility_price"
+                    android:textColor="@color/black_24"
+                    android:textSize="@dimen/_12ssp"
+                    app:layout_constraintStart_toStartOf="@id/tvPrice"
+                    app:layout_constraintTop_toBottomOf="@id/etPrice" />
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/etUtilityPrice"
+                    style="@style/EditText"
+                    android:layout_marginHorizontal="@dimen/_12sdp"
+                    android:layout_marginTop="@dimen/_6sdp"
+                    android:background="@{utilityPriceType.isEmpty()?@drawable/unselect_edit_text_bg_color:@drawable/select_edittext_bg_color}"
+                    android:hint="price"
+                    android:imeOptions="actionNext"
+                    android:nextFocusForward="@id/etDeposit"
+                    android:inputType="numberDecimal"
+                    android:paddingStart="@dimen/_10sdp"
+                    android:paddingEnd="@dimen/_40sdp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvUtilityPrice" />
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvDeposit"
+                    style="@style/TextView.Regular"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:text="@string/deposit"
+                    android:textColor="@color/black_24"
+                    android:textSize="@dimen/_12ssp"
+                    app:layout_constraintStart_toStartOf="@id/tvPrice"
+                    app:layout_constraintTop_toBottomOf="@id/etUtilityPrice" />
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/etDeposit"
+                    style="@style/EditText"
+                    android:layout_marginHorizontal="@dimen/_12sdp"
+                    android:layout_marginTop="@dimen/_6sdp"
+                    android:background="@{depositType.isEmpty()?@drawable/unselect_edit_text_bg_color:@drawable/select_edittext_bg_color}"
+                    android:hint="price"
+                    android:imeOptions="actionNext"
+                    android:nextFocusForward="@id/etContract"
+                    android:inputType="numberDecimal"
+                    android:paddingStart="@dimen/_10sdp"
+                    android:paddingEnd="@dimen/_40sdp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvDeposit" />
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvContract"
+                    style="@style/TextView.Regular"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:text="@string/contract"
+                    android:textColor="@color/black_24"
+                    android:textSize="@dimen/_12ssp"
+                    app:layout_constraintStart_toStartOf="@id/tvPrice"
+                    app:layout_constraintTop_toBottomOf="@id/etDeposit" />
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/etContract"
+                    style="@style/EditText"
+                    android:layout_marginHorizontal="@dimen/_12sdp"
+                    android:layout_marginTop="@dimen/_6sdp"
+                    android:background="@{contractType.isEmpty()?@drawable/unselect_edit_text_bg_color:@drawable/select_edittext_bg_color}"
+                    android:hint="6 months"
+                    android:imeOptions="actionDone"
+                    android:paddingStart="@dimen/_10sdp"
+                    android:paddingEnd="@dimen/_40sdp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvContract" />
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvStatus"
+                    style="@style/TextView.Regular"
+                    android:layout_marginHorizontal="@dimen/_12sdp"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:text="@string/available_from"
+                    android:textColor="@color/black_24"
+                    android:textSize="@dimen/_12ssp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/etContract" />
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/etStatus"
+                    style="@style/EditText"
+                    android:layout_marginHorizontal="@dimen/_12sdp"
+                    android:layout_marginTop="@dimen/_6sdp"
+                    android:background="@{availableType.isEmpty()?@drawable/unselect_edit_text_bg_color:@drawable/select_edittext_bg_color}"
+                    android:focusable="false"
+                    android:hint="6 May"
+                    android:imeOptions="actionNext"
+                    android:inputType="textPassword"
+                    android:nextFocusForward="@+id/etConfirmPassword"
+                    android:paddingStart="@dimen/_10sdp"
+                    android:paddingEnd="@dimen/_40sdp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvStatus" />
+
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/ivStatus"
+                    android:layout_width="@dimen/_27sdp"
+                    android:layout_height="@dimen/_27sdp"
+                    android:layout_marginEnd="@dimen/_14sdp"
+                    android:onClick="@{v->vm.onClick(v)}"
+                    android:padding="@dimen/_5sdp"
+                    android:src="@drawable/ic_calendar"
+                    app:layout_constraintBottom_toBottomOf="@+id/etStatus"
+                    app:layout_constraintEnd_toEndOf="@+id/etStatus"
+                    app:layout_constraintTop_toTopOf="@+id/etStatus" />
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvStay"
+                    style="@style/TextView.Regular"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:text="@string/minimum_stay"
+                    android:textColor="@color/black_24"
+                    android:textSize="@dimen/_12ssp"
+                    app:layout_constraintStart_toStartOf="@id/tvPrice"
+                    app:layout_constraintTop_toBottomOf="@id/etStatus" />
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/etStay"
+                    style="@style/EditText"
+                    android:layout_marginHorizontal="@dimen/_12sdp"
+                    android:layout_marginTop="@dimen/_6sdp"
+                    android:background="@{stayType.isEmpty()?@drawable/unselect_edit_text_bg_color:@drawable/select_edittext_bg_color}"
+                    android:hint="6 months"
+                    android:imeOptions="actionDone"
+                    android:paddingStart="@dimen/_10sdp"
+                    android:paddingEnd="@dimen/_40sdp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvStay" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.core.widget.NestedScrollView>
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/btnContinue"
+            style="@style/TextView.Medium"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/_40sdp"
+            android:layout_marginHorizontal="@dimen/_15sdp"
+            android:layout_marginBottom="@dimen/_20sdp"
+            android:background="@drawable/btn_bg_color"
+            android:onClick="@{v->vm.onClick(v)}"
+            android:text="@string/next"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

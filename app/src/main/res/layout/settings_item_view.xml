@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="bean"
+            type="com.tech.hive.data.model.SettingsModel" />
+        <variable
+            name="callback"
+            type="com.tech.hive.base.SimpleRecyclerViewAdapter.SimpleCallback" />
+
+        <variable
+            name="pos"
+            type="Integer" />
+
+        <import type="android.view.View"/>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvProfileSettings"
+            style="@style/TextView.Semibold"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:text="@{bean.heading}"
+            android:visibility="@{bean.first==true?View.VISIBLE:View.GONE}"
+            android:includeFontPadding="false"
+            android:textColor="@color/start_color"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvTitle"
+            style="@style/TextView.Medium2"
+            android:layout_height="@dimen/_38sdp"
+            android:layout_width="match_parent"
+            android:layout_marginTop="@dimen/_6sdp"
+            android:gravity="center_vertical"
+            android:onClick="@{v-> callback.onItemClick(v,bean,pos)}"
+            android:background="@drawable/unselect_edit_text_bg_color"
+            android:text="@{bean.title}"
+            android:paddingStart="@dimen/_10sdp"
+            android:paddingEnd="@dimen/_40sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvProfileSettings" />
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/ivArrow"
+            android:layout_width="@dimen/_27sdp"
+            android:layout_height="@dimen/_27sdp"
+            android:layout_marginEnd="@dimen/_14sdp"
+            android:onClick="@{v-> callback.onItemClick(v,bean,pos)}"
+            android:padding="@dimen/_5sdp"
+            android:src="@drawable/arrow_up"
+            android:rotation="270"
+            app:layout_constraintBottom_toBottomOf="@+id/tvTitle"
+            app:layout_constraintEnd_toEndOf="@+id/tvTitle"
+            app:layout_constraintTop_toTopOf="@+id/tvTitle" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

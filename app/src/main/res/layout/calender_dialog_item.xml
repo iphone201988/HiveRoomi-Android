@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="callback"
+            type="com.tech.hive.base.utils.BaseCustomDialog.Listener" />
+
+    </data>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:fitsSystemWindows="true">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/select_desc_bg"
+            android:backgroundTint="@color/white"
+            android:padding="@dimen/_10sdp">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvTitle"
+                style="@style/TextView.PoppinsBold"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_2sdp"
+                android:gravity="center"
+                android:text="@string/schedule_a_visit"
+                android:textColor="@color/start_color"
+                android:textSize="@dimen/_18sdp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+            <com.applandeo.materialcalendarview.CalendarView
+                android:id="@+id/rangeCalenderOneTime"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_6sdp"
+                app:abbreviationsLabelsColor="@color/black_24"
+                app:daysLabelsColor="@color/black_24"
+                app:headerColor="@color/white"
+                app:headerLabelColor="@color/white"
+                android:layout_marginTop="@dimen/_23sdp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:selectionColor="@color/selected_day_background"
+                app:selectionLabelColor="@color/selected_day_text"
+                app:todayLabelColor="@color/selected_day_text"
+                app:type="one_day_picker" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_100sdp"
+                android:background="@color/transparent"
+                android:onClick="@{v->callback.onViewClick(v)}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/rangeCalenderOneTime" />
+
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/ivStart"
+                android:layout_width="@dimen/_16sdp"
+                android:layout_height="@dimen/_16sdp"
+                android:layout_marginStart="@dimen/_20sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:onClick="@{v->callback.onViewClick(v)}"
+                android:rotation="90"
+                android:src="@drawable/arrow_up"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvTitle"
+                app:tint="@color/black_24" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvMonth"
+                style="@style/TextView.PoppinsSemiBold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="@{v->callback.onViewClick(v)}"
+                android:textSize="@dimen/_13ssp"
+                android:text="January"
+                app:layout_constraintBottom_toBottomOf="@+id/ivStart"
+                app:layout_constraintStart_toEndOf="@id/ivStart"
+                app:layout_constraintTop_toTopOf="@+id/ivStart" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/ivEnd"
+                android:layout_width="@dimen/_16sdp"
+                android:layout_height="@dimen/_16sdp"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:onClick="@{v->callback.onViewClick(v)}"
+                android:rotation="270"
+                android:src="@drawable/arrow_up"
+                app:layout_constraintBottom_toBottomOf="@+id/ivStart"
+                app:layout_constraintStart_toEndOf="@id/tvMonth"
+                app:layout_constraintTop_toTopOf="@+id/ivStart"
+                app:tint="@color/black_24" />
+
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/ivStart1"
+                android:layout_width="@dimen/_16sdp"
+                android:layout_height="@dimen/_16sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_20sdp"
+                android:onClick="@{v->callback.onViewClick(v)}"
+                android:rotation="270"
+                android:src="@drawable/arrow_up"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvTitle"
+                app:tint="@color/black_24" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvYear"
+                style="@style/TextView.PoppinsSemiBold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="@{v->callback.onViewClick(v)}"
+                android:text="2022"
+                android:textSize="@dimen/_13ssp"
+                app:layout_constraintBottom_toBottomOf="@+id/ivStart1"
+                app:layout_constraintEnd_toStartOf="@id/ivStart1"
+                app:layout_constraintTop_toTopOf="@+id/ivStart1" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/ivEnd1"
+                android:layout_width="@dimen/_16sdp"
+                android:layout_height="@dimen/_16sdp"
+                android:rotation="90"
+                android:src="@drawable/arrow_up"
+                app:layout_constraintBottom_toBottomOf="@+id/ivStart1"
+                app:layout_constraintEnd_toStartOf="@id/tvYear"
+                app:layout_constraintTop_toTopOf="@+id/ivStart1"
+                app:tint="@color/black_24" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvTimesTitle"
+                style="@style/TextView.Medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_6sdp"
+                android:layout_marginTop="@dimen/_12sdp"
+                android:onClick="@{v->callback.onViewClick(v)}"
+                android:text="@string/select_time"
+                android:textColor="@color/black_24"
+                android:textSize="@dimen/_14ssp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/rangeCalenderOneTime" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvTimes"
+                style="@style/TextView.Medium2"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/_38sdp"
+                android:layout_marginTop="@dimen/_6sdp"
+                android:layout_marginEnd="@dimen/_14sdp"
+                android:textColor="@color/et_hint_color"
+                android:background="@drawable/unselect_edit_text_bg_color"
+                android:gravity="center_vertical"
+                android:onClick="@{v->callback.onViewClick(v)}"
+                android:paddingStart="@dimen/_10sdp"
+                android:paddingEnd="@dimen/_40sdp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/tvTimesTitle"
+                app:layout_constraintTop_toBottomOf="@+id/tvTimesTitle" />
+
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/ivArrow"
+                android:layout_width="@dimen/_27sdp"
+                android:layout_height="@dimen/_27sdp"
+                android:layout_marginEnd="@dimen/_6sdp"
+                android:onClick="@{v->callback.onViewClick(v)}"
+                android:padding="@dimen/_5sdp"
+                android:src="@drawable/arrow_up"
+                app:layout_constraintBottom_toBottomOf="@+id/tvTimes"
+                app:layout_constraintEnd_toEndOf="@+id/tvTimes"
+                app:layout_constraintTop_toTopOf="@+id/tvTimes" />
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvNote"
+                style="@style/TextView.Medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:onClick="@{v->callback.onViewClick(v)}"
+                android:text="@string/note"
+                android:textColor="@color/black_24"
+                android:textSize="@dimen/_14ssp"
+                app:layout_constraintStart_toStartOf="@+id/tvTimes"
+                app:layout_constraintTop_toBottomOf="@+id/tvTimes" />
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/etNotes"
+                style="@style/EditText"
+                android:layout_height="@dimen/_80sdp"
+                android:layout_marginHorizontal="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_6sdp"
+                android:background="@drawable/note_bg"
+                android:gravity="start"
+                android:hint="type here..."
+                android:inputType="textMultiLine"
+                android:imeOptions="actionNext"
+               android:padding="@dimen/_10sdp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvNote" />
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvCancel"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/_42sdp"
+                style="@style/TextView.Medium"
+                android:padding="@dimen/_6sdp"
+                android:onClick="@{v->callback.onViewClick(v)}"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_5sdp"
+                android:background="@drawable/btn_bg_color"
+                android:text="@string/send_invite"
+                android:textColor="@color/white"
+                app:layout_constraintTop_toBottomOf="@id/etNotes"
+                app:layout_constraintStart_toStartOf="@id/tvTitle"
+                app:layout_constraintEnd_toStartOf="@id/tvLogout"
+                 />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvLogout"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/_42sdp"
+                style="@style/TextView.Medium"
+                android:background="@drawable/plan_unselected_bg"
+                app:layout_constraintWidth_percent="0.35"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:padding="@dimen/_6sdp"
+                android:gravity="center"
+                android:text="@string/cancel"
+                android:onClick="@{v->callback.onViewClick(v)}"
+                android:textColor="@color/black_24"
+                app:layout_constraintTop_toTopOf="@id/tvCancel"
+                app:layout_constraintStart_toEndOf="@+id/tvCancel"
+                app:layout_constraintEnd_toEndOf="@id/tvTitle"
+                app:layout_constraintBottom_toBottomOf="@id/tvCancel" />
+
+            <androidx.appcompat.widget.AppCompatEditText
+                style="@style/EditText"
+                android:layout_height="@dimen/_6sdp"
+                android:background="@drawable/note_bg"
+                android:gravity="start"
+                android:hint="type here..."
+                android:visibility="invisible"
+                android:imeOptions="actionNext"
+                android:padding="@dimen/_10sdp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvCancel" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.core.widget.NestedScrollView>
+</layout>

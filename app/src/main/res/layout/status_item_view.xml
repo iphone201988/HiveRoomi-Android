@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="callback"
+            type="com.tech.hive.base.SimpleRecyclerViewAdapter.SimpleCallback" />
+        <variable
+            name="pos"
+            type="Integer" />
+        <variable
+            name="bean"
+            type="com.tech.hive.data.model.StatusModel" />
+        <import type="android.view.View"/>
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/_4sdp">
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/ivImage"
+            android:layout_width="@dimen/_48sdp"
+            android:layout_height="@dimen/_48sdp"
+            app:shapeAppearance="@style/Shape50"
+            android:src="@drawable/ic_match_dummy"
+            android:scaleType="centerCrop"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+        <ImageView
+            android:layout_width="@dimen/_8sdp"
+            android:layout_height="@dimen/_8sdp"
+            android:src="@drawable/ic_green_dot"
+            android:scaleType="centerCrop"
+            android:visibility="@{bean.status==true?View.VISIBLE:View.GONE}"
+            android:layout_marginEnd="@dimen/_5sdp"
+            app:layout_constraintEnd_toEndOf="@id/ivImage"
+            app:layout_constraintTop_toTopOf="@id/ivImage"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

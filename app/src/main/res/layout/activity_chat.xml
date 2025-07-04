@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="vm"
+            type="com.tech.hive.ui.for_room_mate.messages.chat.ChatActivityVM" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.forRoomMate.messages.chat.ChatActivity">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/clHeader"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/_95sdp"
+            android:background="@drawable/top_bg"
+            android:paddingHorizontal="@dimen/_15sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/ivBack"
+                android:layout_width="@dimen/_18sdp"
+                android:layout_height="@dimen/_18sdp"
+                android:onClick="@{v->vm.onClick(v)}"
+                android:rotation="90"
+                android:src="@drawable/arrow_up"
+                app:layout_constraintBottom_toBottomOf="@+id/ivPerson"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/ivPerson"
+                app:tint="@color/white" />
+
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/ivDot"
+                android:layout_width="@dimen/_28sdp"
+                android:layout_height="@dimen/_28sdp"
+                android:layout_marginEnd="-12dp"
+                android:onClick="@{v->vm.onClick(v)}"
+                android:padding="@dimen/_5sdp"
+                android:src="@drawable/three_dot"
+                app:layout_constraintBottom_toBottomOf="@+id/ivPerson"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/ivPerson"
+                app:tint="@color/white" />
+
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/ivPerson"
+                android:layout_width="@dimen/_40sdp"
+                android:layout_height="@dimen/_40sdp"
+                android:onClick="@{v->vm.onClick(v)}"
+                android:scaleType="centerCrop"
+                android:layout_marginTop="@dimen/_30sdp"
+                android:src="@drawable/dummy_person"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:shapeAppearance="@style/Shape50" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvTitle"
+                style="@style/TextView.Bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_8sdp"
+                android:text="@string/elena_salvatore"
+                android:textSize="@dimen/_14ssp"
+                app:layout_constraintStart_toEndOf="@id/ivPerson"
+                app:layout_constraintTop_toTopOf="@+id/ivPerson" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvStatus"
+                style="@style/TextView.Regular"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_8sdp"
+                android:text="@string/online"
+                android:textSize="@dimen/_10ssp"
+                app:layout_constraintStart_toEndOf="@id/ivPerson"
+                app:layout_constraintTop_toBottomOf="@+id/tvTitle" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvChat"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            android:layout_marginHorizontal="@dimen/_2sdp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toTopOf="@id/ivCalender"
+            app:layout_constraintTop_toBottomOf="@+id/clHeader"
+            tools:itemCount="4"
+            tools:listitem="@layout/chat_sender_item" />
+
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/ivCategory"
+            android:layout_width="@dimen/_40sdp"
+            android:layout_height="@dimen/_160sdp"
+            android:src="@drawable/iv_add_category"
+            android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@id/ivAdd"
+            app:layout_constraintEnd_toEndOf="@+id/ivAdd"
+            app:layout_constraintStart_toStartOf="@id/ivCalender" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/ivAdd"
+            android:layout_width="@dimen/_40sdp"
+            android:layout_height="@dimen/_40sdp"
+            android:layout_marginBottom="@dimen/_8sdp"
+            android:onClick="@{v->vm.onClick(v)}"
+            android:src="@drawable/add_icon"
+            app:layout_constraintBottom_toTopOf="@id/ivCalender"
+            app:layout_constraintEnd_toEndOf="@+id/ivCalender"
+            app:layout_constraintStart_toStartOf="@id/ivCalender" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvAddContent"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/_12sdp"
+            android:orientation="horizontal"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="@+id/ivAdd"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/ivAdd"
+            tools:itemCount="3"
+            tools:listitem="@layout/rv_qustion_item" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/ivCalender"
+            android:layout_width="@dimen/_40sdp"
+            android:layout_height="@dimen/_40sdp"
+            android:layout_marginStart="@dimen/_12sdp"
+            android:layout_marginBottom="@dimen/_12sdp"
+            android:onClick="@{v->vm.onClick(v)}"
+            android:src="@drawable/calender_icon"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/ivSend"
+            android:layout_width="@dimen/_40sdp"
+            android:layout_height="@dimen/_40sdp"
+            android:layout_marginEnd="@dimen/_12sdp"
+            android:onClick="@{v->vm.onClick(v)}"
+            android:src="@drawable/send_message"
+            app:layout_constraintBottom_toBottomOf="@id/ivCalender"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/ivCalender" />
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/etEmail"
+            style="@style/EditText"
+            android:layout_width="0dp"
+            android:layout_marginHorizontal="@dimen/_6sdp"
+            android:background="@drawable/select_bg_strock_with_radius_24"
+            android:hint="@string/type_message_here"
+            android:inputType="textMultiLine"
+            android:maxLines="4"
+            android:paddingStart="@dimen/_15sdp"
+            android:paddingEnd="@dimen/_35sdp"
+            android:textColor="@color/message_color"
+            android:textColorHint="@color/message_color"
+            app:layout_constraintBottom_toBottomOf="@+id/ivCalender"
+            app:layout_constraintEnd_toStartOf="@id/ivSend"
+            app:layout_constraintStart_toEndOf="@id/ivCalender"
+            app:layout_constraintTop_toTopOf="@+id/ivCalender" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/ivMic"
+            android:layout_width="@dimen/_16sdp"
+            android:layout_height="@dimen/_16sdp"
+            android:layout_marginEnd="@dimen/_12sdp"
+            android:onClick="@{v->vm.onClick(v)}"
+            android:src="@drawable/mic_icon"
+            app:layout_constraintBottom_toBottomOf="@id/etEmail"
+            app:layout_constraintEnd_toEndOf="@id/etEmail"
+            app:layout_constraintTop_toTopOf="@+id/etEmail" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/clEdit"
+            android:layout_width="@dimen/_140sdp"
+            android:layout_height="@dimen/_60sdp"
+            android:layout_marginTop="-35dp"
+            android:layout_marginEnd="@dimen/_16sdp"
+            android:background="@drawable/unselect_desc_bg"
+            android:backgroundTint="@color/white"
+            android:elevation="@dimen/_16sdp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="@+id/clHeader"
+            app:layout_constraintTop_toBottomOf="@+id/clHeader">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvEditBlog"
+                style="@style/TextView.Medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_12sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:text="@string/block_user"
+                android:textColor="@color/black_24"
+                android:textSize="@dimen/_13ssp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvDeleteBlog"
+                style="@style/TextView.Medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:text="@string/report_user"
+                android:textColor="@color/black_24"
+                android:textSize="@dimen/_13ssp"
+                app:layout_constraintStart_toStartOf="@id/tvEditBlog"
+                app:layout_constraintTop_toBottomOf="@id/tvEditBlog" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

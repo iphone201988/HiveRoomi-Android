@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="vm"
+            type="com.tech.hive.ui.quiz.quiz_complete.QuizCompleteFragmentVM" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.quiz.quiz_complete.QuizCompleteFragment">
+
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="@dimen/_65sdp"
+            android:layout_height="@dimen/_65sdp"
+            android:layout_marginBottom="@dimen/_8sdp"
+            android:src="@drawable/check_circle"
+            app:layout_constraintBottom_toTopOf="@+id/tvAccount"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvAccount"
+            style="@style/TextView.PoppinsBold"
+            android:layout_marginTop="@dimen/_12sdp"
+            android:text="@string/quiz_completed"
+            android:textColor="@color/black_24"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvChoose"
+            style="@style/TextView.Regular"
+            android:layout_width="0dp"
+            android:layout_marginHorizontal="@dimen/_22sdp"
+            android:layout_marginTop="-6dp"
+            android:gravity="center"
+            android:text="@string/you_re_all_set_we_ll_use_your_answers_to_match_you_with_the_most_compatible_roommates_and_rooms"
+            android:textColor="@color/black_24"
+            android:textSize="@dimen/_12ssp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvAccount" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/btnViewMatches"
+            style="@style/TextView.Medium"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/_40sdp"
+            android:layout_marginHorizontal="@dimen/_15sdp"
+            android:layout_marginBottom="@dimen/_20sdp"
+            android:background="@drawable/btn_bg_color"
+            android:onClick="@{v->vm.onClick(v)}"
+            android:text="@string/view_matches"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="vm"
+            type="com.tech.hive.ui.auth.verify_account.VerifyAccountFragmentVM" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.auth.verify_account.VerifyAccountFragment">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/ivBack"
+            android:layout_width="@dimen/_40sdp"
+            android:layout_height="@dimen/_20sdp"
+            android:layout_marginStart="@dimen/_14sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:onClick="@{v->vm.onClick(v)}"
+            android:src="@drawable/iv_back"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvSelectLanguage"
+            style="@style/TextView.PoppinsBold"
+            android:layout_marginTop="@dimen/_12sdp"
+            android:text="@string/verify_its_you"
+            android:textColor="@color/black_24"
+            app:layout_constraintStart_toStartOf="@+id/ivBack"
+            app:layout_constraintTop_toBottomOf="@+id/ivBack" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvChoose"
+            style="@style/TextView.Regular"
+            android:layout_width="0dp"
+            android:layout_marginTop="-6dp"
+            android:layout_marginEnd="@dimen/_20sdp"
+            android:gravity="start"
+            android:text="@string/please_enter_the_otp_below_that_we_have_sent_to_your_email"
+            android:textColor="@color/black_24"
+            android:textSize="@dimen/_12ssp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/ivBack"
+            app:layout_constraintTop_toBottomOf="@+id/tvSelectLanguage" />
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/clOtt"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/_60sdp"
+            android:layout_marginHorizontal="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_12sdp"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvChoose">
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/otpET1"
+                style="@style/TextView.Medium"
+                android:layout_width="@dimen/_42sdp"
+                android:layout_height="@dimen/_42sdp"
+                android:background="@drawable/strocke_circle_bg"
+                android:gravity="center"
+                android:hint="-"
+                android:imeOptions="actionNext"
+                android:inputType="number"
+                android:maxLength="1"
+                android:nextFocusForward="@id/otpET2"
+                android:textColor="@color/start_color"
+                android:textSize="@dimen/_16ssp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/otpET2"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/otpET2"
+                style="@style/TextView.Medium"
+                android:layout_width="@dimen/_42sdp"
+                android:layout_height="@dimen/_42sdp"
+                android:background="@drawable/strocke_circle_bg"
+                android:gravity="center"
+                android:hint="-"
+                android:imeOptions="actionNext"
+                android:inputType="number"
+                android:maxLength="1"
+                android:nextFocusForward="@id/otpET3"
+                android:textColor="@color/start_color"
+                android:textSize="@dimen/_16ssp"
+                app:layout_constraintBottom_toBottomOf="@+id/otpET1"
+                app:layout_constraintEnd_toStartOf="@+id/otpET3"
+                app:layout_constraintStart_toEndOf="@+id/otpET1"
+                app:layout_constraintTop_toTopOf="@+id/otpET1" />
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/otpET3"
+                style="@style/TextView.Medium"
+                android:layout_width="@dimen/_42sdp"
+                android:layout_height="@dimen/_42sdp"
+                android:background="@drawable/strocke_circle_bg"
+                android:gravity="center"
+                android:hint="-"
+                android:imeOptions="actionNext"
+                android:inputType="number"
+                android:maxLength="1"
+                android:nextFocusForward="@id/otpET4"
+                android:textColor="@color/start_color"
+                android:textSize="@dimen/_16ssp"
+                app:layout_constraintBottom_toBottomOf="@+id/otpET1"
+                app:layout_constraintEnd_toStartOf="@+id/otpET4"
+                app:layout_constraintStart_toEndOf="@+id/otpET2"
+                app:layout_constraintTop_toTopOf="@+id/otpET1" />
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/otpET4"
+                style="@style/TextView.Medium"
+                android:layout_width="@dimen/_42sdp"
+                android:layout_height="@dimen/_42sdp"
+                android:background="@drawable/strocke_circle_bg"
+                android:gravity="center"
+                android:hint="-"
+                android:imeOptions="actionDone"
+                android:inputType="number"
+                android:maxLength="1"
+                android:textColor="@color/start_color"
+                android:textSize="@dimen/_16ssp"
+                app:layout_constraintBottom_toBottomOf="@+id/otpET1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/otpET3"
+                app:layout_constraintTop_toTopOf="@+id/otpET1" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvResend"
+            style="@style/TextView.Regular"
+            android:layout_marginTop="@dimen/_12sdp"
+            android:layout_marginEnd="@dimen/_45sdp"
+            android:onClick="@{v->vm.onClick(v)}"
+            android:text="@string/resend_otp_in"
+            android:textColor="@color/black_24"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/clOtt" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvResendTime"
+            style="@style/TextView.Medium"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:onClick="@{v->vm.onClick(v)}"
+            android:text="@string/_26"
+            android:textColor="@color/start_color"
+            android:textSize="@dimen/_12ssp"
+            app:layout_constraintBottom_toBottomOf="@+id/tvResend"
+            app:layout_constraintStart_toEndOf="@+id/tvResend"
+            app:layout_constraintTop_toTopOf="@+id/tvResend" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/btnVerify"
+            style="@style/TextView.Medium"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/_40sdp"
+            android:layout_marginEnd="@dimen/_14sdp"
+            android:layout_marginBottom="@dimen/_20sdp"
+            android:background="@drawable/btn_bg_color"
+            android:onClick="@{v->vm.onClick(v)}"
+            android:text="@string/verify"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/tvChoose" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

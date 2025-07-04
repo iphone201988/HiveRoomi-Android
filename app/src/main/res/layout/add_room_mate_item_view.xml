@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="callback"
+            type="com.tech.hive.base.SimpleRecyclerViewAdapter.SimpleCallback" />
+        <variable
+            name="pos"
+            type="Integer" />
+        <variable
+            name="bean"
+            type="com.tech.hive.data.model.RoomMateModel" />
+        <import type="android.view.View"/>
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/_5sdp"
+        android:paddingVertical="@dimen/_3sdp"
+        android:paddingHorizontal="@dimen/_5sdp"
+        android:background="@drawable/bg_notification_button">
+        <TextView
+            android:id="@+id/tvAmenities"
+            style="@style/TextView.Medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text='@{bean.gender +","+ bean.age}'
+            android:textSize="@dimen/_10ssp"
+            android:layout_marginStart="@dimen/_5sdp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/ivCancel"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+        <ImageView
+            android:id="@+id/ivCancel"
+            android:layout_width="@dimen/_8sdp"
+            android:layout_height="@dimen/_8sdp"
+            android:src="@drawable/ic_cancel"
+            android:scaleType="centerCrop"
+            android:onClick="@{v->callback.onItemClick(v,bean,pos)}"
+            android:layout_marginHorizontal="@dimen/_5sdp"
+            app:layout_constraintStart_toEndOf="@id/tvAmenities"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

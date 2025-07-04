@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="vm"
+            type="com.tech.hive.ui.quiz.bugget.PreferencesBudgetFragmentVM" />
+
+        <variable
+            name="budgetType"
+            type="String" />
+        <variable
+            name="locationType"
+            type="String" />
+        <variable
+            name="roomMateType"
+            type="String" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.quiz.bugget.PreferencesBudgetFragment">
+
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/ivBack"
+            android:layout_width="@dimen/_40sdp"
+            android:layout_height="@dimen/_20sdp"
+            android:layout_marginStart="@dimen/_14sdp"
+            android:onClick="@{v->vm.onClick(v)}"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:src="@drawable/iv_back"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvSelectLanguage"
+            style="@style/TextView.PoppinsBold"
+            android:layout_marginTop="@dimen/_12sdp"
+            android:gravity="start"
+            android:text="@string/preferences_amp_budget"
+            android:textColor="@color/black_24"
+            app:layout_constraintStart_toStartOf="@+id/ivBack"
+            app:layout_constraintTop_toBottomOf="@+id/ivBack" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvChoose"
+            style="@style/TextView.Regular"
+            android:layout_width="0dp"
+            android:layout_marginTop="-6dp"
+            android:layout_marginEnd="@dimen/_22sdp"
+            android:gravity="start"
+            android:text="@string/set_your_budget_and_roommate_preferences"
+            android:textColor="@color/black_24"
+            android:textSize="@dimen/_12ssp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/ivBack"
+            app:layout_constraintTop_toBottomOf="@+id/tvSelectLanguage" />
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvBudget"
+            style="@style/TextView.Regular"
+            android:layout_marginTop="@dimen/_30sdp"
+            android:layout_marginHorizontal="@dimen/_12sdp"
+            android:text="@string/monthly_budget"
+            android:textColor="@color/black_24"
+            android:textSize="@dimen/_12ssp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvChoose" />
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/etBudget"
+            style="@style/EditText"
+            android:layout_marginHorizontal="@dimen/_12sdp"
+            android:layout_marginTop="@dimen/_6sdp"
+            android:background="@{budgetType.isEmpty()?@drawable/unselect_edit_text_bg_color:@drawable/select_edittext_bg_color}"
+            android:hint="@string/enter_budget"
+            android:imeOptions="actionDone"
+            android:paddingStart="@dimen/_40sdp"
+            android:paddingEnd="@dimen/_16sdp"
+            android:focusable="false"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvBudget" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/ivBudget"
+            android:layout_width="@dimen/_27sdp"
+            android:layout_height="@dimen/_27sdp"
+            android:layout_marginEnd="@dimen/_14sdp"
+            android:onClick="@{v->vm.onClick(v)}"
+            android:padding="@dimen/_5sdp"
+            android:src="@drawable/arrow_up"
+            app:layout_constraintBottom_toBottomOf="@+id/etBudget"
+            app:layout_constraintEnd_toEndOf="@+id/etBudget"
+            app:layout_constraintTop_toTopOf="@+id/etBudget" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="@dimen/_17sdp"
+            android:layout_height="@dimen/_17sdp"
+            android:layout_marginStart="@dimen/_14sdp"
+            android:src="@drawable/ic_bag"
+            android:tint="@{budgetType.isEmpty()?@color/et_hint_color:@color/start_color}"
+            app:layout_constraintBottom_toBottomOf="@+id/etBudget"
+            app:layout_constraintStart_toStartOf="@+id/etBudget"
+            app:layout_constraintTop_toTopOf="@+id/etBudget" />
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvLocation"
+            style="@style/TextView.Regular"
+            android:layout_marginTop="@dimen/_6sdp"
+            android:layout_marginHorizontal="@dimen/_12sdp"
+            android:text="@string/preferred_location_area"
+            android:textColor="@color/black_24"
+            android:textSize="@dimen/_12ssp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/etBudget" />
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/etLocation"
+            style="@style/EditText"
+            android:layout_marginHorizontal="@dimen/_12sdp"
+            android:layout_marginTop="@dimen/_6sdp"
+            android:background="@{locationType.isEmpty()?@drawable/unselect_edit_text_bg_color:@drawable/select_edittext_bg_color}"
+            android:hint="@string/enter_location"
+            android:imeOptions="actionNext"
+            android:nextFocusForward="@+id/etBudget"
+            android:paddingStart="@dimen/_40sdp"
+            android:paddingEnd="@dimen/_16sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvLocation" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="@dimen/_17sdp"
+            android:layout_height="@dimen/_17sdp"
+            android:layout_marginStart="@dimen/_14sdp"
+            android:src="@drawable/ic_location"
+            android:tint="@{locationType.isEmpty()?@color/et_hint_color:@color/start_color}"
+            app:layout_constraintBottom_toBottomOf="@+id/etLocation"
+            app:layout_constraintStart_toStartOf="@+id/etLocation"
+            app:layout_constraintTop_toTopOf="@+id/etLocation" />
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvGender"
+            style="@style/TextView.Regular"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:text="@string/roommate_gender_preference"
+            android:textColor="@color/black_24"
+            android:textSize="@dimen/_12ssp"
+            app:layout_constraintStart_toStartOf="@+id/etLocation"
+            app:layout_constraintTop_toBottomOf="@+id/etLocation" />
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/etGender"
+            style="@style/EditText"
+            android:layout_marginHorizontal="@dimen/_12sdp"
+            android:layout_marginTop="@dimen/_6sdp"
+            android:background="@{roomMateType.isEmpty()?@drawable/unselect_edit_text_bg_color:@drawable/select_edittext_bg_color}"
+            android:hint="@string/men_only"
+            android:imeOptions="actionNext"
+            android:focusable="false"
+            android:nextFocusForward="@+id/etConfirmPassword"
+            android:inputType="textPassword"
+            android:paddingStart="@dimen/_14sdp"
+            android:paddingEnd="@dimen/_40sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvGender" />
+
+
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/ivGender"
+            android:layout_width="@dimen/_27sdp"
+            android:layout_height="@dimen/_27sdp"
+            android:layout_marginEnd="@dimen/_14sdp"
+            android:onClick="@{v->vm.onClick(v)}"
+            android:padding="@dimen/_5sdp"
+            android:src="@drawable/arrow_up"
+            app:layout_constraintBottom_toBottomOf="@+id/etGender"
+            app:layout_constraintEnd_toEndOf="@+id/etGender"
+            app:layout_constraintTop_toTopOf="@+id/etGender" />
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/btnDone"
+            style="@style/TextView.Medium"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/_40sdp"
+            android:layout_marginHorizontal="@dimen/_15sdp"
+            android:layout_marginBottom="@dimen/_20sdp"
+            android:background="@drawable/btn_bg_color"
+            android:onClick="@{v->vm.onClick(v)}"
+            android:text="@string/done"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

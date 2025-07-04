@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clAnswer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/etEmail"
+            style="@style/EditText"
+            android:layout_marginTop="@dimen/_14sdp"
+            android:hint="@string/enter_location"
+            android:paddingStart="@dimen/_40sdp"
+            android:paddingEnd="@dimen/_16sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/ivLocation"
+            android:layout_width="@dimen/_17sdp"
+            android:layout_height="@dimen/_17sdp"
+            android:layout_marginStart="@dimen/_14sdp"
+            android:src="@drawable/ic_location"
+            app:layout_constraintBottom_toBottomOf="@+id/etEmail"
+            app:layout_constraintStart_toStartOf="@+id/etEmail"
+            app:layout_constraintTop_toTopOf="@+id/etEmail" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvAnswer"
+            style="@style/TextView.Medium2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_14sdp"
+            android:gravity="center_vertical"
+            android:paddingVertical="@dimen/_12sdp"
+            android:paddingStart="@dimen/_15sdp"
+            android:paddingEnd="@dimen/_40sdp"
+            android:textSize="@dimen/_11ssp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/ivFirstQuiz"
+            android:layout_width="@dimen/_27sdp"
+            android:layout_height="@dimen/_27sdp"
+            android:layout_marginEnd="@dimen/_6sdp"
+            android:padding="@dimen/_5sdp"
+            android:rotation="270"
+            app:layout_constraintBottom_toBottomOf="@+id/tvAnswer"
+            app:layout_constraintEnd_toEndOf="@+id/tvAnswer"
+            app:layout_constraintTop_toTopOf="@+id/tvAnswer" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

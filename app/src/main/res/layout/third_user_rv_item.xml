@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="callback"
+            type="com.tech.hive.base.SimpleRecyclerViewAdapter.SimpleCallback" />
+
+        <variable
+            name="pos"
+            type="Integer" />
+
+        <variable
+            name="bean"
+            type="com.tech.hive.data.model.ThirdTypeModel" />
+
+        <import type="android.view.View" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clImage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_5sdp"
+        android:background="@drawable/bg_strock_with_radius_24"
+        android:backgroundTint="@color/et_corner_color"
+        android:onClick="@{v->callback.onItemClick(v,bean,pos)}"
+        android:paddingHorizontal="@dimen/_11sdp"
+        android:paddingTop="@dimen/_11sdp"
+        android:paddingBottom="@dimen/_6sdp">
+
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/ivPerson"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_105sdp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/card_image"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:shapeAppearanceOverlay="@style/Shape10" />
+
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/ivLocation"
+            android:layout_width="@dimen/_20sdp"
+            android:layout_height="@dimen/_20sdp"
+            android:layout_margin="@dimen/_6sdp"
+            android:src="@drawable/location_circle"
+            app:layout_constraintEnd_toEndOf="@+id/ivPerson"
+            app:layout_constraintTop_toTopOf="@+id/ivPerson" />
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="@dimen/_50sdp"
+            android:layout_height="@dimen/_20sdp"
+            android:layout_marginEnd="@dimen/_6sdp"
+            android:background="@drawable/btn_bg_color"
+            android:paddingHorizontal="@dimen/_8sdp"
+            app:layout_constraintBottom_toBottomOf="@+id/ivLocation"
+            app:layout_constraintEnd_toStartOf="@+id/ivLocation"
+            app:layout_constraintTop_toTopOf="@+id/ivLocation">
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/btnContinue"
+                style="@style/TextView.Medium"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/_20sdp"
+                android:layout_marginStart="@dimen/_5ssp"
+                android:text="Active"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_9ssp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvTitle"
+            style="@style/TextView.Semibold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_2sdp"
+            android:layout_marginTop="@dimen/_4sdp"
+            android:text="@string/cozy_room_in_nyc"
+            android:textColor="@color/black_24"
+            android:textSize="@dimen/_12ssp"
+            app:layout_constraintStart_toStartOf="@+id/ivPerson"
+            app:layout_constraintTop_toBottomOf="@+id/ivPerson" />
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvTime"
+            style="@style/TextView.Regular"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_4sdp"
+            android:text="@string/_6_months_min_stay"
+            android:textColor="@color/black_24"
+            android:textSize="@dimen/_10ssp"
+            app:layout_constraintBottom_toBottomOf="@+id/tvTitle"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/tvTitle" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/ivTime"
+            android:layout_width="@dimen/_14sdp"
+            android:layout_height="@dimen/_14sdp"
+            android:layout_marginEnd="@dimen/_6sdp"
+            android:src="@drawable/time_icon"
+            app:layout_constraintBottom_toBottomOf="@+id/tvTime"
+            app:layout_constraintEnd_toStartOf="@+id/tvTime"
+            app:layout_constraintTop_toTopOf="@+id/tvTime" />
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvPrice"
+            style="@style/TextView.Semibold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/_600_month"
+            android:textColor="@color/end_color"
+            android:textSize="@dimen/_14ssp"
+            app:layout_constraintStart_toStartOf="@+id/tvTitle"
+            app:layout_constraintTop_toBottomOf="@+id/tvTitle" />
+
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/ivView"
+            android:layout_width="@dimen/_14sdp"
+            android:layout_height="@dimen/_14sdp"
+            android:layout_marginTop="@dimen/_2sdp"
+            android:src="@drawable/iv_view"
+            app:layout_constraintStart_toStartOf="@+id/tvPrice"
+            app:layout_constraintTop_toBottomOf="@+id/tvPrice" />
+
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/ivThreeDot"
+            android:layout_width="@dimen/_20sdp"
+            android:layout_height="@dimen/_20sdp"
+            android:onClick="@{v->callback.onItemClick(v,bean,pos)}"
+            android:src="@drawable/dot_with_circle"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvPrice" />
+
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/ivAll"
+            android:layout_width="@dimen/_34sdp"
+            android:layout_height="@dimen/_80sdp"
+            android:layout_marginEnd="@dimen/_4sdp"
+            android:layout_marginBottom="@dimen/_6sdp"
+            android:onClick="@{v->callback.onItemClick(v,bean,pos)}"
+            android:src="@drawable/home_three_group"
+            android:visibility="@{bean.check?View.VISIBLE:View.GONE}"
+            app:layout_constraintBottom_toTopOf="@+id/ivThreeDot"
+            app:layout_constraintEnd_toEndOf="@id/ivThreeDot"
+            app:layout_constraintStart_toStartOf="@+id/ivThreeDot" />
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvView"
+            style="@style/TextView.Regular"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_4sdp"
+            android:text="@string/_120_views"
+            android:textColor="@color/black_24"
+            android:textSize="@dimen/_10ssp"
+            app:layout_constraintBottom_toBottomOf="@+id/ivView"
+            app:layout_constraintStart_toEndOf="@+id/ivView"
+            app:layout_constraintTop_toTopOf="@+id/ivView" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/ivFav"
+            android:layout_width="@dimen/_14sdp"
+            android:layout_height="@dimen/_14sdp"
+            android:layout_marginStart="@dimen/_14sdp"
+            android:layout_marginTop="@dimen/_2sdp"
+            android:src="@drawable/black_heart"
+            app:layout_constraintBottom_toBottomOf="@+id/ivView"
+            app:layout_constraintStart_toEndOf="@+id/tvView"
+            app:layout_constraintTop_toTopOf="@+id/ivView" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvTitle2"
+            style="@style/TextView.Regular"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_4sdp"
+            android:text="@string/_34_matches"
+            android:textColor="@color/black_24"
+            android:textSize="@dimen/_10ssp"
+            app:layout_constraintBottom_toBottomOf="@+id/ivView"
+            app:layout_constraintStart_toEndOf="@+id/ivFav"
+            app:layout_constraintTop_toTopOf="@+id/ivView" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

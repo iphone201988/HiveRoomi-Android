@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_6sdp">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvQuestion"
+            style="@style/TextView.Semibold"
+            android:layout_width="0dp"
+            android:gravity="start"
+            android:textColor="@color/start_color"
+            android:textSize="@dimen/_16ssp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvAnswer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvQuestion"
+            tools:listitem="@layout/rv_discover_answer_item" />
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            style="@style/TextView.Regular"
+            android:layout_width="0dp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_22sdp"
+            android:gravity="start"
+            android:textColor="@color/black_24"
+            android:textSize="@dimen/_11ssp"
+            android:visibility="invisible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/tvQuestion"
+            app:layout_constraintTop_toBottomOf="@+id/rvAnswer" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

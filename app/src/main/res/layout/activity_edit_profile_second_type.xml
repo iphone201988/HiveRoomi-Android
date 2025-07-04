@@ -1,0 +1,951 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="vm"
+            type="com.tech.hive.ui.for_room_mate.profile.ProfileFragmentVM" />
+
+        <variable
+            name="fullNameType"
+            type="String" />
+
+        <variable
+            name="ageType"
+            type="String" />
+
+        <variable
+            name="genderType"
+            type="String" />
+
+        <variable
+            name="roleType"
+            type="String" />
+
+        <variable
+            name="bioType"
+            type="String" />
+
+        <variable
+            name="locationType"
+            type="String" />
+
+        <variable
+            name="roomType"
+            type="String" />
+
+        <variable
+            name="smokingType"
+            type="String" />
+
+        <variable
+            name="petsType"
+            type="String" />
+
+        <variable
+            name="performType"
+            type="String" />
+
+        <variable
+            name="cleanType"
+            type="String" />
+
+        <variable
+            name="budgetType"
+            type="String" />
+
+        <variable
+            name="moveDateType"
+            type="String" />
+
+        <variable
+            name="wifiType"
+            type="String" />
+
+        <variable
+            name="elevatorType"
+            type="String" />
+
+        <variable
+            name="furnishedType"
+            type="String" />
+
+        <variable
+            name="heatingType"
+            type="String" />
+
+        <variable
+            name="petsSecondType"
+            type="String" />
+
+        <variable
+            name="linkType"
+            type="String" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        tools:context=".ui.for_room_mate.profile.EditProfileSecondTypeActivity">
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/clHeader"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/_100sdp"
+            android:background="@drawable/top_bg"
+            android:paddingHorizontal="@dimen/_15sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/tvTitle"
+                style="@style/TextView.SfBold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_40sdp"
+                android:text="@string/edit_profile"
+                android:textSize="@dimen/_16ssp"
+                app:layout_constraintStart_toEndOf="@id/ivBack"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/ivBack"
+                android:layout_width="@dimen/_18sdp"
+                android:layout_height="@dimen/_18sdp"
+                android:onClick="@{v->vm.onClick(v)}"
+                android:rotation="90"
+                android:src="@drawable/arrow_up"
+                app:layout_constraintBottom_toBottomOf="@id/tvTitle"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/tvTitle"
+                app:tint="@color/white" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/ivPerson"
+            android:layout_width="@dimen/_80sdp"
+            android:layout_height="@dimen/_80sdp"
+            android:layout_marginTop="-50dp"
+            android:src="@drawable/dummy_person"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/clHeader"
+            app:shapeAppearance="@style/ShapeAppearanceOverlay.App.CornerSize10Percent" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/ivCamera"
+            android:layout_width="@dimen/_65sdp"
+            android:layout_height="@dimen/_22sdp"
+            android:layout_marginTop="@dimen/_22sdp"
+            android:layout_marginEnd="@dimen/_6sdp"
+            android:src="@drawable/iv_camera"
+            app:layout_constraintBottom_toBottomOf="@+id/ivPerson"
+            app:layout_constraintEnd_toStartOf="@+id/ivGallery"
+            app:layout_constraintStart_toStartOf="@+id/ivPerson" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/ivGallery"
+            android:layout_width="@dimen/_65sdp"
+            android:layout_height="@dimen/_22sdp"
+            android:layout_marginStart="@dimen/_6sdp"
+            android:layout_marginTop="@dimen/_22sdp"
+            android:src="@drawable/iv_gallery"
+            app:layout_constraintBottom_toBottomOf="@+id/ivCamera"
+            app:layout_constraintEnd_toEndOf="@+id/ivPerson"
+            app:layout_constraintStart_toEndOf="@+id/ivCamera" />
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="@dimen/_10sdp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ivPerson">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvFullName"
+                    style="@style/TextView.Regular"
+                    android:layout_marginHorizontal="@dimen/_12sdp"
+                    android:layout_marginTop="@dimen/_20sdp"
+                    android:text="@string/full_name"
+                    android:textColor="@color/black_24"
+                    android:textSize="@dimen/_12ssp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/etFullName"
+                    style="@style/EditText"
+                    android:layout_marginHorizontal="@dimen/_12sdp"
+                    android:layout_marginTop="@dimen/_6sdp"
+                    android:background="@{fullNameType.isEmpty()?@drawable/unselect_edit_text_bg_color:@drawable/select_edittext_bg_color}"
+                    android:hint="@string/enter_your_name"
+                    android:imeOptions="actionNext"
+                    android:nextFocusForward="@+id/etShortBio"
+                    android:paddingStart="@dimen/_40sdp"
+                    android:paddingEnd="@dimen/_16sdp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvFullName" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="@dimen/_17sdp"
+                    android:layout_height="@dimen/_17sdp"
+                    android:layout_marginStart="@dimen/_14sdp"
+                    android:src="@drawable/person"
+                    android:tint="@{fullNameType.isEmpty()?@color/et_hint_color:@color/start_color}"
+                    app:layout_constraintBottom_toBottomOf="@+id/etFullName"
+                    app:layout_constraintStart_toStartOf="@+id/etFullName"
+                    app:layout_constraintTop_toTopOf="@+id/etFullName" />
+
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvAge"
+                    style="@style/TextView.Regular"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:text="@string/age"
+                    android:textColor="@color/black_24"
+                    android:textSize="@dimen/_12ssp"
+                    app:layout_constraintStart_toStartOf="@+id/tvFullName"
+                    app:layout_constraintTop_toBottomOf="@+id/etFullName" />
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/etAge"
+                    style="@style/EditText"
+                    android:layout_marginHorizontal="@dimen/_12sdp"
+                    android:layout_marginTop="@dimen/_6sdp"
+                    android:background="@{ageType.isEmpty()?@drawable/unselect_edit_text_bg_color:@drawable/select_edittext_bg_color}"
+                    android:focusable="false"
+                    android:hint="@string/_18_22"
+                    android:imeOptions="actionNext"
+                    android:nextFocusForward="@+id/etPassword"
+                    android:paddingStart="@dimen/_10sdp"
+                    android:paddingEnd="@dimen/_16sdp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvAge" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/ivAge"
+                    android:layout_width="@dimen/_27sdp"
+                    android:layout_height="@dimen/_27sdp"
+                    android:layout_marginEnd="@dimen/_14sdp"
+                    android:onClick="@{v->vm.onClick(v)}"
+                    android:padding="@dimen/_5sdp"
+                    android:src="@drawable/arrow_up"
+                    app:layout_constraintBottom_toBottomOf="@+id/etAge"
+                    app:layout_constraintEnd_toEndOf="@+id/etAge"
+                    app:layout_constraintTop_toTopOf="@+id/etAge" />
+
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvGender"
+                    style="@style/TextView.Regular"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:text="@string/gender"
+                    android:textColor="@color/black_24"
+                    android:textSize="@dimen/_12ssp"
+                    app:layout_constraintStart_toStartOf="@+id/etAge"
+                    app:layout_constraintTop_toBottomOf="@+id/etAge" />
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/etGender"
+                    style="@style/EditText"
+                    android:layout_marginHorizontal="@dimen/_12sdp"
+                    android:layout_marginTop="@dimen/_6sdp"
+                    android:background="@{genderType.isEmpty()?@drawable/unselect_edit_text_bg_color:@drawable/select_edittext_bg_color}"
+                    android:focusable="false"
+                    android:hint="@string/male"
+                    android:imeOptions="actionNext"
+                    android:inputType="textPassword"
+                    android:nextFocusForward="@+id/etConfirmPassword"
+                    android:paddingStart="@dimen/_10sdp"
+                    android:paddingEnd="@dimen/_40sdp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvGender" />
+
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/ivGender"
+                    android:layout_width="@dimen/_27sdp"
+                    android:layout_height="@dimen/_27sdp"
+                    android:layout_marginEnd="@dimen/_14sdp"
+                    android:onClick="@{v->vm.onClick(v)}"
+                    android:padding="@dimen/_5sdp"
+                    android:src="@drawable/arrow_up"
+                    app:layout_constraintBottom_toBottomOf="@+id/etGender"
+                    app:layout_constraintEnd_toEndOf="@+id/etGender"
+                    app:layout_constraintTop_toTopOf="@+id/etGender" />
+
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvProfessionRole"
+                    style="@style/TextView.Regular"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:text="@string/profession_role"
+                    android:textColor="@color/black_24"
+                    android:textSize="@dimen/_12ssp"
+                    app:layout_constraintStart_toStartOf="@+id/etGender"
+                    app:layout_constraintTop_toBottomOf="@+id/etGender" />
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/etProfessionRole"
+                    style="@style/EditText"
+                    android:layout_marginHorizontal="@dimen/_12sdp"
+                    android:layout_marginTop="@dimen/_6sdp"
+                    android:background="@{roleType.isEmpty()?@drawable/unselect_edit_text_bg_color:@drawable/select_edittext_bg_color}"
+                    android:focusable="false"
+                    android:hint="@string/student"
+                    android:imeOptions="actionDone"
+                    android:inputType="textPassword"
+                    android:paddingStart="@dimen/_10sdp"
+                    android:paddingEnd="@dimen/_40sdp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvProfessionRole" />
+
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/ivRole"
+                    android:layout_width="@dimen/_27sdp"
+                    android:layout_height="@dimen/_27sdp"
+                    android:layout_marginEnd="@dimen/_14sdp"
+                    android:onClick="@{v->vm.onClick(v)}"
+                    android:padding="@dimen/_5sdp"
+                    android:src="@drawable/arrow_up"
+                    app:layout_constraintBottom_toBottomOf="@+id/etProfessionRole"
+                    app:layout_constraintEnd_toEndOf="@+id/etProfessionRole"
+                    app:layout_constraintTop_toTopOf="@+id/etProfessionRole" />
+
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvShortBio"
+                    style="@style/TextView.Regular"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:text="@string/short_bio"
+                    android:textColor="@color/black_24"
+                    android:textSize="@dimen/_12ssp"
+                    app:layout_constraintStart_toStartOf="@+id/etGender"
+                    app:layout_constraintTop_toBottomOf="@+id/etProfessionRole" />
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/etShortBio"
+                    style="@style/EditText"
+                    android:layout_height="@dimen/_100sdp"
+                    android:layout_marginHorizontal="@dimen/_12sdp"
+                    android:layout_marginTop="@dimen/_6sdp"
+                    android:background="@{bioType.isEmpty()?@drawable/unselect_desc_bg:@drawable/select_desc_bg}"
+                    android:gravity="start"
+                    android:hint="@string/tell_us_a_bit_about_yourself"
+                    android:imeOptions="actionNext"
+                    android:inputType="textMultiLine"
+                    android:nextFocusForward="@+id/etConfirmPassword"
+                    android:paddingStart="@dimen/_12sdp"
+                    android:paddingTop="@dimen/_12sdp"
+                    android:paddingEnd="@dimen/_12sdp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvShortBio" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvLocation"
+                    style="@style/TextView.Regular"
+                    android:layout_marginHorizontal="@dimen/_12sdp"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:text="@string/preferred_location_area"
+                    android:textColor="@color/black_24"
+                    android:textSize="@dimen/_12ssp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/etShortBio" />
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/etLocation"
+                    style="@style/EditText"
+                    android:layout_marginHorizontal="@dimen/_12sdp"
+                    android:layout_marginTop="@dimen/_6sdp"
+                    android:background="@{locationType.isEmpty()?@drawable/unselect_edit_text_bg_color:@drawable/select_edittext_bg_color}"
+                    android:hint="@string/enter_location"
+                    android:imeOptions="actionNext"
+                    android:nextFocusForward="@+id/etBudget"
+                    android:paddingStart="@dimen/_40sdp"
+                    android:paddingEnd="@dimen/_16sdp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvLocation" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="@dimen/_17sdp"
+                    android:layout_height="@dimen/_17sdp"
+                    android:layout_marginStart="@dimen/_14sdp"
+                    android:src="@drawable/ic_location"
+                    android:tint="@{locationType.isEmpty()?@color/et_hint_color:@color/start_color}"
+                    app:layout_constraintBottom_toBottomOf="@+id/etLocation"
+                    app:layout_constraintStart_toStartOf="@+id/etLocation"
+                    app:layout_constraintTop_toTopOf="@+id/etLocation" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvPreferences"
+                    style="@style/TextView.Semibold"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/_12sdp"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:includeFontPadding="false"
+                    android:text="@string/preferences"
+                    android:textColor="@color/start_color"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/etLocation" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvRoom"
+                    style="@style/TextView.SfMedium"
+                    android:layout_marginHorizontal="@dimen/_12sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:text="@string/room_type"
+                    android:textColor="@color/black_24"
+                    android:textSize="@dimen/_12ssp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tvPreferences" />
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/etRoom"
+                    style="@style/EditText"
+                    android:layout_marginHorizontal="@dimen/_12sdp"
+                    android:layout_marginTop="@dimen/_6sdp"
+                    android:background="@{roomType.isEmpty()?@drawable/unselect_edit_text_bg_color:@drawable/select_edittext_bg_color}"
+                    android:focusable="false"
+                    android:hint="@string/studio"
+                    android:imeOptions="actionDone"
+                    android:paddingStart="@dimen/_10sdp"
+                    android:paddingEnd="@dimen/_16sdp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvRoom" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/ivBudget"
+                    android:layout_width="@dimen/_27sdp"
+                    android:layout_height="@dimen/_27sdp"
+                    android:layout_marginEnd="@dimen/_14sdp"
+                    android:onClick="@{v->vm.onClick(v)}"
+                    android:padding="@dimen/_5sdp"
+                    android:src="@drawable/arrow_up"
+                    app:layout_constraintBottom_toBottomOf="@+id/etRoom"
+                    app:layout_constraintEnd_toEndOf="@+id/etRoom"
+                    app:layout_constraintTop_toTopOf="@+id/etRoom" />
+
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvPets"
+                    style="@style/TextView.SfMedium"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:text="@string/pets"
+                    android:textColor="@color/black_24"
+                    android:textSize="@dimen/_12ssp"
+                    app:layout_constraintStart_toStartOf="@+id/etRoom"
+                    app:layout_constraintTop_toBottomOf="@+id/etSmoking" />
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/etPets"
+                    style="@style/EditText"
+                    android:layout_marginHorizontal="@dimen/_12sdp"
+                    android:layout_marginTop="@dimen/_6sdp"
+                    android:background="@{petsType.isEmpty()?@drawable/unselect_edit_text_bg_color:@drawable/select_edittext_bg_color}"
+                    android:focusable="false"
+                    android:hint="yes"
+                    android:imeOptions="actionDone"
+                    android:inputType="textPassword"
+                    android:paddingStart="@dimen/_10sdp"
+                    android:paddingEnd="@dimen/_40sdp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvPets" />
+
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/ivPets"
+                    android:layout_width="@dimen/_27sdp"
+                    android:layout_height="@dimen/_27sdp"
+                    android:layout_marginEnd="@dimen/_14sdp"
+                    android:onClick="@{v->vm.onClick(v)}"
+                    android:padding="@dimen/_5sdp"
+                    android:src="@drawable/arrow_up"
+                    app:layout_constraintBottom_toBottomOf="@+id/etPets"
+                    app:layout_constraintEnd_toEndOf="@+id/etPets"
+                    app:layout_constraintTop_toTopOf="@+id/etPets" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvSmoking"
+                    style="@style/TextView.SfMedium"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:text="@string/smoking"
+                    android:textColor="@color/black_24"
+                    android:textSize="@dimen/_12ssp"
+                    app:layout_constraintStart_toStartOf="@+id/etRoom"
+                    app:layout_constraintTop_toBottomOf="@+id/etRoom" />
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/etSmoking"
+                    style="@style/EditText"
+                    android:layout_marginHorizontal="@dimen/_12sdp"
+                    android:layout_marginTop="@dimen/_6sdp"
+                    android:background="@{smokingType.isEmpty()?@drawable/unselect_edit_text_bg_color:@drawable/select_edittext_bg_color}"
+                    android:focusable="false"
+                    android:hint="No"
+                    android:imeOptions="actionDone"
+                    android:inputType="textPassword"
+                    android:paddingStart="@dimen/_10sdp"
+                    android:paddingEnd="@dimen/_40sdp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvSmoking" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/ivSmoke"
+                    android:layout_width="@dimen/_27sdp"
+                    android:layout_height="@dimen/_27sdp"
+                    android:layout_marginEnd="@dimen/_14sdp"
+                    android:onClick="@{v->vm.onClick(v)}"
+                    android:padding="@dimen/_5sdp"
+                    android:src="@drawable/arrow_up"
+                    app:layout_constraintBottom_toBottomOf="@+id/etSmoking"
+                    app:layout_constraintEnd_toEndOf="@+id/etSmoking"
+                    app:layout_constraintTop_toTopOf="@+id/etSmoking" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvPerform"
+                    style="@style/TextView.SfMedium"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:text="@string/preferred_roommates"
+                    android:textColor="@color/black_24"
+                    android:textSize="@dimen/_12ssp"
+                    app:layout_constraintStart_toStartOf="@+id/etRoom"
+                    app:layout_constraintTop_toBottomOf="@+id/etPets" />
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/etPerform"
+                    style="@style/EditText"
+                    android:layout_marginHorizontal="@dimen/_12sdp"
+                    android:layout_marginTop="@dimen/_6sdp"
+                    android:background="@{performType.isEmpty()?@drawable/unselect_edit_text_bg_color:@drawable/select_edittext_bg_color}"
+                    android:focusable="false"
+                    android:hint="Workers"
+                    android:imeOptions="actionDone"
+                    android:inputType="textPassword"
+                    android:paddingStart="@dimen/_10sdp"
+                    android:paddingEnd="@dimen/_40sdp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvPerform" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/ivOverNight"
+                    android:layout_width="@dimen/_27sdp"
+                    android:layout_height="@dimen/_27sdp"
+                    android:layout_marginEnd="@dimen/_14sdp"
+                    android:onClick="@{v->vm.onClick(v)}"
+                    android:padding="@dimen/_5sdp"
+                    android:src="@drawable/arrow_up"
+                    app:layout_constraintBottom_toBottomOf="@+id/etPerform"
+                    app:layout_constraintEnd_toEndOf="@+id/etPerform"
+                    app:layout_constraintTop_toTopOf="@+id/etPerform" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvClean"
+                    style="@style/TextView.SfMedium"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:text="@string/cleanliness"
+                    android:textColor="@color/black_24"
+                    android:textSize="@dimen/_12ssp"
+                    app:layout_constraintStart_toStartOf="@+id/etRoom"
+                    app:layout_constraintTop_toBottomOf="@+id/etPerform" />
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/etClean"
+                    style="@style/EditText"
+                    android:layout_marginHorizontal="@dimen/_12sdp"
+                    android:layout_marginTop="@dimen/_6sdp"
+                    android:background="@{cleanType.isEmpty()?@drawable/unselect_edit_text_bg_color:@drawable/select_edittext_bg_color}"
+                    android:focusable="false"
+                    android:hint="4"
+                    android:imeOptions="actionDone"
+                    android:inputType="textPassword"
+                    android:paddingStart="@dimen/_10sdp"
+                    android:paddingEnd="@dimen/_40sdp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvClean" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/ivClean"
+                    android:layout_width="@dimen/_27sdp"
+                    android:layout_height="@dimen/_27sdp"
+                    android:layout_marginEnd="@dimen/_14sdp"
+                    android:onClick="@{v->vm.onClick(v)}"
+                    android:padding="@dimen/_5sdp"
+                    android:src="@drawable/arrow_up"
+                    app:layout_constraintBottom_toBottomOf="@+id/etClean"
+                    app:layout_constraintEnd_toEndOf="@+id/etClean"
+                    app:layout_constraintTop_toTopOf="@+id/etClean" />
+
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvSearch"
+                    style="@style/TextView.Semibold"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/_12sdp"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:includeFontPadding="false"
+                    android:text="@string/search_criteria"
+                    android:textColor="@color/start_color"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/etClean" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvMonthly"
+                    style="@style/TextView.SfMedium"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:text="@string/monthly_budget"
+                    android:textColor="@color/black_24"
+                    android:textSize="@dimen/_12ssp"
+                    app:layout_constraintStart_toStartOf="@+id/tvSearch"
+                    app:layout_constraintTop_toBottomOf="@+id/tvSearch" />
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/etMonthlyBudget"
+                    style="@style/EditText"
+                    android:layout_marginHorizontal="@dimen/_12sdp"
+                    android:layout_marginTop="@dimen/_6sdp"
+                    android:background="@{budgetType.isEmpty()?@drawable/unselect_edit_text_bg_color:@drawable/select_edittext_bg_color}"
+                    android:hint="@string/enter_budget"
+                    android:imeOptions="actionDone"
+                    android:paddingStart="@dimen/_40sdp"
+                    android:paddingEnd="@dimen/_16sdp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvMonthly" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="@dimen/_17sdp"
+                    android:layout_height="@dimen/_17sdp"
+                    android:layout_marginStart="@dimen/_14sdp"
+                    android:src="@drawable/ic_bag"
+                    android:tint="@{budgetType.isEmpty()?@color/et_hint_color:@color/start_color}"
+                    app:layout_constraintBottom_toBottomOf="@+id/etMonthlyBudget"
+                    app:layout_constraintStart_toStartOf="@+id/etMonthlyBudget"
+                    app:layout_constraintTop_toTopOf="@+id/etMonthlyBudget" />
+
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvMove"
+                    style="@style/TextView.SfMedium"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:text="@string/move_in_date"
+                    android:textColor="@color/black_24"
+                    android:textSize="@dimen/_12ssp"
+                    app:layout_constraintStart_toStartOf="@+id/etRoom"
+                    app:layout_constraintTop_toBottomOf="@+id/etMonthlyBudget" />
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/etMove"
+                    style="@style/EditText"
+                    android:layout_marginHorizontal="@dimen/_12sdp"
+                    android:layout_marginTop="@dimen/_6sdp"
+                    android:background="@{moveDateType.isEmpty()?@drawable/unselect_edit_text_bg_color:@drawable/select_edittext_bg_color}"
+                    android:focusable="false"
+                    android:hint="4"
+                    android:imeOptions="actionDone"
+                    android:inputType="textPassword"
+                    android:paddingStart="@dimen/_10sdp"
+                    android:paddingEnd="@dimen/_40sdp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvMove" />
+
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvWifi"
+                    style="@style/TextView.SfMedium"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:text="@string/wi_fi"
+                    android:textColor="@color/black_24"
+                    android:textSize="@dimen/_12ssp"
+                    app:layout_constraintStart_toStartOf="@+id/etRoom"
+                    app:layout_constraintTop_toBottomOf="@+id/etMove" />
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/etWifi"
+                    style="@style/EditText"
+                    android:layout_marginHorizontal="@dimen/_12sdp"
+                    android:layout_marginTop="@dimen/_6sdp"
+                    android:background="@{wifiType.isEmpty()?@drawable/unselect_edit_text_bg_color:@drawable/select_edittext_bg_color}"
+                    android:focusable="false"
+                    android:hint="Yes"
+                    android:imeOptions="actionDone"
+                    android:inputType="textPassword"
+                    android:paddingStart="@dimen/_10sdp"
+                    android:paddingEnd="@dimen/_40sdp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvWifi" />
+
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/ivWifi"
+                    android:layout_width="@dimen/_27sdp"
+                    android:layout_height="@dimen/_27sdp"
+                    android:layout_marginEnd="@dimen/_14sdp"
+                    android:onClick="@{v->vm.onClick(v)}"
+                    android:padding="@dimen/_5sdp"
+                    android:src="@drawable/arrow_up"
+                    app:layout_constraintBottom_toBottomOf="@+id/etWifi"
+                    app:layout_constraintEnd_toEndOf="@+id/etWifi"
+                    app:layout_constraintTop_toTopOf="@+id/etWifi" />
+
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvElevator"
+                    style="@style/TextView.SfMedium"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:text="@string/elevator"
+                    android:textColor="@color/black_24"
+                    android:textSize="@dimen/_12ssp"
+                    app:layout_constraintStart_toStartOf="@+id/etRoom"
+                    app:layout_constraintTop_toBottomOf="@+id/etWifi" />
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/etElevator"
+                    style="@style/EditText"
+                    android:layout_marginHorizontal="@dimen/_12sdp"
+                    android:layout_marginTop="@dimen/_6sdp"
+                    android:background="@{elevatorType.isEmpty()?@drawable/unselect_edit_text_bg_color:@drawable/select_edittext_bg_color}"
+                    android:focusable="false"
+                    android:hint="4"
+                    android:imeOptions="actionDone"
+                    android:inputType="textPassword"
+                    android:paddingStart="@dimen/_10sdp"
+                    android:paddingEnd="@dimen/_40sdp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvElevator" />
+
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/ivElevator"
+                    android:layout_width="@dimen/_27sdp"
+                    android:layout_height="@dimen/_27sdp"
+                    android:layout_marginEnd="@dimen/_14sdp"
+                    android:onClick="@{v->vm.onClick(v)}"
+                    android:padding="@dimen/_5sdp"
+                    android:src="@drawable/arrow_up"
+                    app:layout_constraintBottom_toBottomOf="@+id/etElevator"
+                    app:layout_constraintEnd_toEndOf="@+id/etElevator"
+                    app:layout_constraintTop_toTopOf="@+id/etElevator" />
+
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvFurnished"
+                    style="@style/TextView.SfMedium"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:text="@string/furnished"
+                    android:textColor="@color/black_24"
+                    android:textSize="@dimen/_12ssp"
+                    app:layout_constraintStart_toStartOf="@+id/etRoom"
+                    app:layout_constraintTop_toBottomOf="@+id/etElevator" />
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/etFurnished"
+                    style="@style/EditText"
+                    android:layout_marginHorizontal="@dimen/_12sdp"
+                    android:layout_marginTop="@dimen/_6sdp"
+                    android:background="@{furnishedType.isEmpty()?@drawable/unselect_edit_text_bg_color:@drawable/select_edittext_bg_color}"
+                    android:focusable="false"
+                    android:hint="Fully Furnished"
+                    android:imeOptions="actionDone"
+                    android:inputType="textPassword"
+                    android:paddingStart="@dimen/_10sdp"
+                    android:paddingEnd="@dimen/_40sdp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvFurnished" />
+
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/ivFurnished"
+                    android:layout_width="@dimen/_27sdp"
+                    android:layout_height="@dimen/_27sdp"
+                    android:layout_marginEnd="@dimen/_14sdp"
+                    android:onClick="@{v->vm.onClick(v)}"
+                    android:padding="@dimen/_5sdp"
+                    android:src="@drawable/arrow_up"
+                    app:layout_constraintBottom_toBottomOf="@+id/etFurnished"
+                    app:layout_constraintEnd_toEndOf="@+id/etFurnished"
+                    app:layout_constraintTop_toTopOf="@+id/etFurnished" />
+
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvHeating"
+                    style="@style/TextView.SfMedium"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:text="@string/heating"
+                    android:textColor="@color/black_24"
+                    android:textSize="@dimen/_12ssp"
+                    app:layout_constraintStart_toStartOf="@+id/etRoom"
+                    app:layout_constraintTop_toBottomOf="@+id/etFurnished" />
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/etHeating"
+                    style="@style/EditText"
+                    android:layout_marginHorizontal="@dimen/_12sdp"
+                    android:layout_marginTop="@dimen/_6sdp"
+                    android:background="@{heatingType.isEmpty()?@drawable/unselect_edit_text_bg_color:@drawable/select_edittext_bg_color}"
+                    android:focusable="false"
+                    android:hint="4"
+                    android:imeOptions="actionDone"
+                    android:inputType="textPassword"
+                    android:paddingStart="@dimen/_10sdp"
+                    android:paddingEnd="@dimen/_40sdp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvHeating" />
+
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/ivHeating"
+                    android:layout_width="@dimen/_27sdp"
+                    android:layout_height="@dimen/_27sdp"
+                    android:layout_marginEnd="@dimen/_14sdp"
+                    android:onClick="@{v->vm.onClick(v)}"
+                    android:padding="@dimen/_5sdp"
+                    android:src="@drawable/arrow_up"
+                    app:layout_constraintBottom_toBottomOf="@+id/etWifi"
+                    app:layout_constraintEnd_toEndOf="@+id/etWifi"
+                    app:layout_constraintTop_toTopOf="@+id/etWifi" />
+
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvPets2"
+                    style="@style/TextView.SfMedium"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:text="@string/pets"
+                    android:textColor="@color/black_24"
+                    android:textSize="@dimen/_12ssp"
+                    app:layout_constraintStart_toStartOf="@+id/etRoom"
+                    app:layout_constraintTop_toBottomOf="@+id/etHeating" />
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/etPets2"
+                    style="@style/EditText"
+                    android:layout_marginHorizontal="@dimen/_12sdp"
+                    android:layout_marginTop="@dimen/_6sdp"
+                    android:background="@{petsSecondType.isEmpty()?@drawable/unselect_edit_text_bg_color:@drawable/select_edittext_bg_color}"
+                    android:focusable="false"
+                    android:hint="Yes"
+                    android:imeOptions="actionDone"
+                    android:inputType="textPassword"
+                    android:paddingStart="@dimen/_10sdp"
+                    android:paddingEnd="@dimen/_40sdp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvPets2" />
+
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/ivPets2"
+                    android:layout_width="@dimen/_27sdp"
+                    android:layout_height="@dimen/_27sdp"
+                    android:layout_marginEnd="@dimen/_14sdp"
+                    android:onClick="@{v->vm.onClick(v)}"
+                    android:padding="@dimen/_5sdp"
+                    android:src="@drawable/arrow_up"
+                    app:layout_constraintBottom_toBottomOf="@+id/etPets2"
+                    app:layout_constraintEnd_toEndOf="@+id/etPets2"
+                    app:layout_constraintTop_toTopOf="@+id/etPets2" />
+
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvLinkedAcc"
+                    style="@style/TextView.Semibold"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/_12sdp"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:includeFontPadding="false"
+                    android:text="@string/linked_accounts"
+                    android:textColor="@color/start_color"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/etPets2" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvInsta"
+                    style="@style/TextView.Regular"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:text="@string/instagram_link"
+                    android:textColor="@color/black_24"
+                    android:textSize="@dimen/_12ssp"
+                    app:layout_constraintStart_toStartOf="@+id/tvLinkedAcc"
+                    app:layout_constraintTop_toBottomOf="@+id/tvLinkedAcc" />
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/etInsta"
+                    style="@style/EditText"
+                    android:layout_marginHorizontal="@dimen/_12sdp"
+                    android:layout_marginTop="@dimen/_6sdp"
+                    android:background="@{linkType.isEmpty()?@drawable/unselect_edit_text_bg_color:@drawable/select_edittext_bg_color}"
+                    android:hint="@string/add_link"
+                    android:imeOptions="actionDone"
+                    android:inputType="textPersonName"
+                    android:paddingStart="@dimen/_10sdp"
+                    android:paddingEnd="@dimen/_40sdp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvInsta" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/btnContinue"
+                    style="@style/TextView.Medium"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/_40sdp"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:layout_marginBottom="@dimen/_10sdp"
+                    android:background="@drawable/btn_bg_color"
+                    android:onClick="@{v->vm.onClick(v)}"
+                    android:text="@string/edit"
+                    app:layout_constraintEnd_toEndOf="@+id/etInsta"
+                    app:layout_constraintStart_toStartOf="@+id/etInsta"
+                    app:layout_constraintTop_toBottomOf="@+id/etInsta" />
+
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    style="@style/TextView.Medium"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/_15sdp"
+                    android:layout_marginHorizontal="@dimen/_13sdp"
+                    android:background="@drawable/btn_bg_color"
+                    android:onClick="@{v->vm.onClick(v)}"
+                    android:text="@string/edit"
+                    android:visibility="invisible"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/btnContinue" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.core.widget.NestedScrollView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

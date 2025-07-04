@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="vm"
+            type="com.tech.hive.ui.for_room_mate.calenders.CalenderActivityVM" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:paddingBottom="@dimen/_16sdp"
+        tools:context=".ui.for_room_mate.calenders.CalenderActivity">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/clHeader"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/_80sdp"
+            android:background="@drawable/top_bg"
+            android:paddingHorizontal="@dimen/_15sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvTitle"
+                style="@style/TextView.SfBold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:text="Scheduled Visits/ Events"
+                android:textSize="@dimen/_14ssp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@id/ivBack"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/ivBack"
+                android:layout_width="@dimen/_16sdp"
+                android:layout_height="@dimen/_16sdp"
+                android:onClick="@{v->vm.onClick(v)}"
+                android:rotation="90"
+                android:src="@drawable/arrow_up"
+                app:layout_constraintBottom_toBottomOf="@id/tvTitle"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/tvTitle"
+                app:tint="@color/white" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+        <com.applandeo.materialcalendarview.CalendarView
+            android:id="@+id/rangeCalenderOneTime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/_12sdp"
+            app:abbreviationsLabelsColor="@color/black_24"
+            app:daysLabelsColor="@color/black_24"
+            app:headerColor="@color/white"
+            app:headerLabelColor="@color/white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/clHeader"
+            app:selectionColor="@color/selected_day_background"
+            app:selectionLabelColor="@color/selected_day_text"
+            app:todayLabelColor="@color/selected_day_text"
+            app:type="one_day_picker" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_100sdp"
+            android:background="@color/transparent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:onClick="@{v->vm.onClick(v)}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/rangeCalenderOneTime"/>
+
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/ivStart"
+            android:layout_width="@dimen/_16sdp"
+            android:layout_height="@dimen/_16sdp"
+            android:layout_marginStart="@dimen/_20sdp"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:onClick="@{v->vm.onClick(v)}"
+            android:rotation="90"
+            android:src="@drawable/arrow_up"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/clHeader"
+            app:tint="@color/black_24" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvMonth"
+            style="@style/TextView.PoppinsSemiBold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="@{v->vm.onClick(v)}"
+            android:text="January"
+            app:layout_constraintBottom_toBottomOf="@+id/ivStart"
+            app:layout_constraintStart_toEndOf="@id/ivStart"
+            app:layout_constraintTop_toTopOf="@+id/ivStart" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/ivEnd"
+            android:layout_width="@dimen/_16sdp"
+            android:layout_height="@dimen/_16sdp"
+            android:layout_marginStart="@dimen/_2sdp"
+            android:onClick="@{v->vm.onClick(v)}"
+            android:rotation="270"
+            android:src="@drawable/arrow_up"
+            app:layout_constraintBottom_toBottomOf="@+id/ivStart"
+            app:layout_constraintStart_toEndOf="@id/tvMonth"
+            app:layout_constraintTop_toTopOf="@+id/ivStart"
+            app:tint="@color/black_24" />
+
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/ivStart1"
+            android:layout_width="@dimen/_16sdp"
+            android:layout_height="@dimen/_16sdp"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:layout_marginEnd="@dimen/_20sdp"
+            android:onClick="@{v->vm.onClick(v)}"
+            android:rotation="270"
+            android:src="@drawable/arrow_up"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/clHeader"
+            app:tint="@color/black_24" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvYear"
+            style="@style/TextView.PoppinsSemiBold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="@{v->vm.onClick(v)}"
+            android:text="2022"
+            app:layout_constraintBottom_toBottomOf="@+id/ivStart1"
+            app:layout_constraintEnd_toStartOf="@id/ivStart1"
+            app:layout_constraintTop_toTopOf="@+id/ivStart1" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/ivEnd1"
+            android:layout_width="@dimen/_16sdp"
+            android:layout_height="@dimen/_16sdp"
+            android:rotation="90"
+            android:src="@drawable/arrow_up"
+            app:layout_constraintBottom_toBottomOf="@+id/ivStart1"
+            app:layout_constraintEnd_toStartOf="@id/tvYear"
+            app:layout_constraintTop_toTopOf="@+id/ivStart1"
+            app:tint="@color/black_24" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvEvents"
+            style="@style/TextView.Semibold"
+            android:layout_width="wrap_content"
+            android:layout_marginTop="@dimen/_16sdp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_16sdp"
+            android:textSize="@dimen/_14ssp"
+            android:onClick="@{v->vm.onClick(v)}"
+            android:textColor="@color/black_24"
+            android:text="Events on 15 Jan, Thursday:"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/rangeCalenderOneTime" />
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/radius_20"
+            android:paddingVertical="@dimen/_6sdp"
+            app:layout_constraintTop_toBottomOf="@+id/tvEvents"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginHorizontal="@dimen/_16sdp"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="@dimen/_5sdp">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvName1"
+                style="@style/TextView.Medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:textSize="@dimen/_11ssp"
+                android:onClick="@{v->vm.onClick(v)}"
+                android:textColor="@color/black_24"
+                android:text="Meeting with"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvName"
+                style="@style/TextView.Medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_3sdp"
+                android:textSize="@dimen/_11ssp"
+                android:onClick="@{v->vm.onClick(v)}"
+                android:textColor="@color/end_color"
+                android:text="Bonnie Rachael"
+                app:layout_constraintStart_toEndOf="@+id/tvName1"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvTime"
+                style="@style/TextView.Medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:textSize="@dimen/_10ssp"
+                android:onClick="@{v->vm.onClick(v)}"
+                android:textColor="@color/black"
+                android:text="05:00 PM"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="@+id/tvName"
+                app:layout_constraintTop_toTopOf="@+id/tvName" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvAddress"
+                style="@style/TextView.Medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/_10ssp"
+                android:onClick="@{v->vm.onClick(v)}"
+                android:textColor="@color/black_24"
+                android:text="Room in Andheri, New Delhi"
+                app:layout_constraintStart_toStartOf="@+id/tvName1"
+                app:layout_constraintTop_toBottomOf="@+id/tvName1" />
+
+
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/btnDone"
+            style="@style/TextView.Medium"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/_40sdp"
+            android:layout_marginHorizontal="@dimen/_16sdp"
+            android:background="@drawable/btn_bg_color"
+            android:onClick="@{v->vm.onClick(v)}"
+            android:text="@string/done"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

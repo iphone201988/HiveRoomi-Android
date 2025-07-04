@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="vm"
+            type="com.tech.hive.ui.for_room_mate.settings.SettingsVM" />
+        <import type="android.view.View"/>
+        <variable
+            name="isCheck"
+            type="Boolean" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/main"
+        android:layout_width="match_parent"
+        android:clipToPadding="false"
+        android:paddingBottom="@dimen/_16sdp"
+        android:layout_height="match_parent"
+        tools:context=".ui.forRoomMate.settingsScreen.CommunityActivity">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/clHeader"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/_80sdp"
+            android:background="@drawable/top_bg"
+            android:paddingHorizontal="@dimen/_15sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvTitle"
+                style="@style/TextView.SfBold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:text="@string/community_guidelines"
+                android:textSize="@dimen/_14ssp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@id/ivBack"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/ivBack"
+                android:layout_width="@dimen/_16sdp"
+                android:layout_height="@dimen/_16sdp"
+                android:onClick="@{v->vm.onClick(v)}"
+                android:rotation="90"
+                android:src="@drawable/arrow_up"
+                app:layout_constraintBottom_toBottomOf="@id/tvTitle"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/tvTitle"
+                app:tint="@color/white" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvHeading"
+            style="@style/TextView.Bold"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/_15sdp"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:text="@string/welcome_to_nour_community"
+            android:textColor="@color/heading_color"
+            android:textSize="@dimen/_23ssp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/clHeader" />
+
+        <TextView
+            android:id="@+id/tvSubHeading"
+            style="@style/TextView.Regular"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/_15sdp"
+            android:gravity="start"
+            android:text="@string/community_title"
+            android:textColor="@color/black_24"
+            android:textSize="@dimen/_10ssp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvHeading" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvCommunity"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="@dimen/_6sdp"
+            android:visibility="gone"
+            android:clipToPadding="false"
+            android:paddingBottom="@dimen/_30sdp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toTopOf="@id/ivCheck"
+            app:layout_constraintEnd_toEndOf="@id/tvSubHeading"
+            app:layout_constraintStart_toStartOf="@id/tvSubHeading"
+            app:layout_constraintTop_toBottomOf="@id/tvSubHeading"
+            tools:listitem="@layout/community_rv_item" />
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvPrivacy"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:clipToPadding="false"
+            android:paddingBottom="@dimen/_30sdp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toTopOf="@id/ivCheck"
+            app:layout_constraintEnd_toEndOf="@id/tvSubHeading"
+            app:layout_constraintStart_toStartOf="@id/tvSubHeading"
+            app:layout_constraintTop_toBottomOf="@id/tvSubHeading"
+            tools:listitem="@layout/privacy_policy_rv_item" />
+
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/ivCheck"
+            android:layout_width="@dimen/_27sdp"
+            android:layout_height="@dimen/_27sdp"
+            android:layout_marginEnd="@dimen/_6sdp"
+            android:onClick="@{v-> vm.onClick(v)}"
+            android:padding="@dimen/_5sdp"
+            android:rotation="270"
+            android:layout_marginBottom="@dimen/_20sdp"
+            android:src="@{isCheck?@drawable/selected_circle:@drawable/un_selected_circle}"
+            app:layout_constraintStart_toStartOf="@+id/btnGotIt"
+            app:layout_constraintBottom_toTopOf="@+id/btnGotIt" />
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvAnswer"
+            style="@style/TextView.Medium2"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/_38sdp"
+            android:gravity="center_vertical"
+            android:paddingStart="@dimen/_5sdp"
+            android:textSize="@dimen/_11ssp"
+            android:text="@string/i_have_read_and_agree_to_follow_the_privacy_policy"
+            app:layout_constraintEnd_toEndOf="@+id/rvCommunity"
+            app:layout_constraintStart_toEndOf="@+id/ivCheck"
+            app:layout_constraintTop_toTopOf="@+id/ivCheck" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/btnGotIt"
+            style="@style/TextView.Medium"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/_40sdp"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:background="@drawable/btn_bg_color"
+            android:onClick="@{v->vm.onClick(v)}"
+            android:text="@string/got_it"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/tvHeading"
+            app:layout_constraintStart_toStartOf="@+id/tvHeading" />
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

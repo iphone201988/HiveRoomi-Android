@@ -1,0 +1,335 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="vm"
+            type="com.tech.hive.ui.room_offering.basic_details.BasicDetailsVM" />
+
+        <variable
+            name="roommatesType"
+            type="String" />
+
+        <variable
+            name="smokingType"
+            type="String" />
+
+        <variable
+            name="petsType"
+            type="String" />
+        <variable
+            name="cleanType"
+            type="String" />
+
+        <variable
+            name="lookingType"
+            type="String" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.roomOffering.basicDetails.HouseholdLifestyleActivity">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/clHeader"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/_105sdp"
+            android:background="@drawable/top_bg"
+            android:paddingHorizontal="@dimen/_12sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/ivBack"
+                android:layout_width="@dimen/_35sdp"
+                android:layout_height="@dimen/_18sdp"
+                android:onClick="@{v->vm.onClick(v)}"
+                android:layout_marginTop="@dimen/_30sdp"
+                android:src="@drawable/ic_back_white"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tvTitle"
+                style="@style/TextView.Bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_6sdp"
+                android:text="@string/household_lifestyle"
+                android:textSize="@dimen/_22sdp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/ivBack" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvRoommates"
+            style="@style/TextView.Regular"
+            android:layout_marginHorizontal="@dimen/_12sdp"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:visibility="gone"
+            android:text="@string/roommates"
+            android:textColor="@color/black_24"
+            android:textSize="@dimen/_12ssp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/clHeader" />
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/etRoommates"
+            style="@style/EditText"
+            android:layout_marginHorizontal="@dimen/_12sdp"
+            android:layout_marginTop="@dimen/_6sdp"
+            android:background="@{roommatesType.isEmpty()?@drawable/unselect_edit_text_bg_color:@drawable/select_edittext_bg_color}"
+            android:focusable="false"
+            android:hint="1"
+            android:imeOptions="actionNext"
+            android:inputType="textPassword"
+            android:nextFocusForward="@+id/etConfirmPassword"
+            android:paddingStart="@dimen/_10sdp"
+            android:visibility="gone"
+            android:paddingEnd="@dimen/_40sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvRoommates" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/ivRoommates"
+            android:layout_width="@dimen/_27sdp"
+            android:layout_height="@dimen/_27sdp"
+            android:layout_marginEnd="@dimen/_14sdp"
+            android:onClick="@{v->vm.onClick(v)}"
+            android:padding="@dimen/_5sdp"
+            android:src="@drawable/arrow_up"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/etRoommates"
+            app:layout_constraintEnd_toEndOf="@+id/etRoommates"
+            app:layout_constraintTop_toTopOf="@+id/etRoommates" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvSmoking"
+            style="@style/TextView.Regular"
+            android:layout_marginHorizontal="@dimen/_12sdp"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:text="@string/smoking"
+            android:textColor="@color/black_24"
+            android:textSize="@dimen/_12ssp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/etRoommates" />
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/etSmoking"
+            style="@style/EditText"
+            android:layout_marginHorizontal="@dimen/_12sdp"
+            android:layout_marginTop="@dimen/_6sdp"
+            android:background="@{smokingType.isEmpty()?@drawable/unselect_edit_text_bg_color:@drawable/select_edittext_bg_color}"
+            android:focusable="false"
+            android:hint="Yes"
+            android:imeOptions="actionNext"
+            android:inputType="textPassword"
+            android:nextFocusForward="@+id/etConfirmPassword"
+            android:paddingStart="@dimen/_10sdp"
+            android:paddingEnd="@dimen/_40sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvSmoking" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/ivSmoking"
+            android:layout_width="@dimen/_27sdp"
+            android:layout_height="@dimen/_27sdp"
+            android:layout_marginEnd="@dimen/_14sdp"
+            android:onClick="@{v->vm.onClick(v)}"
+            android:padding="@dimen/_5sdp"
+            android:src="@drawable/arrow_up"
+            app:layout_constraintBottom_toBottomOf="@+id/etSmoking"
+            app:layout_constraintEnd_toEndOf="@+id/etSmoking"
+            app:layout_constraintTop_toTopOf="@+id/etSmoking" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvPets"
+            style="@style/TextView.Regular"
+            android:layout_marginHorizontal="@dimen/_12sdp"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:text="@string/pets"
+            android:textColor="@color/black_24"
+            android:textSize="@dimen/_12ssp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/etSmoking" />
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/etPets"
+            style="@style/EditText"
+            android:layout_marginHorizontal="@dimen/_12sdp"
+            android:layout_marginTop="@dimen/_6sdp"
+            android:background="@{petsType.isEmpty()?@drawable/unselect_edit_text_bg_color:@drawable/select_edittext_bg_color}"
+            android:focusable="false"
+            android:hint="Yes"
+            android:imeOptions="actionNext"
+            android:inputType="textPassword"
+            android:nextFocusForward="@+id/etConfirmPassword"
+            android:paddingStart="@dimen/_10sdp"
+            android:paddingEnd="@dimen/_40sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvPets" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/ivPets"
+            android:layout_width="@dimen/_27sdp"
+            android:layout_height="@dimen/_27sdp"
+            android:layout_marginEnd="@dimen/_14sdp"
+            android:onClick="@{v->vm.onClick(v)}"
+            android:padding="@dimen/_5sdp"
+            android:src="@drawable/arrow_up"
+            app:layout_constraintBottom_toBottomOf="@+id/etPets"
+            app:layout_constraintEnd_toEndOf="@+id/etPets"
+            app:layout_constraintTop_toTopOf="@+id/etPets" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvClean"
+            style="@style/TextView.Regular"
+            android:layout_marginHorizontal="@dimen/_12sdp"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:text="@string/cleanliness"
+            android:textColor="@color/black_24"
+            android:textSize="@dimen/_12ssp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/etPets" />
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/etClean"
+            style="@style/EditText"
+            android:layout_marginHorizontal="@dimen/_12sdp"
+            android:layout_marginTop="@dimen/_6sdp"
+            android:background="@{cleanType.isEmpty()?@drawable/unselect_edit_text_bg_color:@drawable/select_edittext_bg_color}"
+            android:focusable="false"
+            android:hint="Yes"
+            android:imeOptions="actionNext"
+            android:inputType="textPassword"
+            android:nextFocusForward="@+id/etConfirmPassword"
+            android:paddingStart="@dimen/_10sdp"
+            android:paddingEnd="@dimen/_40sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvClean" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/ivClean"
+            android:layout_width="@dimen/_27sdp"
+            android:layout_height="@dimen/_27sdp"
+            android:layout_marginEnd="@dimen/_14sdp"
+            android:onClick="@{v->vm.onClick(v)}"
+            android:padding="@dimen/_5sdp"
+            android:src="@drawable/arrow_up"
+            app:layout_constraintBottom_toBottomOf="@+id/etClean"
+            app:layout_constraintEnd_toEndOf="@+id/etClean"
+            app:layout_constraintTop_toTopOf="@+id/etClean" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvLooking"
+            style="@style/TextView.Regular"
+            android:layout_marginHorizontal="@dimen/_12sdp"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:text="@string/looking_for"
+            android:textColor="@color/black_24"
+            android:textSize="@dimen/_12ssp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/etClean" />
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/etLooking"
+            style="@style/EditText"
+            android:layout_marginHorizontal="@dimen/_12sdp"
+            android:layout_marginTop="@dimen/_6sdp"
+            android:background="@{lookingType.isEmpty()?@drawable/unselect_edit_text_bg_color:@drawable/select_edittext_bg_color}"
+            android:focusable="false"
+            android:hint="Workers"
+            android:imeOptions="actionNext"
+            android:inputType="textPassword"
+            android:nextFocusForward="@+id/etConfirmPassword"
+            android:paddingStart="@dimen/_10sdp"
+            android:paddingEnd="@dimen/_40sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvLooking" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/ivLooking"
+            android:layout_width="@dimen/_27sdp"
+            android:layout_height="@dimen/_27sdp"
+            android:layout_marginEnd="@dimen/_14sdp"
+            android:onClick="@{v->vm.onClick(v)}"
+            android:padding="@dimen/_5sdp"
+            android:src="@drawable/arrow_up"
+            app:layout_constraintBottom_toBottomOf="@+id/etLooking"
+            app:layout_constraintEnd_toEndOf="@+id/etLooking"
+            app:layout_constraintTop_toTopOf="@+id/etLooking" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvLooking"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_6sdp"
+            android:layout_marginHorizontal="@dimen/_12sdp"
+            android:orientation="horizontal"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintTop_toBottomOf="@id/etLooking"
+            tools:listitem="@layout/features_item_view" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/clBoost"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/_30sdp"
+            android:layout_marginBottom="@dimen/_20sdp"
+            android:background="@drawable/btn_bg_color"
+            android:onClick="@{v->vm.onClick(v)}"
+            app:layout_constraintBottom_toTopOf="@id/btnContinue"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+            <ImageView
+                android:id="@+id/ivBoost"
+                android:layout_width="@dimen/_14sdp"
+                android:layout_height="@dimen/_14sdp"
+                android:src="@drawable/ic_boost"
+                android:scaleType="centerCrop"
+                android:layout_marginStart="@dimen/_10sdp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/btnBoost"
+                app:layout_constraintStart_toStartOf="parent" />
+            
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/btnBoost"
+            style="@style/TextView.Medium"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/_30sdp"
+            android:paddingHorizontal="@dimen/_10sdp"
+            android:text="@string/boost_the_post"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/ivBoost"
+         />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/btnContinue"
+            style="@style/TextView.Medium"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/_40sdp"
+            android:layout_marginHorizontal="@dimen/_15sdp"
+            android:layout_marginBottom="@dimen/_20sdp"
+            android:background="@drawable/btn_bg_color"
+            android:onClick="@{v->vm.onClick(v)}"
+            android:text="@string/create"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

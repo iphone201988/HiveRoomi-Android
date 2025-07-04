@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/auth_navigation">
+
+    <action
+        android:id="@+id/navigateToLanguageFragment"
+        app:destination="@id/fragmentLanguage" />
+
+    <action
+        android:id="@+id/navigateToOnBoardingFragment"
+        app:destination="@id/fragmentOnBoarding" />
+
+    <action
+        android:id="@+id/navigateToLoginFragment"
+        app:destination="@id/fragmentLogin" />
+
+    <action
+        android:id="@+id/navigateToSignUpFragment"
+        app:destination="@id/fragmentSignup" />
+
+    <action
+        android:id="@+id/navigateToVerifyFragment"
+        app:destination="@id/fragmentVerify" />
+    <action
+        android:id="@+id/navigateToPersonalFragment"
+        app:destination="@id/fragmentPersonal" />
+    <action
+        android:id="@+id/navigateToAccountCreatedSuccessfulFragment"
+        app:destination="@id/fragmentAccountCreatedSuccessful" />
+    <action
+        android:id="@+id/navigateToChangePasswordFragment"
+        app:destination="@id/fragmentChangePassword" />
+
+
+    <action
+        android:id="@+id/navigateToChangePasswordVerifyFragment"
+        app:destination="@id/fragmentChangePasswordVerify" />
+
+    <action
+        android:id="@+id/navigateToSetupNewPasswordFragment"
+        app:destination="@id/fragmentSetupNewPassword" />
+    <action
+        android:id="@+id/navigateToProviderTypeFragment"
+        app:destination="@id/fragmentProviderType" />
+    <action
+        android:id="@+id/navigateToUploadPhotoFragment"
+        app:destination="@id/fragmentUploadPhoto" />
+    <action
+        android:id="@+id/navigateToRegulationsFragment"
+        app:destination="@id/fragmentRegulations" />
+
+    <fragment
+        android:id="@+id/fragmentLanguage"
+        android:name="com.tech.hive.ui.auth.languages.LanguageFragment"
+        tools:layout="@layout/fragment_language" />
+    <fragment
+        android:id="@+id/fragmentOnBoarding"
+        android:name="com.tech.hive.ui.auth.boarding_type.OnBoardingTypeFragment"
+        tools:layout="@layout/fragment_on_boarding_type" />
+
+    <fragment
+        android:id="@+id/fragmentLogin"
+        android:name="com.tech.hive.ui.auth.login.LoginFragment"
+        tools:layout="@layout/fragment_login" />
+
+    <fragment
+        android:id="@+id/fragmentSignup"
+        android:name="com.tech.hive.ui.auth.signup.SignupFragment"
+        tools:layout="@layout/fragment_signup" />
+
+    <fragment
+        android:id="@+id/fragmentVerify"
+        android:name="com.tech.hive.ui.auth.verify_account.VerifyAccountFragment"
+        tools:layout="@layout/fragment_verify_account" />
+
+    <fragment
+        android:id="@+id/fragmentPersonal"
+        android:name="com.tech.hive.ui.auth.personal_information.PersonalFragment"
+        tools:layout="@layout/fragment_personal" />
+
+    <fragment
+        android:id="@+id/fragmentAccountCreatedSuccessful"
+        android:name="com.tech.hive.ui.auth.successful.AccountCreatedSuccessfulFragment"
+        tools:layout="@layout/fragment_account_created_successful" />
+
+
+    <fragment
+        android:id="@+id/fragmentChangePassword"
+        android:name="com.tech.hive.ui.auth.change_password.ChangePasswordFragment"
+        tools:layout="@layout/fragment_change_password" />
+
+
+    <fragment
+        android:id="@+id/fragmentChangePasswordVerify"
+        android:name="com.tech.hive.ui.auth.change_password.ChangePasswordVerifyFragment"
+        tools:layout="@layout/fragment_change_password_verify" />
+
+    <fragment
+        android:id="@+id/fragmentSetupNewPassword"
+        android:name="com.tech.hive.ui.auth.change_password.SetUpNewPasswordFragment"
+        tools:layout="@layout/fragment_set_up_new_password" />
+
+    <fragment
+        android:id="@+id/fragmentProviderType"
+        android:name="com.tech.hive.ui.auth.personal_information.provider.ProviderTypeFragment"
+        tools:layout="@layout/fragment_provider_type" />
+
+    <fragment
+        android:id="@+id/fragmentUploadPhoto"
+        android:name="com.tech.hive.ui.auth.personal_information.upload_photo.UploadPhotoFragment"
+        tools:layout="@layout/fragment_upload_photo" />
+    <fragment
+        android:id="@+id/fragmentRegulations"
+        android:name="com.tech.hive.ui.auth.regulations.RegulationsFragment"
+        tools:layout="@layout/fragment_regulations" />
+
+</navigation>

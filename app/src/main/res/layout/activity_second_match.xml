@@ -1,0 +1,477 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="vm"
+            type="com.tech.hive.ui.for_room_mate.home.HomeFragmentVM" />
+
+        <variable
+            name="secondMatchType"
+            type="Integer" />
+
+
+        <import type="android.view.View" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        tools:context=".ui.forRoomMate.home.second.SecondMatchActivity">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/clHeader"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/_100sdp"
+            android:background="@drawable/top_bg"
+            android:paddingHorizontal="@dimen/_15sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/tvTitle"
+                style="@style/TextView.SfBold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_15sdp"
+                android:layout_marginTop="@dimen/_30sdp"
+                android:text="@string/elena_salvatore"
+                android:textSize="@dimen/_16ssp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/ivCheck"
+                android:layout_width="@dimen/_18sdp"
+                android:layout_height="@dimen/_18sdp"
+                android:layout_marginEnd="@dimen/_3sdp"
+                android:src="@drawable/ic_check_mark"
+                app:layout_constraintEnd_toStartOf="@id/tvTitle"
+                app:layout_constraintTop_toTopOf="@id/ivBack"
+                app:tint="@color/white" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/ivBack"
+                android:layout_width="@dimen/_18sdp"
+                android:layout_height="@dimen/_18sdp"
+                android:onClick="@{v->vm.onClick(v)}"
+                android:rotation="90"
+                android:src="@drawable/arrow_up"
+                app:layout_constraintBottom_toBottomOf="@id/tvTitle"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/tvTitle"
+                app:tint="@color/white" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="-50dp"
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:clipToPadding="false"
+            android:paddingBottom="@dimen/_20sdp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/clHeader">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginHorizontal="@dimen/_12sdp">
+
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/ivImage"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_300sdp"
+                    android:layout_marginHorizontal="@dimen/_9sdp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_match_dummy"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:shapeAppearance="@style/Shape10" />
+
+
+                <View
+                    android:id="@+id/reverse"
+                    android:layout_width="0dp"
+                    app:layout_constraintStart_toStartOf="@+id/ivImage"
+                    app:layout_constraintTop_toTopOf="@+id/ivImage"
+                    android:onClick="@{v->vm.onClick(v)}"
+                    android:layout_marginVertical="@dimen/_40sdp"
+                    app:layout_constraintEnd_toStartOf="@+id/skip"
+                    app:layout_constraintBottom_toBottomOf="@+id/ivImage"
+                    android:layout_height="0dp"
+                    />
+
+                <View
+                    android:id="@+id/skip"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_marginVertical="@dimen/_40sdp"
+                    app:layout_constraintEnd_toEndOf="@+id/ivImage"
+                    app:layout_constraintStart_toEndOf="@+id/reverse"
+                    android:onClick="@{v->vm.onClick(v)}"
+                    app:layout_constraintTop_toTopOf="@+id/ivImage"
+                    app:layout_constraintBottom_toBottomOf="@+id/ivImage"
+                    />
+
+                <com.tech.hive.ui.for_room_mate.home.second.storiesprogressview.StoriesProgressView
+                    android:id="@+id/storiesProgressView"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/ivImage"
+                    app:layout_constraintEnd_toEndOf="@+id/ivImage"
+                    android:layout_width="0dp"
+                    android:layout_margin="@dimen/_12sdp"
+                    android:layout_height="@dimen/_14sdp"
+                    android:layout_marginTop="@dimen/_12sdp" />
+
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/clVideo"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_60sdp"
+                    android:layout_marginHorizontal="@dimen/_5sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:background="@drawable/gradiant_strock"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/ivImage">
+
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/ivVideo"
+                        android:layout_width="@dimen/_20sdp"
+                        android:layout_height="@dimen/_20sdp"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:src="@drawable/iv_video"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tvAccount"
+                        style="@style/TextView.Semibold"
+                        android:layout_marginTop="@dimen/_4sdp"
+                        android:text="@string/watch_video_tour"
+                        android:textColor="@color/start_color"
+                        android:textSize="@dimen/_11ssp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/ivVideo" />
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvField"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:orientation="vertical"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/clVideo"
+                    tools:itemCount="2"
+                    tools:listitem="@layout/rv_field_item" />
+
+
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/flMap"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/unselect_desc_bg"
+                    android:clipToOutline="true"
+                    app:cardCornerRadius="@dimen/_9sdp"
+                    android:layout_marginTop="@dimen/_2sdp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/rvField">
+                    <fragment
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_120sdp"
+                        android:id="@+id/map"
+                        android:name="com.google.android.gms.maps.SupportMapFragment"/>
+                    <View
+                        android:id="@+id/map_touch_overlay"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_120sdp"
+                        android:background="@android:color/transparent" />
+
+                </androidx.cardview.widget.CardView>
+
+
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvSecondField"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:orientation="vertical"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/flMap"
+                    tools:itemCount="2"
+                    tools:listitem="@layout/rv_field_second_item" />
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/etContact"
+                    style="@style/EditText"
+                    android:layout_marginTop="@dimen/_6sdp"
+                    android:background="@drawable/bg_chat_corner_radius_10"
+                    android:hint="@string/contact_landlord"
+                    android:imeOptions="actionNext"
+                    android:nextFocusForward="@+id/etVisit"
+                    android:paddingStart="@dimen/_14sdp"
+                    android:paddingEnd="@dimen/_16sdp"
+                    android:textColor="@color/et_hint_color"
+                    android:textColorHint="@color/et_hint_color"
+                    app:layout_constraintEnd_toEndOf="@+id/clVideo"
+                    app:layout_constraintStart_toStartOf="@+id/clVideo"
+                    app:layout_constraintTop_toBottomOf="@+id/rvSecondField" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="@dimen/_27sdp"
+                    android:layout_height="@dimen/_27sdp"
+                    android:layout_marginEnd="@dimen/_8sdp"
+                    android:onClick="@{v->vm.onClick(v)}"
+                    android:padding="@dimen/_5sdp"
+                    android:src="@drawable/iv_phone"
+                    app:layout_constraintBottom_toBottomOf="@+id/etContact"
+                    app:layout_constraintEnd_toEndOf="@+id/etContact"
+                    app:layout_constraintTop_toTopOf="@+id/etContact"
+                    app:tint="@color/et_hint_color" />
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/etVisit"
+                    style="@style/EditText"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:background="@drawable/bg_chat_corner_radius_10"
+                    android:hint="@string/schedule_visit"
+                    android:imeOptions="actionNext"
+                    android:nextFocusForward="@+id/etVideo"
+                    android:paddingStart="@dimen/_14sdp"
+                    android:paddingEnd="@dimen/_16sdp"
+                    android:textColor="@color/et_hint_color"
+                    android:textColorHint="@color/et_hint_color"
+                    app:layout_constraintEnd_toEndOf="@+id/clVideo"
+                    app:layout_constraintStart_toStartOf="@+id/clVideo"
+                    app:layout_constraintTop_toBottomOf="@+id/etContact" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="@dimen/_27sdp"
+                    android:layout_height="@dimen/_27sdp"
+                    android:layout_marginEnd="@dimen/_8sdp"
+                    android:onClick="@{v->vm.onClick(v)}"
+                    android:padding="@dimen/_5sdp"
+                    android:src="@drawable/ic_calendar"
+                    app:layout_constraintBottom_toBottomOf="@+id/etVisit"
+                    app:layout_constraintEnd_toEndOf="@+id/etVisit"
+                    app:layout_constraintTop_toTopOf="@+id/etVisit"
+                    app:tint="@color/et_hint_color" />
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/etVideo"
+                    style="@style/EditText"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:background="@drawable/bg_chat_corner_radius_10"
+                    android:hint="@string/start_video_tour"
+                    android:imeOptions="actionDone"
+                    android:paddingStart="@dimen/_14sdp"
+                    android:paddingEnd="@dimen/_16sdp"
+                    android:textColor="@color/et_hint_color"
+                    android:textColorHint="@color/et_hint_color"
+                    app:layout_constraintEnd_toEndOf="@+id/clVideo"
+                    app:layout_constraintStart_toStartOf="@+id/clVideo"
+                    app:layout_constraintTop_toBottomOf="@+id/etVisit" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="@dimen/_27sdp"
+                    android:layout_height="@dimen/_27sdp"
+                    android:layout_marginEnd="@dimen/_8sdp"
+                    android:onClick="@{v->vm.onClick(v)}"
+                    android:padding="@dimen/_5sdp"
+                    android:src="@drawable/iv_video"
+                    app:layout_constraintBottom_toBottomOf="@+id/etVideo"
+                    app:layout_constraintEnd_toEndOf="@+id/etVideo"
+                    app:layout_constraintTop_toTopOf="@+id/etVideo"
+                    app:tint="@color/et_hint_color" />
+
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/clAfterMatch"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/_38sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:background="@drawable/btn_bg_color"
+                    android:visibility="@{secondMatchType==2?View.VISIBLE:View.GONE}"
+                    app:layout_constraintEnd_toEndOf="@+id/etVideo"
+                    app:layout_constraintStart_toStartOf="@+id/etVideo"
+                    app:layout_constraintTop_toBottomOf="@+id/etVideo">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/ivLike"
+                        android:layout_width="@dimen/_22sdp"
+                        android:layout_height="@dimen/_22sdp"
+                        android:layout_marginStart="@dimen/_12sdp"
+                        android:src="@drawable/ic_heart"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/tvLike"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/tvLike"
+                        style="@style/TextView.SfMedium"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/like"
+                        app:layout_constraintBottom_toBottomOf="@id/ivLike"
+                        app:layout_constraintEnd_toStartOf="@id/view1"
+                        app:layout_constraintStart_toEndOf="@id/ivLike"
+                        app:layout_constraintTop_toTopOf="@id/ivLike" />
+
+                    <View
+                        android:id="@+id/view1"
+                        android:layout_width="@dimen/_1sdp"
+                        android:layout_height="match_parent"
+                        android:layout_marginHorizontal="@dimen/_10sdp"
+                        android:background="@color/white"
+                        app:layout_constraintEnd_toStartOf="@id/ivChat"
+                        app:layout_constraintStart_toEndOf="@id/tvLike" />
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/ivChat"
+                        android:layout_width="@dimen/_22sdp"
+                        android:layout_height="@dimen/_22sdp"
+                        android:src="@drawable/ic_message_selected"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/tvChat"
+                        app:layout_constraintStart_toEndOf="@id/view1"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:tint="@color/white" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tvChat"
+                        style="@style/TextView.SfMedium"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/chat"
+                        app:layout_constraintBottom_toBottomOf="@id/ivLike"
+                        app:layout_constraintEnd_toStartOf="@id/view2"
+                        app:layout_constraintStart_toEndOf="@id/ivChat"
+                        app:layout_constraintTop_toTopOf="@id/ivLike" />
+
+                    <View
+                        android:id="@+id/view2"
+                        android:layout_width="@dimen/_1sdp"
+                        android:layout_height="match_parent"
+                        android:layout_marginHorizontal="@dimen/_12sdp"
+                        android:background="@color/white"
+                        app:layout_constraintEnd_toStartOf="@id/ivReport"
+                        app:layout_constraintStart_toEndOf="@id/tvChat" />
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/ivReport"
+                        android:layout_width="@dimen/_22sdp"
+                        android:layout_height="@dimen/_22sdp"
+                        android:src="@drawable/ic_report"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/tvReport"
+                        app:layout_constraintStart_toEndOf="@id/view2"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tvReport"
+                        style="@style/TextView.SfMedium"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/_12sdp"
+                        android:text="@string/report"
+                        app:layout_constraintBottom_toBottomOf="@id/ivLike"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/ivLike" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/clBeforeMatch"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/_38sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:background="@drawable/btn_bg_color"
+                    android:visibility="@{secondMatchType==1?View.VISIBLE:View.GONE}"
+                    app:layout_constraintEnd_toEndOf="@+id/etVideo"
+                    app:layout_constraintStart_toStartOf="@+id/etVideo"
+                    app:layout_constraintTop_toBottomOf="@+id/etVideo">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/ivLikeBefore"
+                        android:layout_width="@dimen/_22sdp"
+                        android:layout_height="@dimen/_22sdp"
+                        android:layout_marginEnd="@dimen/_5sdp"
+                        android:src="@drawable/ic_heart"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/tvLikeBefore"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tvLikeBefore"
+                        style="@style/TextView.SfMedium"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_40sdp"
+                        android:text="@string/like"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/view1Before"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <View
+                        android:id="@+id/view1Before"
+                        android:layout_width="@dimen/_1sdp"
+                        android:layout_height="match_parent"
+                        android:layout_marginHorizontal="@dimen/_10sdp"
+                        android:background="@color/white"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent" />
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/ivReportBefore"
+                        android:layout_width="@dimen/_22sdp"
+                        android:layout_height="@dimen/_22sdp"
+                        android:layout_marginEnd="@dimen/_40sdp"
+                        android:src="@drawable/ic_report"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/view1Before"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tvReportBefore"
+                        style="@style/TextView.SfMedium"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_5sdp"
+                        android:layout_marginEnd="@dimen/_12sdp"
+                        android:text="@string/report"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/ivReportBefore"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.core.widget.NestedScrollView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

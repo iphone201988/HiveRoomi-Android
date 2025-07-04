@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#0274B0</color>
+    <color name="purple_700">#0274B0</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="black">#FF000000</color>
+    <color name="black_24">#242424</color>
+    <color name="grey">#475569</color>
+    <color name="text_light">#8B8B8F</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="yellow">#DDA625</color>
+    <color name="select_et_bg_color">#FFF3F7</color>
+    <color name="unselect_et_bg_color">#F2F2F3</color>
+    <color name="et_corner_color">#E3E3E7</color>
+    <color name="bg_text">#cce3ef</color>
+    <color name="et_hint_color">#7D7F88</color>
+    <color name="colorPrimary">#0274B0</color>
+    <color name="colorPrimaryDark">#0274B0</color>
+    <color name="colorAccent">#882AA6</color>
+    <color name="start_color">#21023D</color>
+    <color name="start_color2">#D621023D</color>
+    <color name="end_color">#882AA6</color>
+    <color name="edit_back_color">#F3F0FF</color>
+    <color name="transparent">#00FFFFFF</color>
+    <color name="background">#dddddd</color>
+    <color name="blue">#1877F2</color>
+    <color name="border_color">#EEEEEE</color>
+    <color name="google_border_color">#E2E8F0</color>
+    <color name="text_color_grey">#595959</color>
+    <color name="message_color">#ACB4BE</color>
+    <color name="plan_selected_color">#F3EAF6</color>
+    <color name="heading_color">#3C294D</color>
+    <color name="example_3_blue_light">#D2E3FC</color>
+    <color name="example_3_black">#D9000000</color>
+    <color name="example_D9D9D9">#D9D9D9</color>
+
+    // calender
+    <color name="selected_day_background">#ebd3eb</color>
+    <color name="selected_day_text">#882AA6</color>
+    <color name="orange">#ff8400</color>
+
+    <color name="green">#4CAF50</color>
+    <color name="red">#D41111</color>
+
+
+
+</resources>
