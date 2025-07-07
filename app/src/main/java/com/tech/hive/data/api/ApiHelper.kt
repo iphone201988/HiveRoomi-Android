@@ -1,6 +1,7 @@
 package com.tech.hive.data.api
 
 import com.google.gson.JsonObject
+import com.tech.hive.data.model.AnswerSendResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Response
@@ -18,11 +19,18 @@ interface ApiHelper {
         request: HashMap<String, Any>
     ): Response<JsonObject>
 
+
+    suspend fun apiPostForQuiz(
+        lang: String,
+        url: String,
+        request: AnswerSendResponse
+    ): Response<JsonObject>
+
     suspend fun apiForFormData(data: HashMap<String, Any>, url: String): Response<JsonObject>
     suspend fun apiForFormDataPut(data: HashMap<String, Any>, url: String): Response<JsonObject>
     suspend fun apiGetOutWithQuery(url: String): Response<JsonObject>
-    suspend fun apiGetOnlyAuthToken(url: String): Response<JsonObject>
-    suspend fun apiGetWithQuery(data: HashMap<String, String>, url: String): Response<JsonObject>
+    suspend fun apiGetOnlyAuthToken(lang: String,url: String): Response<JsonObject>
+    suspend fun apiGetWithQuery(lang: String,data: HashMap<String, String>, url: String): Response<JsonObject>
     suspend fun apiForPostMultipart(
         url: String,
         map: HashMap<String, RequestBody>,
@@ -48,6 +56,7 @@ interface ApiHelper {
     ): Response<JsonObject>
 
     suspend fun apiForFormDataPutWithToken3(
+        lang: String,
         url: String, map: HashMap<String, RequestBody>, userPic: MultipartBody.Part?,
         idPic: MultipartBody.Part?,
         ownershipPic: MultipartBody.Part?,

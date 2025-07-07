@@ -117,3 +117,135 @@ data class Location(
     val coordinates: List<Double?>?,
     val type: String?
 )
+/*** quiz question response ***/
+data class QuizQuestionResponse(
+    val `data`: List<QuestionData?>?,
+    val message: String?,
+    val success: Boolean?
+)
+
+data class QuestionData(
+    val _id: String?,
+    val description: String?,
+    val quiz: List<Quiz?>?,
+    val sort: Int?,
+    val title: String?
+)
+
+data class Quiz(
+    val group: String?,
+    val groupValue: List<GroupValue?>?
+)
+
+data class GroupValue(
+    val _id: String?,
+    val answer: Any?,
+    val options: List<Option?>?,
+    val quizPosition: Int?,
+    val title: String?,
+    val type: String?,
+    var selectedAnswer : Boolean =false
+)
+
+data class Option(
+    val label: String?,
+    val value: String?
+)
+
+/** quiz answer model **/
+data class QuizAnswerResponse(
+    val `data`: QuizAnswerData?,
+    val message: String?,
+    val success: Boolean?
+)
+
+data class QuizAnswerData(
+    val _id: String?,
+    val ageRange: String?,
+    val bio: String?,
+    val email: String?,
+    val gender: String?,
+    val instagram: String?,
+    val isProfileComplete: Boolean?,
+    val isQuizComplete: Boolean?,
+    val isVerified: Boolean?,
+    val language: String?,
+    val linkedin: String?,
+    val name: String?,
+    val profession: String?,
+    val profileImage: String?,
+    val profileRole: Int?,
+    val timezone: String?,
+    val token: String?,
+    val totalQuizDone: Int?
+)
+/** home api model **/
+data class HomeApiResponse(
+    val `data`: List<HomeApiData?>?,
+    val message: String?,
+    val pagination: Pagination?,
+    val success: Boolean?
+)
+
+data class HomeApiData(
+    val _id: String?,
+    val ageRange: String?,
+    val bio: String?,
+    val campus: String?,
+    val email: String?,
+    val gender: String?,
+    val name: String?,
+    val profession: String?,
+    val profileImage: String?,
+    val profileRole: Int?,
+    val providerType: String?,
+    val quizs: List<HomeApiDataQuiz?>?,
+    val timezone: String?
+
+
+
+)
+
+data class Pagination(
+    val limit: Int?,
+    val page: Int?,
+    val total: Int?
+)
+
+data class HomeApiDataQuiz(
+    val answer: String?,
+    val title: String?
+)
+
+/** second type home api model **/
+data class HomeRoomType(
+    val `data`: List<HomeRoomTData?>?,
+    val message: String?,
+    val pagination: Pagination?,
+    val success: Boolean?
+)
+
+data class HomeRoomTData(
+    val _id: String?,
+    val address: String?,
+    val description: String?,
+    val images: List<String?>?,
+    val latitude: Double?,
+    val longitude: Double?,
+    val pets: Boolean?,
+    val price: Int?,
+    val roomType: String?,
+    val roommates: List<Roommate?>?,
+    val smoke: String?,
+    val title: String?,
+    val userId: String?,
+    val videos: List<Any?>?
+)
+
+
+
+data class Roommate(
+    val _id: String?,
+    val age: Int?,
+    val gender: String?
+)

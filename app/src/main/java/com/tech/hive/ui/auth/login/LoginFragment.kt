@@ -403,7 +403,8 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
                                                 R.id.navigateToVerifyFragment,
                                                 bundle
                                             )
-                                        } else {
+                                        }
+                                        else {
                                             if (myDataModel.data.isProfileComplete == false) {
                                                 if (myDataModel.data.profileRole == 3) {
                                                     BindingUtils.navigateWithSlide(

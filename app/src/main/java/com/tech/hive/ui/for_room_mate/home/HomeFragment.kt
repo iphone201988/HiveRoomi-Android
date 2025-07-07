@@ -2,6 +2,7 @@ package com.tech.hive.ui.for_room_mate.home
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.view.animation.AccelerateInterpolator
@@ -14,9 +15,14 @@ import com.tech.hive.R
 import com.tech.hive.base.BaseFragment
 import com.tech.hive.base.BaseViewModel
 import com.tech.hive.base.SimpleRecyclerViewAdapter
+import com.tech.hive.base.utils.BindingUtils
+import com.tech.hive.base.utils.Status
 import com.tech.hive.data.api.Constants
+import com.tech.hive.data.model.CommonResponse
 import com.tech.hive.data.model.DiscoverModel
+import com.tech.hive.data.model.HomeApiResponse
 import com.tech.hive.data.model.HomeFilterList
+import com.tech.hive.data.model.HomeRoomType
 import com.tech.hive.data.model.ThirdTypeModel
 import com.tech.hive.databinding.FragmentHomeBinding
 import com.tech.hive.databinding.RvDiscoverItemBinding
@@ -32,7 +38,6 @@ import com.tech.hive.ui.for_room_mate.home.cardstackview.StackFrom
 import com.tech.hive.ui.for_room_mate.home.cardstackview.SwipeAnimationSetting
 import com.tech.hive.ui.for_room_mate.home.cardstackview.SwipeableMethod
 import com.tech.hive.ui.for_room_mate.home.sample.CardStackAdapter
-import com.tech.hive.ui.for_room_mate.home.sample.Spot
 import com.tech.hive.ui.for_room_mate.home.sample.SpotDiffCallback
 import com.tech.hive.ui.notification.NotificationActivity
 import com.tech.hive.ui.room_offering.basic_details.BasicDetailsActivity
@@ -47,13 +52,14 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), CardStackListener {
     private lateinit var homeAdapter: SimpleRecyclerViewAdapter<DiscoverModel, RvDiscoverItemBinding>
     private lateinit var homeThirdAdapter: SimpleRecyclerViewAdapter<ThirdTypeModel, ThirdUserRvItemBinding>
     private lateinit var homeThirdFilterAdapter: SimpleRecyclerViewAdapter<HomeFilterList, RvHomeFilterItemBinding>
-
-    private val cardAdapter by lazy { CardStackAdapter(createSpots(), requireContext()) }
+    var createSpots = ArrayList<CardItem>()
+    private val cardAdapter by lazy { CardStackAdapter(createSpots, requireContext()) }
     private val manager by lazy {
         CardStackLayoutManager(
             requireActivity(), this
         )
     }
+    private var scrollType = ""
 
 
     override fun getLayoutResource(): Int {
@@ -65,8 +71,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), CardStackListener {
     }
 
     override fun onCreateView(view: View) {
-        // card stack view
-        initialize()
+
         // view
         initView()
         // click
@@ -75,6 +80,17 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), CardStackListener {
         binding.buttonClick = 1
         binding.check = Constants.userType
 
+        when (Constants.userType) {
+            1 -> {
+                // api call
+                viewModel.getHomeApi(Constants.MATCH_LOOKING_ROOMMATE)
+            }
+
+            2 -> {
+                // api call
+                viewModel.getHomeApiListening(Constants.MATCH_LOOKING_LISTING)
+            }
+        }
     }
 
 
@@ -295,16 +311,19 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), CardStackListener {
                 }
                 // btn roommate click
                 R.id.clRoommate -> {
+                    scrollType = ""
                     binding.check = 1
                     binding.userType = 1
                     Constants.userType = 1
+                    viewModel.getHomeApi(Constants.MATCH_LOOKING_ROOMMATE)
                 }
                 // btn home click
                 R.id.clHome -> {
+                    scrollType = ""
                     binding.check = 2
                     binding.userType = 2
                     binding.buttonClick = 1
-                    Constants.userType = 2
+                    viewModel.getHomeApiListening(Constants.MATCH_LOOKING_LISTING)
                 }
             }
         }
@@ -369,8 +388,78 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), CardStackListener {
 
     /** handle api response **/
     private fun initObserver() {
-        viewModel.homeObserver.observe(viewLifecycleOwner) {
+        viewModel.observeCommon.observe(viewLifecycleOwner) {
+            when (it?.status) {
+                Status.LOADING -> {
+                    showLoading()
+                }
 
+                Status.SUCCESS -> {
+                    when (it.message) {
+                        "getHomeApi" -> {
+                            try {
+                                val myDataModel: HomeApiResponse? =
+                                    BindingUtils.parseJson(it.data.toString())
+                                if (myDataModel?.data != null) {
+                                    createSpots.clear()
+                                    myDataModel.data.filterNotNull().forEach { user ->
+                                        createSpots.add(CardItem.HomeRoom(user))
+                                    }
+                                    initialize()
+                                }
+                            } catch (e: Exception) {
+                                Log.e("error", "getHomeApi: $e")
+                            } finally {
+                                hideLoading()
+                            }
+                        }
+
+                        "getHomeApiListening" -> {
+                            try {
+                                val myDataModel: HomeRoomType? =
+                                    BindingUtils.parseJson(it.data.toString())
+                                if (myDataModel?.data != null) {
+                                    createSpots.clear()
+                                    myDataModel.data.filterNotNull().forEach { room ->
+                                        createSpots.add(CardItem.RoomListing(room))
+                                    }
+                                    initialize()
+                                }
+                            } catch (e: Exception) {
+                                Log.e("error", "getHomeApiListening: $e")
+                            } finally {
+                                hideLoading()
+                            }
+                        }
+
+                        "likeDisLike" -> {
+                            try {
+                                val myDataModel: CommonResponse? =
+                                    BindingUtils.parseJson(it.data.toString())
+                                if (myDataModel != null) {
+
+
+                                }
+
+                            } catch (e: Exception) {
+                                Log.e("error", "likeDisLike: $e")
+                            } finally {
+                                hideLoading()
+                            }
+                        }
+
+                    }
+                }
+
+                Status.ERROR -> {
+                    hideLoading()
+                    showErrorToast(it.message.toString())
+                }
+
+                else -> {
+
+                }
+            }
         }
 
     }
@@ -389,8 +478,45 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), CardStackListener {
     override fun onCardDragging(direction: Direction?, ratio: Float) {
     }
 
+//    override fun onCardSwiped(direction: Direction?) {
+//        Log.d("dgfgfgdff", "onCardSwiped: ")
+//        when (direction) {
+//            Direction.Left -> {
+//                scrollType = "left"
+//            }
+//
+//            Direction.Right -> {
+//                scrollType = "right"
+//            }
+//
+//            else -> {}
+//        }
+//
+//    }
+
     override fun onCardSwiped(direction: Direction?) {
+        val position = manager.topPosition - 1
+        if (position >= 0 && position < cardAdapter.getItems().size) {
+            val currentItem = cardAdapter.getItems()[position]
+
+            val id = when (currentItem) {
+                is CardItem.HomeRoom -> currentItem.user._id
+                is CardItem.RoomListing -> currentItem.room._id
+            } ?: ""
+
+            val data = hashMapOf<String, Any>(
+                "id" to id,
+                "action" to if (direction == Direction.Left) "dislike" else "like",
+                "type" to if (Constants.userType == 1) "user" else "listing"
+            )
+
+            Log.d("SwipeDebug", "Calling API with data: $data")
+            viewModel.likeDisLike(Constants.MATCH_LIKE, data)
+        } else {
+            Log.e("SwipeDebug", "Invalid position: $position")
+        }
     }
+
 
     override fun onCardRewound() {
     }
@@ -399,10 +525,35 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), CardStackListener {
     }
 
     override fun onCardAppeared(view: View?, position: Int) {
+        Log.d("dgfgfgdff", "onCardAppeared: ")
+        val currentItem = cardAdapter.getItems()[position]
+
+        val id = when (currentItem) {
+            is CardItem.HomeRoom -> currentItem.user._id
+            is CardItem.RoomListing -> currentItem.room._id
+        } ?: ""
+
+        val data = HashMap<String, Any>()
+        data["id"] = id
+
+        when (scrollType) {
+            "left" -> {
+                data["action"] = "dislike"
+                data["type"] = if (Constants.userType == 1) "user" else "listing"
+                viewModel.likeDisLike(Constants.MATCH_LIKE, data)
+            }
+
+            "right" -> {
+                data["action"] = "like"
+                data["type"] = if (Constants.userType == 1) "user" else "listing"
+                viewModel.likeDisLike(Constants.MATCH_LIKE, data)
+            }
+        }
     }
 
-    override fun onCardDisappeared(view: View?, position: Int) {
 
+    override fun onCardDisappeared(view: View?, position: Int) {
+        Log.d("dgfgfgdff", "onCardDisappeared: ")
     }
 
 
@@ -453,233 +604,111 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), CardStackListener {
     }
 
     private fun paginate() {
-        val old = cardAdapter.getSpots()
-        val new = old.plus(createSpots())
+        val old = cardAdapter.getItems()
+        val new = old + createSpots // Safer way of plus()
         val callback = SpotDiffCallback(old, new)
         val result = DiffUtil.calculateDiff(callback)
-        cardAdapter.setSpots(new)
+        cardAdapter.setItems(new)
         result.dispatchUpdatesTo(cardAdapter)
     }
 
     private fun reload() {
-        val old = cardAdapter.getSpots()
-        val new = createSpots()
+        val old = cardAdapter.getItems()
+        val new = createSpots
         val callback = SpotDiffCallback(old, new)
         val result = DiffUtil.calculateDiff(callback)
-        cardAdapter.setSpots(new)
+        cardAdapter.setItems(new)
         result.dispatchUpdatesTo(cardAdapter)
     }
 
-    private fun addFirst(size: Int) {
-        val old = cardAdapter.getSpots()
-        val new = mutableListOf<Spot>().apply {
-            addAll(old)
-            for (i in 0 until size) {
-                add(manager.topPosition, createSpot())
-            }
-        }
-        val callback = SpotDiffCallback(old, new)
-        val result = DiffUtil.calculateDiff(callback)
-        cardAdapter.setSpots(new)
-        result.dispatchUpdatesTo(cardAdapter)
-    }
-
-    private fun addLast(size: Int) {
-        val old = cardAdapter.getSpots()
-        val new = mutableListOf<Spot>().apply {
-            addAll(old)
-            addAll(List(size) { createSpot() })
-        }
-        val callback = SpotDiffCallback(old, new)
-        val result = DiffUtil.calculateDiff(callback)
-        cardAdapter.setSpots(new)
-        result.dispatchUpdatesTo(cardAdapter)
-    }
+//
+//    private fun addFirst(size: Int) {
+//        val old = cardAdapter.getSpots()
+//        val new = mutableListOf<HomeApiData>().apply {
+//            addAll(old)
+//            for (i in 0 until size) {
+//                add(manager.topPosition, createSpots)
+//            }
+//        }
+//        val callback = SpotDiffCallback(old, new)
+//        val result = DiffUtil.calculateDiff(callback)
+//        cardAdapter.setSpots(new)
+//        result.dispatchUpdatesTo(cardAdapter)
+//    }
+//
+//    private fun addLast(size: Int) {
+//        val old = cardAdapter.getSpots()
+//        val new = mutableListOf<HomeApiData>().apply {
+//            addAll(old)
+//            addAll(List(size) { createSpots})
+//        }
+//        val callback = SpotDiffCallback(old, new)
+//        val result = DiffUtil.calculateDiff(callback)
+//        cardAdapter.setSpots(new)
+//        result.dispatchUpdatesTo(cardAdapter)
+//    }
 
     private fun removeFirst(size: Int) {
-        if (cardAdapter.getSpots().isEmpty()) {
-            return
-        }
+        val old = cardAdapter.getItems()
+        if (old.isEmpty()) return
 
-        val old = cardAdapter.getSpots()
-        val new = mutableListOf<Spot>().apply {
-            addAll(old)
-            for (i in 0 until size) {
-                removeAt(manager.topPosition)
+        val new = old.toMutableList().apply {
+            repeat(size.coerceAtMost(this.size)) {
+                removeAt(manager.topPosition.coerceAtMost(lastIndex))
             }
         }
+
         val callback = SpotDiffCallback(old, new)
         val result = DiffUtil.calculateDiff(callback)
-        cardAdapter.setSpots(new)
+        cardAdapter.setItems(new)
         result.dispatchUpdatesTo(cardAdapter)
     }
 
     private fun removeLast(size: Int) {
-        if (cardAdapter.getSpots().isEmpty()) {
-            return
-        }
+        val old = cardAdapter.getItems()
+        if (old.isEmpty()) return
 
-        val old = cardAdapter.getSpots()
-        val new = mutableListOf<Spot>().apply {
-            addAll(old)
-            for (i in 0 until size) {
+        val new = old.toMutableList().apply {
+            repeat(size.coerceAtMost(this.size)) {
                 removeAt(this.size - 1)
             }
         }
+
         val callback = SpotDiffCallback(old, new)
         val result = DiffUtil.calculateDiff(callback)
-        cardAdapter.setSpots(new)
+        cardAdapter.setItems(new)
         result.dispatchUpdatesTo(cardAdapter)
     }
 
-    private fun replace() {
-        val old = cardAdapter.getSpots()
-        val new = mutableListOf<Spot>().apply {
-            addAll(old)
-            removeAt(manager.topPosition)
-            add(manager.topPosition, createSpot())
-        }
-        cardAdapter.setSpots(new)
-        cardAdapter.notifyItemChanged(manager.topPosition)
-    }
+
+//    private fun replace() {
+//        val old = cardAdapter.getSpots()
+//        val new = mutableListOf<HomeApiData>().apply {
+//            addAll(old)
+//            removeAt(manager.topPosition)
+//            add(manager.topPosition, createSpots)
+//        }
+//        cardAdapter.setSpots(new)
+//        cardAdapter.notifyItemChanged(manager.topPosition)
+//    }
 
     private fun swap() {
-        val old = cardAdapter.getSpots()
-        val new = mutableListOf<Spot>().apply {
-            addAll(old)
-            val first = removeAt(manager.topPosition)
-            val last = removeAt(this.size - 1)
-            add(manager.topPosition, last)
-            add(first)
+        val old = cardAdapter.getItems()
+        if (old.size < 2) return  // Nothing to swap if less than 2 items
+
+        val new = old.toMutableList().apply {
+            val firstIndex = manager.topPosition.coerceAtMost(lastIndex)
+            val first = removeAt(firstIndex)
+            val last = removeAt(lastIndex)
+            add(firstIndex, last)
+            add(first) // Add first item at the end
         }
+
         val callback = SpotDiffCallback(old, new)
         val result = DiffUtil.calculateDiff(callback)
-        cardAdapter.setSpots(new)
+        cardAdapter.setItems(new)
         result.dispatchUpdatesTo(cardAdapter)
     }
 
-    private fun createSpot(): Spot {
-        return Spot(
-            name = "Chris Salvatore, 25",
-            profession = "Software Engineer",
-            money = "$300-800",
-            parties = "No Parties on weekend",
-            url = R.drawable.card_image
-        )
-    }
-
-    private fun createSpots(): List<Spot> {
-        val spots = java.util.ArrayList<Spot>()
-        spots.add(
-            Spot(
-                name = "Chris Salvatore, 25",
-                profession = "Software Engineer",
-                money = "$300-800",
-                parties = "Kyoto",
-                url = R.drawable.card_image
-            )
-        )
-        spots.add(
-            Spot(
-                name = "Chris Salvatore, 25",
-                profession = "Software Engineer",
-                money = "$300-800",
-                parties = "No Parties on weekend",
-                url = R.drawable.card_image
-            )
-        )
-        spots.add(
-            Spot(
-                name = "Chris Salvatore, 25",
-                profession = "Software Engineer",
-                money = "$300-800",
-                parties = "Kyoto",
-                url = R.drawable.card_image
-            )
-        )
-        spots.add(
-            Spot(
-                name = "Chris Salvatore, 25",
-                profession = "Software Engineer",
-                money = "$300-800",
-                parties = "No Parties on weekend",
-                url = R.drawable.card_image
-            )
-        )
-        spots.add(
-            Spot(
-                name = "Chris Salvatore, 25",
-                profession = "Software Engineer",
-                money = "$300-800",
-                parties = "Kyoto",
-                url = R.drawable.card_image
-            )
-        )
-        spots.add(
-            Spot(
-                name = "Chris Salvatore, 25",
-                profession = "Software Engineer",
-                money = "$300-800",
-                parties = "No Parties on weekend",
-                url = R.drawable.card_image
-            )
-        )
-        spots.add(
-            Spot(
-                name = "Chris Salvatore, 25",
-                profession = "Software Engineer",
-                money = "$300-800",
-                parties = "Kyoto",
-                url = R.drawable.card_image
-            )
-        )
-        spots.add(
-            Spot(
-                name = "Chris Salvatore, 25",
-                profession = "Software Engineer",
-                money = "$300-800",
-                parties = "No Parties on weekend",
-                url = R.drawable.card_image
-            )
-        )
-        spots.add(
-            Spot(
-                name = "Chris Salvatore, 25",
-                profession = "Software Engineer",
-                money = "$300-800",
-                parties = "Kyoto",
-                url = R.drawable.card_image
-            )
-        )
-        spots.add(
-            Spot(
-                name = "Chris Salvatore, 25",
-                profession = "Software Engineer",
-                money = "$300-800",
-                parties = "No Parties on weekend",
-                url = R.drawable.card_image
-            )
-        )
-        spots.add(
-            Spot(
-                name = "Chris Salvatore, 25",
-                profession = "Software Engineer",
-                money = "$300-800",
-                parties = "Kyoto",
-                url = R.drawable.card_image
-            )
-        )
-        spots.add(
-            Spot(
-                name = "Chris Salvatore, 25",
-                profession = "Software Engineer",
-                money = "$300-800",
-                parties = "No Parties on weekend",
-                url = R.drawable.card_image
-            )
-        )
-
-        return spots
-    }
 
 }

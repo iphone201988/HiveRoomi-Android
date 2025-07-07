@@ -21,7 +21,7 @@
             android:id="@+id/tvSelectLanguage"
             style="@style/TextView.PoppinsBold"
             android:layout_marginTop="@dimen/_140sdp"
-            android:text="@string/lifestyle_ncompatibility_quiz"
+            android:text="@string/find_your_perfect_nroommate"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

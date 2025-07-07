@@ -4,7 +4,9 @@ import android.Manifest
 import android.content.Context
 import android.content.Intent
 import android.location.Location
+import android.os.Bundle
 import androidx.activity.viewModels
+import androidx.navigation.fragment.findNavController
 import com.tech.hive.R
 import com.tech.hive.base.BaseActivity
 import com.tech.hive.base.BaseViewModel
@@ -13,8 +15,11 @@ import com.tech.hive.base.location.LocationResultListener
 import com.tech.hive.base.permission.PermissionHandler
 import com.tech.hive.base.permission.Permissions
 import com.tech.hive.base.utils.BindingUtils
+import com.tech.hive.data.api.Constants
 import com.tech.hive.databinding.ActivityMySplashBinding
 import com.tech.hive.ui.auth.AuthActivity
+import com.tech.hive.ui.dashboard.DashboardActivity
+import com.tech.hive.ui.quiz.QuizActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -34,9 +39,26 @@ class MySplashActivity : BaseActivity<ActivityMySplashBinding>(), LocationResult
     }
 
     override fun onCreateView() {
+        var userdata = sharedPrefManager.getLoginData()
+        if (userdata!=null){
+            when {
+                userdata.profileRole==1 -> {
+                    Constants.userType = 1
+                }
+                userdata.profileRole==2 -> {
+                    Constants.userType = 2
+                }
+                userdata.profileRole==3 -> {
+                    Constants.userType = 3
+                }
+            }
+            val intent = Intent(this@MySplashActivity, AuthActivity::class.java)
+            startActivity(intent)
+        }
         // set status bar color
         BindingUtils.statusBarStyle(this@MySplashActivity)
         BindingUtils.statusBarTextColor(this@MySplashActivity, false)
+
         // click
         initClick()
         CoroutineScope(Dispatchers.Main).launch {
@@ -44,6 +66,7 @@ class MySplashActivity : BaseActivity<ActivityMySplashBinding>(), LocationResult
             // check location
             checkLocation()
         }
+
 
     }
 

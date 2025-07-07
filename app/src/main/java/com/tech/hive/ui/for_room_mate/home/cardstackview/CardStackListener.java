@@ -23,5 +23,6 @@ public interface CardStackListener {
         public void onCardAppeared(View view, int position) {}
         @Override
         public void onCardDisappeared(View view, int position) {}
+
     };
 }

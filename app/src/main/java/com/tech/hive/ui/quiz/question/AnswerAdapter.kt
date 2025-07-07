@@ -11,6 +11,7 @@ import androidx.appcompat.widget.AppCompatTextView
 import androidx.recyclerview.widget.RecyclerView
 import com.tech.hive.R
 import com.tech.hive.data.model.Answer
+import kotlin.toString
 
 
 class AnswerAdapter(
@@ -25,7 +26,7 @@ class AnswerAdapter(
         private val ivFirstQuiz = itemView.findViewById<AppCompatImageView>(R.id.ivFirstQuiz)
 
         fun bind(answer: Answer, position: Int) {
-            tvAnswer.text = answer.answer
+            tvAnswer.text = answer.label
             if (answer.selectedAnswer) {
                 ivFirstQuiz.setImageResource(R.drawable.selected_circle)
                 etEmail.setBackgroundResource(R.drawable.select_edittext_bg_color)
@@ -58,6 +59,7 @@ class AnswerAdapter(
 
                 override fun afterTextChanged(s: Editable?) {
                     if (s?.isNotEmpty() == true) {
+                        answers[position].value = s.toString()
                         etEmail.setBackgroundResource(R.drawable.select_edittext_bg_color)
                         answer.selectedAnswer = true
                     } else {

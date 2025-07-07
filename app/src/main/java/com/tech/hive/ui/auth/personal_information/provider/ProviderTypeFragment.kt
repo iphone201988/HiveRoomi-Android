@@ -75,7 +75,7 @@ class ProviderTypeFragment : BaseFragment<FragmentProviderTypeBinding>() {
         providerTypeAdapter = SimpleRecyclerViewAdapter(R.layout.rv_type_provider_item, BR.bean) { v, m, pos ->
             when (v.id) {
                 R.id.clProviderType -> {
-                    selectType =  m.answer
+                    selectType =  m.label
                     providerTypeAdapter.list.forEachIndexed { index, answer ->
                         answer.selectedAnswer = index == pos
                     }
@@ -92,11 +92,11 @@ class ProviderTypeFragment : BaseFragment<FragmentProviderTypeBinding>() {
     // question List
     private fun getAnswerList(): ArrayList<Answer> {
         val list = ArrayList<Answer>()
-        list.add(Answer(1, "Landlord"))
-        list.add(Answer(1, "Tenant Subletting"))
-        list.add(Answer(1, "Real Estate Agency"))
-        list.add(Answer(1, "Property Owner"))
-        list.add(Answer(1, "Current Tenant Leaving The Room"))
+        list.add(Answer(1, "Landlord","fsfs"))
+        list.add(Answer(1, "Tenant Subletting","fsfs"))
+        list.add(Answer(1, "Real Estate Agency","fsfs"))
+        list.add(Answer(1, "Property Owner","fsfs"))
+        list.add(Answer(1, "Current Tenant Leaving The Room","fsfs"))
         return list
     }
 

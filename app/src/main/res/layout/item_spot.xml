@@ -65,6 +65,7 @@
             android:layout_marginTop="@dimen/_25sdp"
             android:background="@drawable/btn_bg_color"
             android:paddingHorizontal="@dimen/_16sdp"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">

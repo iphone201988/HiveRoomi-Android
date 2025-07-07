@@ -1,6 +1,7 @@
 package com.tech.hive.data.api
 
 import com.google.gson.JsonObject
+import com.tech.hive.data.model.AnswerSendResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Response
@@ -35,6 +36,15 @@ interface ApiService {
         @Header("Authorization") token: String,
         @Url url: String,
         @Body data: HashMap<String, Any>
+    ): Response<JsonObject>
+
+
+    @POST
+    suspend fun apiPostForQuiz(
+        @Header("Accept-Language") lang: String,
+        @Header("Authorization") token: String,
+        @Url url: String,
+        @Body data: AnswerSendResponse
     ): Response<JsonObject>
 
     @PUT
@@ -76,6 +86,7 @@ interface ApiService {
     @JvmSuppressWildcards
     @PUT
     suspend fun apiForFormDataPutWithToken3(
+        @Header("Accept-Language") lang: String,
         @Url url: String,
         @PartMap data: Map<String, @JvmSuppressWildcards RequestBody>,
         @Part userPic: MultipartBody.Part?,
@@ -89,13 +100,18 @@ interface ApiService {
 
     @GET
     suspend fun apiGetOnlyAuthToken(
-        @Url url: String, @Header("Authorization") token: String
+        @Header("Accept-Language") lang: String,
+        @Url url: String,
+        @Header("Authorization") token: String
     ): Response<JsonObject>
 
 
     @GET
     suspend fun apiGetWithQuery(
-        @Url url: String, @QueryMap data: HashMap<String, String>
+        @Header("Accept-Language") lang: String,
+        @Header("Authorization") token: String,
+        @Url url: String,
+        @QueryMap data: HashMap<String, String>
     ): Response<JsonObject>
 
 

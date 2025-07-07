@@ -1,6 +1,7 @@
 package com.tech.hive.ui.for_room_mate.matches
 
 import android.content.Intent
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.viewModels
 import com.tech.hive.BR
@@ -8,12 +9,18 @@ import com.tech.hive.R
 import com.tech.hive.base.BaseFragment
 import com.tech.hive.base.BaseViewModel
 import com.tech.hive.base.SimpleRecyclerViewAdapter
+import com.tech.hive.base.utils.BindingUtils
+import com.tech.hive.base.utils.Status
 import com.tech.hive.base.utils.showToast
 import com.tech.hive.data.api.Constants
+import com.tech.hive.data.model.CommonResponse
+import com.tech.hive.data.model.HomeApiResponse
+import com.tech.hive.data.model.HomeRoomType
 import com.tech.hive.data.model.MatchesModel
 import com.tech.hive.databinding.FragmentMatchesBinding
 import com.tech.hive.databinding.MatchesItemViewBinding
 import com.tech.hive.ui.for_room_mate.filters.FilterActivity
+import com.tech.hive.ui.for_room_mate.home.CardItem
 import com.tech.hive.ui.for_room_mate.home.MatchedProfileActivity
 import com.tech.hive.ui.for_room_mate.home.second.SecondMatchActivity
 import com.tech.hive.ui.room_offering.discover.DiscoverySettingsActivity
@@ -33,6 +40,16 @@ class MatchesFragment : BaseFragment<FragmentMatchesBinding>() {
         // check
         binding.check = 1
         binding.visibilityHandel = Constants.userType
+
+        if (Constants.userType == 1){
+            val data = HashMap<String, String>()
+            data["type"] = "user"
+            viewModel.getMatchApi(Constants.GET_MATCH,data)
+        }else if (Constants.userType == 2){
+            val data = HashMap<String, String>()
+            data["type"] = "listing"
+            viewModel.getMatchApi(Constants.GET_MATCH,data)
+        }
     }
 
     override fun getLayoutResource(): Int {
@@ -70,9 +87,15 @@ class MatchesFragment : BaseFragment<FragmentMatchesBinding>() {
                 // friends click
                 R.id.tvFriend -> {
                     binding.check = 1
+                    val data = HashMap<String, String>()
+                    data["type"] = "user"
+                    viewModel.getMatchApi(Constants.GET_MATCH,data)
                 }
                 // request click
                 R.id.tvRequest -> {
+                    val data = HashMap<String, String>()
+                    data["type"] = "user"
+                    viewModel.getMatchPendingApi(Constants.MATCH_PENDING_LIKE,data)
                     binding.check = 2
                 }
             }
@@ -83,7 +106,55 @@ class MatchesFragment : BaseFragment<FragmentMatchesBinding>() {
     /** handle api response **/
     private fun initObserver() {
         viewModel.matchObserver.observe(viewLifecycleOwner) {
+            when (it?.status) {
+                Status.LOADING -> {
+                    showLoading()
+                }
 
+                Status.SUCCESS -> {
+                    when (it.message) {
+                        "getMatchApi" -> {
+                            try {
+                                val myDataModel: HomeApiResponse? =
+                                    BindingUtils.parseJson(it.data.toString())
+                                if (myDataModel?.data != null) {
+
+                                }
+                            } catch (e: Exception) {
+                                Log.e("error", "getHomeApi: $e")
+                            } finally {
+                                hideLoading()
+                            }
+                        }
+
+                        "getMatchPendingApi" -> {
+                            try {
+                                val myDataModel: HomeApiResponse? =
+                                    BindingUtils.parseJson(it.data.toString())
+                                if (myDataModel?.data != null) {
+
+                                }
+                            } catch (e: Exception) {
+                                Log.e("error", "getHomeApi: $e")
+                            } finally {
+                                hideLoading()
+                            }
+                        }
+
+
+
+                    }
+                }
+
+                Status.ERROR -> {
+                    hideLoading()
+                    showErrorToast(it.message.toString())
+                }
+
+                else -> {
+
+                }
+            }
         }
 
     }

@@ -4,7 +4,7 @@ package com.tech.hive.data.api
 object Constants {
 
     const val BASE_URL = "http://13.51.228.96:8111/api/v1/"
-    const val BASE_URL_IMAGE = "http://69.49.232.235/job_app/api/"
+    const val BASE_URL_IMAGE = "http://13.51.228.96:8111"
     const val GOOGLE_API_KEY = "AIzaSyD5Jt2e9ocVmXovnsOsdmtdhPRkP8m9IhQ"
 
     var userType = 0
@@ -17,6 +17,18 @@ object Constants {
     const val VERIFY_OTP = "user/verify-otp"
     const val RESEND_OTP = "user/send-otp"
     const val USER_ME = "user/me"
+    const val GET_QUIZ = "quiz/get_quiz"
+    const val QUIZ_ANSWER = "quiz/user_quiz_answer"
+    const val MATCH_LOOKING_ROOMMATE = "match/looking-roommate"
+    const val MATCH_USER_ID = "match/user/:userId"
+    const val MATCH_LIKE = "match/like-dislike"
+    const val MATCH_PENDING_LIKE = "match/pending-like"
+    const val MATCH_ACCEPT_REJECT = "match/accept-Reject"
+    const val GET_MATCH = "match/all"
+    const val MATCH_LOOKING_LISTING = "match/looking-for-listing"
+    const val MATCH_LISTING = "match/listing"
+
+
     const val LOGOUT = "/api/user/logoutUser"
     const val ACTIVITIES = "/api/user/getMyActivities"
     const val UPDATE_USER_DATA = "/api/user/updateUserData"

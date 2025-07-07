@@ -2,21 +2,18 @@ package com.tech.hive.data.api
 
 import com.google.gson.JsonObject
 import com.tech.hive.base.local.SharedPrefManager
+import com.tech.hive.data.model.AnswerSendResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Response
-import retrofit2.http.Part
 import javax.inject.Inject
 
 class ApiHelperImpl @Inject constructor(
-    private val apiService: ApiService,
-    private val sharedPreferences: SharedPrefManager
+    private val apiService: ApiService, private val sharedPreferences: SharedPrefManager
 ) : ApiHelper {
 
     override suspend fun apiForRawBody(
-        lang: String,
-        request: HashMap<String, Any>,
-        url: String
+        lang: String, request: HashMap<String, Any>, url: String
     ): Response<JsonObject> {
         return apiService.apiForRawBody(lang, request, url)
     }
@@ -26,12 +23,19 @@ class ApiHelperImpl @Inject constructor(
         url: String,
         request: HashMap<String, Any>,
     ): Response<JsonObject> {
-        return apiService.apiPostForRawBody(lang,getTokenFromSPref(), url, request)
+        return apiService.apiPostForRawBody(lang, getTokenFromSPref(), url, request)
+    }
+
+    override suspend fun apiPostForQuiz(
+        lang: String,
+        url: String,
+        request: AnswerSendResponse,
+    ): Response<JsonObject> {
+        return apiService.apiPostForQuiz(lang, getTokenFromSPref(), url, request)
     }
 
     override suspend fun apiForFormData(
-        data: HashMap<String, Any>,
-        url: String
+        data: HashMap<String, Any>, url: String
     ): Response<JsonObject> {
         return apiService.apiForFormData(data, url)
     }
@@ -46,15 +50,14 @@ class ApiHelperImpl @Inject constructor(
         return apiService.apiGetOutWithQuery(url)
     }
 
-    override suspend fun apiGetOnlyAuthToken(url: String): Response<JsonObject> {
-        return apiService.apiGetOnlyAuthToken(url, getTokenFromSPref())
+    override suspend fun apiGetOnlyAuthToken(   lang: String,url: String): Response<JsonObject> {
+        return apiService.apiGetOnlyAuthToken(lang,url, getTokenFromSPref())
     }
 
     override suspend fun apiGetWithQuery(
-        data: HashMap<String, String>,
-        url: String
+        lang: String,data: HashMap<String, String>, url: String
     ): Response<JsonObject> {
-        return apiService.apiGetWithQuery(url, data)
+        return apiService.apiGetWithQuery(lang,getTokenFromSPref(),url, data)
     }
 
     override suspend fun apiForPostMultipart(
@@ -89,21 +92,28 @@ class ApiHelperImpl @Inject constructor(
         url: String,
         map: HashMap<String, RequestBody>,
         userPic: MultipartBody.Part?,
-    ):Response<JsonObject> {
-        return apiService.apiForFormDataPutWithToken(url,map,userPic,getTokenFromSPref())
+    ): Response<JsonObject> {
+        return apiService.apiForFormDataPutWithToken(url, map, userPic, getTokenFromSPref())
     }
 
     override suspend fun apiForFormDataPutWithToken3(
+        lang: String,
         url: String,
         map: HashMap<String, RequestBody>,
         userPic: MultipartBody.Part?,
-         idPic: MultipartBody.Part?,
-         ownershipPic: MultipartBody.Part?,
-    ):Response<JsonObject> {
-        return apiService.apiForFormDataPutWithToken3(url,map,userPic,idPic,ownershipPic,getTokenFromSPref())
+        idPic: MultipartBody.Part?,
+        ownershipPic: MultipartBody.Part?,
+    ): Response<JsonObject> {
+        return apiService.apiForFormDataPutWithToken3(
+            lang,
+            url,
+            map,
+            userPic,
+            idPic,
+            ownershipPic,
+            getTokenFromSPref()
+        )
     }
-
-
 
 
     private fun getTokenFromSPref(): String {

@@ -15,7 +15,8 @@ import okhttp3.RequestBody
 import javax.inject.Inject
 
 @HiltViewModel
-class UploadPhotoFragmentVM @Inject constructor(private val apiHelper: ApiHelper) : BaseViewModel() {
+class UploadPhotoFragmentVM @Inject constructor(private val apiHelper: ApiHelper) :
+    BaseViewModel() {
 
 
     val observeCommon = SingleRequestEvent<JsonObject>()
@@ -27,24 +28,28 @@ class UploadPhotoFragmentVM @Inject constructor(private val apiHelper: ApiHelper
         userPic: MultipartBody.Part?,
         idPic: MultipartBody.Part?,
         ownershipPic: MultipartBody.Part?,
-        ) {
+    ) {
         CoroutineScope(Dispatchers.IO).launch {
             observeCommon.postValue(Resource.loading(null))
             try {
-                val response =
-                    apiHelper.apiForFormDataPutWithToken3(Constants.USER_ME, data, userPic,idPic,ownershipPic)
+                val response = apiHelper.apiForFormDataPutWithToken3(
+                    Constants.userLanguage,
+                    Constants.USER_ME,
+                    data,
+                    userPic,
+                    idPic,
+                    ownershipPic
+                )
                 if (response.isSuccessful && response.body() != null) {
                     observeCommon.postValue(
                         Resource.success(
-                            "userPersonalInformation",
-                            response.body()
+                            "userPersonalInformation", response.body()
                         )
                     )
                 } else {
                     observeCommon.postValue(
                         Resource.error(
-                            handleErrorResponse(response.errorBody(), response.code()),
-                            null
+                            handleErrorResponse(response.errorBody(), response.code()), null
                         )
                     )
                 }

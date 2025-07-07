@@ -82,6 +82,7 @@ class SettingsActivity : BaseActivity<ActivitySettingsBinding>() {
                     }
 
                     R.id.tvLogout -> {
+                        sharedPrefManager.clear()
                         logoutDeleteDialog?.dismiss()
                         val intent = Intent(this@SettingsActivity, AuthActivity::class.java)
                         intent.flags =

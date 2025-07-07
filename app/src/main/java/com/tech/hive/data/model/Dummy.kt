@@ -1,5 +1,7 @@
 package com.tech.hive.data.model
 
+import android.R
+
 data class ProfessionRole(
     val id: Int,
     val name: String
@@ -94,10 +96,12 @@ data class SecondMatchProfileModel(
     var check :Boolean)
 
 data class QuestionModel(
+    var id: String,
     var heading: String,
     var question: String,
     var heading1: String,
     var question1: String,
+    val id1: String,
     var type :Int,
     var answer : List<Answer>,
     var answer1: List<Answer> = answer.map { it.copy() },
@@ -106,7 +110,7 @@ var selectedAnswerPosition: Int = -1
 
 
 
-data class Answer(val type: Int ,var answer: String, var selectedAnswer: Boolean=false)
+data class Answer(val type: Int, var label : String,var value: String,  var selectedAnswer: Boolean=false)
 
 
 data class DiscoverQuestionModel(
@@ -118,3 +122,23 @@ data class DiscoverQuestionModel(
 
 
 data class DiscoverAnswerModel(var answer: String, var selectedAnswer: Boolean=false)
+
+
+data class AnswerSendResponse(
+    val userQuizAnswer: List<UserQuizAnswer?>?
+)
+
+data class UserQuizAnswer(
+    val answer: String?,
+    val quizId: String?
+)
+
+
+
+
+
+
+
+
+
+

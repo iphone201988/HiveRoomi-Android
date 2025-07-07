@@ -38,7 +38,7 @@
             android:paddingVertical="@dimen/_12sdp"
             android:paddingStart="@dimen/_15sdp"
             android:paddingEnd="@dimen/_40sdp"
-            android:text="@{bean.answer}"
+            android:text="@{bean.label}"
             android:textSize="@dimen/_11ssp"
             android:visibility="@{bean.type==1?View.VISIBLE:View.GONE}"
             app:layout_constraintEnd_toEndOf="parent"
