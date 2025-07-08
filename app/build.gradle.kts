@@ -93,6 +93,8 @@ dependencies {
     // calender
     implementation (libs.material.calendar.view)
 
-
+    //socket dependency
+    implementation ("io.socket:socket.io-client:2.0.1")
+    implementation("com.tbuonomo:dotsindicator:5.0")
 
 }

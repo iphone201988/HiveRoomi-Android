@@ -57,4 +57,26 @@ class MatchesFragmentVM @Inject constructor(val apiHelper: ApiHelper) : BaseView
         }
 
     }
+
+
+    fun acceptRejectAPi(url: String, request: HashMap<String, Any>) {
+        CoroutineScope(Dispatchers.IO).launch {
+            matchObserver.postValue(Resource.loading(null))
+            try {
+                apiHelper.apiPostForRawBody(Constants.userLanguage, url,request).let {
+                    if (it.isSuccessful) {
+                        matchObserver.postValue(Resource.success("acceptRejectAPi", it.body()))
+                    } else matchObserver.postValue(
+                        Resource.error(
+                            handleErrorResponse(it.errorBody()), null
+                        )
+                    )
+                }
+            } catch (e: Exception) {
+                Log.i("acceptRejectAPi", "likeDisLike: $e")
+            }
+
+        }
+
+    }
 }

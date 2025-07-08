@@ -206,11 +206,7 @@ data class HomeApiData(
 
 )
 
-data class Pagination(
-    val limit: Int?,
-    val page: Int?,
-    val total: Int?
-)
+
 
 data class HomeApiDataQuiz(
     val answer: String?,
@@ -248,4 +244,140 @@ data class Roommate(
     val _id: String?,
     val age: Int?,
     val gender: String?
+)
+
+
+/** Pending Match Response  **/
+data class PendingMatchResponse(
+    val `data`: List<PendingMatchData?>?,
+    val message: String?,
+    val pagination: Pagination?,
+    val success: Boolean?
+)
+
+data class PendingMatchData(
+    val _id: String?,
+    val createdAt: String?,
+    val status: Int?,
+    val type: String?,
+    val userId: UserId?
+)
+
+
+data class UserId(
+    val _id: String?,
+    val email: String?,
+    val likeCount: Int?,
+    val name: String?,
+    val profileImage: String?
+)
+
+/** Get Chat Response  **/
+data class GetChatResponse(
+    val `data`: List<GetChatData>?,
+    val message: String?,
+    val onlineUsers: List<OnlineUser>?,
+    val pagination: Pagination?,
+    val success: Boolean?,
+    val unReadMessageCount: Int?
+)
+
+data class GetChatData(
+    val _id: String?,
+    val messages: Messages?,
+    val otherUser: OtherUser?,
+    val updatedAt: String?
+)
+
+data class OnlineUser(
+    val _id: String?,
+    val otherUser: OtherUser?,
+    val updatedAt: String?
+)
+
+data class Pagination(
+    val limit: Int?,
+    val page: Int?,
+    val total: Int?
+)
+
+data class Messages(
+    val __v: Int?,
+    val _id: String?,
+    val chatId: String?,
+    val content: String?,
+    val contentType: String?,
+    val createdAt: String?,
+    val deletedBy: List<Any?>?,
+    val isRead: Boolean?,
+    val `receiver`: String?,
+    val sender: String?,
+    val updatedAt: String?
+)
+
+/** Get User Message Response  **/
+data class GetUserMessageResponse(
+    val checkUserBlock: Any?,
+    val `data`: List<GetUserData?>?,
+    val isBlocked: Boolean?,
+    val message: String?,
+    val otherUser: OtherUser?,
+    val pagination: ChatPagination?,
+    val success: Boolean?
+)
+
+data class GetUserData(
+    val _id: String?,
+    val content: String?,
+    val contentType: String?,
+    val createdAt: String?,
+    val isRead: Boolean?,
+    val sender: Sender?
+)
+
+data class OtherUser(
+    val _id: String?,
+    val isOnline: Boolean?,
+    val name: String?,
+    val profileImage: String?
+)
+
+data class ChatPagination(
+    val limit: Int?,
+    val page: Int?,
+    val total: Int?
+)
+
+data class Sender(
+    val _id: String?,
+    val isOnline: Boolean?,
+    val name: String?,
+    val profileImage: String?
+)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/** Upload Image Response  **/
+data class UploadImageResponse(
+    val `data`: UploadImageData?,
+    val message: String?,
+    val success: Boolean?
+)
+
+data class UploadImageData(
+    val url: String?
 )

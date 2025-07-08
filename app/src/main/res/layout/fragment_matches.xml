@@ -76,7 +76,7 @@
             android:layout_marginHorizontal="@dimen/_12sdp"
             android:layout_marginBottom="-10dp"
             android:background="@drawable/et_bg_end_color_strock"
-            android:visibility="@{visibilityHandel==1?View.VISIBLE:View.GONE}"
+            android:visibility="@{visibilityHandel==3?View.GONE:View.VISIBLE}"
             app:layout_constraintBottom_toBottomOf="@+id/clHeader"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">
@@ -119,7 +119,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/_92sdp"
             android:layout_marginTop="-80dp"
-            android:visibility="@{visibilityHandel==1?View.GONE:View.VISIBLE}"
+            android:visibility="@{visibilityHandel==3?View.VISIBLE:View.GONE}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/clHeader" />
@@ -131,11 +131,25 @@
             android:layout_height="0dp"
             android:layout_marginTop="@dimen/_15sdp"
             android:paddingHorizontal="@dimen/_8sdp"
+            android:visibility="@{check==1?View.VISIBLE:View.GONE}"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="@id/view"
             app:spanCount="2"
             tools:listitem="@layout/matches_item_view" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvPendingMatches"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:visibility="@{check==2?View.VISIBLE:View.GONE}"
+            android:paddingHorizontal="@dimen/_8sdp"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="@id/view"
+            app:spanCount="2"
+            tools:listitem="@layout/pending_match_rv_item" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -7,7 +7,16 @@
         <variable
             name="vm"
             type="com.tech.hive.ui.for_room_mate.messages.chat.ChatActivityVM" />
+
+        <variable
+            name="bean"
+            type="com.tech.hive.data.model.OtherUser" />
+
+        
     </data>
+
+
+
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/main"
@@ -60,7 +69,7 @@
                 android:onClick="@{v->vm.onClick(v)}"
                 android:scaleType="centerCrop"
                 android:layout_marginTop="@dimen/_30sdp"
-                android:src="@drawable/dummy_person"
+                setImageFromUrl="@{bean.profileImage}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:shapeAppearance="@style/Shape50" />
@@ -71,7 +80,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_8sdp"
-                android:text="@string/elena_salvatore"
+                android:text="@{bean.name}"
                 android:textSize="@dimen/_14ssp"
                 app:layout_constraintStart_toEndOf="@id/ivPerson"
                 app:layout_constraintTop_toTopOf="@+id/ivPerson" />
@@ -82,12 +91,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_8sdp"
-                android:text="@string/online"
+                android:text='@{bean.isOnline() ? "Online" : "Offline"}'
                 android:textSize="@dimen/_10ssp"
                 app:layout_constraintStart_toEndOf="@id/ivPerson"
                 app:layout_constraintTop_toBottomOf="@+id/tvTitle" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvChat"
@@ -103,11 +115,10 @@
             tools:itemCount="4"
             tools:listitem="@layout/chat_sender_item" />
 
-
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/ivCategory"
             android:layout_width="@dimen/_40sdp"
-            android:layout_height="@dimen/_160sdp"
+            android:layout_height="@dimen/_140sdp"
             android:src="@drawable/iv_add_category"
             android:visibility="gone"
             app:layout_constraintBottom_toTopOf="@id/ivAdd"
@@ -171,7 +182,7 @@
             android:maxLines="4"
             android:paddingStart="@dimen/_15sdp"
             android:paddingEnd="@dimen/_35sdp"
-            android:textColor="@color/message_color"
+            android:textColor="@color/black_24"
             android:textColorHint="@color/message_color"
             app:layout_constraintBottom_toBottomOf="@+id/ivCalender"
             app:layout_constraintEnd_toStartOf="@id/ivSend"
@@ -185,6 +196,7 @@
             android:layout_marginEnd="@dimen/_12sdp"
             android:onClick="@{v->vm.onClick(v)}"
             android:src="@drawable/mic_icon"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="@id/etEmail"
             app:layout_constraintEnd_toEndOf="@id/etEmail"
             app:layout_constraintTop_toTopOf="@+id/etEmail" />
@@ -210,6 +222,7 @@
                 android:layout_marginStart="@dimen/_12sdp"
                 android:layout_marginTop="@dimen/_10sdp"
                 android:text="@string/block_user"
+                android:onClick="@{v->vm.onClick(v)}"
                 android:textColor="@color/black_24"
                 android:textSize="@dimen/_13ssp"
                 app:layout_constraintStart_toStartOf="parent"
@@ -221,6 +234,7 @@
                 style="@style/TextView.Medium"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:onClick="@{v->vm.onClick(v)}"
                 android:layout_marginTop="@dimen/_5sdp"
                 android:text="@string/report_user"
                 android:textColor="@color/black_24"

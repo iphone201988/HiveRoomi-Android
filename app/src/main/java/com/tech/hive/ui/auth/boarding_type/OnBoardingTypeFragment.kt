@@ -41,16 +41,19 @@ class OnBoardingTypeFragment : BaseFragment<FragmentOnBoardingTypeBinding>() {
                 R.id.clRoommate -> {
                     binding.selectType = 1
                     Constants.userType = 1
+
                 }
                 // Home button click
                 R.id.clHome -> {
                     binding.selectType = 2
                     Constants.userType = 2
+
                 }
                 // Offering button click
                 R.id.clOffering -> {
                     binding.selectType = 3
                     Constants.userType = 3
+
                 }
                 // btnContinue button click
                 R.id.btnContinue -> {

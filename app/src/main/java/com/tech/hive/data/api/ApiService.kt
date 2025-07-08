@@ -81,6 +81,16 @@ interface ApiService {
     ): Response<JsonObject>
 
 
+    @Multipart
+    @JvmSuppressWildcards
+    @POST
+    suspend fun apiForImageUpload(
+        @Header("Accept-Language") lang: String,
+        @Url url: String,
+        @Part userPic: MultipartBody.Part?,
+        @Header("Authorization") token: String
+    ): Response<JsonObject>
+
 
     @Multipart
     @JvmSuppressWildcards

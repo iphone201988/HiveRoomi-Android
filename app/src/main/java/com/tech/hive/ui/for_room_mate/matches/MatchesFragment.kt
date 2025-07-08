@@ -10,6 +10,7 @@ import com.tech.hive.base.BaseFragment
 import com.tech.hive.base.BaseViewModel
 import com.tech.hive.base.SimpleRecyclerViewAdapter
 import com.tech.hive.base.utils.BindingUtils
+import com.tech.hive.base.utils.Resource
 import com.tech.hive.base.utils.Status
 import com.tech.hive.base.utils.showToast
 import com.tech.hive.data.api.Constants
@@ -17,19 +18,27 @@ import com.tech.hive.data.model.CommonResponse
 import com.tech.hive.data.model.HomeApiResponse
 import com.tech.hive.data.model.HomeRoomType
 import com.tech.hive.data.model.MatchesModel
+import com.tech.hive.data.model.PendingMatchData
+import com.tech.hive.data.model.PendingMatchResponse
 import com.tech.hive.databinding.FragmentMatchesBinding
 import com.tech.hive.databinding.MatchesItemViewBinding
+import com.tech.hive.databinding.PendingMatchRvItemBinding
+import com.tech.hive.ui.dashboard.DashboardActivity
 import com.tech.hive.ui.for_room_mate.filters.FilterActivity
 import com.tech.hive.ui.for_room_mate.home.CardItem
 import com.tech.hive.ui.for_room_mate.home.MatchedProfileActivity
 import com.tech.hive.ui.for_room_mate.home.second.SecondMatchActivity
+import com.tech.hive.ui.for_room_mate.messages.chat.ChatActivity
 import com.tech.hive.ui.room_offering.discover.DiscoverySettingsActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MatchesFragment : BaseFragment<FragmentMatchesBinding>() {
     private val viewModel: MatchesFragmentVM by viewModels()
-    private lateinit var matchesAdapter: SimpleRecyclerViewAdapter<MatchesModel, MatchesItemViewBinding>
+    private lateinit var matchesAdapter: SimpleRecyclerViewAdapter<PendingMatchData, MatchesItemViewBinding>
+    private lateinit var pendingMatchesAdapter: SimpleRecyclerViewAdapter<PendingMatchData, PendingMatchRvItemBinding>
+    private var userMatchType = 1
+    private var position = -1
     override fun onCreateView(view: View) {
         // view
         initView()
@@ -41,15 +50,20 @@ class MatchesFragment : BaseFragment<FragmentMatchesBinding>() {
         binding.check = 1
         binding.visibilityHandel = Constants.userType
 
-        if (Constants.userType == 1){
-            val data = HashMap<String, String>()
-            data["type"] = "user"
-            viewModel.getMatchApi(Constants.GET_MATCH,data)
-        }else if (Constants.userType == 2){
-            val data = HashMap<String, String>()
-            data["type"] = "listing"
-            viewModel.getMatchApi(Constants.GET_MATCH,data)
+        var userData = sharedPrefManager.getLoginData()
+        if (userData != null) {
+            userMatchType = userData.profileRole ?: 1
+            if (userData.profileRole == 1) {
+                val data = HashMap<String, String>()
+                data["type"] = "user"
+                viewModel.getMatchApi(Constants.GET_MATCH, data)
+            } else {
+                val data = HashMap<String, String>()
+                data["type"] = "listing"
+                viewModel.getMatchApi(Constants.GET_MATCH, data)
+            }
         }
+
     }
 
     override fun getLayoutResource(): Int {
@@ -63,7 +77,8 @@ class MatchesFragment : BaseFragment<FragmentMatchesBinding>() {
     /** handle view **/
     private fun initView() {
         // adapter
-        initAdapter()
+        initMatchAdapter()
+        initPendingMatchAdapter()
 
     }
 
@@ -89,13 +104,14 @@ class MatchesFragment : BaseFragment<FragmentMatchesBinding>() {
                     binding.check = 1
                     val data = HashMap<String, String>()
                     data["type"] = "user"
-                    viewModel.getMatchApi(Constants.GET_MATCH,data)
+                    viewModel.getMatchApi(Constants.GET_MATCH, data)
                 }
                 // request click
                 R.id.tvRequest -> {
+                    userMatchType = 2
                     val data = HashMap<String, String>()
                     data["type"] = "user"
-                    viewModel.getMatchPendingApi(Constants.MATCH_PENDING_LIKE,data)
+                    viewModel.getMatchPendingApi(Constants.MATCH_PENDING_LIKE, data)
                     binding.check = 2
                 }
             }
@@ -115,10 +131,12 @@ class MatchesFragment : BaseFragment<FragmentMatchesBinding>() {
                     when (it.message) {
                         "getMatchApi" -> {
                             try {
-                                val myDataModel: HomeApiResponse? =
+                                val myDataModel: PendingMatchResponse? =
                                     BindingUtils.parseJson(it.data.toString())
                                 if (myDataModel?.data != null) {
-
+                                    matchesAdapter.clearList()
+                                    matchesAdapter.list =
+                                        myDataModel.data as List<PendingMatchData?>?
                                 }
                             } catch (e: Exception) {
                                 Log.e("error", "getHomeApi: $e")
@@ -128,14 +146,12 @@ class MatchesFragment : BaseFragment<FragmentMatchesBinding>() {
                         }
 
                         "getMatchPendingApi" -> {
-                            
                             try {
-                                val myDataModel: HomeApiResponse? =
+                                val myDataModel: PendingMatchResponse? =
                                     BindingUtils.parseJson(it.data.toString())
                                 if (myDataModel?.data != null) {
-
-
-
+                                    pendingMatchesAdapter.clearList()
+                                    pendingMatchesAdapter.list = myDataModel.data
                                 }
                             } catch (e: Exception) {
                                 Log.e("error", "getHomeApi: $e")
@@ -144,6 +160,23 @@ class MatchesFragment : BaseFragment<FragmentMatchesBinding>() {
                             }
                         }
 
+                        "acceptRejectAPi" -> {
+                            try {
+                                val myDataModel: CommonResponse? =
+                                    BindingUtils.parseJson(it.data.toString())
+                                if (myDataModel != null) {
+                                    if (position!=-1){
+                                        pendingMatchesAdapter.removeItem(position)
+                                        pendingMatchesAdapter.notifyDataSetChanged()
+                                    }
+
+                                }
+                            } catch (e: Exception) {
+                                Log.e("error", "getHomeApi: $e")
+                            } finally {
+                                hideLoading()
+                            }
+                        }
 
 
                     }
@@ -163,67 +196,49 @@ class MatchesFragment : BaseFragment<FragmentMatchesBinding>() {
     }
 
     /** handle adapter **/
-    private fun initAdapter() {
+    private fun initMatchAdapter() {
         matchesAdapter =
             SimpleRecyclerViewAdapter(R.layout.matches_item_view, BR.bean) { v, m, pos ->
                 when (v.id) {
                     // view profile
                     R.id.ivImage -> {
-                        when (Constants.userType) {
-                            1 -> {
-                                val intent =
-                                    Intent(requireContext(), MatchedProfileActivity::class.java)
-                                intent.putExtra("matchType", "after")
-                                startActivity(intent)
-                            }
-
-                            2 -> {
-                                val intent =
-                                    Intent(requireActivity(), SecondMatchActivity::class.java)
-                                intent.putExtra("secondMatchType", "after")
-                                startActivity(intent)
-                            }
-
-                            else -> {
-                                val intent =
-                                    Intent(requireContext(), MatchedProfileActivity::class.java)
-                                intent.putExtra("matchType", "after")
-                                startActivity(intent)
-                            }
-                        }
-
+                        val intent = Intent(requireContext(), ChatActivity::class.java)
+                        intent.putExtra("chatId", m._id)
+                        startActivity(intent)
                     }
-                    // cancel
-                    R.id.ivCancel -> {
-                        showToast("Cancel")
-                    }
-                    // like
-                    R.id.ivLike -> {
-                        showToast("Like")
-                    }
+
                 }
             }
-        matchesAdapter.list = getList()
+
         binding.rvMatches.adapter = matchesAdapter
     }
 
-    // list
-    private fun getList(): ArrayList<MatchesModel> {
-        val list = ArrayList<MatchesModel>()
-        list.add(MatchesModel(R.drawable.ic_match_dummy, "Chris Salvatore"))
-        list.add(MatchesModel(R.drawable.ic_match_dummy, "Chris Salvatore"))
-        list.add(MatchesModel(R.drawable.ic_match_dummy, "Chris Salvatore"))
-        list.add(MatchesModel(R.drawable.ic_match_dummy, "Chris Salvatore"))
-        list.add(MatchesModel(R.drawable.ic_match_dummy, "Chris Salvatore"))
-        list.add(MatchesModel(R.drawable.ic_match_dummy, "Chris Salvatore"))
-        list.add(MatchesModel(R.drawable.ic_match_dummy, "Chris Salvatore"))
-        list.add(MatchesModel(R.drawable.ic_match_dummy, "Chris Salvatore"))
-        list.add(MatchesModel(R.drawable.ic_match_dummy, "Chris Salvatore"))
-        list.add(MatchesModel(R.drawable.ic_match_dummy, "Chris Salvatore"))
-        list.add(MatchesModel(R.drawable.ic_match_dummy, "Chris Salvatore"))
-        list.add(MatchesModel(R.drawable.ic_match_dummy, "Chris Salvatore"))
-        list.add(MatchesModel(R.drawable.ic_match_dummy, "Chris Salvatore"))
-        return list
+    private fun initPendingMatchAdapter() {
+        pendingMatchesAdapter =
+            SimpleRecyclerViewAdapter(R.layout.pending_match_rv_item, BR.bean) { v, m, pos ->
+                when (v.id) {
+                    // cancel
+                    R.id.ivCancel -> {
+                        position = pos
+                        val data = HashMap<String, Any>()
+                        data["action"] = "reject"   //accept,reject
+                        data["id"] = m._id.toString()
+                        viewModel.acceptRejectAPi(Constants.MATCH_ACCEPT_REJECT, data)
+
+                    }
+                    // like
+                    R.id.ivLike -> {
+                        position = pos
+                        val data = HashMap<String, Any>()
+                        data["action"] = "accept" //accept,reject
+                        data["id"] = m._id.toString()
+                        viewModel.acceptRejectAPi(Constants.MATCH_ACCEPT_REJECT, data)
+
+                    }
+                }
+            }
+
+        binding.rvPendingMatches.adapter = pendingMatchesAdapter
     }
 
 }

@@ -96,6 +96,15 @@ class ApiHelperImpl @Inject constructor(
         return apiService.apiForFormDataPutWithToken(url, map, userPic, getTokenFromSPref())
     }
 
+
+    override suspend fun apiForImageUpload(
+        lang: String,
+        url: String,
+        userPic: MultipartBody.Part?,
+    ): Response<JsonObject> {
+        return apiService.apiForImageUpload(lang,url, userPic, getTokenFromSPref())
+    }
+
     override suspend fun apiForFormDataPutWithToken3(
         lang: String,
         url: String,

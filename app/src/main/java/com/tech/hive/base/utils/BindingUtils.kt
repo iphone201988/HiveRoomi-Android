@@ -11,6 +11,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
 import androidx.appcompat.widget.AppCompatImageView
+import androidx.appcompat.widget.AppCompatTextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.Guideline
 import androidx.core.app.ActivityCompat
@@ -20,8 +21,15 @@ import androidx.core.view.WindowInsetsControllerCompat
 import androidx.databinding.BindingAdapter
 import androidx.navigation.NavController
 import androidx.navigation.NavOptions
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.google.android.material.imageview.ShapeableImageView
 import com.google.gson.Gson
 import com.tech.hive.R
+import com.tech.hive.data.api.Constants
+import java.text.SimpleDateFormat
+import java.util.Locale
+import java.util.TimeZone
 
 object BindingUtils {
     var latitude: Double? = null
@@ -93,6 +101,64 @@ object BindingUtils {
         }
     }
 
+    @BindingAdapter("setImageFromUrl")
+    @JvmStatic
+    fun setImageFromUrl(image: ShapeableImageView, url: String?) {
+        if (url != null) {
+            if (url.isNotEmpty()) {
+                Glide.with(image.context).load(Constants.BASE_URL_IMAGE + url)
+                    .placeholder(R.drawable.progress_animation_small)
+                    .diskCacheStrategy(DiskCacheStrategy.ALL).into(image)
+            }
+        }
+    }
+
+
+    @BindingAdapter("setSingleData")
+    @JvmStatic
+    fun setSingleData(text: AppCompatTextView, date: String?) {
+        if (date?.isNotEmpty() == true) {
+            "📍 ${date}"
+        }
+            else {
+                 "📍 No Address found"
+            }
+        }
+
+
+
+    @BindingAdapter("setSmokingData")
+    @JvmStatic
+    fun setSmokingData(text: AppCompatTextView, date: String?) {
+        if (date?.isNotEmpty() == true){
+            val utcTime = date
+            val formattedTime = convertUtcToLocalTime(utcTime)
+            text.text = formattedTime
+        }
+    }
+
+
+    @BindingAdapter("setDate")
+    @JvmStatic
+    fun setDate(text: AppCompatTextView, date: String?) {
+       if (date?.isNotEmpty() == true){
+           val utcTime = date
+           val formattedTime = convertUtcToLocalTime(utcTime)
+           text.text = formattedTime
+       }
+    }
+
+    fun convertUtcToLocalTime(utcTime: String): String {
+        val utcFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.US)
+        utcFormat.timeZone = TimeZone.getTimeZone("UTC")
+
+        val date = utcFormat.parse(utcTime)
+
+        val localFormat = SimpleDateFormat("hh:mm a", Locale.US)
+        localFormat.timeZone = TimeZone.getDefault()  // Local time zone
+
+        return localFormat.format(date!!)
+    }
 
     @BindingAdapter("setProgress")
     @JvmStatic

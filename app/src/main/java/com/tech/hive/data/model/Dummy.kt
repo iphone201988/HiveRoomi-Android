@@ -136,7 +136,11 @@ data class UserQuizAnswer(
 
 
 
-
+data class SendMessages(
+    val content: String?,
+    val contentType: String?,
+    val `receiver`: String?
+)
 
 
 

@@ -62,4 +62,11 @@ interface ApiHelper {
         ownershipPic: MultipartBody.Part?,
     ): Response<JsonObject>
 
+
+    suspend fun apiForImageUpload(
+        lang: String,
+        url: String,
+        userPic: MultipartBody.Part?,
+    ): Response<JsonObject>
+
 }

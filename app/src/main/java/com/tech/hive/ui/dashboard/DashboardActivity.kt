@@ -7,12 +7,15 @@ import com.tech.hive.R
 import com.tech.hive.base.BaseActivity
 import com.tech.hive.base.BaseViewModel
 import com.tech.hive.base.utils.BindingUtils
+import com.tech.hive.base.utils.Status
+import com.tech.hive.base.utils.event.SingleRequestEvent
 import com.tech.hive.databinding.ActivityDashboardBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class DashboardActivity : BaseActivity<ActivityDashboardBinding>() {
     private val viewModel: DashboardVM by viewModels()
+
     override fun getLayoutResource(): Int {
         return R.layout.activity_dashboard
     }
@@ -90,9 +93,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>() {
 
     /** handle api response **/
     private fun initObserver() {
-        viewModel.dashBoardObserver.observe(this) {
 
-        }
 
     }
 

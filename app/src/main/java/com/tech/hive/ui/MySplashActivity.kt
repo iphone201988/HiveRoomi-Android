@@ -47,9 +47,11 @@ class MySplashActivity : BaseActivity<ActivityMySplashBinding>(), LocationResult
                 }
                 userdata.profileRole==2 -> {
                     Constants.userType = 2
+
                 }
                 userdata.profileRole==3 -> {
                     Constants.userType = 3
+
                 }
             }
             val intent = Intent(this@MySplashActivity, AuthActivity::class.java)

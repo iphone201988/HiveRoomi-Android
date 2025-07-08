@@ -5,17 +5,43 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:padding="@dimen/_8sdp"
         android:layout_marginStart="@dimen/_12sdp"
-        android:layout_marginEnd="@dimen/_100sdp">
+        android:layout_marginEnd="@dimen/_60sdp">
 
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/ivImageReceiver"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_120sdp"
+            android:scaleType="centerCrop"
+            android:visibility="gone"
+            android:src="@drawable/ic_match_dummy"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:shapeAppearance="@style/ShapeAppearanceOverlay.App.CornerSize10Percent10"/>
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/ivPdf"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_120sdp"
+            android:background="@drawable/chat_item_bg"
+            android:scaleType="centerCrop"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            />
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/clLeft"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_4sdp"
-            android:background="@drawable/reciever_bg"
+            android:background="@drawable/bg_chat_corner_radius_10"
+            android:backgroundTint="@color/colorAccent"
             android:paddingTop="@dimen/_6sdp"
-            android:paddingBottom="@dimen/_12sdp"
-            android:paddingStart="@dimen/_18sdp"
+            android:paddingBottom="@dimen/_6sdp"
+            android:paddingStart="@dimen/_10sdp"
             android:paddingEnd="@dimen/_10sdp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -26,13 +52,22 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="start"
-                android:text="hi asdasddasasdasdasdsadasdasdadasdsdasdasdasdasdasdddsadds"
-                android:textColor="@color/black_24"
+                android:text="hi "
+                android:textColor="@color/white"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/ivHuk"
+            android:layout_width="@dimen/_20sdp"
+            android:layout_height="@dimen/_20sdp"
+            android:src="@drawable/left_side"
+            android:layout_marginStart="-6dp"
+            android:layout_marginBottom="-10dp"
+            app:layout_constraintStart_toStartOf="@+id/clLeft"
+            app:layout_constraintBottom_toBottomOf="@+id/clLeft"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

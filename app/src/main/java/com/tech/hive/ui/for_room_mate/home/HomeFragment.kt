@@ -22,6 +22,7 @@ import com.tech.hive.data.model.CommonResponse
 import com.tech.hive.data.model.DiscoverModel
 import com.tech.hive.data.model.HomeApiResponse
 import com.tech.hive.data.model.HomeFilterList
+import com.tech.hive.data.model.HomeRoomTData
 import com.tech.hive.data.model.HomeRoomType
 import com.tech.hive.data.model.ThirdTypeModel
 import com.tech.hive.databinding.FragmentHomeBinding
@@ -49,10 +50,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), CardStackListener {
 
     private val viewModel: HomeFragmentVM by viewModels()
 
-    private lateinit var homeAdapter: SimpleRecyclerViewAdapter<DiscoverModel, RvDiscoverItemBinding>
+    private lateinit var homeAdapter: SimpleRecyclerViewAdapter<HomeRoomTData, RvDiscoverItemBinding>
     private lateinit var homeThirdAdapter: SimpleRecyclerViewAdapter<ThirdTypeModel, ThirdUserRvItemBinding>
     private lateinit var homeThirdFilterAdapter: SimpleRecyclerViewAdapter<HomeFilterList, RvHomeFilterItemBinding>
     var createSpots = ArrayList<CardItem>()
+    private var userTypeLike = 1
     private val cardAdapter by lazy { CardStackAdapter(createSpots, requireContext()) }
     private val manager by lazy {
         CardStackLayoutManager(
@@ -76,17 +78,16 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), CardStackListener {
         initView()
         // click
         initOnClick()
-        binding.userType = Constants.userType
-        binding.buttonClick = 1
-        binding.check = Constants.userType
-
-        when (Constants.userType) {
-            1 -> {
+            var userData = sharedPrefManager.getLoginData()
+        if (userData != null) {
+            binding.userType = Constants.userType
+            binding.buttonClick = 1
+            binding.check = Constants.userType
+            userTypeLike = userData.profileRole ?: 1
+            if (userData.profileRole == 1) {
                 // api call
                 viewModel.getHomeApi(Constants.MATCH_LOOKING_ROOMMATE)
-            }
-
-            2 -> {
+            } else {
                 // api call
                 viewModel.getHomeApiListening(Constants.MATCH_LOOKING_LISTING)
             }
@@ -114,7 +115,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), CardStackListener {
                 }
             }
         }
-        homeAdapter.list = getHomeList()
         binding.rvHome.adapter = homeAdapter
 
         homeThirdAdapter =
@@ -214,68 +214,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), CardStackListener {
         return list
     }
 
-    // home List
-    private fun getHomeList(): ArrayList<DiscoverModel> {
-        val list = ArrayList<DiscoverModel>()
-        list.add(
-            DiscoverModel(
-                "Cozy Room in NYC",
-                "$600/month",
-                "Isola Single 2 Roommates",
-                "No Smoking Pets Allowed"
-            )
-        )
-        list.add(
-            DiscoverModel(
-                "Cozy Room in NYC",
-                "$600/month",
-                "Isola Single 2 Roommates",
-                "No Smoking Pets Allowed"
-            )
-        )
-        list.add(
-            DiscoverModel(
-                "Cozy Room in NYC",
-                "$600/month",
-                "Isola Single 2 Roommates",
-                "No Smoking Pets Allowed"
-            )
-        )
-        list.add(
-            DiscoverModel(
-                "Cozy Room in NYC",
-                "$600/month",
-                "Isola Single 2 Roommates",
-                "No Smoking Pets Allowed"
-            )
-        )
-        list.add(
-            DiscoverModel(
-                "Cozy Room in NYC",
-                "$600/month",
-                "Isola Single 2 Roommates",
-                "No Smoking Pets Allowed"
-            )
-        )
-        list.add(
-            DiscoverModel(
-                "Cozy Room in NYC",
-                "$600/month",
-                "Isola Single 2 Roommates",
-                "No Smoking Pets Allowed"
-            )
-        )
-        list.add(
-            DiscoverModel(
-                "Cozy Room in NYC",
-                "$600/month",
-                "Isola Single 2 Roommates",
-                "No Smoking Pets Allowed"
-            )
-        )
 
-        return list
-    }
 
     /** handle click **/
     @SuppressLint("ClickableViewAccessibility")
@@ -315,6 +254,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), CardStackListener {
                     binding.check = 1
                     binding.userType = 1
                     Constants.userType = 1
+                    userTypeLike = 1
                     viewModel.getHomeApi(Constants.MATCH_LOOKING_ROOMMATE)
                 }
                 // btn home click
@@ -323,6 +263,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), CardStackListener {
                     binding.check = 2
                     binding.userType = 2
                     binding.buttonClick = 1
+                    userTypeLike = 2
                     viewModel.getHomeApiListening(Constants.MATCH_LOOKING_LISTING)
                 }
             }
@@ -337,7 +278,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), CardStackListener {
                         .setDuration(Duration.Normal.duration)
                         .setInterpolator(AccelerateInterpolator()).build()
                     manager.setSwipeAnimationSetting(setting)
-                    if (Constants.userType == 1) {
+                    if (userTypeLike == 1) {
                         binding.cardStackView.swipe()
                     } else {
                         binding.cardStackView1.swipe()
@@ -424,6 +365,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), CardStackListener {
                                         createSpots.add(CardItem.RoomListing(room))
                                     }
                                     initialize()
+                                    homeAdapter.list = myDataModel.data
                                 }
                             } catch (e: Exception) {
                                 Log.e("error", "getHomeApiListening: $e")
@@ -495,6 +437,17 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), CardStackListener {
 //    }
 
     override fun onCardSwiped(direction: Direction?) {
+        when (direction) {
+            Direction.Left -> {
+                scrollType = "left"
+            }
+
+            Direction.Right -> {
+                scrollType = "right"
+            }
+
+            else -> {}
+        }
         val position = manager.topPosition - 1
         if (position >= 0 && position < cardAdapter.getItems().size) {
             val currentItem = cardAdapter.getItems()[position]
@@ -507,7 +460,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), CardStackListener {
             val data = hashMapOf<String, Any>(
                 "id" to id,
                 "action" to if (direction == Direction.Left) "dislike" else "like",
-                "type" to if (Constants.userType == 1) "user" else "listing"
+                "type" to if (userTypeLike == 1) "user" else "listing"
             )
 
             Log.d("SwipeDebug", "Calling API with data: $data")
@@ -539,13 +492,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), CardStackListener {
         when (scrollType) {
             "left" -> {
                 data["action"] = "dislike"
-                data["type"] = if (Constants.userType == 1) "user" else "listing"
+                data["type"] = if (userTypeLike == 1) "user" else "listing"
                 viewModel.likeDisLike(Constants.MATCH_LIKE, data)
             }
 
             "right" -> {
                 data["action"] = "like"
-                data["type"] = if (Constants.userType == 1) "user" else "listing"
+                data["type"] = if (userTypeLike == 1) "user" else "listing"
                 viewModel.likeDisLike(Constants.MATCH_LIKE, data)
             }
         }

@@ -58,7 +58,7 @@ class CardStackAdapter(
                 holder.clFirst.visibility = View.GONE
                 holder.clSecond.visibility = View.VISIBLE
                 holder.tvTitle.visibility = View.VISIBLE
-                holder.storiesProgressView.setStoriesCount(items.size)
+                holder.storiesProgressView.setStoriesCount(item.room.images?.size ?: 0)
                 holder.storiesProgressView.setStoryDuration(3000L)
                 holder.storiesProgressView.setStoriesListener(object :
                     StoriesProgressView.StoriesListener {

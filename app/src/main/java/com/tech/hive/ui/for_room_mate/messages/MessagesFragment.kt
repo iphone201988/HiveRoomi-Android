@@ -1,6 +1,7 @@
 package com.tech.hive.ui.for_room_mate.messages
 
 import android.content.Intent
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.viewModels
 import com.tech.hive.BR
@@ -8,27 +9,28 @@ import com.tech.hive.R
 import com.tech.hive.base.BaseFragment
 import com.tech.hive.base.BaseViewModel
 import com.tech.hive.base.SimpleRecyclerViewAdapter
+import com.tech.hive.base.utils.BindingUtils
+import com.tech.hive.base.utils.Status
 import com.tech.hive.data.api.Constants
-import com.tech.hive.data.model.ChatModel
-import com.tech.hive.data.model.StatusModel
+import com.tech.hive.data.model.GetChatData
+import com.tech.hive.data.model.GetChatResponse
+import com.tech.hive.data.model.OnlineUser
 import com.tech.hive.databinding.ChatItemViewBinding
 import com.tech.hive.databinding.FragmentMessagesBinding
 import com.tech.hive.databinding.StatusItemViewBinding
 import com.tech.hive.ui.for_room_mate.messages.chat.ChatActivity
 import com.tech.hive.ui.notification.NotificationActivity
-import com.tech.hive.ui.room_offering.discover.DiscoverySettingsActivity
 import dagger.hilt.android.AndroidEntryPoint
-import kotlin.reflect.typeOf
 
 @AndroidEntryPoint
 class MessagesFragment : BaseFragment<FragmentMessagesBinding>() {
     private val viewModel: MessagesFragmentVM by viewModels()
 
     // status adapter
-    private lateinit var statusAdapter: SimpleRecyclerViewAdapter<StatusModel, StatusItemViewBinding>
+    private lateinit var statusAdapter: SimpleRecyclerViewAdapter<OnlineUser, StatusItemViewBinding>
 
     // chat adapter
-    private lateinit var chatAdapter: SimpleRecyclerViewAdapter<ChatModel, ChatItemViewBinding>
+    private lateinit var chatAdapter: SimpleRecyclerViewAdapter<GetChatData, ChatItemViewBinding>
     override fun onCreateView(view: View) {
         // view
         initView()
@@ -36,6 +38,8 @@ class MessagesFragment : BaseFragment<FragmentMessagesBinding>() {
         initOnClick()
         // observer
         initObserver()
+        val data = HashMap<String, String>()
+        viewModel.getChatApi(Constants.GET_CHAT, data)
     }
 
     override fun getLayoutResource(): Int {
@@ -56,19 +60,56 @@ class MessagesFragment : BaseFragment<FragmentMessagesBinding>() {
     /** handle click **/
     private fun initOnClick() {
         viewModel.onClick.observe(viewLifecycleOwner) {
-             when(it?.id){
-                 R.id.ivSettings->{
-                     val intent = Intent(requireContext(), NotificationActivity::class.java)
-                     startActivity(intent)
-                 }
-             }
+            when (it?.id) {
+                R.id.ivSettings -> {
+                    val intent = Intent(requireContext(), NotificationActivity::class.java)
+                    startActivity(intent)
+                }
+            }
         }
     }
 
     /** handle api response **/
     private fun initObserver() {
         viewModel.messagesObserver.observe(viewLifecycleOwner) {
+            when (it?.status) {
+                Status.LOADING -> {
+                    showLoading()
+                }
 
+                Status.SUCCESS -> {
+                    when (it.message) {
+                        "getChatApi" -> {
+                            try {
+                                val myDataModel: GetChatResponse? =
+                                    BindingUtils.parseJson(it.data.toString())
+                                if (myDataModel?.data != null) {
+                                    chatAdapter.clearList()
+                                    statusAdapter.clearList()
+                                    chatAdapter.list = myDataModel.data as List<GetChatData?>?
+                                    statusAdapter.list =
+                                        myDataModel.onlineUsers as List<OnlineUser?>?
+                                }
+                            } catch (e: Exception) {
+                                Log.e("error", "getHomeApi: $e")
+                            } finally {
+                                hideLoading()
+                            }
+                        }
+
+
+                    }
+                }
+
+                Status.ERROR -> {
+                    hideLoading()
+                    showErrorToast(it.message.toString())
+                }
+
+                else -> {
+
+                }
+            }
         }
 
     }
@@ -78,10 +119,15 @@ class MessagesFragment : BaseFragment<FragmentMessagesBinding>() {
         // status adapter
         statusAdapter = SimpleRecyclerViewAdapter(R.layout.status_item_view, BR.bean) { v, m, pos ->
             when (v.id) {
-
+                // move to Chat Activity
+                R.id.clMail -> {
+                    val intent = Intent(requireContext(), ChatActivity::class.java)
+                    intent.putExtra("chatId", m._id)
+                    intent.putExtra("socketId", m.otherUser?._id)
+                    startActivity(intent)
+                }
             }
         }
-        statusAdapter.list = getStatusList()
         binding.rvOnlineStatus.adapter = statusAdapter
 
         // chat adapter
@@ -90,47 +136,15 @@ class MessagesFragment : BaseFragment<FragmentMessagesBinding>() {
                 // move to Chat Activity
                 R.id.clMain -> {
                     val intent = Intent(requireContext(), ChatActivity::class.java)
+                    intent.putExtra("chatId", m._id)
+                    intent.putExtra("socketId", m.otherUser?._id)
                     startActivity(intent)
                 }
             }
         }
-        chatAdapter.list = getChatList()
+        //  chatAdapter.list = getChatList()
         binding.rvChats.adapter = chatAdapter
     }
 
-
-    // list
-    private fun getStatusList(): ArrayList<StatusModel> {
-        val list = ArrayList<StatusModel>()
-        list.add(StatusModel(R.drawable.ic_match_dummy, true))
-        list.add(StatusModel(R.drawable.ic_match_dummy, false))
-        list.add(StatusModel(R.drawable.ic_match_dummy, false))
-        list.add(StatusModel(R.drawable.ic_match_dummy, true))
-        list.add(StatusModel(R.drawable.ic_match_dummy, false))
-        list.add(StatusModel(R.drawable.ic_match_dummy, false))
-        list.add(StatusModel(R.drawable.ic_match_dummy, false))
-        list.add(StatusModel(R.drawable.ic_match_dummy, true))
-        list.add(StatusModel(R.drawable.ic_match_dummy, true))
-        return list
-    }
-
-
-    private fun getChatList(): ArrayList<ChatModel> {
-        val list = ArrayList<ChatModel>()
-        list.add(ChatModel(R.drawable.ic_match_dummy, "Chris Salvatore", "Hi", "10:00 AM", true))
-        list.add(ChatModel(R.drawable.ic_match_dummy, "Bonnie", "Hello", "10:00 AM", false))
-        list.add(
-            ChatModel(
-                R.drawable.ic_match_dummy, "Chris Salvatore", "Hello", "10:00 AM", false
-            )
-        )
-        list.add(ChatModel(R.drawable.ic_match_dummy, "Chris Salvatore", "Hi", "10:00 AM", false))
-        list.add(ChatModel(R.drawable.ic_match_dummy, "Chris Salvatore", "Hi", "10:00 AM", false))
-        list.add(ChatModel(R.drawable.ic_match_dummy, "Chris Salvatore", "Hi", "10:00 AM", false))
-        list.add(ChatModel(R.drawable.ic_match_dummy, "Chris Salvatore", "Hi", "10:00 AM", false))
-        list.add(ChatModel(R.drawable.ic_match_dummy, "Chris Salvatore", "Hi", "10:00 AM", true))
-        list.add(ChatModel(R.drawable.ic_match_dummy, "Chris Salvatore", "Hi", "10:00 AM", true))
-        return list
-    }
 
 }
