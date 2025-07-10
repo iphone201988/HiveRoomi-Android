@@ -56,13 +56,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), CardStackListener {
     var createSpots = ArrayList<CardItem>()
     private var userTypeLike = 1
     private val cardAdapter by lazy { CardStackAdapter(createSpots, requireContext()) }
-    private val manager by lazy {
-        CardStackLayoutManager(
-            requireActivity(), this
-        )
-    }
+    private val manager by lazy { CardStackLayoutManager(requireActivity(), this) }
     private var scrollType = ""
-
 
     override fun getLayoutResource(): Int {
         return R.layout.fragment_home
@@ -73,16 +68,15 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), CardStackListener {
     }
 
     override fun onCreateView(view: View) {
-
         // view
         initView()
         // click
         initOnClick()
             var userData = sharedPrefManager.getLoginData()
         if (userData != null) {
-            binding.userType = Constants.userType
+            binding.userType = userData.profileRole ?: 1
             binding.buttonClick = 1
-            binding.check = Constants.userType
+            binding.check = userData.profileRole ?: 1
             userTypeLike = userData.profileRole ?: 1
             if (userData.profileRole == 1) {
                 // api call

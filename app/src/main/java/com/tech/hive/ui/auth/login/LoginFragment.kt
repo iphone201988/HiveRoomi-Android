@@ -420,7 +420,17 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
                                                     )
                                                 }
 
-                                            } else if (myDataModel.data.isQuizComplete == false || myDataModel.data.totalQuizDone == 0) {
+                                            }
+
+                                            else if (myDataModel.data.profileRole == 3) {
+                                                val intent = Intent(
+                                                    requireContext(), DashboardActivity::class.java
+                                                )
+                                                startActivity(intent)
+                                                requireActivity().finishAffinity()
+                                            }
+
+                                            else if (myDataModel.data.isQuizComplete == false || myDataModel.data.totalQuizDone == 0) {
                                                 val intent = Intent(
                                                     requireActivity(),
                                                     QuizActivity::class.java

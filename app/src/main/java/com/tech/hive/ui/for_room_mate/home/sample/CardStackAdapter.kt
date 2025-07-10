@@ -49,7 +49,7 @@ class CardStackAdapter(
 
                 holder.ivSend.setOnClickListener {
                     val intent = Intent(context, MatchedProfileActivity::class.java)
-                    intent.putExtra("matchType", "before")
+                    intent.putExtra("profileIdFirst", item.user._id)
                     context.startActivity(intent)
                 }
             }
@@ -58,15 +58,18 @@ class CardStackAdapter(
                 holder.clFirst.visibility = View.GONE
                 holder.clSecond.visibility = View.VISIBLE
                 holder.tvTitle.visibility = View.VISIBLE
-                holder.storiesProgressView.setStoriesCount(item.room.images?.size ?: 0)
+                val imageCount = item.room.images?.size ?: 0
+                holder.storiesProgressView.setStoriesCount(imageCount)
                 holder.storiesProgressView.setStoryDuration(3000L)
-                holder.storiesProgressView.setStoriesListener(object :
-                    StoriesProgressView.StoriesListener {
+                holder.storiesProgressView.setStoriesListener(object : StoriesProgressView.StoriesListener {
                     override fun onNext() {}
                     override fun onPrev() {}
                     override fun onComplete() {}
                 })
-                holder.storiesProgressView.startStories(0)
+
+                if (imageCount > 0) {
+                    holder.storiesProgressView.startStories()
+                }
 
                 val price = item.room.price?.toString() ?: "0.0"
                 holder.name.text = "Price: $$price"
@@ -96,7 +99,7 @@ class CardStackAdapter(
 
                 holder.ivSend.setOnClickListener {
                     val intent = Intent(context, SecondMatchActivity::class.java)
-                    intent.putExtra("secondMatchType", "before")
+                    intent.putExtra("profileIdSecond", item.room._id)
                     context.startActivity(intent)
                 }
 

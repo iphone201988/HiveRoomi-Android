@@ -27,6 +27,7 @@ import com.google.android.material.imageview.ShapeableImageView
 import com.google.gson.Gson
 import com.tech.hive.R
 import com.tech.hive.data.api.Constants
+import com.tech.hive.data.model.HomeRoomTData
 import java.text.SimpleDateFormat
 import java.util.Locale
 import java.util.TimeZone
@@ -34,6 +35,7 @@ import java.util.TimeZone
 object BindingUtils {
     var latitude: Double? = null
     var longitude: Double? = null
+
     fun navigateWithSlide(navController: NavController, destinationId: Int, bundle: Bundle?) {
         val navOptions = NavOptions.Builder().build()
         navController.navigate(destinationId, bundle, navOptions)
@@ -116,24 +118,49 @@ object BindingUtils {
 
     @BindingAdapter("setSingleData")
     @JvmStatic
-    fun setSingleData(text: AppCompatTextView, date: String?) {
-        if (date?.isNotEmpty() == true) {
-            "📍 ${date}"
-        }
-            else {
-                 "📍 No Address found"
+    fun setSingleData(text: AppCompatTextView, date: HomeRoomTData?) {
+        if (date != null) {
+            val address = if (date.address?.isNotEmpty() == true) {
+                "📍 ${date.address}"
+            } else {
+                "📍 No Address found"
             }
+
+            val roomType = if (date.roomType?.isNotEmpty() == true) {
+                "🛏 ${date.roomType}"
+            } else {
+                "🛏 Not found"
+            }
+
+            val roommates = if (date.roommates?.isNotEmpty() == true) {
+                "\uD83D\uDC65 ${date.roommates.size} Roommates"
+            } else {
+                "\uD83D\uDC65 0 Roommates"
+            }
+            text.text = "$address $roomType $roommates"
         }
 
+    }
 
 
     @BindingAdapter("setSmokingData")
     @JvmStatic
-    fun setSmokingData(text: AppCompatTextView, date: String?) {
-        if (date?.isNotEmpty() == true){
-            val utcTime = date
-            val formattedTime = convertUtcToLocalTime(utcTime)
-            text.text = formattedTime
+    fun setSmokingData(text: AppCompatTextView, date: HomeRoomTData?) {
+        if (date != null) {
+            val smokingText = if (date.smoke?.contains("yes", ignoreCase = true) == true) {
+                "\uD83D\uDEAD Yes Smoking"
+            } else {
+                "\uD83D\uDEAD No Smoking"
+            }
+
+            val petsText = if (date.pets == true) {
+                "\uD83D\uDC36 Pets Allowed"
+            } else {
+                "\uD83D\uDC36 No Pets"
+            }
+
+
+            text.text = "$smokingText $petsText"
         }
     }
 
@@ -141,11 +168,11 @@ object BindingUtils {
     @BindingAdapter("setDate")
     @JvmStatic
     fun setDate(text: AppCompatTextView, date: String?) {
-       if (date?.isNotEmpty() == true){
-           val utcTime = date
-           val formattedTime = convertUtcToLocalTime(utcTime)
-           text.text = formattedTime
-       }
+        if (date?.isNotEmpty() == true) {
+            val utcTime = date
+            val formattedTime = convertUtcToLocalTime(utcTime)
+            text.text = formattedTime
+        }
     }
 
     fun convertUtcToLocalTime(utcTime: String): String {

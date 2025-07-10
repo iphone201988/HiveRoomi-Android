@@ -19,10 +19,6 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
-
-
-
-
     <application
         android:name=".App"
         android:allowBackup="true"
@@ -37,6 +33,10 @@
         android:theme="@style/Theme.MyApplication"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
+        <activity
+            android:name=".ui.for_room_mate.settings_screen.ReportActivity"
+            android:exported="false"
+            android:theme="@style/Theme.MyApplication" />
         <activity
             android:name=".ui.room_offering.discover.DiscoverySettingsActivity"
             android:exported="true" />
@@ -112,11 +112,13 @@
         <activity
             android:name=".ui.dashboard.DashboardActivity"
             android:exported="true">
-            <!--            <intent-filter>-->
-            <!--                <action android:name="android.intent.action.MAIN" />-->
 
-            <!--                <category android:name="android.intent.category.LAUNCHER" />-->
-            <!--            </intent-filter>-->
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
+
+
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
         </activity>
         <activity
             android:name=".ui.auth.AuthActivity"
@@ -130,24 +132,19 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".base.permission.PermissionsActivity"
             android:screenOrientation="fullSensor" />
-
 
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.fileProvider"
             android:exported="false"
             android:grantUriPermissions="true">
-
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
         </provider>
-
-
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
@@ -155,7 +152,6 @@
         <meta-data
             android:name="com.facebook.sdk.ClientToken"
             android:value="@string/client_token" />
-
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyBluqaNZKEs9LTEH3WYXjOYRdX6K3K36uE" />

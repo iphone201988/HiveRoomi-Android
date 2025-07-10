@@ -250,12 +250,14 @@
         <item name="android:includeFontPadding">false</item>
         <item name="fontFamily">@font/sf_pro_text_semibold</item>
     </style>
+
     <style name="TextView.SfRegular">
         <item name="android:textColor">@color/white</item>
         <item name="android:textSize">@dimen/_10ssp</item>
         <item name="android:includeFontPadding">false</item>
         <item name="fontFamily">@font/sf_pro_text_regular</item>
     </style>
+
     <style name="TextView.SfMedium">
         <item name="android:textColor">@color/white</item>
         <item name="android:textSize">@dimen/_12ssp</item>
@@ -269,6 +271,7 @@
         <item name="android:fontFamily">@font/inter_medium</item>
         <item name="android:includeFontPadding">false</item>
     </style>
+
     <style name="TextView.Regular2">
         <item name="android:fontFamily">@font/inter_regular</item>
         <item name="android:textColor">@color/text_color_grey</item>
@@ -313,12 +316,15 @@
     <style name="Shape50" parent="">
         <item name="cornerSize">50%</item>
     </style>
+
     <style name="Shape20" parent="">
         <item name="cornerSize">20%</item>
     </style>
+
     <style name="Shape15" parent="">
         <item name="cornerSize">15%</item>
     </style>
+
     <style name="Shape10" parent="">
         <item name="cornerSize">10%</item>
     </style>
@@ -337,14 +343,14 @@
 
 
     <declare-styleable name="DayPickerView">
-        <attr name="colorCurrentDay" format="color"/>
-        <attr name="colorSelectedDayBackground" format="color"/>
-        <attr name="colorSelectedDayText" format="color"/>
-        <attr name="colorPreviousDay" format="color"/>
+        <attr name="colorCurrentDay" format="color" />
+        <attr name="colorSelectedDayBackground" format="color" />
+        <attr name="colorSelectedDayText" format="color" />
+        <attr name="colorPreviousDay" format="color" />
         <attr name="colorNormalDay" format="color" />
         <attr name="colorMonthName" format="color" />
         <attr name="colorDayName" format="color" />
-        <attr name="textSizeDay" format="dimension"/>
+        <attr name="textSizeDay" format="dimension" />
         <attr name="textSizeMonth" format="dimension" />
         <attr name="textSizeDayName" format="dimension" />
         <attr name="headerMonthHeight" format="dimension" />

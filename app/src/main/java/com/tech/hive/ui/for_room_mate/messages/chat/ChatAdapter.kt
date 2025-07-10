@@ -97,6 +97,7 @@ class ChatAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                     ivImageSender.visibility = View.VISIBLE
                     ivHuk.visibility = View.GONE
                     tvSend.visibility = View.GONE
+                    ivPdf1.visibility = View.GONE
                     clRight.visibility = View.GONE
                     ivPdf.visibility = View.GONE
                 }
@@ -104,6 +105,7 @@ class ChatAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 if (isText) {
                     ivImageSender.visibility = View.GONE
                     ivPdf.visibility = View.GONE
+                    ivPdf1.visibility = View.GONE
                     tvSend.visibility = View.VISIBLE
                     clRight.visibility = View.VISIBLE
                     ivHuk.visibility = View.VISIBLE
@@ -114,9 +116,21 @@ class ChatAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                     tvSend.visibility = View.GONE
                     clRight.visibility = View.GONE
                     ivHuk.visibility = View.GONE
+                    ivPdf.visibility = View.VISIBLE
+                    ivPdf1.visibility = View.VISIBLE
+
+
+                    Glide.with(ivPdf1.context).load(item.content)
+                        .placeholder(R.drawable.progress_animation_small)
+                        .diskCacheStrategy(DiskCacheStrategy.ALL).into(ivPdf1)
+
                     loadPdfThumbnail(
-                        ivPdf.context, Constants.BASE_URL_IMAGE + item.content.toString(), ivPdf
+                        ivPdf.context,
+                        Constants.BASE_URL_IMAGE + item.content.toString(),
+                        ivPdf,
+                        ivPdf1
                     )
+
                 }
 
 
@@ -141,6 +155,7 @@ class ChatAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                     ivHuk.visibility = View.GONE
                     tvReceiver.visibility = View.GONE
                     clLeft.visibility = View.GONE
+                    ivPdf1.visibility = View.GONE
                     ivPdf.visibility = View.GONE
                 }
 
@@ -148,6 +163,7 @@ class ChatAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                     ivImageReceiver.visibility = View.GONE
                     ivPdf.visibility = View.GONE
                     tvReceiver.visibility = View.VISIBLE
+                    ivPdf1.visibility = View.GONE
                     clLeft.visibility = View.VISIBLE
                     ivHuk.visibility = View.VISIBLE
                 }
@@ -157,8 +173,13 @@ class ChatAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                     tvReceiver.visibility = View.GONE
                     clLeft.visibility = View.GONE
                     ivHuk.visibility = View.GONE
+                    ivPdf.visibility = View.VISIBLE
+                    ivPdf1.visibility = View.VISIBLE
                     loadPdfThumbnail(
-                        ivPdf.context, Constants.BASE_URL_IMAGE + item.content.toString(), ivPdf
+                        ivPdf.context,
+                        Constants.BASE_URL_IMAGE + item.content.toString(),
+                        ivPdf,
+                        ivPdf1
                     )
                 }
             }
@@ -175,7 +196,13 @@ class ChatAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         }
     }
 
-    fun loadPdfThumbnail(context: Context, pdfUrl: String, imageView: ImageView) {
+
+    fun loadPdfThumbnail(
+        context: Context,
+        pdfUrl: String,
+        imageView: ImageView,
+        imageView1: ImageView
+    ) {
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 val url = URL(pdfUrl)
@@ -200,12 +227,17 @@ class ChatAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 fileDescriptor.close()
 
                 withContext(Dispatchers.Main) {
-                    imageView.setImageBitmap(bitmap)
+                    Glide.with(imageView.context).load(bitmap)
+                        .placeholder(R.drawable.progress_animation_small)
+                        .diskCacheStrategy(DiskCacheStrategy.ALL).into(imageView)
+                    //imageView.setImageBitmap(bitmap)
                     imageView.visibility = View.VISIBLE
+                    imageView1.visibility = View.GONE
                 }
 
             } catch (e: Exception) {
                 imageView.visibility = View.GONE
+                imageView1.visibility = View.GONE
                 e.printStackTrace()
                 withContext(Dispatchers.Main) {
                     Toast.makeText(context, "Failed to load PDF", Toast.LENGTH_SHORT).show()

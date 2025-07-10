@@ -22,7 +22,7 @@ object Constants {
     const val GET_QUIZ = "quiz/get_quiz"
     const val QUIZ_ANSWER = "quiz/user_quiz_answer"
     const val MATCH_LOOKING_ROOMMATE = "match/looking-roommate"
-    const val MATCH_USER_ID = "match/user/:userId"
+    const val MATCH_USER_ID = "match/user/"
     const val MATCH_LIKE = "match/like-dislike"
     const val MATCH_PENDING_LIKE = "match/pending-like"
     const val MATCH_ACCEPT_REJECT = "match/accept-Reject"

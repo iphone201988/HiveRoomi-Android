@@ -219,6 +219,9 @@ data class HomeRoomType(
     val message: String?,
     val pagination: Pagination?,
     val success: Boolean?
+
+
+
 )
 
 data class HomeRoomTData(
@@ -235,7 +238,8 @@ data class HomeRoomTData(
     val smoke: String?,
     val title: String?,
     val userId: String?,
-    val videos: List<Any?>?
+    val videos: List<String?>?
+
 )
 
 
@@ -356,21 +360,6 @@ data class Sender(
 )
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /** Upload Image Response  **/
 data class UploadImageResponse(
     val `data`: UploadImageData?,
@@ -381,3 +370,49 @@ data class UploadImageResponse(
 data class UploadImageData(
     val url: String?
 )
+
+/** Match Profile User Response  **/
+data class MatchProfileUserResponse(
+    val `data`: MatchProfileData?,
+    val success: Boolean?
+)
+
+data class MatchProfileData(
+    val _id: String?,
+    val ageRange: String?,
+    val averageRating: Double?,
+    val bio: String?,
+    val campus: String?,
+    val email: String?,
+    val gender: String?,
+    val instagram: String?,
+    val likeStatus: Int?,
+    val address: String?,
+    val linkedin: String?,
+    val name: String?,
+    val profession: String?,
+    val profileImage: String?,
+    val profileRole: Int?,
+    val providerType: String?,
+    val quizs: List<MatchProfileQuiz?>?,
+    val ratings: List<Rating?>?,
+    val timezone: String?,
+    val totalRatings: Int?
+)
+
+data class MatchProfileQuiz(
+    val answer: String?,
+    val title: String?
+)
+
+data class Rating(
+    val _id: String?,
+    val rating: Int?,
+    val userId: String?
+)
+
+
+
+
+
+
