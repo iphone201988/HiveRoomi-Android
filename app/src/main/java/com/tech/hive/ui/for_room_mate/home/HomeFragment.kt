@@ -40,6 +40,7 @@ import com.tech.hive.ui.for_room_mate.home.cardstackview.SwipeAnimationSetting
 import com.tech.hive.ui.for_room_mate.home.cardstackview.SwipeableMethod
 import com.tech.hive.ui.for_room_mate.home.sample.CardStackAdapter
 import com.tech.hive.ui.for_room_mate.home.sample.SpotDiffCallback
+import com.tech.hive.ui.for_room_mate.home.second.SecondMatchActivity
 import com.tech.hive.ui.notification.NotificationActivity
 import com.tech.hive.ui.room_offering.basic_details.BasicDetailsActivity
 import com.tech.hive.ui.room_offering.discover.DiscoverySettingsActivity
@@ -72,13 +73,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), CardStackListener {
         initView()
         // click
         initOnClick()
-            var userData = sharedPrefManager.getLoginData()
+            var userData = sharedPrefManager.getRole()
         if (userData != null) {
-            binding.userType = userData.profileRole ?: 1
+            binding.userType = userData
             binding.buttonClick = 1
-            binding.check = userData.profileRole ?: 1
-            userTypeLike = userData.profileRole ?: 1
-            if (userData.profileRole == 1) {
+            binding.check = userData ?: 1
+            userTypeLike = userData ?: 1
+            if (userData == 1) {
                 // api call
                 viewModel.getHomeApi(Constants.MATCH_LOOKING_ROOMMATE)
             } else {
@@ -104,8 +105,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), CardStackListener {
         // home adapter
         homeAdapter = SimpleRecyclerViewAdapter(R.layout.rv_discover_item, BR.bean) { v, m, pos ->
             when (v.id) {
-                R.id.clAnswer -> {
-
+                R.id.clImage -> {
+                    val intent = Intent(context, SecondMatchActivity::class.java)
+                    intent.putExtra("profileIdSecond", m._id)
+                    startActivity(intent)
                 }
             }
         }

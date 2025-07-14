@@ -13,6 +13,10 @@
             name="typeCheck"
             type="Integer" />
 
+        <variable
+            name="bean"
+            type="com.tech.hive.data.model.UserProfile" />
+
         <import type="android.view.View" />
 
     </data>
@@ -39,6 +43,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_20sdp"
+                android:visibility="invisible"
                 android:text="@string/profile"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -47,6 +52,7 @@
                 android:id="@+id/ivSettings"
                 android:layout_width="@dimen/_18sdp"
                 android:layout_height="@dimen/_18sdp"
+                android:visibility="invisible"
                 android:onClick="@{v->vm.onClick(v)}"
                 android:src="@drawable/ic_settings"
                 app:layout_constraintBottom_toBottomOf="@id/tvTitle"
@@ -60,7 +66,8 @@
             android:layout_width="@dimen/_80sdp"
             android:layout_height="@dimen/_80sdp"
             android:layout_marginTop="-50dp"
-            android:src="@drawable/dummy_person"
+            setImageFromUrl="@{bean.profileImage}"
+            android:scaleType="centerCrop"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/clHeader"
@@ -72,6 +79,7 @@
             android:layout_height="@dimen/_18sdp"
             android:layout_marginTop="@dimen/_5sdp"
             android:layout_marginEnd="@dimen/_3sdp"
+            android:visibility="invisible"
             android:src="@drawable/ic_check_mark"
             app:layout_constraintEnd_toStartOf="@id/tvPersonName"
             app:layout_constraintTop_toBottomOf="@id/ivPerson" />
@@ -82,7 +90,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_15sdp"
-            android:text="Elena Salvatore"
+            android:text="@{bean.name}"
             android:textColor="@color/start_color"
             android:textSize="@dimen/_16ssp"
             app:layout_constraintBottom_toBottomOf="@id/ivCheck"
@@ -91,8 +99,10 @@
             app:layout_constraintTop_toTopOf="@id/ivCheck" />
 
         <androidx.core.widget.NestedScrollView
+            android:id="@+id/clNested"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:visibility="gone"
             android:layout_marginVertical="@dimen/_10sdp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvPersonName">
@@ -119,7 +129,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:gravity="end"
-                    android:text="Elena Salvatore"
+                    android:text="@{bean.name}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@id/tvNameTitle"
                     app:layout_constraintTop_toTopOf="@id/tvNameTitle" />
@@ -141,7 +151,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:gravity="end"
-                    android:text="25"
+                    android:text="@{bean.ageRange}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@id/tvAgeTitle"
                     app:layout_constraintTop_toTopOf="@id/tvAgeTitle" />
@@ -163,7 +173,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:gravity="end"
-                    android:text="Male"
+                    android:text="@{bean.gender}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@id/tvGenderTitle"
                     app:layout_constraintTop_toTopOf="@id/tvGenderTitle" />
@@ -185,7 +195,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:gravity="end"
-                    android:text="Graphic Designer"
+                    android:text="@{bean.profession}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@id/tvProfessionTitle"
                     app:layout_constraintTop_toTopOf="@id/tvProfessionTitle" />
@@ -207,7 +217,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:gravity="end"
-                    android:text="Milan, Italy"
+                    android:text="@{bean.address}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@id/tvLocationTitle"
                     app:layout_constraintTop_toTopOf="@id/tvLocationTitle" />
@@ -228,7 +238,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_5sdp"
-                    android:text="I  love houseplants and quiet mornings. Looking for respectful, clean roommates. I work remotely 9–5."
+                    android:text="@{bean.bio}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tvBioTitle" />
@@ -252,9 +262,33 @@
                         android:includeFontPadding="false"
                         android:text="@string/preferences"
                         android:textColor="@color/start_color"
-                        android:visibility="@{typeCheck==1?View.VISIBLE:View.GONE}"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
+
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tvRoomTitle"
+                        style="@style/TextView.Medium2"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:text="@string/room_type"
+                        android:visibility="@{typeCheck==2?View.VISIBLE:View.GONE}"
+                        app:layout_constraintEnd_toStartOf="@id/tvRoom"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tvPreferences" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tvRoom"
+                        style="@style/TextView.Regular2"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:gravity="end"
+                        android:text="Studio"
+                        android:visibility="@{typeCheck==2?View.VISIBLE:View.GONE}"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/tvRoomTitle"
+                        app:layout_constraintTop_toTopOf="@id/tvRoomTitle" />
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/tvBudgetTitle"
@@ -263,10 +297,9 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_5sdp"
                         android:text="@string/budget"
-                        android:visibility="@{typeCheck==1?View.VISIBLE:View.GONE}"
                         app:layout_constraintEnd_toStartOf="@id/tvBudget"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/tvPreferences" />
+                        app:layout_constraintTop_toBottomOf="@id/tvRoom" />
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/tvBudget"
@@ -275,7 +308,6 @@
                         android:layout_height="wrap_content"
                         android:gravity="end"
                         android:text="$700"
-                        android:visibility="@{typeCheck==1?View.VISIBLE:View.GONE}"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@id/tvBudgetTitle"
                         app:layout_constraintTop_toTopOf="@id/tvBudgetTitle" />
@@ -287,7 +319,6 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_5sdp"
                         android:text="@string/pets"
-                        android:visibility="@{typeCheck==1?View.VISIBLE:View.GONE}"
                         app:layout_constraintEnd_toStartOf="@id/tvPets"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/tvBudget" />
@@ -299,7 +330,6 @@
                         android:layout_height="wrap_content"
                         android:gravity="end"
                         android:text="Allowed"
-                        android:visibility="@{typeCheck==1?View.VISIBLE:View.GONE}"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@id/tvPetsTitle"
                         app:layout_constraintTop_toTopOf="@id/tvPetsTitle" />
@@ -311,7 +341,6 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_5sdp"
                         android:text="@string/smoking"
-                        android:visibility="@{typeCheck==1?View.VISIBLE:View.GONE}"
                         app:layout_constraintEnd_toStartOf="@id/tvSmoking"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/tvPets" />
@@ -323,7 +352,6 @@
                         android:layout_height="wrap_content"
                         android:gravity="end"
                         android:text="No"
-                        android:visibility="@{typeCheck==1?View.VISIBLE:View.GONE}"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@id/tvSmokingTitle"
                         app:layout_constraintTop_toTopOf="@id/tvSmokingTitle" />
@@ -335,7 +363,6 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_5sdp"
                         android:text="@string/overnight_guests"
-                        android:visibility="@{typeCheck==1?View.VISIBLE:View.GONE}"
                         app:layout_constraintEnd_toStartOf="@id/tvOverNight"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/tvSmoking" />
@@ -347,7 +374,6 @@
                         android:layout_height="wrap_content"
                         android:gravity="end"
                         android:text="Occassionally"
-                        android:visibility="@{typeCheck==1?View.VISIBLE:View.GONE}"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@id/tvOverNightTitle"
                         app:layout_constraintTop_toTopOf="@id/tvOverNightTitle" />
@@ -359,7 +385,6 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_5sdp"
                         android:text="@string/cleanliness"
-                        android:visibility="@{typeCheck==1?View.VISIBLE:View.GONE}"
                         app:layout_constraintEnd_toStartOf="@id/tvClean"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/tvOverNight" />
@@ -371,7 +396,6 @@
                         android:layout_height="wrap_content"
                         android:gravity="end"
                         android:text="4/5"
-                        android:visibility="@{typeCheck==1?View.VISIBLE:View.GONE}"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@id/tvCleanTitle"
                         app:layout_constraintTop_toTopOf="@id/tvCleanTitle" />
@@ -383,7 +407,6 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_5sdp"
                         android:text="@string/sleep_schedule"
-                        android:visibility="@{typeCheck==1?View.VISIBLE:View.GONE}"
                         app:layout_constraintEnd_toStartOf="@id/tvSleep"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/tvClean" />
@@ -395,7 +418,6 @@
                         android:layout_height="wrap_content"
                         android:gravity="end"
                         android:text="11 PM"
-                        android:visibility="@{typeCheck==1?View.VISIBLE:View.GONE}"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@id/tvSleepTitle"
                         app:layout_constraintTop_toTopOf="@id/tvSleepTitle" />
@@ -410,7 +432,7 @@
                         android:includeFontPadding="false"
                         android:text="@string/preferences"
                         android:textColor="@color/start_color"
-                        android:visibility="@{typeCheck==2?View.VISIBLE:View.GONE}"
+                        android:visibility="@{typeCheck==12?View.VISIBLE:View.GONE}"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -421,7 +443,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_5sdp"
                         android:text="@string/room_type"
-                        android:visibility="@{typeCheck==2?View.VISIBLE:View.GONE}"
+                        android:visibility="@{typeCheck==12?View.VISIBLE:View.GONE}"
                         app:layout_constraintEnd_toStartOf="@id/tvRoom2"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/tvPreferences2" />
@@ -433,7 +455,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="end"
                         android:text="Studio"
-                        android:visibility="@{typeCheck==2?View.VISIBLE:View.GONE}"
+                        android:visibility="@{typeCheck==12?View.VISIBLE:View.GONE}"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@id/tvRoomTitle2"
                         app:layout_constraintTop_toTopOf="@id/tvRoomTitle2" />
@@ -445,7 +467,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_5sdp"
                         android:text="@string/smoking"
-                        android:visibility="@{typeCheck==2?View.VISIBLE:View.GONE}"
+                        android:visibility="@{typeCheck==12?View.VISIBLE:View.GONE}"
                         app:layout_constraintEnd_toStartOf="@id/tvSmoking2"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/tvRoom2" />
@@ -457,7 +479,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="end"
                         android:text="Never"
-                        android:visibility="@{typeCheck==2?View.VISIBLE:View.GONE}"
+                        android:visibility="@{typeCheck==12?View.VISIBLE:View.GONE}"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@id/tvSmokingTitle2"
                         app:layout_constraintTop_toTopOf="@id/tvSmokingTitle2" />
@@ -469,7 +491,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_5sdp"
                         android:text="@string/pets"
-                        android:visibility="@{typeCheck==2?View.VISIBLE:View.GONE}"
+                        android:visibility="@{typeCheck==12?View.VISIBLE:View.GONE}"
                         app:layout_constraintEnd_toStartOf="@id/tvPets2"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/tvSmoking2" />
@@ -481,7 +503,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="end"
                         android:text="Yes"
-                        android:visibility="@{typeCheck==2?View.VISIBLE:View.GONE}"
+                        android:visibility="@{typeCheck==12?View.VISIBLE:View.GONE}"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@id/tvPetsTitle2"
                         app:layout_constraintTop_toTopOf="@id/tvPetsTitle2" />
@@ -493,7 +515,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_5sdp"
                         android:text="@string/preferred_housemates"
-                        android:visibility="@{typeCheck==2?View.VISIBLE:View.GONE}"
+                        android:visibility="@{typeCheck==12?View.VISIBLE:View.GONE}"
                         app:layout_constraintEnd_toStartOf="@id/tvHouseMate2"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/tvPets2" />
@@ -505,7 +527,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="end"
                         android:text="Workers"
-                        android:visibility="@{typeCheck==2?View.VISIBLE:View.GONE}"
+                        android:visibility="@{typeCheck==12?View.VISIBLE:View.GONE}"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@id/tvHouseMateTitle2"
                         app:layout_constraintTop_toTopOf="@id/tvHouseMateTitle2" />
@@ -517,10 +539,10 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_5sdp"
                         android:text="@string/cleanliness"
-                        android:visibility="@{typeCheck==2?View.VISIBLE:View.GONE}"
+                        android:visibility="@{typeCheck==12?View.VISIBLE:View.GONE}"
                         app:layout_constraintEnd_toStartOf="@id/tvClean2"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/tvHouseMateTitle2" />
+                        app:layout_constraintTop_toBottomOf="@id/tvHouseMate2" />
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/tvClean2"
@@ -529,10 +551,12 @@
                         android:layout_height="wrap_content"
                         android:gravity="end"
                         android:text="4/5"
-                        android:visibility="@{typeCheck==2?View.VISIBLE:View.GONE}"
+                        android:visibility="@{typeCheck==12?View.VISIBLE:View.GONE}"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@id/tvCleanTitle2"
                         app:layout_constraintTop_toTopOf="@id/tvCleanTitle2" />
+
+
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
 
@@ -540,7 +564,7 @@
                     android:id="@+id/clSearch"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:visibility="@{typeCheck==2?View.VISIBLE:View.GONE}"
+                    android:visibility="@{typeCheck==12?View.VISIBLE:View.GONE}"
                     app:layout_constraintTop_toBottomOf="@id/clPreference">
 
                     <androidx.appcompat.widget.AppCompatTextView
@@ -762,7 +786,6 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:gravity="end"
-                    android:text="sdsdsdsd"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@id/tvInstagramAcc"
                     app:layout_constraintTop_toTopOf="@id/tvInstagramAcc" />
@@ -784,7 +807,6 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:gravity="end"
-                    android:text="Not Connected"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@id/tvLinkedinAcc"
                     app:layout_constraintTop_toTopOf="@id/tvLinkedinAcc" />
@@ -858,6 +880,69 @@
                     app:layout_constraintBottom_toBottomOf="@+id/tvChangePassword"
                     app:layout_constraintEnd_toEndOf="@+id/tvChangePassword"
                     app:layout_constraintTop_toTopOf="@+id/tvChangePassword" />
+
+
+
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvChangeRole"
+                    style="@style/TextView.Medium2"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_38sdp"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:background="@drawable/unselect_edit_text_bg_color"
+                    android:gravity="center_vertical"
+                    android:onClick="@{v->vm.onClick(v)}"
+                    android:paddingStart="@dimen/_10sdp"
+                    android:paddingEnd="@dimen/_40sdp"
+                    android:text="@string/change_role"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvChangePassword" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/ivChangeRole"
+                    android:layout_width="@dimen/_27sdp"
+                    android:layout_height="@dimen/_27sdp"
+                    android:layout_marginEnd="@dimen/_14sdp"
+                    android:onClick="@{v->vm.onClick(v)}"
+                    android:padding="@dimen/_5sdp"
+                    android:rotation="270"
+                    android:src="@drawable/arrow_up"
+                    app:layout_constraintBottom_toBottomOf="@+id/tvChangeRole"
+                    app:layout_constraintEnd_toEndOf="@+id/tvChangeRole"
+                    app:layout_constraintTop_toTopOf="@+id/tvChangeRole" />
+
+
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvChangeLanguage"
+                    style="@style/TextView.Medium2"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_38sdp"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:background="@drawable/unselect_edit_text_bg_color"
+                    android:gravity="center_vertical"
+                    android:onClick="@{v->vm.onClick(v)}"
+                    android:paddingStart="@dimen/_10sdp"
+                    android:paddingEnd="@dimen/_40sdp"
+                    android:text="@string/change_language"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvChangeRole" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/ivChangeLanguage"
+                    android:layout_width="@dimen/_27sdp"
+                    android:layout_height="@dimen/_27sdp"
+                    android:layout_marginEnd="@dimen/_14sdp"
+                    android:onClick="@{v->vm.onClick(v)}"
+                    android:padding="@dimen/_5sdp"
+                    android:rotation="270"
+                    android:src="@drawable/arrow_up"
+                    app:layout_constraintBottom_toBottomOf="@+id/tvChangeLanguage"
+                    app:layout_constraintEnd_toEndOf="@+id/tvChangeLanguage"
+                    app:layout_constraintTop_toTopOf="@+id/tvChangeLanguage" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.core.widget.NestedScrollView>
 

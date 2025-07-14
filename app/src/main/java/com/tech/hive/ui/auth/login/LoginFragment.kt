@@ -394,9 +394,11 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
                                     if (myDataModel.data != null) {
                                         sharedPrefManager.setLoginData(myDataModel.data)
                                         sharedPrefManager.saveToken(myDataModel.data.token.toString())
+                                        sharedPrefManager.saveRole(myDataModel.data.profileRole)
                                         val bundle = Bundle().apply {
                                             putString("userEmail", myDataModel.data.email)
                                         }
+
                                         if (myDataModel.data.sendOtp == true) {
                                             BindingUtils.navigateWithSlide(
                                                 findNavController(),
@@ -467,6 +469,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
                                     if (myDataModel.data != null) {
                                         sharedPrefManager.setLoginData(myDataModel.data)
                                         sharedPrefManager.saveToken(myDataModel.data.token.toString())
+                                        sharedPrefManager.saveRole(myDataModel.data.profileRole)
                                         if (myDataModel.data.isProfileComplete == false) {
                                             if (myDataModel.data.profileRole == 3) {
                                                 BindingUtils.navigateWithSlide(

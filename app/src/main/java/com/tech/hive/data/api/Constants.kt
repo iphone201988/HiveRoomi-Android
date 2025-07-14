@@ -1,12 +1,13 @@
 package com.tech.hive.data.api
 
+import com.tech.hive.BuildConfig
+
 
 object Constants {
 
-    const val BASE_URL = "http://13.51.228.96:8111/api/v1/"
-    const val BASE_URL_IMAGE = "http://13.51.228.96:8111"
-    const val SOCKET_URL = "http://13.51.228.96:8111"
-    const val GOOGLE_API_KEY = "AIzaSyD5Jt2e9ocVmXovnsOsdmtdhPRkP8m9IhQ"
+    const val BASE_URL = BuildConfig.BASE_URL
+    const val BASE_URL_IMAGE = BuildConfig.MEDIA_BASE_URL
+    const val SOCKET_URL = BuildConfig.SOCKET_URL
 
     var userType = 0
     var userLanguage = "en"
@@ -28,11 +29,12 @@ object Constants {
     const val MATCH_ACCEPT_REJECT = "match/accept-Reject"
     const val GET_MATCH = "match/all"
     const val MATCH_LOOKING_LISTING = "match/looking-for-listing"
-    const val MATCH_LISTING = "match/listing"
+    const val MATCH_LISTING = "match/listing/"
     const val GET_CHAT = "chat/me"
     const val CHAT_MESSAGE = "chat/messages"
     const val USER_UPLOAD = "user/upload"
     const val USER_BLOCK = "user/block"
+    const val USER_RATING = "user/rating"
     const val USER_REPORT = "user/report"
     const val USER_FEEDBACK = "user/feedback"
     const val USER_NOTIFICATION = "user/notifications"

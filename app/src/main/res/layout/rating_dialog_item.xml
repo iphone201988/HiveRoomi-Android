@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="callback"
+            type="com.tech.hive.base.utils.BaseCustomDialog.Listener" />
+
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_8sdp"
+        android:background="@drawable/green_bg"
+        android:backgroundTint="@color/white">
+
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/ivClose"
+            android:layout_width="@dimen/_28sdp"
+            android:layout_height="@dimen/_28sdp"
+            android:layout_marginEnd="@dimen/_15sdp"
+            android:padding="@dimen/_5sdp"
+            android:src="@drawable/ic_close"
+            app:layout_constraintBottom_toBottomOf="@+id/tvTitle"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/tvTitle" />
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvTitle"
+            style="@style/TextView.Medium"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:gravity="center"
+            android:text="Rating Overview"
+            android:textColor="@color/rating_header"
+            android:textSize="@dimen/_15ssp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- Rating Number -->
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvRating"
+            style="@style/TextView.Bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:text="0.0"
+            android:textColor="@color/rating_header"
+            android:textSize="@dimen/_26ssp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvTitle" />
+
+        <!-- Rating Number -->
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvRating1"
+            style="@style/TextView.Medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_2sdp"
+            android:layout_marginBottom="@dimen/_8sdp"
+            android:text="/5"
+            android:textColor="@color/rating_header"
+            android:textSize="@dimen/_13ssp"
+            app:layout_constraintBottom_toBottomOf="@+id/tvRating"
+            app:layout_constraintStart_toEndOf="@+id/tvRating" />
+
+        <per.wsj.library.AndRatingBar
+            android:id="@+id/ratingBar"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/_24sdp"
+            android:numStars="5"
+            android:stepSize="0.5"
+            android:isIndicator="true"
+            android:rating="0"
+            app:starSpacing="@dimen/_5sdp"
+            app:starColor="@color/yellow_bg"
+            app:starDrawable="@drawable/ic_star"
+            android:layout_marginTop="@dimen/_8sdp"
+            app:bgColor="@color/yellow_bg"
+            app:bgDrawable="@drawable/start_unselected"
+            app:layout_constraintTop_toBottomOf="@id/tvRating1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginBottom="@dimen/_8sdp" />
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvRatingCount"
+            style="@style/TextView.Medium"
+            android:layout_width="wrap_content"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:layout_height="wrap_content"
+            android:text="0 ratings"
+            android:textColor="@color/rating_header"
+            android:textSize="@dimen/_13ssp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ratingBar" />
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/llUserRating"
+            android:layout_width="0dp"
+            app:layout_constraintWidth_percent="0.65"
+            android:layout_height="@dimen/_42sdp"
+            android:layout_marginTop="@dimen/_18sdp"
+
+            android:layout_marginHorizontal="@dimen/_15sdp"
+            android:backgroundTint="@color/white"
+            android:elevation="@dimen/_8sdp"
+            android:background="@drawable/green_bg"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvRatingCount">
+
+
+            <per.wsj.library.AndRatingBar
+                android:id="@+id/llStars"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_24sdp"
+                android:numStars="5"
+                android:stepSize="0.5"
+                android:layout_marginHorizontal="@dimen/_8sdp"
+                android:isIndicator="false"
+                android:rating="0"
+                app:starSpacing="@dimen/_5sdp"
+                app:starColor="@color/yellow_bg"
+                app:starDrawable="@drawable/ic_star"
+                app:bgColor="@color/yellow_bg"
+                app:bgDrawable="@drawable/start_unselected"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+          />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            style="@style/TextView.Medium"
+            android:layout_width="@dimen/_60sdp"
+            android:layout_height="@dimen/_22sdp"
+            android:layout_marginStart="@dimen/_15sdp"
+            android:visibility="invisible"
+            android:background="@drawable/rate_btn_item"
+            android:onClick="@{v->callback.onViewClick(v)}"
+            app:layout_constraintStart_toEndOf="@+id/llUserRating"
+            app:layout_constraintTop_toBottomOf="@+id/llUserRating" />
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/btnContinue"
+            style="@style/TextView.Medium"
+            android:layout_width="@dimen/_50sdp"
+            android:layout_height="@dimen/_38sdp"
+            android:layout_marginStart="@dimen/_15sdp"
+            android:background="@drawable/rate_btn_item"
+            android:onClick="@{v->callback.onViewClick(v)}"
+            app:layout_constraintBottom_toBottomOf="@+id/llUserRating"
+            app:layout_constraintStart_toEndOf="@+id/llUserRating"
+            app:layout_constraintTop_toTopOf="@+id/llUserRating" />
+
+
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="@dimen/_28sdp"
+            android:layout_height="@dimen/_28sdp"
+            android:src="@drawable/arroe"
+            app:layout_constraintBottom_toBottomOf="@+id/btnContinue"
+            app:layout_constraintStart_toStartOf="@+id/btnContinue"
+            app:layout_constraintEnd_toEndOf="@+id/btnContinue"
+            app:layout_constraintTop_toTopOf="@+id/btnContinue" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</layout>

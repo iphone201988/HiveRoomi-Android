@@ -265,6 +265,8 @@
     <string name="create_new_listing">Create New Listing</string>
     <string name="delete">Delete</string>
     <string name="are_you_sure_to_logout">Are you sure you want to logout ?</string>
+    <string name="are_you_sure_to_block">Are you sure you want to block this user ?</string>
+    <string name="are_you_sure_to_unblock">Are you sure you want to unblock this user ?</string>
     <string name="are_you_sure_to_delete_account">Are you sure you want to delete\nthis account?</string>
     <string name="welcome_to_nour_community">Welcome to\nOur Community</string>
     <string name="community_title">To keep our community safe, respectful, and inclusive, we’ve set a few ground rules. Please read and follow them to ensure a positive experience for everyone.</string>
@@ -381,6 +383,8 @@
     <string name="yes">Yes</string>
     <string name="yes_only">yes</string>
     <string name="no">No</string>
+    <string name="block">Block</string>
+    <string name="unblock">Unblock</string>
     <string name="no_only">no</string>
     <string name="outside_only">Outside Only</string>
     <string name="no_privacy_only">no_privacy</string>
@@ -464,5 +468,14 @@
     </string>
     <string name="report_reason">Report Reason</string>
     <string name="please_describe">Please describe</string>
+    <string name="you_have_block_this_user">"you have block this user "</string>
+    <string name="user_data_is_empty">User data is empty.</string>
+    <string name="no_matches_found">No matches found.</string>
+    <string name="no_message_yet">No message yet.</string>
+    <string name="no_pending_request">No pending request.</string>
+    <string name="change_language">Change Language</string>
+    <string name="change_role">Change Role</string>
+    <string name="save">Save</string>
+    <string name="change">Change</string>
 
 </resources>

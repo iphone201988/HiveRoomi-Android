@@ -10,6 +10,7 @@ import androidx.appcompat.widget.AppCompatTextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.tech.hive.R
 import com.tech.hive.data.api.Constants
 import com.tech.hive.ui.for_room_mate.home.CardItem
@@ -45,7 +46,18 @@ class CardStackAdapter(
                 holder.parties.text = item.user.campus ?: "No Campus Info"
 
                 Glide.with(holder.image).load(Constants.BASE_URL_IMAGE + item.user.profileImage)
+                    .placeholder(R.drawable.progress_animation_small)
+                    .error(R.drawable.home_dummy_icon)
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .into(holder.image)
+
+
+
+                holder.ivSend.setOnClickListener {
+                    val intent = Intent(context, MatchedProfileActivity::class.java)
+                    intent.putExtra("profileIdFirst", item.user._id)
+                    context.startActivity(intent)
+                }
 
                 holder.ivSend.setOnClickListener {
                     val intent = Intent(context, MatchedProfileActivity::class.java)
@@ -94,7 +106,11 @@ class CardStackAdapter(
                 holder.tvTitle2.text = "$smoking $pets"
 
                 val imageUrl = item.room.images?.firstOrNull()
+
                 Glide.with(holder.image).load(Constants.BASE_URL_IMAGE + (imageUrl ?: ""))
+                    .placeholder(R.drawable.progress_animation_small)
+                    .error(R.drawable.home_dummy_icon)
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .into(holder.image)
 
                 holder.ivSend.setOnClickListener {
@@ -112,55 +128,6 @@ class CardStackAdapter(
             }
         }
     }
-
-
-    /*override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val spot = spots[position]
-        if (Constants.userType == 1) {
-            holder.clFirst.visibility = View.VISIBLE
-            holder.clSecond.visibility = View.GONE
-            holder.tvTitle.visibility = View.INVISIBLE
-            holder.storiesProgressView.visibility = View.GONE
-            holder.reverse.visibility = View.GONE
-            holder.skip.visibility = View.GONE
-        } else {
-            holder.clFirst.visibility = View.GONE
-            holder.clSecond.visibility = View.VISIBLE
-            holder.tvTitle.visibility = View.VISIBLE
-            holder.storiesProgressView.setStoriesCount(spots.size)
-            holder.storiesProgressView.setStoryDuration(3000L)
-            holder.storiesProgressView.setStoriesListener(this)
-            holder.storiesProgressView.startStories(0)
-        }
-        holder.name.text = spot.name + spot.ageRange
-        holder.profession.text = spot.profession
-        holder.money.text = spot.ageRange
-        holder.parties.text = spot.campus ?:"dfsdsdfsdfd"
-
-
-        Glide.with(holder.image)
-                .load(Constants.BASE_URL_IMAGE+spot.profileImage)
-                .into(holder.image)
-
-        holder.ivSend.setOnClickListener {
-            if (Constants.userType == 1) {
-                val intent = Intent(context, MatchedProfileActivity::class.java)
-                intent.putExtra("matchType", "before")
-                context.startActivity(intent)
-            } else if (Constants.userType == 2) {
-                val intent = Intent(context, SecondMatchActivity::class.java)
-                intent.putExtra("secondMatchType", "before")
-                context.startActivity(intent)
-            }
-        }
-
-        holder.reverse.setOnClickListener {
-            holder.storiesProgressView.reverse()
-        }
-        holder.skip.setOnClickListener {
-            holder.storiesProgressView.skip()
-        }
-    }*/
 
 
     override fun getItemCount(): Int = items.size

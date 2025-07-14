@@ -43,7 +43,6 @@ class QuizQuestionFragment : BaseFragment<FragmentQuizQuestionBinding>() {
     override fun onCreateView(view: View) {
         // view
         initView()
-//        viewModel.getQuizQuestion(Constants.GET_QUIZ)
 
         // observer
         initObserver()
@@ -77,10 +76,11 @@ class QuizQuestionFragment : BaseFragment<FragmentQuizQuestionBinding>() {
         if (currentPageIndex >= questionsPerPage.size) {
             binding.btnNext.text = getString(R.string.continues)
 
+            Log.d("dgdfgdffd", "loadNextPage: $answerSendResponse")
 
-            viewModel.quizAnswerApi(
-                Constants.userLanguage, Constants.QUIZ_ANSWER, request = answerSendResponse
-            )
+//            viewModel.quizAnswerApi(
+//                Constants.userLanguage, Constants.QUIZ_ANSWER, request = answerSendResponse
+//            )
 
             return
         }

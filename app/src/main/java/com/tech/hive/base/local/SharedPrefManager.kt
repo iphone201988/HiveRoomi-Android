@@ -14,6 +14,7 @@ class SharedPrefManager @Inject constructor(private val sharedPreferences: Share
         const val USER_TOKEN = "userToken"
         const val USER_PROFILE = "UserProfile"
         const val USER_ID = "userId"
+        const val ROLE_TYPE = "userId"
     }
 
     fun setLoginData(bean: LoginData) {
@@ -49,6 +50,14 @@ class SharedPrefManager @Inject constructor(private val sharedPreferences: Share
     fun getSide(): String? {
         val token: String? = sharedPreferences.getString(KEY.USER_ID, "1")
         return token
+    }
+
+    fun saveRole(role: Int) {
+        sharedPreferences.edit().putInt(KEY.ROLE_TYPE, role).apply()
+    }
+
+    fun getRole(): Int {
+        return sharedPreferences.getInt(KEY.ROLE_TYPE, 1)
     }
 
     fun clear() {

@@ -43,6 +43,8 @@
 
     <color name="green">#4CAF50</color>
     <color name="red">#D41111</color>
+    <color name="rating_header">#303030</color>
+    <color name="yellow_bg">#FFBB00</color>
 
 
 

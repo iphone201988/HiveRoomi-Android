@@ -6,7 +6,13 @@ data class CommonResponse(
     val message: String?, val success: Boolean?
 )
 
+data class RatingsResponse(
+    val `data`: Data?, val message: String?, val success: Boolean?
+)
 
+data class Data(
+    val averageRating: Double?, val totalRatings: Int?
+)
 
 /** login and signup response ***/
 data class LoginResponse(
@@ -24,11 +30,13 @@ data class LoginData(
     val name: String?,
     val otp: Int?,
     val profileImage: String?,
-    val profileRole: Int?,
+    val profileRole: Int,
     val sendOtp: Boolean?,
     val timezone: String?,
     val token: String?,
     val totalQuizDone: Int?
+
+
 )
 
 /** Verify account response ***/
@@ -51,21 +59,16 @@ data class VerifyData(
 
 /** resend otp  response ***/
 data class ResendOtpResponse(
-    val `data`: ResendOtpData?,
-    val message: String?,
-    val success: Boolean?
+    val `data`: ResendOtpData?, val message: String?, val success: Boolean?
 )
 
 data class ResendOtpData(
-    val _id: String?,
-    val email: String?
+    val _id: String?, val email: String?
 )
 
 /** user profile response ***/
 data class UserProfileResponse(
-    val `data`: UserProfileData?,
-    val message: String?,
-    val success: Boolean?
+    val `data`: UserProfileData?, val message: String?, val success: Boolean?
 )
 
 data class UserProfileData(
@@ -108,20 +111,16 @@ data class UserProfileData(
 )
 
 data class LinkedAccount(
-    val _id: String?,
-    val socialId: String?,
-    val socialType: Int?
+    val _id: String?, val socialId: String?, val socialType: Int?
 )
 
 data class Location(
-    val coordinates: List<Double?>?,
-    val type: String?
+    val coordinates: List<Double?>?, val type: String?
 )
+
 /*** quiz question response ***/
 data class QuizQuestionResponse(
-    val `data`: List<QuestionData?>?,
-    val message: String?,
-    val success: Boolean?
+    val `data`: List<QuestionData?>?, val message: String?, val success: Boolean?
 )
 
 data class QuestionData(
@@ -133,8 +132,7 @@ data class QuestionData(
 )
 
 data class Quiz(
-    val group: String?,
-    val groupValue: List<GroupValue?>?
+    val group: String?, val groupValue: List<GroupValue?>?
 )
 
 data class GroupValue(
@@ -144,19 +142,16 @@ data class GroupValue(
     val quizPosition: Int?,
     val title: String?,
     val type: String?,
-    var selectedAnswer : Boolean =false
+    var selectedAnswer: Boolean = false
 )
 
 data class Option(
-    val label: String?,
-    val value: String?
+    val label: String?, val value: String?
 )
 
 /** quiz answer model **/
 data class QuizAnswerResponse(
-    val `data`: QuizAnswerData?,
-    val message: String?,
-    val success: Boolean?
+    val `data`: QuizAnswerData?, val message: String?, val success: Boolean?
 )
 
 data class QuizAnswerData(
@@ -179,6 +174,7 @@ data class QuizAnswerData(
     val token: String?,
     val totalQuizDone: Int?
 )
+
 /** home api model **/
 data class HomeApiResponse(
     val `data`: List<HomeApiData?>?,
@@ -203,14 +199,11 @@ data class HomeApiData(
     val timezone: String?
 
 
-
 )
 
 
-
 data class HomeApiDataQuiz(
-    val answer: String?,
-    val title: String?
+    val answer: String?, val title: String?
 )
 
 /** second type home api model **/
@@ -219,7 +212,6 @@ data class HomeRoomType(
     val message: String?,
     val pagination: Pagination?,
     val success: Boolean?
-
 
 
 )
@@ -238,16 +230,13 @@ data class HomeRoomTData(
     val smoke: String?,
     val title: String?,
     val userId: String?,
-    val videos: List<String?>?
+    val videos: String?
 
 )
 
 
-
 data class Roommate(
-    val _id: String?,
-    val age: Int?,
-    val gender: String?
+    val _id: String?, val age: Int?, val gender: String?
 )
 
 
@@ -264,9 +253,12 @@ data class PendingMatchData(
     val createdAt: String?,
     val status: Int?,
     val type: String?,
-    val userId: UserId?
-)
+    val userId: UserId?,
+    val listingId: ListingId?,
 
+
+
+)
 
 data class UserId(
     val _id: String?,
@@ -275,6 +267,35 @@ data class UserId(
     val name: String?,
     val profileImage: String?
 )
+
+
+data class ListingId(
+    val _id: String?,
+    val address: String?,
+    val description: String?,
+    val images: List<String?>?,
+    val latitude: Double?,
+    val likeCount: Int?,
+    val longitude: Double?,
+    val pets: Boolean?,
+    val price: Int?,
+    val roomType: String?,
+    val roommates: List<ListingRoommate?>?,
+    val smoke: String?,
+    val title: String?,
+    val videos: String?
+)
+
+
+data class ListingRoommate(
+    val _id: String?,
+    val age: Int?,
+    val gender: String?
+)
+
+
+
+
 
 /** Get Chat Response  **/
 data class GetChatResponse(
@@ -287,22 +308,15 @@ data class GetChatResponse(
 )
 
 data class GetChatData(
-    val _id: String?,
-    val messages: Messages?,
-    val otherUser: OtherUser?,
-    val updatedAt: String?
+    val _id: String?, val messages: Messages?, val otherUser: OtherUser?, val updatedAt: String?
 )
 
 data class OnlineUser(
-    val _id: String?,
-    val otherUser: OtherUser?,
-    val updatedAt: String?
+    val _id: String?, val otherUser: OtherUser?, val updatedAt: String?
 )
 
 data class Pagination(
-    val limit: Int?,
-    val page: Int?,
-    val total: Int?
+    val limit: Int?, val page: Int?, val total: Int?
 )
 
 data class Messages(
@@ -321,13 +335,14 @@ data class Messages(
 
 /** Get User Message Response  **/
 data class GetUserMessageResponse(
-    val checkUserBlock: Any?,
+    val checkUserBlock:CheckUserBlock?,
     val `data`: List<GetUserData?>?,
     val isBlocked: Boolean?,
     val message: String?,
     val otherUser: OtherUser?,
     val pagination: ChatPagination?,
     val success: Boolean?
+
 )
 
 data class GetUserData(
@@ -340,31 +355,32 @@ data class GetUserData(
 )
 
 data class OtherUser(
-    val _id: String?,
-    val isOnline: Boolean?,
-    val name: String?,
-    val profileImage: String?
+    val _id: String?, val isOnline: Boolean?, val name: String?, val profileImage: String?
 )
 
 data class ChatPagination(
-    val limit: Int?,
-    val page: Int?,
-    val total: Int?
+    val limit: Int?, val page: Int?, val total: Int?
 )
 
 data class Sender(
-    val _id: String?,
-    val isOnline: Boolean?,
-    val name: String?,
-    val profileImage: String?
+    val _id: String?, val isOnline: Boolean?, val name: String?, val profileImage: String?
 )
+
+
+data class CheckUserBlock(
+    val __v: Int?,
+    val _id: String?,
+    val blockBy: String?,
+    val createdAt: String?,
+    val userId: String?
+)
+
+
 
 
 /** Upload Image Response  **/
 data class UploadImageResponse(
-    val `data`: UploadImageData?,
-    val message: String?,
-    val success: Boolean?
+    val `data`: UploadImageData?, val message: String?, val success: Boolean?
 )
 
 data class UploadImageData(
@@ -373,8 +389,7 @@ data class UploadImageData(
 
 /** Match Profile User Response  **/
 data class MatchProfileUserResponse(
-    val `data`: MatchProfileData?,
-    val success: Boolean?
+    val `data`: MatchProfileData?, val success: Boolean?
 )
 
 data class MatchProfileData(
@@ -401,18 +416,148 @@ data class MatchProfileData(
 )
 
 data class MatchProfileQuiz(
+    val answer: String?, val title: String?
+)
+
+data class Rating(
+    val _id: String?, val rating: Double?, val userId: String?
+)
+
+
+/** second match User Response  **/
+data class SecondMatchProfileResponse(
+    val `data`: SecondMatchData?, val likeStatus: Int?, val message: String?, val success: Boolean?
+)
+
+data class SecondMatchData(
+    val __v: Int?,
+    val _id: String?,
+    val address: String?,
+    val airConditioner: Boolean?,
+    val availableFrom: String?,
+    val balcony: Boolean?,
+    val cleanliness: Int?,
+    val contractLength: String?,
+    val createdAt: String?,
+    val deposit: Int?,
+    val description: String?,
+    val elevator: Boolean?,
+    val floor: String?,
+    val furnishingStatus: String?,
+    val heating: String?,
+    val images: List<Any?>?,
+    val isDeleted: Boolean?,
+    val kitchen: Boolean?,
+    val latitude: Double?,
+    val likeCount: Int?,
+    val listingType: String?,
+    val location: SecondLocation?,
+    val longitude: Double?,
+    val lookingFor: List<String?>?,
+    val minimumStay: String?,
+    val parking: Boolean?,
+    val pets: Boolean?,
+    val price: Int?,
+    val privateBathroom: Boolean?,
+    val roomType: String?,
+    val roommates: List<SecondRoommate?>?,
+    val size: String?,
+    val smoke: String?,
+    val status: Int?,
+    val title: String?,
+    val updatedAt: String?,
+    val userId: String?,
+    val utilitiesPrice: Int?,
+    val videos: String?,
+    val viewCount: Int?,
+    val washingMachine: Boolean?,
+    val wifi: Boolean?
+)
+
+data class SecondLocation(
+    val coordinates: List<Double?>?, val type: String?
+)
+
+data class SecondRoommate(
+    val _id: String?, val age: Int?, val gender: String?
+)
+
+
+
+/** get user profile Response  **/
+data class GetUserProfileResponse(
+    val `data`: UserProfile?,
+    val message: String?,
+    val success: Boolean?
+)
+
+data class UserProfile(
+    val _id: String?,
+    val ageRange: String?,
+    val bio: String?,
+    val email: String?,
+    val gender: String?,
+    val instagram: String?,
+    val isVerified: Boolean?,
+    val language: String?,
+    val linkedin: String?,
+    val name: String?,
+    val onwershipProof: String?,
+    val profession: String?,
+    val profileImage: String?,
+    val profileRole: Int,
+    var address: String?,
+    var campus: String?,
+    val providerType: String?,
+    val quizs: List<UserProfileQuiz?>?,
+    val timezone: String?,
+    val userIdProof: String?,
+    val userResponse: List<UserResponse?>?
+)
+
+data class UserProfileQuiz(
     val answer: String?,
     val title: String?
 )
 
-data class Rating(
+data class UserResponse(
+    val __v: Int?,
     val _id: String?,
-    val rating: Int?,
+    val answer: String?,
+    val quizId: String?,
+    val quizTitle: String?,
     val userId: String?
 )
 
 
 
+data class RoleChangeResponse(
+    val `data`: RoleChangeData?,
+    val message: String?,
+    val success: Boolean?
+)
+
+data class RoleChangeData(
+    val _id: String?,
+    val ageRange: String?,
+    val bio: String?,
+    val email: String?,
+    val gender: String?,
+    val instagram: String?,
+    val isProfileComplete: Boolean?,
+    val isQuizComplete: Boolean?,
+    val isVerified: Boolean?,
+    val language: String?,
+    val linkedin: String?,
+    val name: String?,
+    val onwershipProof: Any?,
+    val profession: String?,
+    val profileImage: String?,
+    val profileRole: Int,
+    val providerType: String?,
+    val timezone: String?,
+    val token: String?,
+    val userIdProof: String?
 
 
-
+)

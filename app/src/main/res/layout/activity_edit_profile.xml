@@ -10,20 +10,8 @@
             type="com.tech.hive.ui.for_room_mate.profile.ProfileFragmentVM" />
 
         <variable
-            name="handelVisibility"
-            type="Integer" />
-
-        <variable
-            name="ageType"
-            type="String" />
-
-        <variable
-            name="genderType"
-            type="String" />
-
-        <variable
-            name="roleType"
-            type="String" />
+            name="bean"
+            type="com.tech.hive.data.model.UserProfile" />
 
         <variable
             name="fullNameType"
@@ -34,36 +22,9 @@
             type="String" />
 
         <variable
-            name="budgetType"
-            type="String" />
-
-        <variable
-            name="petsType"
-            type="String" />
-
-        <variable
-            name="smokingType"
-            type="String" />
-
-        <variable
-            name="overNightType"
-            type="String" />
-
-        <variable
-            name="cleanType"
-            type="String" />
-
-        <variable
-            name="sleepType"
-            type="String" />
-
-        <variable
             name="bioType"
             type="String" />
 
-        <variable
-            name="linkType"
-            type="String" />
 
         <import type="android.view.View" />
     </data>
@@ -112,10 +73,11 @@
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/ivPerson"
+            setImageFromUrl="@{bean.profileImage}"
             android:layout_width="@dimen/_80sdp"
             android:layout_height="@dimen/_80sdp"
             android:layout_marginTop="-50dp"
-            android:src="@drawable/dummy_person"
+            android:scaleType="centerCrop"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/clHeader"
@@ -127,6 +89,7 @@
             android:layout_height="@dimen/_22sdp"
             android:layout_marginTop="@dimen/_22sdp"
             android:layout_marginEnd="@dimen/_6sdp"
+            android:onClick="@{v->vm.onClick(v)}"
             android:src="@drawable/iv_camera"
             app:layout_constraintBottom_toBottomOf="@+id/ivPerson"
             app:layout_constraintEnd_toStartOf="@+id/ivGallery"
@@ -138,6 +101,7 @@
             android:layout_height="@dimen/_22sdp"
             android:layout_marginStart="@dimen/_6sdp"
             android:layout_marginTop="@dimen/_22sdp"
+            android:onClick="@{v->vm.onClick(v)}"
             android:src="@drawable/iv_gallery"
             app:layout_constraintBottom_toBottomOf="@+id/ivCamera"
             app:layout_constraintEnd_toEndOf="@+id/ivPerson"
@@ -176,6 +140,7 @@
                     android:nextFocusForward="@+id/etShortBio"
                     android:paddingStart="@dimen/_40sdp"
                     android:paddingEnd="@dimen/_16sdp"
+                    android:text="@{bean.name}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/tvFullName" />
@@ -206,13 +171,13 @@
                     style="@style/EditText"
                     android:layout_marginHorizontal="@dimen/_12sdp"
                     android:layout_marginTop="@dimen/_6sdp"
-                    android:background="@{ageType.isEmpty()?@drawable/unselect_edit_text_bg_color:@drawable/select_edittext_bg_color}"
+                    android:background="@drawable/unselect_edit_text_bg_color"
                     android:focusable="false"
                     android:hint="@string/_18_22"
-                    android:imeOptions="actionNext"
-                    android:nextFocusForward="@+id/etPassword"
+                    android:onClick="@{v->vm.onClick(v)}"
                     android:paddingStart="@dimen/_10sdp"
                     android:paddingEnd="@dimen/_16sdp"
+                    android:text="@{bean.ageRange}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/tvAge" />
@@ -245,14 +210,13 @@
                     style="@style/EditText"
                     android:layout_marginHorizontal="@dimen/_12sdp"
                     android:layout_marginTop="@dimen/_6sdp"
-                    android:background="@{genderType.isEmpty()?@drawable/unselect_edit_text_bg_color:@drawable/select_edittext_bg_color}"
+                    android:background="@drawable/unselect_edit_text_bg_color"
                     android:focusable="false"
                     android:hint="@string/male"
-                    android:imeOptions="actionNext"
-                    android:inputType="textPassword"
-                    android:nextFocusForward="@+id/etConfirmPassword"
+                    android:onClick="@{v->vm.onClick(v)}"
                     android:paddingStart="@dimen/_10sdp"
                     android:paddingEnd="@dimen/_40sdp"
+                    android:text="@{bean.gender}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/tvGender" />
@@ -286,13 +250,13 @@
                     style="@style/EditText"
                     android:layout_marginHorizontal="@dimen/_12sdp"
                     android:layout_marginTop="@dimen/_6sdp"
-                    android:background="@{roleType.isEmpty()?@drawable/unselect_edit_text_bg_color:@drawable/select_edittext_bg_color}"
+                    android:background="@drawable/unselect_edit_text_bg_color"
                     android:focusable="false"
                     android:hint="@string/student"
-                    android:imeOptions="actionDone"
-                    android:inputType="textPassword"
+                    android:onClick="@{v->vm.onClick(v)}"
                     android:paddingStart="@dimen/_10sdp"
                     android:paddingEnd="@dimen/_40sdp"
+                    android:text="@{bean.profession}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/tvProfessionRole" />
@@ -312,6 +276,48 @@
 
 
                 <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvCampus"
+                    style="@style/TextView.Regular"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:text="@string/campus"
+                    android:textColor="@color/black_24"
+                    android:textSize="@dimen/_12ssp"
+                    android:visibility="gone"
+                    app:layout_constraintStart_toStartOf="@+id/etGender"
+                    app:layout_constraintTop_toBottomOf="@+id/etProfessionRole" />
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/etCampus"
+                    style="@style/EditText"
+                    android:layout_marginHorizontal="@dimen/_12sdp"
+                    android:layout_marginTop="@dimen/_6sdp"
+                    android:background="@drawable/unselect_edit_text_bg_color"
+                    android:focusable="false"
+                    android:hint="Univercity of Milan (La Statale)"
+                    android:onClick="@{v->vm.onClick(v)}"
+                    android:paddingStart="@dimen/_10sdp"
+                    android:paddingEnd="@dimen/_40sdp"
+                    android:text="@{bean.campus}"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvCampus" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/ivCampus"
+                    android:layout_width="@dimen/_27sdp"
+                    android:layout_height="@dimen/_27sdp"
+                    android:layout_marginEnd="@dimen/_14sdp"
+                    android:onClick="@{v->vm.onClick(v)}"
+                    android:padding="@dimen/_5sdp"
+                    android:src="@drawable/arrow_up"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="@+id/etCampus"
+                    app:layout_constraintEnd_toEndOf="@+id/etCampus"
+                    app:layout_constraintTop_toTopOf="@+id/etCampus" />
+
+
+                <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tvShortBio"
                     style="@style/TextView.Regular"
                     android:layout_marginTop="@dimen/_15sdp"
@@ -319,7 +325,7 @@
                     android:textColor="@color/black_24"
                     android:textSize="@dimen/_12ssp"
                     app:layout_constraintStart_toStartOf="@+id/etGender"
-                    app:layout_constraintTop_toBottomOf="@+id/etProfessionRole" />
+                    app:layout_constraintTop_toBottomOf="@+id/etCampus" />
 
                 <androidx.appcompat.widget.AppCompatEditText
                     android:id="@+id/etShortBio"
@@ -336,6 +342,7 @@
                     android:paddingStart="@dimen/_12sdp"
                     android:paddingTop="@dimen/_12sdp"
                     android:paddingEnd="@dimen/_12sdp"
+                    android:text="@{bean.bio}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/tvShortBio" />
@@ -362,6 +369,7 @@
                     android:nextFocusForward="@+id/etBudget"
                     android:paddingStart="@dimen/_40sdp"
                     android:paddingEnd="@dimen/_16sdp"
+                    android:text="@{bean.address}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/tvLocation" />
@@ -387,332 +395,63 @@
                     android:includeFontPadding="false"
                     android:text="@string/preferences"
                     android:textColor="@color/start_color"
-                    android:visibility="@{handelVisibility==1?View.VISIBLE:View.GONE}"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/etLocation" />
 
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/tvBudget"
-                    style="@style/TextView.Regular"
-                    android:layout_marginHorizontal="@dimen/_12sdp"
-                    android:layout_marginTop="@dimen/_10sdp"
-                    android:text="@string/monthly_budget"
-                    android:textColor="@color/black_24"
-                    android:textSize="@dimen/_12ssp"
-                    android:visibility="@{handelVisibility==1?View.VISIBLE:View.GONE}"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tvPreferences" />
-
-                <androidx.appcompat.widget.AppCompatEditText
-                    android:id="@+id/etBudget"
-                    style="@style/EditText"
-                    android:layout_marginHorizontal="@dimen/_12sdp"
-                    android:layout_marginTop="@dimen/_6sdp"
-                    android:background="@{budgetType.isEmpty()?@drawable/unselect_edit_text_bg_color:@drawable/select_edittext_bg_color}"
-                    android:focusable="false"
-                    android:hint="@string/enter_budget"
-                    android:imeOptions="actionDone"
-                    android:paddingStart="@dimen/_40sdp"
-                    android:paddingEnd="@dimen/_16sdp"
-                    android:visibility="@{handelVisibility==1?View.VISIBLE:View.GONE}"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tvBudget" />
-
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/ivBudget"
-                    android:layout_width="@dimen/_27sdp"
-                    android:layout_height="@dimen/_27sdp"
-                    android:layout_marginEnd="@dimen/_14sdp"
-                    android:onClick="@{v->vm.onClick(v)}"
-                    android:padding="@dimen/_5sdp"
-                    android:src="@drawable/arrow_up"
-                    android:visibility="@{handelVisibility==1?View.VISIBLE:View.GONE}"
-                    app:layout_constraintBottom_toBottomOf="@+id/etBudget"
-                    app:layout_constraintEnd_toEndOf="@+id/etBudget"
-                    app:layout_constraintTop_toTopOf="@+id/etBudget" />
-
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:layout_width="@dimen/_17sdp"
-                    android:layout_height="@dimen/_17sdp"
-                    android:layout_marginStart="@dimen/_14sdp"
-                    android:src="@drawable/ic_bag"
-                    android:tint="@{budgetType.isEmpty()?@color/et_hint_color:@color/start_color}"
-                    android:visibility="@{handelVisibility==1?View.VISIBLE:View.GONE}"
-                    app:layout_constraintBottom_toBottomOf="@+id/etBudget"
-                    app:layout_constraintStart_toStartOf="@+id/etBudget"
-                    app:layout_constraintTop_toTopOf="@+id/etBudget" />
 
                 <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/tvPets"
-                    style="@style/TextView.Regular"
+                    android:id="@+id/tvEditPreferencesDetails"
+                    style="@style/TextView.Medium2"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_38sdp"
+                    android:layout_marginHorizontal="@dimen/_15sdp"
                     android:layout_marginTop="@dimen/_15sdp"
-                    android:text="@string/pets"
-                    android:textColor="@color/black_24"
-                    android:textSize="@dimen/_12ssp"
-                    android:visibility="@{handelVisibility==1?View.VISIBLE:View.GONE}"
-                    app:layout_constraintStart_toStartOf="@+id/etBudget"
-                    app:layout_constraintTop_toBottomOf="@+id/etBudget" />
-
-                <androidx.appcompat.widget.AppCompatEditText
-                    android:id="@+id/etPets"
-                    style="@style/EditText"
-                    android:layout_marginHorizontal="@dimen/_12sdp"
-                    android:layout_marginTop="@dimen/_6sdp"
-                    android:background="@{petsType.isEmpty()?@drawable/unselect_edit_text_bg_color:@drawable/select_edittext_bg_color}"
-                    android:focusable="false"
-                    android:hint="Allowed"
-                    android:imeOptions="actionDone"
-                    android:inputType="textPassword"
+                    android:background="@drawable/unselect_edit_text_bg_color"
+                    android:gravity="center_vertical"
+                    android:onClick="@{v->vm.onClick(v)}"
                     android:paddingStart="@dimen/_10sdp"
                     android:paddingEnd="@dimen/_40sdp"
-                    android:visibility="@{handelVisibility==1?View.VISIBLE:View.GONE}"
+                    android:text="Edit Preferences Details"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tvPets" />
-
+                    app:layout_constraintTop_toBottomOf="@+id/tvPreferences" />
 
                 <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/ivPets"
+                    android:id="@+id/ivChangeLanguage"
                     android:layout_width="@dimen/_27sdp"
                     android:layout_height="@dimen/_27sdp"
-                    android:layout_marginEnd="@dimen/_14sdp"
+                    android:layout_marginEnd="@dimen/_4sdp"
                     android:onClick="@{v->vm.onClick(v)}"
                     android:padding="@dimen/_5sdp"
+                    android:rotation="270"
                     android:src="@drawable/arrow_up"
-                    android:visibility="@{handelVisibility==1?View.VISIBLE:View.GONE}"
-                    app:layout_constraintBottom_toBottomOf="@+id/etPets"
-                    app:layout_constraintEnd_toEndOf="@+id/etPets"
-                    app:layout_constraintTop_toTopOf="@+id/etPets" />
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/tvSmoking"
-                    style="@style/TextView.Regular"
-                    android:layout_marginTop="@dimen/_15sdp"
-                    android:text="@string/smoking"
-                    android:textColor="@color/black_24"
-                    android:textSize="@dimen/_12ssp"
-                    android:visibility="@{handelVisibility==1?View.VISIBLE:View.GONE}"
-                    app:layout_constraintStart_toStartOf="@+id/etBudget"
-                    app:layout_constraintTop_toBottomOf="@+id/etPets" />
-
-                <androidx.appcompat.widget.AppCompatEditText
-                    android:id="@+id/etSmoking"
-                    style="@style/EditText"
-                    android:layout_marginHorizontal="@dimen/_12sdp"
-                    android:layout_marginTop="@dimen/_6sdp"
-                    android:background="@{smokingType.isEmpty()?@drawable/unselect_edit_text_bg_color:@drawable/select_edittext_bg_color}"
-                    android:focusable="false"
-                    android:hint="No"
-                    android:imeOptions="actionDone"
-                    android:inputType="textPassword"
-                    android:paddingStart="@dimen/_10sdp"
-                    android:paddingEnd="@dimen/_40sdp"
-                    android:visibility="@{handelVisibility==1?View.VISIBLE:View.GONE}"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tvSmoking" />
-
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/ivSmoke"
-                    android:layout_width="@dimen/_27sdp"
-                    android:layout_height="@dimen/_27sdp"
-                    android:layout_marginEnd="@dimen/_14sdp"
-                    android:onClick="@{v->vm.onClick(v)}"
-                    android:padding="@dimen/_5sdp"
-                    android:src="@drawable/arrow_up"
-                    android:visibility="@{handelVisibility==1?View.VISIBLE:View.GONE}"
-                    app:layout_constraintBottom_toBottomOf="@+id/etSmoking"
-                    app:layout_constraintEnd_toEndOf="@+id/etSmoking"
-                    app:layout_constraintTop_toTopOf="@+id/etSmoking" />
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/tvOverNight"
-                    style="@style/TextView.Regular"
-                    android:layout_marginTop="@dimen/_15sdp"
-                    android:text="@string/overnight_guests"
-                    android:textColor="@color/black_24"
-                    android:textSize="@dimen/_12ssp"
-                    android:visibility="@{handelVisibility==1?View.VISIBLE:View.GONE}"
-                    app:layout_constraintStart_toStartOf="@+id/etBudget"
-                    app:layout_constraintTop_toBottomOf="@+id/etSmoking" />
-
-                <androidx.appcompat.widget.AppCompatEditText
-                    android:id="@+id/etOverNight"
-                    style="@style/EditText"
-                    android:layout_marginHorizontal="@dimen/_12sdp"
-                    android:layout_marginTop="@dimen/_6sdp"
-                    android:background="@{overNightType.isEmpty()?@drawable/unselect_edit_text_bg_color:@drawable/select_edittext_bg_color}"
-                    android:focusable="false"
-                    android:hint="Occasionally"
-                    android:imeOptions="actionDone"
-                    android:inputType="textPassword"
-                    android:paddingStart="@dimen/_10sdp"
-                    android:paddingEnd="@dimen/_40sdp"
-                    android:visibility="@{handelVisibility==1?View.VISIBLE:View.GONE}"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tvOverNight" />
-
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/ivOverNight"
-                    android:layout_width="@dimen/_27sdp"
-                    android:layout_height="@dimen/_27sdp"
-                    android:layout_marginEnd="@dimen/_14sdp"
-                    android:onClick="@{v->vm.onClick(v)}"
-                    android:padding="@dimen/_5sdp"
-                    android:src="@drawable/arrow_up"
-                    android:visibility="@{handelVisibility==1?View.VISIBLE:View.GONE}"
-                    app:layout_constraintBottom_toBottomOf="@+id/etOverNight"
-                    app:layout_constraintEnd_toEndOf="@+id/etOverNight"
-                    app:layout_constraintTop_toTopOf="@+id/etOverNight" />
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/tvClean"
-                    style="@style/TextView.Regular"
-                    android:layout_marginTop="@dimen/_15sdp"
-                    android:text="@string/cleanliness"
-                    android:textColor="@color/black_24"
-                    android:textSize="@dimen/_12ssp"
-                    android:visibility="@{handelVisibility==1?View.VISIBLE:View.GONE}"
-                    app:layout_constraintStart_toStartOf="@+id/etBudget"
-                    app:layout_constraintTop_toBottomOf="@+id/etOverNight" />
-
-                <androidx.appcompat.widget.AppCompatEditText
-                    android:id="@+id/etClean"
-                    style="@style/EditText"
-                    android:layout_marginHorizontal="@dimen/_12sdp"
-                    android:layout_marginTop="@dimen/_6sdp"
-                    android:background="@{cleanType.isEmpty()?@drawable/unselect_edit_text_bg_color:@drawable/select_edittext_bg_color}"
-                    android:focusable="false"
-                    android:hint="4"
-                    android:imeOptions="actionDone"
-                    android:inputType="textPassword"
-                    android:paddingStart="@dimen/_10sdp"
-                    android:paddingEnd="@dimen/_40sdp"
-                    android:visibility="@{handelVisibility==1?View.VISIBLE:View.GONE}"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tvClean" />
-
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/ivClean"
-                    android:layout_width="@dimen/_27sdp"
-                    android:layout_height="@dimen/_27sdp"
-                    android:layout_marginEnd="@dimen/_14sdp"
-                    android:onClick="@{v->vm.onClick(v)}"
-                    android:padding="@dimen/_5sdp"
-                    android:src="@drawable/arrow_up"
-                    android:visibility="@{handelVisibility==1?View.VISIBLE:View.GONE}"
-                    app:layout_constraintBottom_toBottomOf="@+id/etClean"
-                    app:layout_constraintEnd_toEndOf="@+id/etClean"
-                    app:layout_constraintTop_toTopOf="@+id/etClean" />
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/tvSleep"
-                    style="@style/TextView.Regular"
-                    android:layout_marginTop="@dimen/_15sdp"
-                    android:text="@string/sleep_schedule"
-                    android:textColor="@color/black_24"
-                    android:textSize="@dimen/_12ssp"
-                    android:visibility="@{handelVisibility==1?View.VISIBLE:View.GONE}"
-                    app:layout_constraintStart_toStartOf="@+id/etBudget"
-                    app:layout_constraintTop_toBottomOf="@+id/etClean" />
-
-                <androidx.appcompat.widget.AppCompatEditText
-                    android:id="@+id/etSleep"
-                    style="@style/EditText"
-                    android:layout_marginHorizontal="@dimen/_12sdp"
-                    android:layout_marginTop="@dimen/_6sdp"
-                    android:background="@{sleepType.isEmpty()?@drawable/unselect_edit_text_bg_color:@drawable/select_edittext_bg_color}"
-                    android:focusable="false"
-                    android:hint="11 PM"
-                    android:imeOptions="actionDone"
-                    android:inputType="textPassword"
-                    android:paddingStart="@dimen/_10sdp"
-                    android:paddingEnd="@dimen/_40sdp"
-                    android:visibility="@{handelVisibility==1?View.VISIBLE:View.GONE}"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tvSleep" />
-
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/ivSleep"
-                    android:layout_width="@dimen/_27sdp"
-                    android:layout_height="@dimen/_27sdp"
-                    android:layout_marginEnd="@dimen/_14sdp"
-                    android:onClick="@{v->vm.onClick(v)}"
-                    android:padding="@dimen/_5sdp"
-                    android:src="@drawable/arrow_up"
-                    android:visibility="@{handelVisibility==1?View.VISIBLE:View.GONE}"
-                    app:layout_constraintBottom_toBottomOf="@+id/etSleep"
-                    app:layout_constraintEnd_toEndOf="@+id/etSleep"
-                    app:layout_constraintTop_toTopOf="@+id/etSleep" />
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/tvLinkedAcc"
-                    style="@style/TextView.Semibold"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="@dimen/_12sdp"
-                    android:layout_marginTop="@dimen/_8sdp"
-                    android:includeFontPadding="false"
-                    android:text="@string/linked_accounts"
-                    android:textColor="@color/start_color"
-                    android:visibility="@{handelVisibility==1?View.VISIBLE:View.GONE}"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/etSleep" />
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/tvInsta"
-                    style="@style/TextView.Regular"
-                    android:layout_marginTop="@dimen/_10sdp"
-                    android:text="@string/instagram_link"
-                    android:textColor="@color/black_24"
-                    android:textSize="@dimen/_12ssp"
-                    android:visibility="@{handelVisibility==1?View.VISIBLE:View.GONE}"
-                    app:layout_constraintStart_toStartOf="@+id/tvLinkedAcc"
-                    app:layout_constraintTop_toBottomOf="@+id/tvLinkedAcc" />
-
-                <androidx.appcompat.widget.AppCompatEditText
-                    android:id="@+id/etInsta"
-                    style="@style/EditText"
-                    android:layout_marginHorizontal="@dimen/_12sdp"
-                    android:layout_marginTop="@dimen/_6sdp"
-                    android:background="@{linkType.isEmpty()?@drawable/unselect_edit_text_bg_color:@drawable/select_edittext_bg_color}"
-                    android:hint="@string/add_link"
-                    android:imeOptions="actionDone"
-                    android:inputType="textPersonName"
-                    android:paddingStart="@dimen/_10sdp"
-                    android:paddingEnd="@dimen/_40sdp"
-                    android:visibility="@{handelVisibility==1?View.VISIBLE:View.GONE}"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tvInsta" />
+                    app:layout_constraintBottom_toBottomOf="@+id/tvEditPreferencesDetails"
+                    app:layout_constraintEnd_toEndOf="@+id/tvEditPreferencesDetails"
+                    app:layout_constraintTop_toTopOf="@+id/tvEditPreferencesDetails" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/btnContinue"
                     style="@style/TextView.Medium"
                     android:layout_width="0dp"
                     android:layout_height="@dimen/_40sdp"
+                    android:layout_marginHorizontal="@dimen/_13sdp"
                     android:layout_marginTop="@dimen/_15sdp"
                     android:background="@drawable/btn_bg_color"
                     android:onClick="@{v->vm.onClick(v)}"
                     android:text="@string/edit"
-                    android:layout_marginHorizontal="@dimen/_13sdp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/etInsta" />
+                    app:layout_constraintTop_toBottomOf="@+id/tvEditPreferencesDetails" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     style="@style/TextView.Medium"
                     android:layout_width="0dp"
                     android:layout_height="@dimen/_15sdp"
+                    android:layout_marginHorizontal="@dimen/_13sdp"
                     android:background="@drawable/btn_bg_color"
                     android:onClick="@{v->vm.onClick(v)}"
                     android:text="@string/edit"
                     android:visibility="invisible"
-                    android:layout_marginHorizontal="@dimen/_13sdp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/btnContinue" />

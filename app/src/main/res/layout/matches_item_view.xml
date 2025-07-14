@@ -26,7 +26,7 @@
             android:layout_height="@dimen/_175sdp"
             app:shapeAppearance="@style/Shape15"
             android:clipToOutline="true"
-            setImageFromUrl="@{bean.userId.profileImage}"
+            setImageFromUrlMatch="@{bean}"
             android:scaleType="centerCrop"
             android:onClick="@{v->callback.onItemClick(v,bean,pos)}"
             android:src="@drawable/ic_match_dummy"

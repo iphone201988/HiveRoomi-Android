@@ -8,6 +8,7 @@ import com.tech.hive.R
 import com.tech.hive.base.BaseActivity
 import com.tech.hive.base.BaseViewModel
 import com.tech.hive.base.SimpleRecyclerViewAdapter
+import com.tech.hive.base.utils.BaseCustomDialog
 import com.tech.hive.base.utils.BindingUtils
 import com.tech.hive.base.utils.Status
 import com.tech.hive.base.utils.showErrorToast
@@ -16,22 +17,29 @@ import com.tech.hive.data.api.Constants
 import com.tech.hive.data.model.CommonResponse
 import com.tech.hive.data.model.CompatibilityModel
 import com.tech.hive.data.model.MatchProfileUserResponse
+import com.tech.hive.data.model.RatingsResponse
 import com.tech.hive.databinding.ActivityMatchedProfileBinding
 import com.tech.hive.databinding.ApartmentImageItemViewBinding
 import com.tech.hive.databinding.CompatibilityItemViewBinding
+import com.tech.hive.databinding.RatingDialogItemBinding
 import com.tech.hive.ui.for_room_mate.messages.chat.ChatActivity
 import com.tech.hive.ui.for_room_mate.settings_screen.ReportActivity
 import dagger.hilt.android.AndroidEntryPoint
+
 
 @AndroidEntryPoint
 class MatchedProfileActivity : BaseActivity<ActivityMatchedProfileBinding>() {
     private val viewModel: HomeFragmentVM by viewModels()
 
     // adapter
+    private var ratingDialogItem: BaseCustomDialog<RatingDialogItemBinding>? = null
     private lateinit var compatibilityAdapter: SimpleRecyclerViewAdapter<CompatibilityModel, CompatibilityItemViewBinding>
     private lateinit var apartmentImageAdapter: SimpleRecyclerViewAdapter<CompatibilityModel, ApartmentImageItemViewBinding>
     var profileIdFirst = ""
     var commonId = ""
+    var chatClick = false
+    var ratingCount: Int = 0
+    var ratingAverage: Double = 0.0
 
     override fun getLayoutResource(): Int {
         return R.layout.activity_matched_profile
@@ -75,6 +83,37 @@ class MatchedProfileActivity : BaseActivity<ActivityMatchedProfileBinding>() {
         }
     }
 
+    /** personal dialog  handel ***/
+    private fun ratingDialog() {
+        ratingDialogItem =
+            BaseCustomDialog(this@MatchedProfileActivity, R.layout.rating_dialog_item) {
+                when (it?.id) {
+                    R.id.btnContinue -> {
+                        val rating = ratingDialogItem?.binding?.llStars?.rating ?: 0f
+                        if (rating > 0) {
+                            val data = HashMap<String, Any>()
+                            data["id"] = commonId
+                            data["rating"] = rating
+                            viewModel.userRatings(Constants.USER_RATING, data)
+                        } else {
+                            showInfoToast("Please select rating")
+                        }
+
+                    }
+                }
+            }
+        ratingDialogItem!!.create()
+        ratingDialogItem!!.show()
+
+        ratingDialogItem?.binding?.apply {
+            tvRating.text = ratingAverage.toString()
+            tvRatingCount.text = "$ratingCount ratings"
+            ratingBar.setRating(ratingAverage.toFloat())
+        }
+
+    }
+
+
     /** handle click **/
     private fun initOnClick() {
         viewModel.onClick.observe(this) {
@@ -83,31 +122,39 @@ class MatchedProfileActivity : BaseActivity<ActivityMatchedProfileBinding>() {
                     onBackPressedDispatcher.onBackPressed()
                 }
 
-                R.id.ivLikeBefore,R.id.tvLikeBefore->{
+                R.id.ivLikeBefore, R.id.tvLikeBefore -> {
                     val data = HashMap<String, Any>()
                     data["id"] = commonId
-                    data["action"]="like"
+                    data["action"] = "like"
                     data["type"] = "user"
-                  viewModel.matchLikeApi(Constants.MATCH_LIKE,data)
+                    viewModel.matchLikeApi(Constants.MATCH_LIKE, data)
                 }
-                R.id.ivReportBefore,R.id.tvReportBefore->{
+
+                R.id.ivReportBefore, R.id.tvReportBefore -> {
                     val intent = Intent(this@MatchedProfileActivity, ReportActivity::class.java)
-                    intent.putExtra("reportId",commonId)
-                    intent.putExtra("reportType","user")
+                    intent.putExtra("reportId", commonId)
+                    intent.putExtra("reportType", "user")
                     startActivity(intent)
                 }
-                R.id.ivLike,R.id.tvLike->{
+
+                R.id.tvTitle1 -> {
+                    ratingDialog()
+                }
+
+                R.id.ivChat, R.id.tvChat -> {
+                    if (chatClick) {
+                        val intent = Intent(this@MatchedProfileActivity, ChatActivity::class.java)
+                        intent.putExtra("socketId", commonId)
+                        intent.putExtra("matchId", commonId)
+                        startActivity(intent)
+                    }
 
                 }
-                R.id.ivChat,R.id.tvChat->{
-                    val intent = Intent(this@MatchedProfileActivity, ChatActivity::class.java)
-                    intent.putExtra("chatId",commonId)
-                    startActivity(intent)
-                }
-                R.id.ivReport,R.id.tvReport->{
-                val intent = Intent(this@MatchedProfileActivity, ReportActivity::class.java)
-                    intent.putExtra("reportId",commonId)
-                    intent.putExtra("reportType","user")
+
+                R.id.ivReport, R.id.tvReport -> {
+                    val intent = Intent(this@MatchedProfileActivity, ReportActivity::class.java)
+                    intent.putExtra("reportId", commonId)
+                    intent.putExtra("reportType", "user")
                     startActivity(intent)
                 }
             }
@@ -130,21 +177,28 @@ class MatchedProfileActivity : BaseActivity<ActivityMatchedProfileBinding>() {
                                     BindingUtils.parseJson(it.data.toString())
                                 if (myDataModel?.data != null) {
                                     binding.bean = myDataModel.data
+                                    ratingCount = myDataModel.data.totalRatings ?: 0
+                                    ratingAverage = myDataModel.data.averageRating ?: 0.0
                                     commonId = myDataModel.data._id.toString()
-                                    when(myDataModel.data.likeStatus){
-                                        1->{
+                                    when (myDataModel.data.likeStatus) {
+                                        1 -> {
                                             binding.tvLike.text = getString(R.string.pending)
                                             binding.match = 2
                                         }
-                                        2->{
+
+                                        2 -> {
                                             binding.tvLike.text = getString(R.string.matched)
                                             binding.match = 2
+                                            chatClick = true
                                         }
-                                        3->{
+
+                                        3 -> {
                                             binding.tvLike.text = getString(R.string.rejected)
                                             binding.match = 2
-                                        }else -> {
-                                        binding.match = 1
+                                        }
+
+                                        else -> {
+                                            binding.match = 1
                                         }
                                     }
 
@@ -161,7 +215,10 @@ class MatchedProfileActivity : BaseActivity<ActivityMatchedProfileBinding>() {
                                 val myDataModel: CommonResponse? =
                                     BindingUtils.parseJson(it.data.toString())
                                 if (myDataModel != null) {
-                                  showSuccessToast("user liked")
+                                    chatClick = false
+                                    binding.tvLike.text = getString(R.string.pending)
+                                    binding.match = 2
+                                    showSuccessToast("user liked")
                                 }
                             } catch (e: Exception) {
                                 Log.e("error", "getHomeApi: $e")
@@ -169,7 +226,24 @@ class MatchedProfileActivity : BaseActivity<ActivityMatchedProfileBinding>() {
                                 hideLoading()
                             }
                         }
-
+                        "userRatings" -> {
+                            try {
+                                val myDataModel: RatingsResponse? =
+                                    BindingUtils.parseJson(it.data.toString())
+                                if (myDataModel != null) {
+                                    if (myDataModel.data!=null){
+                                        ratingCount = myDataModel.data.totalRatings ?: 0
+                                        ratingAverage = myDataModel.data.averageRating ?: 0.0
+                                    }
+                                    chatClick = true
+                                    showSuccessToast("user liked")
+                                }
+                            } catch (e: Exception) {
+                                Log.e("error", "getHomeApi: $e")
+                            } finally {
+                                hideLoading()
+                            }
+                        }
 
 
                     }

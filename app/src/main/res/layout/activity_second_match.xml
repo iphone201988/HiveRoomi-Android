@@ -13,6 +13,10 @@
             name="secondMatchType"
             type="Integer" />
 
+        <variable
+            name="bean"
+            type="com.tech.hive.data.model.SecondMatchData" />
+
 
         <import type="android.view.View" />
     </data>
@@ -41,7 +45,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_15sdp"
                 android:layout_marginTop="@dimen/_30sdp"
-                android:text="@string/elena_salvatore"
+                android:text="@{bean.title}"
                 android:textSize="@dimen/_16ssp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -70,12 +74,27 @@
                 app:tint="@color/white" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvEmpty"
+            style="@style/TextView.Medium"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black_24"
+            android:textSize="@dimen/_14sdp"
+            android:visibility="gone"
+            app:layout_constraintTop_toTopOf="parent"
+            android:text="@string/user_data_is_empty"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
         <androidx.core.widget.NestedScrollView
+            android:id="@+id/clNested"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginTop="-50dp"
             android:layout_marginBottom="@dimen/_10sdp"
             android:clipToPadding="false"
+            android:visibility="gone"
             android:paddingBottom="@dimen/_20sdp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@id/clHeader">
@@ -92,7 +111,7 @@
                     android:layout_height="@dimen/_300sdp"
                     android:layout_marginHorizontal="@dimen/_9sdp"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/ic_match_dummy"
+                    setImageFromUrl="@{bean.images[0]}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
@@ -287,6 +306,7 @@
                     android:background="@drawable/bg_chat_corner_radius_10"
                     android:hint="@string/start_video_tour"
                     android:imeOptions="actionDone"
+                    android:visibility="gone"
                     android:paddingStart="@dimen/_14sdp"
                     android:paddingEnd="@dimen/_16sdp"
                     android:textColor="@color/et_hint_color"
@@ -302,6 +322,7 @@
                     android:onClick="@{v->vm.onClick(v)}"
                     android:padding="@dimen/_5sdp"
                     android:src="@drawable/iv_video"
+                    android:visibility="gone"
                     app:layout_constraintBottom_toBottomOf="@+id/etVideo"
                     app:layout_constraintEnd_toEndOf="@+id/etVideo"
                     app:layout_constraintTop_toTopOf="@+id/etVideo"
@@ -310,19 +331,20 @@
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/clAfterMatch"
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="@dimen/_38sdp"
-                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_16sdp"
                     android:background="@drawable/btn_bg_color"
                     android:visibility="@{secondMatchType==2?View.VISIBLE:View.GONE}"
                     app:layout_constraintEnd_toEndOf="@+id/etVideo"
                     app:layout_constraintStart_toStartOf="@+id/etVideo"
-                    app:layout_constraintTop_toBottomOf="@+id/etVideo">
+                    app:layout_constraintTop_toBottomOf="@+id/etVisit">
 
                     <androidx.appcompat.widget.AppCompatImageView
                         android:id="@+id/ivLike"
                         android:layout_width="@dimen/_22sdp"
                         android:layout_height="@dimen/_22sdp"
+                        android:onClick="@{v->vm.onClick(v)}"
                         android:layout_marginStart="@dimen/_12sdp"
                         android:src="@drawable/ic_heart"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -335,6 +357,7 @@
                         style="@style/TextView.SfMedium"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:onClick="@{v->vm.onClick(v)}"
                         android:text="@string/like"
                         app:layout_constraintBottom_toBottomOf="@id/ivLike"
                         app:layout_constraintEnd_toStartOf="@id/view1"
@@ -355,6 +378,7 @@
                         android:layout_width="@dimen/_22sdp"
                         android:layout_height="@dimen/_22sdp"
                         android:src="@drawable/ic_message_selected"
+                        android:onClick="@{v->vm.onClick(v)}"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toStartOf="@id/tvChat"
                         app:layout_constraintStart_toEndOf="@id/view1"
@@ -365,6 +389,7 @@
                         android:id="@+id/tvChat"
                         style="@style/TextView.SfMedium"
                         android:layout_width="wrap_content"
+                        android:onClick="@{v->vm.onClick(v)}"
                         android:layout_height="wrap_content"
                         android:text="@string/chat"
                         app:layout_constraintBottom_toBottomOf="@id/ivLike"
@@ -386,6 +411,7 @@
                         android:layout_width="@dimen/_22sdp"
                         android:layout_height="@dimen/_22sdp"
                         android:src="@drawable/ic_report"
+                        android:onClick="@{v->vm.onClick(v)}"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toStartOf="@id/tvReport"
                         app:layout_constraintStart_toEndOf="@id/view2"
@@ -396,6 +422,7 @@
                         style="@style/TextView.SfMedium"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:onClick="@{v->vm.onClick(v)}"
                         android:layout_marginEnd="@dimen/_12sdp"
                         android:text="@string/report"
                         app:layout_constraintBottom_toBottomOf="@id/ivLike"
@@ -405,9 +432,9 @@
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/clBeforeMatch"
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="@dimen/_38sdp"
-                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_16sdp"
                     android:background="@drawable/btn_bg_color"
                     android:visibility="@{secondMatchType==1?View.VISIBLE:View.GONE}"
                     app:layout_constraintEnd_toEndOf="@+id/etVideo"
@@ -418,6 +445,7 @@
                         android:id="@+id/ivLikeBefore"
                         android:layout_width="@dimen/_22sdp"
                         android:layout_height="@dimen/_22sdp"
+                        android:onClick="@{v->vm.onClick(v)}"
                         android:layout_marginEnd="@dimen/_5sdp"
                         android:src="@drawable/ic_heart"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -430,6 +458,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_40sdp"
+                        android:onClick="@{v->vm.onClick(v)}"
                         android:text="@string/like"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toStartOf="@id/view1Before"
@@ -451,6 +480,7 @@
                         android:layout_height="@dimen/_22sdp"
                         android:layout_marginEnd="@dimen/_40sdp"
                         android:src="@drawable/ic_report"
+                        android:onClick="@{v->vm.onClick(v)}"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@id/view1Before"
@@ -462,6 +492,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_5sdp"
+                        android:onClick="@{v->vm.onClick(v)}"
                         android:layout_marginEnd="@dimen/_12sdp"
                         android:text="@string/report"
                         app:layout_constraintBottom_toBottomOf="parent"

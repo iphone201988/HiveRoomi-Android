@@ -43,48 +43,49 @@ class AuthActivity : BaseActivity<ActivityAuthBinding>() {
 
         var userdata = sharedPrefManager.getLoginData()
         if (userdata!=null){
-            if (userdata.sendOtp == true) {
-                val bundle = Bundle().apply {
-                    putString("userEmail", userdata.email)
-                }
-                BindingUtils.navigateWithSlide(
-                    navController,
-                    R.id.navigateToVerifyFragment,
-                    bundle
-                )
-            }
-            else {
-                if (userdata.isProfileComplete == false) {
-                    if (userdata.profileRole == 3) {
-                        BindingUtils.navigateWithSlide(
-                            navController,
-                            R.id.navigateToProviderTypeFragment,
-                            null
-                        )
-                    } else {
-                        BindingUtils.navigateWithSlide(
-                            navController,
-                            R.id.navigateToPersonalFragment,
-                            null
-                        )
-                    }
-
-                } else if (userdata.isQuizComplete == false|| userdata.totalQuizDone == 0) {
-                    val intent = Intent(
-                        this@AuthActivity,
-                        QuizActivity::class.java
-                    )
-                    startActivity(intent)
-                    finishAffinity()
-                } else {
-                    val intent = Intent(
-                        this@AuthActivity, DashboardActivity::class.java
-                    )
-                    startActivity(intent)
-                    finishAffinity()
-
-                }
-            }
+            val intent = Intent(this@AuthActivity, DashboardActivity::class.java)
+            startActivity(intent)
+            finishAffinity()
+//            if (userdata.sendOtp == false) {
+//                val bundle = Bundle().apply {
+//                    putString("userEmail", userdata.email)
+//                }
+//                BindingUtils.navigateWithSlide(
+//                    navController,
+//                    R.id.navigateToVerifyFragment,
+//                    bundle
+//                )
+//            }
+//            else {
+//                if (userdata.isProfileComplete == false) {
+//                    if (userdata.profileRole == 3) {
+//                        BindingUtils.navigateWithSlide(
+//                            navController,
+//                            R.id.navigateToProviderTypeFragment,
+//                            null
+//                        )
+//                    } else {
+//                        BindingUtils.navigateWithSlide(
+//                            navController,
+//                            R.id.navigateToPersonalFragment,
+//                            null
+//                        )
+//                    }
+//
+//                } else if (userdata.isQuizComplete == false|| userdata.totalQuizDone == 0) {
+//                    val intent = Intent(
+//                        this@AuthActivity,
+//                        QuizActivity::class.java
+//                    )
+//                    startActivity(intent)
+//                    finishAffinity()
+//                } else {
+//                    val intent = Intent(this@AuthActivity, DashboardActivity::class.java)
+//                    startActivity(intent)
+//                    finishAffinity()
+//
+//                }
+//            }
         }else{
             lifecycleScope.launch {
                 lifecycle.repeatOnLifecycle(Lifecycle.State.RESUMED) {

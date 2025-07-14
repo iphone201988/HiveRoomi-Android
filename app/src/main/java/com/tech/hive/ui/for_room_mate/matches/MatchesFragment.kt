@@ -22,7 +22,7 @@ import com.tech.hive.databinding.MatchesItemViewBinding
 import com.tech.hive.databinding.PendingMatchRvItemBinding
 import com.tech.hive.ui.for_room_mate.filters.FilterActivity
 import com.tech.hive.ui.for_room_mate.home.MatchedProfileActivity
-import com.tech.hive.ui.for_room_mate.messages.chat.ChatActivity
+import com.tech.hive.ui.for_room_mate.home.second.SecondMatchActivity
 import com.tech.hive.ui.room_offering.discover.DiscoverySettingsActivity
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -33,6 +33,7 @@ class MatchesFragment : BaseFragment<FragmentMatchesBinding>() {
     private lateinit var pendingMatchesAdapter: SimpleRecyclerViewAdapter<PendingMatchData, PendingMatchRvItemBinding>
     private var position = -1
     var check = false
+    var userType = ""
     override fun onCreateView(view: View) {
         // view
         initView()
@@ -44,9 +45,9 @@ class MatchesFragment : BaseFragment<FragmentMatchesBinding>() {
         binding.check = 1
         binding.visibilityHandel = Constants.userType
 
-        var userData = sharedPrefManager.getLoginData()
+        var userData = sharedPrefManager.getRole()
         if (userData != null) {
-            if (sharedPrefManager.getLoginData()?.profileRole == 2) {
+            if (userData == 2) {
                 check = false
                 sharedPrefManager.saveSide("2")
             } else {
@@ -60,7 +61,7 @@ class MatchesFragment : BaseFragment<FragmentMatchesBinding>() {
             } else {
                 binding.ivSettings.visibility = View.GONE
             }
-            if (userData.profileRole == 1) {
+            if (userData == 1) {
                 val data = HashMap<String, String>()
                 data["type"] = "user"
                 viewModel.getMatchApi(Constants.GET_MATCH, data)
@@ -109,6 +110,7 @@ class MatchesFragment : BaseFragment<FragmentMatchesBinding>() {
                 }
                 // friends click
                 R.id.tvFriend -> {
+                    binding.tvEmpty.visibility = View.GONE
                     binding.check = 1
                     if (sharedPrefManager.getSide() == "1") {
                         val data = HashMap<String, String>()
@@ -123,6 +125,7 @@ class MatchesFragment : BaseFragment<FragmentMatchesBinding>() {
                 }
                 // request click
                 R.id.tvRequest -> {
+                    binding.tvEmpty.visibility = View.GONE
                     binding.check = 2
                     if (sharedPrefManager.getSide() == "1") {
                         val data = HashMap<String, String>()
@@ -185,11 +188,21 @@ class MatchesFragment : BaseFragment<FragmentMatchesBinding>() {
                                 val myDataModel: PendingMatchResponse? =
                                     BindingUtils.parseJson(it.data.toString())
                                 if (myDataModel?.data != null) {
+                                    binding.tvEmpty.visibility = View.GONE
                                     matchesAdapter.clearList()
                                     matchesAdapter.list =
                                         myDataModel.data as List<PendingMatchData?>?
+
+                                    if (matchesAdapter.list.isNotEmpty()) {
+                                        binding.tvEmpty.visibility = View.GONE
+                                    } else {
+                                        binding.tvEmpty.visibility = View.VISIBLE
+                                        binding.tvEmpty.text = getString(R.string.no_matches_found)
+                                    }
                                 }
                             } catch (e: Exception) {
+                                binding.tvEmpty.visibility = View.VISIBLE
+                                binding.tvEmpty.text = getString(R.string.no_matches_found)
                                 Log.e("error", "getHomeApi: $e")
                             } finally {
                                 hideLoading()
@@ -201,10 +214,21 @@ class MatchesFragment : BaseFragment<FragmentMatchesBinding>() {
                                 val myDataModel: PendingMatchResponse? =
                                     BindingUtils.parseJson(it.data.toString())
                                 if (myDataModel?.data != null) {
+                                    binding.tvEmpty.visibility = View.GONE
                                     pendingMatchesAdapter.clearList()
                                     pendingMatchesAdapter.list = myDataModel.data
+
+                                    if (pendingMatchesAdapter.list.isNotEmpty()) {
+                                        binding.tvEmpty.visibility = View.GONE
+                                    } else {
+                                        binding.tvEmpty.visibility = View.VISIBLE
+                                        binding.tvEmpty.text =
+                                            getString(R.string.no_pending_request)
+                                    }
                                 }
                             } catch (e: Exception) {
+                                binding.tvEmpty.visibility = View.VISIBLE
+                                binding.tvEmpty.text = getString(R.string.no_pending_request)
                                 Log.e("error", "getHomeApi: $e")
                             } finally {
                                 hideLoading()
@@ -253,9 +277,16 @@ class MatchesFragment : BaseFragment<FragmentMatchesBinding>() {
                 when (v.id) {
                     // view profile
                     R.id.ivImage -> {
-                        val intent = Intent(requireContext(), MatchedProfileActivity::class.java)
-                        intent.putExtra("profileId", m._id)
-                        startActivity(intent)
+                        if (sharedPrefManager.getSide() == "1") {
+                            val intent = Intent(context, MatchedProfileActivity::class.java)
+                            intent.putExtra("profileIdFirst", m.userId?._id)
+                            requireContext().startActivity(intent)
+                        } else {
+                            val intent = Intent(context, SecondMatchActivity::class.java)
+                            intent.putExtra("profileIdSecond", m.listingId?._id)
+                            requireContext().startActivity(intent)
+                        }
+
                     }
 
                 }
@@ -273,7 +304,11 @@ class MatchesFragment : BaseFragment<FragmentMatchesBinding>() {
                         position = pos
                         val data = HashMap<String, Any>()
                         data["action"] = "reject"   //accept,reject
-                        data["id"] = m._id.toString()
+                        if (m.type?.contains("user") == true) {
+                            data["id"] = m.userId?._id.toString()
+                        } else {
+                            data["id"] = m.listingId?._id.toString()
+                        }
                         viewModel.acceptRejectAPi(Constants.MATCH_ACCEPT_REJECT, data)
 
                     }
@@ -281,8 +316,12 @@ class MatchesFragment : BaseFragment<FragmentMatchesBinding>() {
                     R.id.ivLike -> {
                         position = pos
                         val data = HashMap<String, Any>()
-                        data["action"] = "accept" //accept,reject
-                        data["id"] = m._id.toString()
+                        data["action"] = "accept"    //accept,reject
+                        if (m.type?.contains("listing") == true) {
+                            data["id"] = m.userId?._id.toString()
+                        } else {
+                            data["id"] = m.listingId?._id.toString()
+                        }
                         viewModel.acceptRejectAPi(Constants.MATCH_ACCEPT_REJECT, data)
 
                     }

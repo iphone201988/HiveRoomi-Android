@@ -22,6 +22,7 @@ import com.tech.hive.R
 import com.tech.hive.base.BaseActivity
 import com.tech.hive.base.BaseViewModel
 import com.tech.hive.base.utils.AppUtils
+import com.tech.hive.base.utils.BaseCustomBottomSheet
 import com.tech.hive.base.utils.BaseCustomDialog
 import com.tech.hive.base.utils.BindingUtils
 import com.tech.hive.base.utils.Status
@@ -34,6 +35,9 @@ import com.tech.hive.data.model.GetUserMessageResponse
 import com.tech.hive.data.model.UploadImageResponse
 import com.tech.hive.databinding.ActivityChatBinding
 import com.tech.hive.databinding.CalenderDialogItemBinding
+import com.tech.hive.databinding.PersonalDialogItemBinding
+import com.tech.hive.databinding.UserBlockBottomSheetBinding
+import com.tech.hive.databinding.UserBlockDialogItemBinding
 import dagger.hilt.android.AndroidEntryPoint
 import io.socket.client.IO
 import io.socket.client.Socket
@@ -59,8 +63,11 @@ class ChatActivity : BaseActivity<ActivityChatBinding>() {
     private var photoURI: Uri? = null
     private var multipartImage: MultipartBody.Part? = null
     private var socketId: String? = null
+    private var blockDialog: BaseCustomDialog<UserBlockDialogItemBinding>? = null
+    private var unBlockBottomSheet: BaseCustomBottomSheet<UserBlockBottomSheetBinding>? = null
     private var currentPage = 1
     private var filetype = ""
+    private var blockById = ""
     private lateinit var socket: Socket
 
 
@@ -192,6 +199,10 @@ class ChatActivity : BaseActivity<ActivityChatBinding>() {
                                 if (myDataModel?.data != null) {
                                     binding.bean = myDataModel.otherUser
                                     chatAdapter.setList(myDataModel.data.reversed() as List<GetUserData>?)
+                                    blockById = myDataModel.checkUserBlock?.blockBy ?: ""
+                                    if (myDataModel.isBlocked == true){
+                                        unBockBottomSheet(1)
+                                    }
 
                                 }
                             } catch (e: Exception) {
@@ -223,7 +234,21 @@ class ChatActivity : BaseActivity<ActivityChatBinding>() {
                                 val myDataModel: CommonResponse? =
                                     BindingUtils.parseJson(it.data.toString())
                                 if (myDataModel != null) {
-                                    showSuccessToast("user block successfully")
+                                    showSuccessToast(myDataModel.message.toString())
+                                    unBockBottomSheet(2)
+                                }
+                            } catch (e: Exception) {
+                                Log.e("error", "getHomeApi: $e")
+                            } finally {
+                                hideLoading()
+                            }
+                        }
+                        "userUnBlockAPi" -> {
+                            try {
+                                val myDataModel: CommonResponse? =
+                                    BindingUtils.parseJson(it.data.toString())
+                                if (myDataModel != null) {
+                                    showSuccessToast("user unblock successfully")
                                 }
                             } catch (e: Exception) {
                                 Log.e("error", "getHomeApi: $e")
@@ -250,6 +275,57 @@ class ChatActivity : BaseActivity<ActivityChatBinding>() {
     }
 
 
+    /** block dialog  handel ***/
+    private fun blockDialogItem() {
+        blockDialog = BaseCustomDialog(this@ChatActivity, R.layout.user_block_dialog_item) {
+            when(it?.id){
+                R.id.tvCancel ->{
+                    blockDialog?.dismiss()
+                }
+                R.id.tvLogout ->{
+                    val data = HashMap<String, Any>()
+                    data["id"] = socketId.toString()
+                    viewModel.userBlockAPi(data, Constants.USER_BLOCK)
+                    blockDialog?.dismiss()
+                }
+            }
+        }
+        blockDialog!!.create()
+        blockDialog!!.show()
+
+    }
+
+    /** block bottom sheet  handel ***/
+    private fun unBockBottomSheet(type: Int) {
+        unBlockBottomSheet = BaseCustomBottomSheet(this@ChatActivity, R.layout.user_block_bottom_sheet) {
+           when(it?.id){
+               R.id.tvUnBlock ->{
+                   val data = HashMap<String, Any>()
+                   data["id"] = socketId.toString()
+                   viewModel.userUnBlockAPi(data, Constants.USER_BLOCK)
+                   unBlockBottomSheet?.dismiss()
+               }
+           }
+        }
+        unBlockBottomSheet!!.create()
+        unBlockBottomSheet!!.show()
+    //    unBlockBottomSheet!!.setCancelable(false)
+        unBlockBottomSheet!!.setCancelable(true)
+        unBlockBottomSheet!!.setCanceledOnTouchOutside(false)
+        if (type==1){
+            if (blockById == sharedPrefManager.getLoginData()?._id){
+                unBlockBottomSheet!!.binding.tvSubHeading.text = getString(R.string.are_you_sure_to_block)
+                unBlockBottomSheet!!.binding.tvUnBlock.visibility = View.VISIBLE
+            }else{
+                unBlockBottomSheet!!.binding.tvUnBlock.visibility = View.GONE
+                unBlockBottomSheet!!.binding.tvSubHeading.text = getString(R.string.you_have_block_this_user)
+
+
+            }
+        }
+
+    }
+
     /** handle view **/
     private fun initView() {
         // set status bar color
@@ -257,6 +333,7 @@ class ChatActivity : BaseActivity<ActivityChatBinding>() {
         BindingUtils.statusBarTextColor(this@ChatActivity, false)
         // intent
         userId = intent.getStringExtra("chatId")
+        var matchId = intent.getStringExtra("matchId")
         socketId = intent.getStringExtra("socketId")
         if (userId?.isNotEmpty() == true) {
             val data = HashMap<String, String>()
@@ -264,6 +341,15 @@ class ChatActivity : BaseActivity<ActivityChatBinding>() {
             data["page"] = currentPage.toString()
             data["limit"] = "10"
             viewModel.getChatWithIdApi(Constants.CHAT_MESSAGE, data)
+        }else{
+            if (matchId?.isNotEmpty() == true){
+                val data = HashMap<String, String>()
+                data["userId"] = matchId.toString()
+                data["page"] = currentPage.toString()
+                data["limit"] = "10"
+                viewModel.getChatWithIdApi(Constants.CHAT_MESSAGE, data)
+            }
+
         }
 
         // adapter initialize
@@ -287,9 +373,8 @@ class ChatActivity : BaseActivity<ActivityChatBinding>() {
                 }
                 // user block
                 R.id.tvEditBlog -> {
-                    val data = HashMap<String, Any>()
-                    data["id"] = socketId.toString()
-                    viewModel.userBlockAPi(data, Constants.USER_BLOCK)
+                    blockDialogItem()
+
                 }
                 // user feedback
                 R.id.tvDeleteBlog -> {

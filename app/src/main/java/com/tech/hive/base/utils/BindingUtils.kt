@@ -28,7 +28,9 @@ import com.google.gson.Gson
 import com.tech.hive.R
 import com.tech.hive.data.api.Constants
 import com.tech.hive.data.model.HomeRoomTData
+import com.tech.hive.data.model.PendingMatchData
 import java.text.SimpleDateFormat
+import java.util.Date
 import java.util.Locale
 import java.util.TimeZone
 
@@ -52,6 +54,17 @@ object BindingUtils {
         }
     }
 
+    fun formatDateToMonthDay(dateString: String?): String {
+        return try {
+            val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.US)
+            inputFormat.timeZone = TimeZone.getTimeZone("UTC")
+            val date = inputFormat.parse(dateString ?: "")
+            val outputFormat = SimpleDateFormat("MMM dd", Locale.US)
+            outputFormat.format(date ?: Date())
+        } catch (e: Exception) {
+            ""
+        }
+    }
 
     val permissions = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
         arrayOf(
@@ -95,23 +108,78 @@ object BindingUtils {
     }
 
 
-    @BindingAdapter("setImageInt")
-    @JvmStatic
-    fun setImageInt(image: AppCompatImageView, url: Int?) {
-        if (url != null) {
-            image.setImageResource(url)
-        }
-    }
+
 
     @BindingAdapter("setImageFromUrl")
     @JvmStatic
     fun setImageFromUrl(image: ShapeableImageView, url: String?) {
+        if (!url.isNullOrEmpty()) {
+            Glide.with(image.context).load(Constants.BASE_URL_IMAGE + url)
+                .placeholder(R.drawable.progress_animation_small)
+                .error(R.drawable.user_place_holder).diskCacheStrategy(DiskCacheStrategy.ALL)
+                .into(image)
+        } else {
+            Glide.with(image.context).load(R.drawable.user_place_holder).into(image)
+        }
+    }
+
+    @BindingAdapter("setImageFromUrlMatch")
+    @JvmStatic
+    fun setImageFromUrlMatch(imageView: ShapeableImageView, url: PendingMatchData?) {
         if (url != null) {
-            if (url.isNotEmpty()) {
-                Glide.with(image.context).load(Constants.BASE_URL_IMAGE + url)
-                    .placeholder(R.drawable.progress_animation_small)
-                    .diskCacheStrategy(DiskCacheStrategy.ALL).into(image)
+            when {
+                url.type?.contains("user") == true -> {
+                    val imageUrl = url.userId?.profileImage
+                    Glide.with(imageView.context).load(Constants.BASE_URL_IMAGE + imageUrl)
+                        .placeholder(R.drawable.progress_animation_small)
+                        .error(R.drawable.user_place_holder)
+                        .diskCacheStrategy(DiskCacheStrategy.ALL).into(imageView)
+                }
+
+                url.type?.contains("listing") == true -> {
+                    val imageUrl = url.listingId?.images?.firstOrNull()
+                    Glide.with(imageView.context).load(Constants.BASE_URL_IMAGE + imageUrl)
+                        .placeholder(R.drawable.progress_animation_small)
+                        .error(R.drawable.user_place_holder)
+                        .diskCacheStrategy(DiskCacheStrategy.ALL).into(imageView)
+                }
+
+                else -> {
+                    Glide.with(imageView.context).load(R.drawable.user_place_holder).into(imageView)
+                }
             }
+        } else {
+            Glide.with(imageView.context).load(R.drawable.user_place_holder).into(imageView)
+        }
+    }
+
+
+
+    @BindingAdapter("setUserNameMatch")
+    @JvmStatic
+    fun setUserNameMatch(textView: AppCompatTextView, data: PendingMatchData?) {
+        if (data != null) {
+            when {
+                data.type?.contains("user") == true -> {
+                    textView.text = data.userId?.name
+                }
+
+                data.type?.contains("listing") == true -> {
+                    textView.text = data.listingId?.title
+                }
+            }
+        }
+    }
+
+    @BindingAdapter("setImageFromUrlHome")
+    @JvmStatic
+    fun setImageFromUrlHome(image: ShapeableImageView, url: String?) {
+        if (!url.isNullOrEmpty()) {
+            Glide.with(image.context).load(Constants.BASE_URL_IMAGE + url)
+                .placeholder(R.drawable.progress_animation_small).error(R.drawable.home_dummy_icon)
+                .diskCacheStrategy(DiskCacheStrategy.ALL).into(image)
+        } else {
+            Glide.with(image.context).load(R.drawable.home_dummy_icon).into(image)
         }
     }
 

@@ -61,6 +61,27 @@ class HomeFragmentVM @Inject constructor(val apiHelper: ApiHelper) : BaseViewMod
 
     }
 
+    fun getMatchedProfileSecond(data: HashMap<String, String>, url: String) {
+        CoroutineScope(Dispatchers.IO).launch {
+            observeCommon.postValue(Resource.loading(null))
+            try {
+                apiHelper.apiGetWithQuery(Constants.userLanguage,data, url).let {
+                    if (it.isSuccessful) {
+                        observeCommon.postValue(Resource.success("getMatchedProfile", it.body()))
+                    } else observeCommon.postValue(
+                        Resource.error(
+                            handleErrorResponse(it.errorBody()), null
+                        )
+                    )
+                }
+            } catch (e: Exception) {
+                Log.i("getMatchedProfile", "getMatchedProfile: $e")
+            }
+
+        }
+
+    }
+
 
     fun getHomeApiListening(url: String) {
         CoroutineScope(Dispatchers.IO).launch {
@@ -122,6 +143,27 @@ class HomeFragmentVM @Inject constructor(val apiHelper: ApiHelper) : BaseViewMod
                 }
             } catch (e: Exception) {
                 Log.i("likeDisLike", "likeDisLike: $e")
+            }
+
+        }
+
+    }
+
+    fun userRatings(url: String, request: HashMap<String, Any>) {
+        CoroutineScope(Dispatchers.IO).launch {
+            observeCommon.postValue(Resource.loading(null))
+            try {
+                apiHelper.apiPostForRawBody(Constants.userLanguage, url,request).let {
+                    if (it.isSuccessful) {
+                        observeCommon.postValue(Resource.success("userRatings", it.body()))
+                    } else observeCommon.postValue(
+                        Resource.error(
+                            handleErrorResponse(it.errorBody()), null
+                        )
+                    )
+                }
+            } catch (e: Exception) {
+                Log.i("userRatings", "userRatings: $e")
             }
 
         }

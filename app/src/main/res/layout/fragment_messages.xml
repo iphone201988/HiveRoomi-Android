@@ -30,6 +30,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/chats"
                 android:includeFontPadding="false"
+                android:visibility="invisible"
                 android:textSize="@dimen/_22ssp"
                 android:layout_marginTop="@dimen/_20sdp"
                 app:layout_constraintTop_toTopOf="parent"
@@ -42,7 +43,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="-5dp"
-                android:text="2 New Messages"
                 app:layout_constraintTop_toBottomOf="@id/tvTitle"
                 app:layout_constraintStart_toStartOf="parent"/>
             <androidx.appcompat.widget.AppCompatImageView
@@ -50,6 +50,7 @@
                 android:layout_width="@dimen/_20sdp"
                 android:layout_height="@dimen/_20sdp"
                 android:src="@drawable/bell_icon"
+                android:visibility="invisible"
                 android:onClick="@{v->vm.onClick(v)}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/tvTitle"
@@ -75,6 +76,7 @@
             android:layout_height="wrap_content"
             android:text="@string/all_messages"
             android:textSize="@dimen/_11ssp"
+            android:visibility="invisible"
             android:layout_marginTop="@dimen/_12sdp"
             android:layout_marginHorizontal="@dimen/_12sdp"
             app:layout_constraintTop_toBottomOf="@id/rvOnlineStatus"
@@ -92,6 +94,20 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvAllMsgs"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvEmptyChat"
+            style="@style/TextView.Medium"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:textColor="@color/black_24"
+            android:textSize="@dimen/_14sdp"
+            app:layout_constraintTop_toTopOf="parent"
+            android:text="@string/no_message_yet"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

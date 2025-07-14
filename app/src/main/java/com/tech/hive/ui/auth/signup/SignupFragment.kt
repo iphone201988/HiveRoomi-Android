@@ -552,6 +552,7 @@ class SignupFragment : BaseFragment<FragmentSignupBinding>() {
                                     if (myDataModel.data != null) {
                                         sharedPrefManager.setLoginData(myDataModel.data)
                                         sharedPrefManager.saveToken(myDataModel.data.token.toString())
+                                        sharedPrefManager.saveRole(myDataModel.data.profileRole)
                                         val email = binding.etEmail.text.toString().trim()
                                         val bundle = Bundle().apply {
                                             putString("userEmail", email)
@@ -580,6 +581,7 @@ class SignupFragment : BaseFragment<FragmentSignupBinding>() {
                                     if (myDataModel.data != null) {
                                         sharedPrefManager.setLoginData(myDataModel.data)
                                         sharedPrefManager.saveToken(myDataModel.data.token.toString())
+                                        sharedPrefManager.saveRole(myDataModel.data.profileRole)
                                         if (Constants.userType == 3) {
                                             BindingUtils.navigateWithSlide(
                                                 findNavController(),

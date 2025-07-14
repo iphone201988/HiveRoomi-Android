@@ -22,14 +22,25 @@ android {
     buildFeatures {
         viewBinding = true
         dataBinding = true
+        buildConfig = true
     }
 
     buildTypes {
+
+        debug {
+
+            buildConfigField("String", "BASE_URL", "\"http://13.51.228.96:8111/api/v1/\"")
+            buildConfigField("String", "SOCKET_URL", "\"http://13.51.228.96:8111\"")
+            buildConfigField("String", "MEDIA_BASE_URL", "\"http://13.51.228.96:8111\"")
+
+        }
         release {
             isMinifyEnabled = false
+            buildConfigField("String", "BASE_URL", "\"http://13.51.228.96:8111/api/v1/\"")
+            buildConfigField("String", "SOCKET_URL", "\"http://13.51.228.96:8111\"")
+            buildConfigField("String", "MEDIA_BASE_URL", "\"http://13.51.228.96:8111\"")
             proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
+                getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
             )
         }
     }
@@ -48,8 +59,8 @@ dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
     implementation(libs.androidx.activity)
-    implementation (libs.androidx.navigation.fragment.ktx.v277)
-    implementation (libs.androidx.navigation.ui.ktx)
+    implementation(libs.androidx.navigation.fragment.ktx.v277)
+    implementation(libs.androidx.navigation.ui.ktx)
 
     implementation(libs.androidx.constraintlayout)
     implementation(libs.androidx.navigation.runtime.android)
@@ -62,40 +73,40 @@ dependencies {
     implementation(libs.androidx.databinding.runtime)
     implementation(libs.dagger)
     implementation(libs.gson)
-    implementation (libs.retrofit)
-    implementation (libs.okhttp)
-    implementation (libs.logging.interceptor)
-    implementation (libs.play.services.location)
-    implementation (libs.androidx.fragment.ktx)
-    implementation (libs.glide)
-    implementation (libs.sdp.android)
-    implementation (libs.ssp.android)
-    implementation (libs.gson)
+    implementation(libs.retrofit)
+    implementation(libs.okhttp)
+    implementation(libs.logging.interceptor)
+    implementation(libs.play.services.location)
+    implementation(libs.androidx.fragment.ktx)
+    implementation(libs.glide)
+    implementation(libs.sdp.android)
+    implementation(libs.ssp.android)
+    implementation(libs.gson)
     kapt(libs.dagger.compiler)
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
-    implementation (libs.lottie)
-    implementation (libs.converter.gson)
+    implementation(libs.lottie)
+    implementation(libs.converter.gson)
     //  image picker
     implementation(libs.imagepicker)
     //firebase
     implementation(platform("com.google.firebase:firebase-bom:32.8.0"))
-    implementation ("com.google.android.gms:play-services-auth:21.3.0")
-    implementation ("com.google.firebase:firebase-auth-ktx")
+    implementation("com.google.android.gms:play-services-auth:21.3.0")
+    implementation("com.google.firebase:firebase-auth-ktx")
 
     //facebook login dependency
-    implementation ("com.facebook.android:facebook-login:17.0.2")
-    implementation ("com.facebook.android:facebook-android-sdk:17.0.2")
+    implementation("com.facebook.android:facebook-login:17.0.2")
+    implementation("com.facebook.android:facebook-android-sdk:17.0.2")
 
     // for location access
-    implementation ("com.google.android.gms:play-services-location:21.0.1")
+    implementation("com.google.android.gms:play-services-location:21.0.1")
 
     // calender
-    implementation (libs.material.calendar.view)
+    implementation(libs.material.calendar.view)
 
     //socket dependency
-    implementation ("io.socket:socket.io-client:2.0.1")
+    implementation("io.socket:socket.io-client:2.0.1")
     implementation("com.tbuonomo:dotsindicator:5.0")
-
+    implementation("com.github.wdsqjq:AndRatingBar:1.0.6")
 
 }
