@@ -10,19 +10,10 @@
             type="com.tech.hive.ui.room_offering.basic_details.BasicDetailsVM" />
 
         <variable
-            name="roomType"
-            type="String" />
-
-        <variable
             name="sizeType"
             type="String" />
 
-        <variable
-            name="statusType"
-            type="String" />
-        <variable
-            name="roommateType"
-            type="String" />
+
 
     </data>
 
@@ -54,12 +45,12 @@
 
             <TextView
                 android:id="@+id/tvTitle"
-                style="@style/TextView.Bold"
+                style="@style/TextView.PoppinsBold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_6sdp"
                 android:text="@string/room_details"
-                android:textSize="@dimen/_22sdp"
+                android:textSize="@dimen/_20sdp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/ivBack" />
 
@@ -67,12 +58,12 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvRoom"
-            style="@style/TextView.Regular"
+            style="@style/TextView.SfMedium"
+            android:textSize="@dimen/_13ssp"
             android:layout_marginHorizontal="@dimen/_12sdp"
             android:layout_marginTop="@dimen/_15sdp"
             android:text="@string/type"
             android:textColor="@color/black_24"
-            android:textSize="@dimen/_12ssp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/clHeader" />
 
@@ -81,13 +72,11 @@
             style="@style/EditText"
             android:layout_marginHorizontal="@dimen/_12sdp"
             android:layout_marginTop="@dimen/_6sdp"
-            android:background="@{roomType.isEmpty()?@drawable/unselect_edit_text_bg_color:@drawable/select_edittext_bg_color}"
+            android:background="@drawable/unselect_edit_text_bg_color"
             android:focusable="false"
-            android:hint="Double Room"
-            android:imeOptions="actionNext"
-            android:inputType="textPassword"
-            android:nextFocusForward="@+id/etConfirmPassword"
-            android:paddingStart="@dimen/_10sdp"
+            android:hint="@string/double_rooms"
+            android:onClick="@{v->vm.onClick(v)}"
+            android:paddingStart="@dimen/_15sdp"
             android:paddingEnd="@dimen/_40sdp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -99,7 +88,6 @@
             android:layout_width="@dimen/_27sdp"
             android:layout_height="@dimen/_27sdp"
             android:layout_marginEnd="@dimen/_14sdp"
-            android:onClick="@{v->vm.onClick(v)}"
             android:padding="@dimen/_5sdp"
             android:src="@drawable/arrow_up"
             app:layout_constraintBottom_toBottomOf="@+id/etRoom"
@@ -109,11 +97,11 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvSize"
-            style="@style/TextView.Regular"
+            style="@style/TextView.SfMedium"
+            android:textSize="@dimen/_13ssp"
             android:layout_marginTop="@dimen/_15sdp"
             android:text="@string/size"
             android:textColor="@color/black_24"
-            android:textSize="@dimen/_12ssp"
             app:layout_constraintStart_toStartOf="@+id/etRoom"
             app:layout_constraintTop_toBottomOf="@+id/etRoom" />
 
@@ -126,7 +114,7 @@
             android:hint="@string/in_sq"
             android:imeOptions="actionDone"
             android:inputType="numberDecimal"
-            android:paddingStart="@dimen/_10sdp"
+            android:paddingStart="@dimen/_15sdp"
             android:paddingEnd="@dimen/_40sdp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -134,12 +122,12 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvStatus"
-            style="@style/TextView.Regular"
+            style="@style/TextView.SfMedium"
+            android:textSize="@dimen/_13ssp"
             android:layout_marginHorizontal="@dimen/_12sdp"
             android:layout_marginTop="@dimen/_15sdp"
             android:text="@string/furnished_status"
             android:textColor="@color/black_24"
-            android:textSize="@dimen/_12ssp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/etSize" />
 
@@ -148,13 +136,11 @@
             style="@style/EditText"
             android:layout_marginHorizontal="@dimen/_12sdp"
             android:layout_marginTop="@dimen/_6sdp"
-            android:background="@{statusType.isEmpty()?@drawable/unselect_edit_text_bg_color:@drawable/select_edittext_bg_color}"
+            android:background="@drawable/unselect_edit_text_bg_color"
             android:focusable="false"
-            android:hint="Fully Furnished"
-            android:imeOptions="actionNext"
-            android:inputType="textPassword"
-            android:nextFocusForward="@+id/etConfirmPassword"
-            android:paddingStart="@dimen/_10sdp"
+            android:onClick="@{v->vm.onClick(v)}"
+            android:hint="@string/fully_furnished"
+            android:paddingStart="@dimen/_15sdp"
             android:paddingEnd="@dimen/_40sdp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -166,7 +152,6 @@
             android:layout_width="@dimen/_27sdp"
             android:layout_height="@dimen/_27sdp"
             android:layout_marginEnd="@dimen/_14sdp"
-            android:onClick="@{v->vm.onClick(v)}"
             android:padding="@dimen/_5sdp"
             android:src="@drawable/arrow_up"
             app:layout_constraintBottom_toBottomOf="@+id/etStatus"
@@ -175,12 +160,13 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvRoommate"
-            style="@style/TextView.Regular"
+            style="@style/TextView.SfMedium"
+            android:textSize="@dimen/_13ssp"
             android:layout_marginHorizontal="@dimen/_12sdp"
             android:layout_marginTop="@dimen/_15sdp"
             android:text="@string/roommate"
             android:textColor="@color/black_24"
-            android:textSize="@dimen/_12ssp"
+
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/etStatus" />
 
@@ -189,13 +175,11 @@
             style="@style/EditText"
             android:layout_marginHorizontal="@dimen/_12sdp"
             android:layout_marginTop="@dimen/_6sdp"
-            android:background="@{roommateType.isEmpty()?@drawable/unselect_edit_text_bg_color:@drawable/select_edittext_bg_color}"
+            android:background="@drawable/unselect_edit_text_bg_color"
             android:focusable="false"
-            android:hint="Yes"
-            android:imeOptions="actionNext"
-            android:inputType="textPassword"
-            android:nextFocusForward="@+id/etConfirmPassword"
-            android:paddingStart="@dimen/_10sdp"
+            android:hint="@string/yes"
+            android:onClick="@{v->vm.onClick(v)}"
+            android:paddingStart="@dimen/_15sdp"
             android:paddingEnd="@dimen/_40sdp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -207,7 +191,6 @@
             android:layout_width="@dimen/_27sdp"
             android:layout_height="@dimen/_27sdp"
             android:layout_marginEnd="@dimen/_14sdp"
-            android:onClick="@{v->vm.onClick(v)}"
             android:padding="@dimen/_5sdp"
             android:src="@drawable/arrow_up"
             app:layout_constraintBottom_toBottomOf="@+id/etRoommate"

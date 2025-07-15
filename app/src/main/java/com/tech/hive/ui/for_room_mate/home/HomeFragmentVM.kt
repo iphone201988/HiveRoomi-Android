@@ -169,4 +169,25 @@ class HomeFragmentVM @Inject constructor(val apiHelper: ApiHelper) : BaseViewMod
         }
 
     }
+
+    fun getListing(url: String) {
+        CoroutineScope(Dispatchers.IO).launch {
+            observeCommon.postValue(Resource.loading(null))
+            try {
+                apiHelper.apiGetOnlyAuthToken(Constants.userLanguage, url).let {
+                    if (it.isSuccessful) {
+                        observeCommon.postValue(Resource.success("getListing", it.body()))
+                    } else observeCommon.postValue(
+                        Resource.error(
+                            handleErrorResponse(it.errorBody()), null
+                        )
+                    )
+                }
+            } catch (e: Exception) {
+                Log.i("getListing", "getListing: $e")
+            }
+
+        }
+
+    }
 }

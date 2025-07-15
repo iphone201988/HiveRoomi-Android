@@ -20,6 +20,22 @@ class RoomMateDetailsActivity : BaseActivity<ActivityRoomMateDetailsBinding>() {
     private val viewModel: BasicDetailsVM by viewModels()
     private lateinit var roomMateAdapter: SimpleRecyclerViewAdapter<RoomMateModel, AddRoomMateItemViewBinding>
     private var roomiesList = ArrayList<RoomMateModel>()
+
+    private var roomType: String? = null
+    private var titleType: String? = null
+    private var bioType: String? = null
+    private var locationType: String? = null
+    private var priceType: String? = null
+    private var utilityPriceType: String? = null
+    private var depositType: String? = null
+    private var contractType: String? = null
+    private var availableType: String? = null
+    private var minimumStayType: String? = null
+    private var roomDetailType: String? = null
+    private var sizeType: String? = null
+    private var furnishedType: String? = null
+    private var roommateType: String? = null
+
     override fun getLayoutResource(): Int {
         return R.layout.activity_room_mate_details
     }
@@ -33,8 +49,8 @@ class RoomMateDetailsActivity : BaseActivity<ActivityRoomMateDetailsBinding>() {
         initView()
         // click
         initOnClick()
-        // observer
-        initObserver()
+
+
     }
 
     /** handle view **/
@@ -48,6 +64,23 @@ class RoomMateDetailsActivity : BaseActivity<ActivityRoomMateDetailsBinding>() {
 
         // adapter
         initAdapter()
+
+        // get intent data
+        roomType = intent.getStringExtra("roomType")
+        titleType = intent.getStringExtra("titleType")
+        bioType = intent.getStringExtra("bioType")
+        locationType = intent.getStringExtra("locationType")
+        priceType = intent.getStringExtra("priceType")
+        utilityPriceType = intent.getStringExtra("utilityPriceType")
+        depositType = intent.getStringExtra("depositType")
+        contractType = intent.getStringExtra("contractType")
+        availableType = intent.getStringExtra("availableType")
+        minimumStayType = intent.getStringExtra("minimumStayType")
+
+        roomDetailType = intent.getStringExtra("roomDetailType")
+        sizeType = intent.getStringExtra("sizeType")
+        furnishedType = intent.getStringExtra("furnishedType")
+        roommateType = intent.getStringExtra("roommateType")
     }
 
     /** handle click **/
@@ -71,7 +104,24 @@ class RoomMateDetailsActivity : BaseActivity<ActivityRoomMateDetailsBinding>() {
                 }
                 // btn next
                 R.id.btnContinue -> {
-                    startActivity(Intent(this, ApartmentFeaturesActivity::class.java))
+                    val intent = Intent(this@RoomMateDetailsActivity, ApartmentFeaturesActivity::class.java)
+                    intent.putExtra("roomType", roomType)
+                    intent.putExtra("titleType", titleType)
+                    intent.putExtra("bioType", bioType)
+                    intent.putExtra("locationType", locationType)
+                    intent.putExtra("priceType", priceType)
+                    intent.putExtra("utilityPriceType", utilityPriceType)
+                    intent.putExtra("depositType", depositType)
+                    intent.putExtra("contractType", contractType)
+                    intent.putExtra("availableType", availableType)
+                    intent.putExtra("minimumStayType", minimumStayType)
+
+                    intent.putExtra("roomDetailType", roomDetailType)
+                    intent.putExtra("sizeType", sizeType)
+                    intent.putExtra("furnishedType", furnishedType)
+                    intent.putExtra("roommateType", roommateType)
+
+                    startActivity(intent)
                 }
 
                 R.id.ivBack->{

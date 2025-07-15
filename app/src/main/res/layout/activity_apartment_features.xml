@@ -9,21 +9,6 @@
             name="vm"
             type="com.tech.hive.ui.room_offering.basic_details.BasicDetailsVM" />
 
-        <variable
-            name="floorType"
-            type="String" />
-
-        <variable
-            name="elevatorType"
-            type="String" />
-
-        <variable
-            name="heatingType"
-            type="String" />
-
-        <variable
-            name="amenitiesType"
-            type="String" />
 
     </data>
 
@@ -55,24 +40,24 @@
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tvTitle"
-                style="@style/TextView.Bold"
+                style="@style/TextView.PoppinsBold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_6sdp"
                 android:text="@string/apartment_features"
-                android:textSize="@dimen/_22sdp"
+                android:textSize="@dimen/_20sdp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/ivBack" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvFloor"
-            style="@style/TextView.Regular"
+            style="@style/TextView.SfMedium"
+            android:textSize="@dimen/_13ssp"
             android:layout_marginHorizontal="@dimen/_12sdp"
             android:layout_marginTop="@dimen/_15sdp"
             android:text="@string/floor"
             android:textColor="@color/black_24"
-            android:textSize="@dimen/_12ssp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/clHeader" />
 
@@ -81,13 +66,11 @@
             style="@style/EditText"
             android:layout_marginHorizontal="@dimen/_12sdp"
             android:layout_marginTop="@dimen/_6sdp"
-            android:background="@{floorType.isEmpty()?@drawable/unselect_edit_text_bg_color:@drawable/select_edittext_bg_color}"
+            android:background="@drawable/unselect_edit_text_bg_color"
             android:focusable="false"
             android:hint="2nd"
-            android:imeOptions="actionNext"
-            android:inputType="textPassword"
-            android:nextFocusForward="@+id/etConfirmPassword"
-            android:paddingStart="@dimen/_10sdp"
+            android:onClick="@{v->vm.onClick(v)}"
+            android:paddingStart="@dimen/_15sdp"
             android:paddingEnd="@dimen/_40sdp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -98,7 +81,6 @@
             android:layout_width="@dimen/_27sdp"
             android:layout_height="@dimen/_27sdp"
             android:layout_marginEnd="@dimen/_14sdp"
-            android:onClick="@{v->vm.onClick(v)}"
             android:padding="@dimen/_5sdp"
             android:src="@drawable/arrow_up"
             app:layout_constraintBottom_toBottomOf="@+id/etFloor"
@@ -107,12 +89,12 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvElevator"
-            style="@style/TextView.Regular"
+            style="@style/TextView.SfMedium"
+            android:textSize="@dimen/_13ssp"
             android:layout_marginHorizontal="@dimen/_12sdp"
             android:layout_marginTop="@dimen/_15sdp"
             android:text="@string/elevator"
             android:textColor="@color/black_24"
-            android:textSize="@dimen/_12ssp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/etFloor" />
 
@@ -121,14 +103,12 @@
             style="@style/EditText"
             android:layout_marginHorizontal="@dimen/_12sdp"
             android:layout_marginTop="@dimen/_6sdp"
-            android:background="@{elevatorType.isEmpty()?@drawable/unselect_edit_text_bg_color:@drawable/select_edittext_bg_color}"
+            android:background="@drawable/unselect_edit_text_bg_color"
             android:focusable="false"
             android:hint="Yes"
-            android:imeOptions="actionNext"
-            android:inputType="textPassword"
-            android:nextFocusForward="@+id/etConfirmPassword"
-            android:paddingStart="@dimen/_10sdp"
+            android:paddingStart="@dimen/_15sdp"
             android:paddingEnd="@dimen/_40sdp"
+            android:onClick="@{v->vm.onClick(v)}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvElevator" />
@@ -138,7 +118,6 @@
             android:layout_width="@dimen/_27sdp"
             android:layout_height="@dimen/_27sdp"
             android:layout_marginEnd="@dimen/_14sdp"
-            android:onClick="@{v->vm.onClick(v)}"
             android:padding="@dimen/_5sdp"
             android:src="@drawable/arrow_up"
             app:layout_constraintBottom_toBottomOf="@+id/etElevator"
@@ -147,12 +126,12 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvHeating"
-            style="@style/TextView.Regular"
+            style="@style/TextView.SfMedium"
+            android:textSize="@dimen/_13ssp"
             android:layout_marginHorizontal="@dimen/_12sdp"
             android:layout_marginTop="@dimen/_15sdp"
             android:text="@string/heating"
             android:textColor="@color/black_24"
-            android:textSize="@dimen/_12ssp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/etElevator" />
 
@@ -161,13 +140,11 @@
             style="@style/EditText"
             android:layout_marginHorizontal="@dimen/_12sdp"
             android:layout_marginTop="@dimen/_6sdp"
-            android:background="@{heatingType.isEmpty()?@drawable/unselect_edit_text_bg_color:@drawable/select_edittext_bg_color}"
+            android:background="@drawable/unselect_edit_text_bg_color"
             android:focusable="false"
             android:hint="Independent"
-            android:imeOptions="actionNext"
-            android:inputType="textPassword"
-            android:nextFocusForward="@+id/etConfirmPassword"
-            android:paddingStart="@dimen/_10sdp"
+            android:onClick="@{v->vm.onClick(v)}"
+            android:paddingStart="@dimen/_15sdp"
             android:paddingEnd="@dimen/_40sdp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -178,67 +155,12 @@
             android:layout_width="@dimen/_27sdp"
             android:layout_height="@dimen/_27sdp"
             android:layout_marginEnd="@dimen/_14sdp"
-            android:onClick="@{v->vm.onClick(v)}"
             android:padding="@dimen/_5sdp"
             android:src="@drawable/arrow_up"
             app:layout_constraintBottom_toBottomOf="@+id/etHeating"
             app:layout_constraintEnd_toEndOf="@+id/etHeating"
             app:layout_constraintTop_toTopOf="@+id/etHeating" />
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tvAmenities"
-            style="@style/TextView.Regular"
-            android:layout_marginHorizontal="@dimen/_12sdp"
-            android:layout_marginTop="@dimen/_15sdp"
-            android:text="@string/amenities"
-            android:visibility="gone"
-            android:textColor="@color/black_24"
-            android:textSize="@dimen/_12ssp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/etHeating" />
-
-        <androidx.appcompat.widget.AppCompatEditText
-            android:id="@+id/etAmenities"
-            style="@style/EditText"
-            android:layout_marginHorizontal="@dimen/_12sdp"
-            android:layout_marginTop="@dimen/_6sdp"
-            android:background="@{amenitiesType.isEmpty()?@drawable/unselect_edit_text_bg_color:@drawable/select_edittext_bg_color}"
-            android:focusable="false"
-            android:hint="Parking"
-            android:imeOptions="actionNext"
-            android:visibility="gone"
-            android:inputType="textPassword"
-            android:nextFocusForward="@+id/etConfirmPassword"
-            android:paddingStart="@dimen/_10sdp"
-            android:paddingEnd="@dimen/_40sdp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvAmenities" />
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/ivAmenities"
-            android:layout_width="@dimen/_27sdp"
-            android:layout_height="@dimen/_27sdp"
-            android:layout_marginEnd="@dimen/_14sdp"
-            android:visibility="gone"
-            android:onClick="@{v->vm.onClick(v)}"
-            android:padding="@dimen/_5sdp"
-            android:src="@drawable/arrow_up"
-            app:layout_constraintBottom_toBottomOf="@+id/etAmenities"
-            app:layout_constraintEnd_toEndOf="@+id/etAmenities"
-            app:layout_constraintTop_toTopOf="@+id/etAmenities" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvAmenities"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/_12sdp"
-            android:layout_marginTop="@dimen/_6sdp"
-            android:visibility="gone"
-            android:orientation="horizontal"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintTop_toBottomOf="@id/etAmenities"
-            tools:listitem="@layout/features_item_view" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/btnContinue"

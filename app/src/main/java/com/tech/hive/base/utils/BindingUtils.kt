@@ -6,6 +6,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.pm.PackageManager
 import android.graphics.Color
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.view.View
@@ -28,15 +29,18 @@ import com.google.gson.Gson
 import com.tech.hive.R
 import com.tech.hive.data.api.Constants
 import com.tech.hive.data.model.HomeRoomTData
+import com.tech.hive.data.model.NotificationData
 import com.tech.hive.data.model.PendingMatchData
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 import java.util.TimeZone
+import androidx.core.net.toUri
 
 object BindingUtils {
     var latitude: Double? = null
     var longitude: Double? = null
+
 
     fun navigateWithSlide(navController: NavController, destinationId: Int, bundle: Bundle?) {
         val navOptions = NavOptions.Builder().build()
@@ -108,8 +112,6 @@ object BindingUtils {
     }
 
 
-
-
     @BindingAdapter("setImageFromUrl")
     @JvmStatic
     fun setImageFromUrl(image: ShapeableImageView, url: String?) {
@@ -122,6 +124,18 @@ object BindingUtils {
             Glide.with(image.context).load(R.drawable.user_place_holder).into(image)
         }
     }
+
+    @BindingAdapter("setImageFromUri")
+    @JvmStatic
+    fun setImageFromUri(imageView: ShapeableImageView, imageUri: String?) {
+        if (!imageUri.isNullOrEmpty()) {
+            imageView.setImageURI(imageUri.toUri())
+        } else {
+            imageView.setImageResource(R.drawable.user_place_holder)
+        }
+    }
+
+
 
     @BindingAdapter("setImageFromUrlMatch")
     @JvmStatic
@@ -154,7 +168,6 @@ object BindingUtils {
     }
 
 
-
     @BindingAdapter("setUserNameMatch")
     @JvmStatic
     fun setUserNameMatch(textView: AppCompatTextView, data: PendingMatchData?) {
@@ -169,6 +182,17 @@ object BindingUtils {
                 }
             }
         }
+    }
+
+    @BindingAdapter("notificationVisibility")
+    @JvmStatic
+    fun notificationVisibility(textView: AppCompatTextView, data: NotificationData?) {
+        textView.visibility =
+            if (data?.type?.contains("like") == true && data.likeId?.status == 1) {
+                View.VISIBLE
+            } else {
+                View.GONE
+            }
     }
 
     @BindingAdapter("setImageFromUrlHome")

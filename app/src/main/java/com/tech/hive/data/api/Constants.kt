@@ -44,6 +44,8 @@ object Constants {
     const val USER_COMMUNITY_GUIDELINES = "user/community-guidelines"
     const val USER_SAFETY_TIPS_CREATE = "user/safety-tips/create"
     const val USER_SAFETY_TIPS = "user/safety-tips"
+    const val LISTING = "listing"
+    const val LOGOUT = "user/logout"
 
 
 

@@ -3,99 +3,108 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
         <variable
             name="callback"
             type="com.tech.hive.base.SimpleRecyclerViewAdapter.SimpleCallback" />
+
         <variable
             name="pos"
             type="Integer" />
+
         <variable
             name="bean"
-            type="com.tech.hive.data.model.NotificationModel" />
-        <import type="android.view.View"/>
+            type="com.tech.hive.data.model.NotificationData" />
+
+        <import type="android.view.View" />
 
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/_6sdp"
         android:layout_marginBottom="@dimen/_12sdp"
-        android:background="@drawable/notification_bg_corner_radius_20">
+        android:background="@drawable/notification_bg_corner_radius_20"
+        android:padding="@dimen/_6sdp">
+
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/ivImage"
+            setImageFromUrl="@{bean.senderId.profileImage}"
             android:layout_width="@dimen/_32sdp"
             android:layout_height="@dimen/_32sdp"
-            app:shapeAppearance="@style/Shape50"
-            android:src="@drawable/ic_match_dummy"
             android:scaleType="centerCrop"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent"
+            app:shapeAppearance="@style/Shape50" />
+
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvName"
             style="@style/TextView.Medium"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@{bean.title}"
             android:layout_marginStart="@dimen/_5sdp"
-            android:textSize="@dimen/_10ssp"
+            android:layout_marginEnd="@dimen/_10sdp"
             android:gravity="start"
             android:includeFontPadding="false"
+            android:text="@{bean.title}"
             android:textColor="@color/black_24"
-            android:layout_marginEnd="@dimen/_10sdp"
-            app:layout_constraintTop_toTopOf="@id/ivImage"
+            android:textSize="@dimen/_10ssp"
             app:layout_constraintBottom_toTopOf="@id/tvCompatibility"
+            app:layout_constraintEnd_toStartOf="@id/btnAccept"
             app:layout_constraintStart_toEndOf="@id/ivImage"
-            app:layout_constraintEnd_toStartOf="@id/btnAccept"/>
+            app:layout_constraintTop_toTopOf="@id/ivImage" />
+
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvCompatibility"
             style="@style/TextView.Medium"
             android:layout_width="0dp"
+            android:visibility="gone"
             android:layout_height="wrap_content"
-            android:text='@{"Compatibility: "+ bean.compatibilty}'
             android:layout_marginStart="@dimen/_5sdp"
-            android:textSize="@dimen/_10ssp"
-            android:gravity="start"
-            android:visibility="@{bean.type==3?View.VISIBLE:View.GONE}"
-            android:includeFontPadding="false"
-            android:textColor="@color/end_color"
             android:layout_marginEnd="@dimen/_10sdp"
-            app:layout_constraintTop_toBottomOf="@id/tvName"
+            android:gravity="start"
+            android:includeFontPadding="false"
+            android:text='@{"Compatibility: "+ bean.senderId.name}'
+            android:textColor="@color/end_color"
+            android:textSize="@dimen/_10ssp"
             app:layout_constraintBottom_toBottomOf="@id/ivImage"
+            app:layout_constraintEnd_toStartOf="@id/btnAccept"
             app:layout_constraintStart_toEndOf="@id/ivImage"
-            app:layout_constraintEnd_toStartOf="@id/btnAccept"/>
+            app:layout_constraintTop_toBottomOf="@id/tvName" />
+
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/btnAccept"
             style="@style/TextView.Medium"
-            android:background="@drawable/bg_notification_button"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/_5sdp"
+            android:background="@drawable/bg_notification_button"
+            notificationVisibility="@{bean}"
             android:onClick="@{v->callback.onItemClick(v,bean,pos)}"
-            android:visibility="@{bean.type==1?View.VISIBLE:View.GONE}"
+            android:paddingHorizontal="@dimen/_8sdp"
+            android:paddingVertical="@dimen/_3sdp"
             android:text="@string/accept"
             android:textSize="@dimen/_10ssp"
-            android:paddingVertical="@dimen/_3sdp"
-            android:paddingHorizontal="@dimen/_8sdp"
-            android:layout_marginEnd="@dimen/_5sdp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/btnReject"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent" />
+
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/btnReject"
             style="@style/TextView.Medium"
-            android:background="@drawable/bg_notification_button_stroke"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:visibility="@{bean.type==1?View.VISIBLE:View.GONE}"
-            android:text="@string/reject"
+            android:background="@drawable/bg_notification_button_stroke"
+            notificationVisibility="@{bean}"
             android:onClick="@{v->callback.onItemClick(v,bean,pos)}"
-            android:textSize="@dimen/_10ssp"
-            android:textColor="@color/start_color"
-            android:paddingVertical="@dimen/_3sdp"
             android:paddingHorizontal="@dimen/_8sdp"
+            android:paddingVertical="@dimen/_3sdp"
+            android:text="@string/reject"
+            android:textColor="@color/start_color"
+            android:textSize="@dimen/_10ssp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

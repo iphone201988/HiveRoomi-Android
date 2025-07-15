@@ -21,7 +21,6 @@ import com.facebook.CallbackManager
 import com.facebook.FacebookCallback
 import com.facebook.FacebookException
 import com.facebook.FacebookSdk
-import com.facebook.GraphRequest
 import com.facebook.login.LoginManager
 import com.facebook.login.LoginResult
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -39,7 +38,6 @@ import com.tech.hive.base.BaseFragment
 import com.tech.hive.base.BaseViewModel
 import com.tech.hive.base.utils.BindingUtils
 import com.tech.hive.base.utils.Status
-import com.tech.hive.base.utils.showErrorToast
 import com.tech.hive.data.api.Constants
 import com.tech.hive.data.model.LoginResponse
 import com.tech.hive.databinding.FragmentSignupBinding
@@ -48,7 +46,6 @@ import com.tech.hive.ui.enum_class.DeviceType
 import com.tech.hive.ui.enum_class.LoginType
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-import org.json.JSONException
 import java.util.TimeZone
 
 

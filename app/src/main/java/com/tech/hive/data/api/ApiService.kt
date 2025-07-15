@@ -1,7 +1,7 @@
 package com.tech.hive.data.api
 
 import com.google.gson.JsonObject
-import com.tech.hive.data.model.AnswerSendResponse
+import com.tech.hive.data.model.AnswerSendRequest
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Response
@@ -26,8 +26,7 @@ interface ApiService {
 
     @POST
     suspend fun apiForRawBody(
-        @Header("Accept-Language") lang: String,
-        @Body data: HashMap<String, Any>, @Url url: String
+        @Header("Accept-Language") lang: String, @Body data: HashMap<String, Any>, @Url url: String
     ): Response<JsonObject>
 
     @POST
@@ -44,7 +43,7 @@ interface ApiService {
         @Header("Accept-Language") lang: String,
         @Header("Authorization") token: String,
         @Url url: String,
-        @Body data: AnswerSendResponse
+        @Body data: AnswerSendRequest
     ): Response<JsonObject>
 
     @PUT

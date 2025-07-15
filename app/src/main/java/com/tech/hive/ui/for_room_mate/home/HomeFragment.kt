@@ -19,7 +19,6 @@ import com.tech.hive.base.utils.BindingUtils
 import com.tech.hive.base.utils.Status
 import com.tech.hive.data.api.Constants
 import com.tech.hive.data.model.CommonResponse
-import com.tech.hive.data.model.DiscoverModel
 import com.tech.hive.data.model.HomeApiResponse
 import com.tech.hive.data.model.HomeFilterList
 import com.tech.hive.data.model.HomeRoomTData
@@ -69,35 +68,30 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), CardStackListener {
     }
 
     override fun onCreateView(view: View) {
-        // view
-        initView()
         // click
         initOnClick()
-            var userData = sharedPrefManager.getRole()
-        if (userData != null) {
-            binding.userType = userData
-            binding.buttonClick = 1
-            binding.check = userData ?: 1
-            userTypeLike = userData ?: 1
-            if (userData == 1) {
-                // api call
-                viewModel.getHomeApi(Constants.MATCH_LOOKING_ROOMMATE)
-            } else {
-                // api call
-                viewModel.getHomeApiListening(Constants.MATCH_LOOKING_LISTING)
-            }
+        var userData = sharedPrefManager.getRole()
+        binding.userType = userData
+        binding.buttonClick = 1
+        binding.check = userData
+        userTypeLike = userData
+
+        if (userData == 1) {
+            // api call
+            viewModel.getHomeApi(Constants.MATCH_LOOKING_ROOMMATE)
+        } else if (userData == 2) {
+            // api call
+            viewModel.getHomeApiListening(Constants.MATCH_LOOKING_LISTING)
+        } else {
+            // api call
+            viewModel.getListing(Constants.LISTING)
         }
-    }
-
-
-    /** handle view **/
-    private fun initView() {
         // observer
         initObserver()
         // adapter
         initAdapter()
-        binding.check = 1
     }
+
 
 
     /** handle adapter **/
@@ -210,7 +204,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), CardStackListener {
 
         return list
     }
-
 
 
     /** handle click **/
@@ -387,6 +380,22 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), CardStackListener {
                             }
                         }
 
+                        "getListing" -> {
+                            try {
+                                val myDataModel: CommonResponse? =
+                                    BindingUtils.parseJson(it.data.toString())
+                                if (myDataModel != null) {
+
+
+                                }
+
+                            } catch (e: Exception) {
+                                Log.e("error", "likeDisLike: $e")
+                            } finally {
+                                hideLoading()
+                            }
+                        }
+
                     }
                 }
 
@@ -406,10 +415,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), CardStackListener {
 
     private fun filterList(): ArrayList<HomeFilterList> {
         val filterList = ArrayList<HomeFilterList>()
-        filterList.add(HomeFilterList("All"))
-        filterList.add(HomeFilterList("Active"))
-        filterList.add(HomeFilterList("In Review"))
-        filterList.add(HomeFilterList("Rented"))
+        filterList.add(HomeFilterList("All",true))
+        filterList.add(HomeFilterList("Active",false))
+        filterList.add(HomeFilterList("In Review",false))
+        filterList.add(HomeFilterList("Rented",false))
         return filterList
     }
 

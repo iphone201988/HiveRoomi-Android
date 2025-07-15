@@ -1,0 +1,343 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="vm"
+            type="com.tech.hive.ui.room_offering.basic_details.BasicDetailsVM" />
+    </data>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/main"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:context=".ui.room_offering.basic_details.AmenityActivity">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/clHeader"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/_105sdp"
+                android:background="@drawable/top_bg"
+                android:paddingHorizontal="@dimen/_12sdp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/ivBack"
+                    android:layout_width="@dimen/_35sdp"
+                    android:layout_height="@dimen/_18sdp"
+                    android:layout_marginTop="@dimen/_30sdp"
+                    android:onClick="@{v->vm.onClick(v)}"
+                    android:src="@drawable/ic_back_white"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvTitle"
+                    style="@style/TextView.PoppinsBold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_6sdp"
+                    android:text="@string/amenities"
+                    android:textSize="@dimen/_20sdp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/ivBack" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvFloor"
+                style="@style/TextView.SfMedium"
+                android:layout_marginHorizontal="@dimen/_12sdp"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:text="@string/private_bathroom"
+                android:textColor="@color/black_24"
+                android:textSize="@dimen/_13ssp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/clHeader" />
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/etPrivate"
+                style="@style/EditText"
+                android:layout_marginHorizontal="@dimen/_12sdp"
+                android:layout_marginTop="@dimen/_6sdp"
+                android:background="@drawable/unselect_edit_text_bg_color"
+                android:focusable="false"
+                android:onClick="@{v->vm.onClick(v)}"
+                android:paddingStart="@dimen/_15sdp"
+                android:paddingEnd="@dimen/_40sdp"
+                android:text="@string/yes"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvFloor" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="@dimen/_27sdp"
+                android:layout_height="@dimen/_27sdp"
+                android:layout_marginEnd="@dimen/_14sdp"
+                android:padding="@dimen/_5sdp"
+                android:src="@drawable/arrow_up"
+                app:layout_constraintBottom_toBottomOf="@+id/etPrivate"
+                app:layout_constraintEnd_toEndOf="@+id/etPrivate"
+                app:layout_constraintTop_toTopOf="@+id/etPrivate" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvElevator"
+                style="@style/TextView.SfMedium"
+                android:layout_marginHorizontal="@dimen/_12sdp"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:text="@string/fast_wi_fi"
+                android:textColor="@color/black_24"
+                android:textSize="@dimen/_13ssp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/etPrivate" />
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/etWifi"
+                style="@style/EditText"
+                android:layout_marginHorizontal="@dimen/_12sdp"
+                android:layout_marginTop="@dimen/_6sdp"
+                android:background="@drawable/unselect_edit_text_bg_color"
+                android:focusable="false"
+                android:onClick="@{v->vm.onClick(v)}"
+                android:paddingStart="@dimen/_15sdp"
+                android:paddingEnd="@dimen/_40sdp"
+                android:text="@string/yes"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvElevator" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="@dimen/_27sdp"
+                android:layout_height="@dimen/_27sdp"
+                android:layout_marginEnd="@dimen/_14sdp"
+                android:padding="@dimen/_5sdp"
+                android:src="@drawable/arrow_up"
+                app:layout_constraintBottom_toBottomOf="@+id/etWifi"
+                app:layout_constraintEnd_toEndOf="@+id/etWifi"
+                app:layout_constraintTop_toTopOf="@+id/etWifi" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvHeating"
+                style="@style/TextView.SfMedium"
+                android:layout_marginHorizontal="@dimen/_12sdp"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:text="@string/equipped_kitchen"
+                android:textColor="@color/black_24"
+                android:textSize="@dimen/_13ssp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/etWifi" />
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/etEquipped"
+                style="@style/EditText"
+                android:layout_marginHorizontal="@dimen/_12sdp"
+                android:layout_marginTop="@dimen/_6sdp"
+                android:background="@drawable/unselect_edit_text_bg_color"
+                android:focusable="false"
+                android:onClick="@{v->vm.onClick(v)}"
+                android:paddingStart="@dimen/_15sdp"
+                android:paddingEnd="@dimen/_40sdp"
+                android:text="@string/yes"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvHeating" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="@dimen/_27sdp"
+                android:layout_height="@dimen/_27sdp"
+                android:layout_marginEnd="@dimen/_14sdp"
+                android:padding="@dimen/_5sdp"
+                android:src="@drawable/arrow_up"
+                app:layout_constraintBottom_toBottomOf="@+id/etEquipped"
+                app:layout_constraintEnd_toEndOf="@+id/etEquipped"
+                app:layout_constraintTop_toTopOf="@+id/etEquipped" />
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvWashing"
+                style="@style/TextView.SfMedium"
+                android:layout_marginHorizontal="@dimen/_12sdp"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:text="@string/washing_machine"
+                android:textColor="@color/black_24"
+                android:textSize="@dimen/_13ssp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/etEquipped" />
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/etWashing"
+                style="@style/EditText"
+                android:layout_marginHorizontal="@dimen/_12sdp"
+                android:layout_marginTop="@dimen/_6sdp"
+                android:background="@drawable/unselect_edit_text_bg_color"
+                android:focusable="false"
+                android:onClick="@{v->vm.onClick(v)}"
+                android:paddingStart="@dimen/_15sdp"
+                android:paddingEnd="@dimen/_40sdp"
+                android:text="@string/yes"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvWashing" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="@dimen/_27sdp"
+                android:layout_height="@dimen/_27sdp"
+                android:layout_marginEnd="@dimen/_14sdp"
+                android:padding="@dimen/_5sdp"
+                android:src="@drawable/arrow_up"
+                app:layout_constraintBottom_toBottomOf="@+id/etWashing"
+                app:layout_constraintEnd_toEndOf="@+id/etWashing"
+                app:layout_constraintTop_toTopOf="@+id/etWashing" />
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvAir"
+                style="@style/TextView.SfMedium"
+                android:layout_marginHorizontal="@dimen/_12sdp"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:text="@string/air_conditioning"
+                android:textColor="@color/black_24"
+                android:textSize="@dimen/_13ssp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/etWashing" />
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/etAir"
+                style="@style/EditText"
+                android:layout_marginHorizontal="@dimen/_12sdp"
+                android:layout_marginTop="@dimen/_6sdp"
+                android:background="@drawable/unselect_edit_text_bg_color"
+                android:focusable="false"
+                android:hint="@string/yes"
+                android:onClick="@{v->vm.onClick(v)}"
+                android:paddingStart="@dimen/_15sdp"
+                android:paddingEnd="@dimen/_40sdp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvAir" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="@dimen/_27sdp"
+                android:layout_height="@dimen/_27sdp"
+                android:layout_marginEnd="@dimen/_14sdp"
+                android:padding="@dimen/_5sdp"
+                android:src="@drawable/arrow_up"
+                app:layout_constraintBottom_toBottomOf="@+id/etAir"
+                app:layout_constraintEnd_toEndOf="@+id/etAir"
+                app:layout_constraintTop_toTopOf="@+id/etAir" />
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvBalcony"
+                style="@style/TextView.SfMedium"
+                android:layout_marginHorizontal="@dimen/_12sdp"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:text="@string/balcony_terrace"
+                android:textColor="@color/black_24"
+                android:textSize="@dimen/_13ssp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/etAir" />
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/etBalcony"
+                style="@style/EditText"
+                android:layout_marginHorizontal="@dimen/_12sdp"
+                android:layout_marginTop="@dimen/_6sdp"
+                android:background="@drawable/unselect_edit_text_bg_color"
+                android:focusable="false"
+                android:onClick="@{v->vm.onClick(v)}"
+                android:paddingStart="@dimen/_15sdp"
+                android:paddingEnd="@dimen/_40sdp"
+                android:text="@string/yes"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvBalcony" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="@dimen/_27sdp"
+                android:layout_height="@dimen/_27sdp"
+                android:layout_marginEnd="@dimen/_14sdp"
+                android:padding="@dimen/_5sdp"
+                android:src="@drawable/arrow_up"
+                app:layout_constraintBottom_toBottomOf="@+id/etBalcony"
+                app:layout_constraintEnd_toEndOf="@+id/etBalcony"
+                app:layout_constraintTop_toTopOf="@+id/etBalcony" />
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvParking"
+                style="@style/TextView.SfMedium"
+                android:layout_marginHorizontal="@dimen/_12sdp"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:text="@string/parking_space"
+                android:textColor="@color/black_24"
+                android:textSize="@dimen/_13ssp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/etBalcony" />
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/etParking"
+                style="@style/EditText"
+                android:layout_marginHorizontal="@dimen/_12sdp"
+                android:layout_marginTop="@dimen/_6sdp"
+                android:background="@drawable/unselect_edit_text_bg_color"
+                android:focusable="false"
+                android:onClick="@{v->vm.onClick(v)}"
+                android:paddingStart="@dimen/_15sdp"
+                android:paddingEnd="@dimen/_40sdp"
+                android:text="@string/yes"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvParking" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="@dimen/_27sdp"
+                android:layout_height="@dimen/_27sdp"
+                android:layout_marginEnd="@dimen/_14sdp"
+                android:padding="@dimen/_5sdp"
+                android:src="@drawable/arrow_up"
+                app:layout_constraintBottom_toBottomOf="@+id/etParking"
+                app:layout_constraintEnd_toEndOf="@+id/etParking"
+                app:layout_constraintTop_toTopOf="@+id/etParking" />
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/btnContinue"
+                style="@style/TextView.Medium"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/_40sdp"
+                android:layout_marginHorizontal="@dimen/_15sdp"
+                android:layout_marginTop="@dimen/_40sdp"
+                android:background="@drawable/btn_bg_color"
+                android:onClick="@{v->vm.onClick(v)}"
+                android:text="@string/next"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/etParking" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                style="@style/TextView.Medium"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/_20sdp"
+                android:layout_marginHorizontal="@dimen/_15sdp"
+                android:background="@drawable/btn_bg_color"
+                android:text="@string/next"
+                android:visibility="invisible"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/btnContinue" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
+</layout>

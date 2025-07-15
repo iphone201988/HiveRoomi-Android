@@ -5,14 +5,15 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/clAnswer"
+        android:paddingBottom="@dimen/_15sdp"
         android:layout_width="match_parent"
+
         android:layout_height="wrap_content">
 
 
         <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/etEmail"
             style="@style/EditText"
-            android:layout_marginTop="@dimen/_14sdp"
             android:hint="@string/enter_location"
             android:paddingStart="@dimen/_40sdp"
             android:paddingEnd="@dimen/_16sdp"
@@ -35,7 +36,6 @@
             style="@style/TextView.Medium2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_14sdp"
             android:gravity="center_vertical"
             android:paddingVertical="@dimen/_12sdp"
             android:paddingStart="@dimen/_15sdp"

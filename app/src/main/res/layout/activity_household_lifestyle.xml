@@ -9,24 +9,7 @@
             name="vm"
             type="com.tech.hive.ui.room_offering.basic_details.BasicDetailsVM" />
 
-        <variable
-            name="roommatesType"
-            type="String" />
 
-        <variable
-            name="smokingType"
-            type="String" />
-
-        <variable
-            name="petsType"
-            type="String" />
-        <variable
-            name="cleanType"
-            type="String" />
-
-        <variable
-            name="lookingType"
-            type="String" />
 
     </data>
 
@@ -58,12 +41,12 @@
 
             <TextView
                 android:id="@+id/tvTitle"
-                style="@style/TextView.Bold"
+                style="@style/TextView.PoppinsBold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_6sdp"
                 android:text="@string/household_lifestyle"
-                android:textSize="@dimen/_22sdp"
+                android:textSize="@dimen/_20sdp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/ivBack" />
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -85,7 +68,6 @@
             style="@style/EditText"
             android:layout_marginHorizontal="@dimen/_12sdp"
             android:layout_marginTop="@dimen/_6sdp"
-            android:background="@{roommatesType.isEmpty()?@drawable/unselect_edit_text_bg_color:@drawable/select_edittext_bg_color}"
             android:focusable="false"
             android:hint="1"
             android:imeOptions="actionNext"
@@ -113,12 +95,12 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvSmoking"
-            style="@style/TextView.Regular"
+            style="@style/TextView.SfMedium"
+            android:textSize="@dimen/_13ssp"
             android:layout_marginHorizontal="@dimen/_12sdp"
             android:layout_marginTop="@dimen/_15sdp"
             android:text="@string/smoking"
             android:textColor="@color/black_24"
-            android:textSize="@dimen/_12ssp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/etRoommates" />
 
@@ -127,13 +109,11 @@
             style="@style/EditText"
             android:layout_marginHorizontal="@dimen/_12sdp"
             android:layout_marginTop="@dimen/_6sdp"
-            android:background="@{smokingType.isEmpty()?@drawable/unselect_edit_text_bg_color:@drawable/select_edittext_bg_color}"
+            android:background="@drawable/unselect_edit_text_bg_color"
             android:focusable="false"
-            android:hint="Yes"
-            android:imeOptions="actionNext"
-            android:inputType="textPassword"
-            android:nextFocusForward="@+id/etConfirmPassword"
-            android:paddingStart="@dimen/_10sdp"
+            android:hint="@string/never"
+            android:onClick="@{v->vm.onClick(v)}"
+            android:paddingStart="@dimen/_15sdp"
             android:paddingEnd="@dimen/_40sdp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -153,12 +133,12 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvPets"
-            style="@style/TextView.Regular"
+            style="@style/TextView.SfMedium"
+            android:textSize="@dimen/_13ssp"
             android:layout_marginHorizontal="@dimen/_12sdp"
             android:layout_marginTop="@dimen/_15sdp"
             android:text="@string/pets"
             android:textColor="@color/black_24"
-            android:textSize="@dimen/_12ssp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/etSmoking" />
 
@@ -167,13 +147,11 @@
             style="@style/EditText"
             android:layout_marginHorizontal="@dimen/_12sdp"
             android:layout_marginTop="@dimen/_6sdp"
-            android:background="@{petsType.isEmpty()?@drawable/unselect_edit_text_bg_color:@drawable/select_edittext_bg_color}"
+            android:background="@drawable/unselect_edit_text_bg_color"
             android:focusable="false"
-            android:hint="Yes"
-            android:imeOptions="actionNext"
-            android:inputType="textPassword"
-            android:nextFocusForward="@+id/etConfirmPassword"
-            android:paddingStart="@dimen/_10sdp"
+            android:hint="@string/yes"
+            android:onClick="@{v->vm.onClick(v)}"
+            android:paddingStart="@dimen/_15sdp"
             android:paddingEnd="@dimen/_40sdp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -193,12 +171,12 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvClean"
-            style="@style/TextView.Regular"
+            style="@style/TextView.SfMedium"
+            android:textSize="@dimen/_13ssp"
             android:layout_marginHorizontal="@dimen/_12sdp"
             android:layout_marginTop="@dimen/_15sdp"
             android:text="@string/cleanliness"
             android:textColor="@color/black_24"
-            android:textSize="@dimen/_12ssp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/etPets" />
 
@@ -207,13 +185,11 @@
             style="@style/EditText"
             android:layout_marginHorizontal="@dimen/_12sdp"
             android:layout_marginTop="@dimen/_6sdp"
-            android:background="@{cleanType.isEmpty()?@drawable/unselect_edit_text_bg_color:@drawable/select_edittext_bg_color}"
+            android:background="@drawable/unselect_edit_text_bg_color"
             android:focusable="false"
-            android:hint="Yes"
-            android:imeOptions="actionNext"
-            android:inputType="textPassword"
-            android:nextFocusForward="@+id/etConfirmPassword"
-            android:paddingStart="@dimen/_10sdp"
+            android:hint="4"
+            android:onClick="@{v->vm.onClick(v)}"
+            android:paddingStart="@dimen/_15sdp"
             android:paddingEnd="@dimen/_40sdp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -233,12 +209,12 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvLooking"
-            style="@style/TextView.Regular"
+            style="@style/TextView.SfMedium"
+            android:textSize="@dimen/_13ssp"
             android:layout_marginHorizontal="@dimen/_12sdp"
             android:layout_marginTop="@dimen/_15sdp"
             android:text="@string/looking_for"
             android:textColor="@color/black_24"
-            android:textSize="@dimen/_12ssp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/etClean" />
 
@@ -247,13 +223,11 @@
             style="@style/EditText"
             android:layout_marginHorizontal="@dimen/_12sdp"
             android:layout_marginTop="@dimen/_6sdp"
-            android:background="@{lookingType.isEmpty()?@drawable/unselect_edit_text_bg_color:@drawable/select_edittext_bg_color}"
+            android:background="@drawable/unselect_edit_text_bg_color"
             android:focusable="false"
-            android:hint="Workers"
-            android:imeOptions="actionNext"
-            android:inputType="textPassword"
-            android:nextFocusForward="@+id/etConfirmPassword"
-            android:paddingStart="@dimen/_10sdp"
+            android:hint="@string/workers"
+            android:onClick="@{v->vm.onClick(v)}"
+            android:paddingStart="@dimen/_15sdp"
             android:paddingEnd="@dimen/_40sdp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -271,51 +245,7 @@
             app:layout_constraintEnd_toEndOf="@+id/etLooking"
             app:layout_constraintTop_toTopOf="@+id/etLooking" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvLooking"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_6sdp"
-            android:layout_marginHorizontal="@dimen/_12sdp"
-            android:orientation="horizontal"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintTop_toBottomOf="@id/etLooking"
-            tools:listitem="@layout/features_item_view" />
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/clBoost"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/_30sdp"
-            android:layout_marginBottom="@dimen/_20sdp"
-            android:background="@drawable/btn_bg_color"
-            android:onClick="@{v->vm.onClick(v)}"
-            app:layout_constraintBottom_toTopOf="@id/btnContinue"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
-            <ImageView
-                android:id="@+id/ivBoost"
-                android:layout_width="@dimen/_14sdp"
-                android:layout_height="@dimen/_14sdp"
-                android:src="@drawable/ic_boost"
-                android:scaleType="centerCrop"
-                android:layout_marginStart="@dimen/_10sdp"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/btnBoost"
-                app:layout_constraintStart_toStartOf="parent" />
-            
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/btnBoost"
-            style="@style/TextView.Medium"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/_30sdp"
-            android:paddingHorizontal="@dimen/_10sdp"
-            android:text="@string/boost_the_post"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/ivBoost"
-         />
-        </androidx.constraintlayout.widget.ConstraintLayout>
+
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/btnContinue"

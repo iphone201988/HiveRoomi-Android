@@ -14,7 +14,9 @@
 
         <variable
             name="bean"
-            type="com.tech.hive.data.model.CompatibilityModel" />
+            type="com.tech.hive.data.model.ImageModel" />
+
+        <import type="android.view.View"/>
 
     </data>
 
@@ -25,9 +27,24 @@
         android:layout_marginHorizontal="@dimen/_6sdp"
         android:onClick="@{v->callback.onItemClick(v,bean,pos)}">
 
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/icAddImg"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:scaleType="centerCrop"
+            setImageFromUri="@{bean.image}"
+            android:visibility="@{bean.type==1?View.VISIBLE:View.GONE}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:shapeAppearance="@style/Shape16" />
+
+
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvImage"
-            style="@style/TextView.Regular"
+            style="@style/TextView.SfMedium"
+            android:textSize="@dimen/_13ssp"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:background="@drawable/unselect_desc_bg"
@@ -38,15 +55,14 @@
             android:inputType="text"
             android:paddingHorizontal="@dimen/_8sdp"
             android:paddingVertical="@dimen/_40sdp"
+            android:visibility="@{bean.type==2?View.VISIBLE:View.GONE}"
             android:singleLine="true"
             android:text="@string/upload"
             android:textColor="@color/et_hint_color"
-            android:textSize="@dimen/_12ssp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

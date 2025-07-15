@@ -1,8 +1,7 @@
 package com.tech.hive.ui.room_offering.basic_details
 
 import android.content.Intent
-import android.text.Editable
-import android.text.TextWatcher
+import android.util.Log
 import androidx.activity.viewModels
 import com.tech.hive.BR
 import com.tech.hive.R
@@ -11,25 +10,54 @@ import com.tech.hive.base.BaseViewModel
 import com.tech.hive.base.SimpleRecyclerViewAdapter
 import com.tech.hive.base.utils.BaseCustomDialog
 import com.tech.hive.base.utils.BindingUtils
-import com.tech.hive.data.model.BoostPlanModel
-import com.tech.hive.data.model.CompatibilityModel
+import com.tech.hive.base.utils.Status
+import com.tech.hive.base.utils.showErrorToast
+import com.tech.hive.data.model.HomeRoomType
+import com.tech.hive.data.model.ImageModel
 import com.tech.hive.databinding.ActivityHouseholdLifestyleBinding
-import com.tech.hive.databinding.BoostPlanItemViewBinding
-import com.tech.hive.databinding.DialogBoostBinding
-import com.tech.hive.databinding.FeaturesItemViewBinding
+import com.tech.hive.databinding.PersonalDialogItemBinding
+import com.tech.hive.databinding.UnPinLayoutBinding
 import com.tech.hive.ui.dashboard.DashboardActivity
 import dagger.hilt.android.AndroidEntryPoint
+import java.io.File
 
 @AndroidEntryPoint
 class HouseholdLifestyleActivity : BaseActivity<ActivityHouseholdLifestyleBinding>() {
     private val viewModel: BasicDetailsVM by viewModels()
+    private var personal: BaseCustomDialog<PersonalDialogItemBinding>? = null
+    private lateinit var ageAdapter: SimpleRecyclerViewAdapter<String, UnPinLayoutBinding>
+    private var roomType: String? = null
+    private var titleType: String? = null
+    private var bioType: String? = null
+    private var locationType: String? = null
+    private var priceType: String? = null
+    private var utilityPriceType: String? = null
+    private var depositType: String? = null
+    private var contractType: String? = null
+    private var availableType: String? = null
+    private var minimumStayType: String? = null
 
-    // adapter
-    private lateinit var lookingAdapter: SimpleRecyclerViewAdapter<CompatibilityModel, FeaturesItemViewBinding>
-    private lateinit var boostPlanAdapter: SimpleRecyclerViewAdapter<BoostPlanModel, BoostPlanItemViewBinding>
+    private var roomDetailType: String? = null
+    private var sizeType: String? = null
+    private var furnishedType: String? = null
+    private var roommateType: String? = null
+    private var floorType: String? = null
+    private var elevatorType: String? = null
+    private var heatingType: String? = null
 
-    // dialog
-    private lateinit var boostDialog: BaseCustomDialog<DialogBoostBinding>
+    private var privateType: String? = null
+    private var wifiType: String? = null
+    private var equippedType: String? = null
+    private var washingType: String? = null
+    private var airType: String? = null
+    private var balconyType: String? = null
+    private var parkingType: String? = null
+
+    companion object {
+        var sendImage = ArrayList<ImageModel>()
+        var sendVideo: File? = null
+    }
+
     override fun getLayoutResource(): Int {
         return R.layout.activity_household_lifestyle
     }
@@ -52,192 +80,211 @@ class HouseholdLifestyleActivity : BaseActivity<ActivityHouseholdLifestyleBindin
         // set status bar color
         BindingUtils.statusBarStyle(this@HouseholdLifestyleActivity)
         BindingUtils.statusBarTextColor(this@HouseholdLifestyleActivity, false)
-        // check state
-        binding.roommatesType = ""
-        binding.smokingType = ""
-        binding.petsType = ""
-        binding.cleanType = ""
-        binding.lookingType = ""
-        // adapter
-        initAdapter()
-        // dialog
-        initDialog()
+        // intent data
+        roomType = intent.getStringExtra("roomType")
+        titleType = intent.getStringExtra("titleType")
+        bioType = intent.getStringExtra("bioType")
+        locationType = intent.getStringExtra("locationType")
+        priceType = intent.getStringExtra("priceType")
+        utilityPriceType = intent.getStringExtra("utilityPriceType")
+        depositType = intent.getStringExtra("depositType")
+        contractType = intent.getStringExtra("contractType")
+        availableType = intent.getStringExtra("availableType")
+        minimumStayType = intent.getStringExtra("minimumStayType")
+
+        roomDetailType = intent.getStringExtra("roomDetailType")
+        sizeType = intent.getStringExtra("sizeType")
+        furnishedType = intent.getStringExtra("furnishedType")
+        roommateType = intent.getStringExtra("roommateType")
+        floorType = intent.getStringExtra("floorType")
+        elevatorType = intent.getStringExtra("elevatorType")
+        heatingType = intent.getStringExtra("heatingType")
+
+        privateType = intent.getStringExtra("privateType")
+        wifiType = intent.getStringExtra("wifiType")
+        equippedType = intent.getStringExtra("equippedType")
+        washingType = intent.getStringExtra("washingType")
+        airType = intent.getStringExtra("airType")
+        balconyType = intent.getStringExtra("balconyType")
+        parkingType = intent.getStringExtra("parkingType")
     }
 
     /** handle click **/
     private fun initOnClick() {
         viewModel.onClick.observe(this) {
             when (it?.id) {
-                // btn boost
-                R.id.clBoost -> {
-                    boostDialog.show()
-                }
                 // btn next
                 R.id.btnContinue -> {
                     val intent = Intent(this, DashboardActivity::class.java)
                     startActivity(intent)
                     finishAffinity()
                 }
+
                 R.id.ivBack -> {
                     onBackPressedDispatcher.onBackPressed()
                 }
+
+
+                R.id.etSmoking -> {
+                    personalDialog(1)
+                }
+
+                R.id.etPets -> {
+                    personalDialog(2)
+                }
+
+                R.id.etClean -> {
+                    personalDialog(3)
+                }
+
+                R.id.etLooking -> {
+                    personalDialog(4)
+                }
             }
+
+
         }
-
-        // etRoommates
-        binding.etRoommates.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-
-            }
-
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-
-            }
-
-            override fun afterTextChanged(p0: Editable?) {
-                binding.roommatesType = p0.toString()
-            }
-
-        })
-
-        // etSmoking
-        binding.etSmoking.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-
-            }
-
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-
-            }
-
-            override fun afterTextChanged(p0: Editable?) {
-                binding.smokingType = p0.toString()
-            }
-
-        })
-
-        // etPets
-        binding.etPets.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-
-            }
-
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-
-            }
-
-            override fun afterTextChanged(p0: Editable?) {
-                binding.petsType = p0.toString()
-            }
-
-        })
-
-        // etClean
-        binding.etClean.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-
-            }
-
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-
-            }
-
-            override fun afterTextChanged(p0: Editable?) {
-                binding.cleanType = p0.toString()
-            }
-        })
-
-        // etLooking
-        binding.etLooking.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-
-            }
-
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-
-            }
-
-            override fun afterTextChanged(p0: Editable?) {
-                binding.lookingType = p0.toString()
-            }
-        })
-
     }
 
     /** handle api response **/
     private fun initObserver() {
+        viewModel.basicDetailObserver.observe(this@HouseholdLifestyleActivity) {
+            when (it?.status) {
+                Status.LOADING -> {
+                    showLoading()
+                }
 
+                Status.SUCCESS -> {
+                    when (it.message) {
+                        "basicDetailApiCall" -> {
+                            try {
+                                val myDataModel: HomeRoomType? =
+                                    BindingUtils.parseJson(it.data.toString())
+                                if (myDataModel?.data != null) {
+
+                                }
+                            } catch (e: Exception) {
+                                Log.e("error", "getHomeApiListening: $e")
+                            } finally {
+                                hideLoading()
+                            }
+                        }
+                    }
+                }
+
+                Status.ERROR -> {
+                    hideLoading()
+                    showErrorToast(it.message.toString())
+                }
+
+                else -> {
+
+                }
+            }
+        }
+
+    }
+
+
+    /** personal dialog  handel ***/
+    private fun personalDialog(type: Int) {
+        personal =
+            BaseCustomDialog(this@HouseholdLifestyleActivity, R.layout.personal_dialog_item) {
+
+            }
+        personal!!.create()
+        personal!!.show()
+        // adapter
+        initAdapterRoom(type)
     }
 
     /** handle adapter **/
-    private fun initAdapter() {
-        // main adapter
-        lookingAdapter =
-            SimpleRecyclerViewAdapter(R.layout.features_item_view, BR.bean) { v, m, pos ->
-                when (v.id) {
-                    // cancel item
-                    R.id.ivCancel -> {
-                        lookingAdapter.removeItem(pos)
-                        lookingAdapter.notifyItemChanged(pos, null)
+    private fun initAdapterRoom(type: Int) {
+        ageAdapter = SimpleRecyclerViewAdapter(R.layout.un_pin_layout, BR.bean) { v, m, pos ->
+            when (v?.id) {
+                R.id.consMainUnPin -> {
+                    when (type) {
+                        1 -> {
+                            binding.etSmoking.setText(m.toString())
+                        }
+
+                        2 -> {
+                            binding.etPets.setText(m.toString())
+                        }
+
+                        3 -> {
+                            binding.etClean.setText(m.toString())
+                        }
+
+                        4 -> {
+                            binding.etLooking.setText(m.toString())
+                        }
+
                     }
+
+                    personal?.dismiss()
                 }
-            }
-        lookingAdapter.list = getList()
-        binding.rvLooking.adapter = lookingAdapter
-    }
-
-    // get list
-    private fun getList(): ArrayList<CompatibilityModel> {
-        val list = ArrayList<CompatibilityModel>()
-        list.add(CompatibilityModel("Workers"))
-        list.add(CompatibilityModel("Student"))
-        return list
-    }
-
-    /** handle dialog **/
-    private fun initDialog() {
-        boostDialog = BaseCustomDialog(this, R.layout.dialog_boost) {
-            when (it.id) {
-                R.id.btnCancel -> {
-                    boostDialog.dismiss()
-                }
-
-                R.id.btnBoost -> {
-                    boostDialog.dismiss()
-                }
-
             }
         }
-        boostDialog.setCanceledOnTouchOutside(false)
-        boostDialog.setCancelable(false)
-
-        // dialog adapter
-        boostPlanAdapter =
-            SimpleRecyclerViewAdapter(R.layout.boost_plan_item_view, BR.bean) { v, m, pos ->
-                when (v.id) {
-                    //handle single plan selection
-                    R.id.clMain -> {
-                        for (i in boostPlanAdapter.list.indices) {
-                            if (boostPlanAdapter.list[i].isSelected) {
-                                boostPlanAdapter.list[i].isSelected = false
-                            }
-                        }
-                        boostPlanAdapter.list[pos].isSelected = true
-                        boostPlanAdapter.notifyDataSetChanged()
-                    }
-                }
+        when (type) {
+            1 -> {
+                ageAdapter.list = firstTypeList()
             }
-        boostPlanAdapter.list = getList2()
-        boostDialog.binding.rvBoostPlan.adapter = boostPlanAdapter
+
+            2 -> {
+                ageAdapter.list = secondTypeList()
+            }
+
+            3 -> {
+                ageAdapter.list = thirdList()
+            }
+
+            4 -> {
+                ageAdapter.list = fourList()
+            }
+        }
+
+        personal?.binding?.rvPersonal?.adapter = ageAdapter
     }
 
-    // get list for boost plan
-    private fun getList2(): ArrayList<BoostPlanModel> {
-        val list = ArrayList<BoostPlanModel>()
-        list.add(BoostPlanModel("Boost for 3 Days ", "₹149", "• ₹50 per day", "• Save 15%", true))
-        list.add(BoostPlanModel("Boost for 1 Week ", "₹280", "• ₹40 per day", "• Save 15%"))
-        list.add(BoostPlanModel("Boost for 1 Month ", "₹900", "• ₹30 per day", "• Save 15%"))
-        return list
+
+    private fun firstTypeList(): ArrayList<String> {
+        return arrayListOf(
+            getString(R.string.never),
+            getString(R.string.sometimes),
+            getString(R.string.often),
+
+            )
     }
+
+    private fun secondTypeList(): ArrayList<String> {
+        return arrayListOf(
+            getString(R.string.yes),
+            getString(R.string.no),
+
+            )
+    }
+
+    private fun thirdList(): ArrayList<String> {
+        return arrayListOf(
+            getString(R.string.one),
+            getString(R.string.two),
+            getString(R.string.three),
+            getString(R.string.four),
+            getString(R.string.five),
+
+            )
+    }
+
+    private fun fourList(): ArrayList<String> {
+        return arrayListOf(
+            getString(R.string.student),
+            getString(R.string.workers),
+            getString(R.string.anyone),
+
+
+            )
+    }
+
 
 }

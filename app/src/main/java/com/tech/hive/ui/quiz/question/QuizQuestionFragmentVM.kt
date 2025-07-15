@@ -7,7 +7,7 @@ import com.tech.hive.base.utils.Resource
 import com.tech.hive.base.utils.event.SingleRequestEvent
 import com.tech.hive.data.api.ApiHelper
 import com.tech.hive.data.api.Constants
-import com.tech.hive.data.model.AnswerSendResponse
+import com.tech.hive.data.model.AnswerSendRequest
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -39,7 +39,7 @@ class QuizQuestionFragmentVM @Inject constructor(private val apiHelper: ApiHelpe
 
     }
 
-    fun quizAnswerApi(lang: String, url: String, request: AnswerSendResponse) {
+    fun quizAnswerApi(lang: String, url: String, request: AnswerSendRequest) {
         CoroutineScope(Dispatchers.IO).launch {
             observeCommon.postValue(Resource.loading(null))
             try {

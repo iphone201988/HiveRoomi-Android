@@ -20,24 +20,35 @@ data class LoginResponse(
 )
 
 data class LoginData(
+    val otp: Int?,
+    val sendOtp: Boolean?,
     val _id: String?,
-    val ageRange: Any?,
+    val address: String?,
+    val ageRange: String?,
+    val bio: String?,
+    val campus: String?,
     val email: String?,
+    val gender: String?,
+    val instagram: String?,
     val isProfileComplete: Boolean?,
     val isQuizComplete: Boolean?,
     val isVerified: Boolean?,
     val language: String?,
+    val latitute: Double?,
+    val longitude: Double?,
     val name: String?,
-    val otp: Int?,
+    val onwershipProof: String?,
+    val profession: String?,
     val profileImage: String?,
     val profileRole: Int,
-    val sendOtp: Boolean?,
+    val providerType: String?,
     val timezone: String?,
     val token: String?,
-    val totalQuizDone: Int?
-
-
+    val totalQuizDone: Int?,
+    val userIdProof: String?
 )
+
+
 
 /** Verify account response ***/
 data class AccountVerifyResponse(
@@ -137,8 +148,8 @@ data class Quiz(
 
 data class GroupValue(
     val _id: String?,
-    val answer: Any?,
-    val options: List<Option?>?,
+    val answer: String?,
+    var options: List<Option?>?,
     val quizPosition: Int?,
     val title: String?,
     val type: String?,
@@ -146,7 +157,7 @@ data class GroupValue(
 )
 
 data class Option(
-    val label: String?, val value: String?
+    val label: String?, var value: String?, var selectedAnswer : Boolean = false , var inputValue : String? = ""
 )
 
 /** quiz answer model **/
@@ -515,6 +526,7 @@ data class UserProfile(
     val userResponse: List<UserResponse?>?
 )
 
+/** quiz answer model **/
 data class UserProfileQuiz(
     val answer: String?,
     val title: String?
@@ -529,8 +541,7 @@ data class UserResponse(
     val userId: String?
 )
 
-
-
+/** role change response **/
 data class RoleChangeResponse(
     val `data`: RoleChangeData?,
     val message: String?,
@@ -561,3 +572,51 @@ data class RoleChangeData(
 
 
 )
+
+/** quiz request model **/
+data class AnswerSendRequest(
+    val userQuizAnswer: List<UserQuizAnswer?>?
+)
+
+data class UserQuizAnswer(
+    val quizId: String?,
+    val answer: String?,
+
+)
+/** get notification response **/
+data class GetNotificationResponse(
+    val `data`: List<NotificationData?>?,
+    val pagination: Pagination?,
+    val success: Boolean?
+)
+
+data class NotificationData(
+    val __v: Int?,
+    val _id: String?,
+    val body: String?,
+    val createdAt: String?,
+    val isRead: Boolean?,
+    val likeId: LikeId?,
+    val listingId: String?,
+    val senderId: SenderId?,
+    val title: String?,
+    val type: String?,
+    val userId: String?
+)
+
+data class LikeId(
+    val __v: Int?,
+    val _id: String?,
+    val createdAt: String?,
+    val profileId: String?,
+    val status: Int?,
+    val type: String?,
+    val userId: String?
+)
+
+data class SenderId(
+    val _id: String?,
+    val name: String?,
+    val profileImage: String?
+)
+

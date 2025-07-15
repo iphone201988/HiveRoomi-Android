@@ -2,10 +2,9 @@ package com.tech.hive.base.local
 
 import android.content.SharedPreferences
 import com.google.gson.Gson
-import com.tech.hive.base.utils.getValue
-import com.tech.hive.base.utils.saveValue
 import com.tech.hive.data.model.LoginData
 import javax.inject.Inject
+import androidx.core.content.edit
 
 class SharedPrefManager @Inject constructor(private val sharedPreferences: SharedPreferences) {
 
@@ -57,7 +56,12 @@ class SharedPrefManager @Inject constructor(private val sharedPreferences: Share
     }
 
     fun getRole(): Int {
-        return sharedPreferences.getInt(KEY.ROLE_TYPE, 1)
+        return try {
+            sharedPreferences.getInt(KEY.ROLE_TYPE, 1)
+        } catch (e: ClassCastException) {
+            sharedPreferences.edit { remove(KEY.ROLE_TYPE) }
+            1
+        }
     }
 
     fun clear() {

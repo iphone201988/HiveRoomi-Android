@@ -522,7 +522,6 @@ class PersonalFragment : BaseFragment<FragmentPersonalBinding>() {
     }
 
     /** list data add  **/
-
     private fun professionRoleList(): ArrayList<String> {
         return arrayListOf(
             getString(R.string.student),

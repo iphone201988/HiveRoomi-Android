@@ -244,11 +244,15 @@ class UploadPhotoFragment : BaseFragment<FragmentUploadPhotoBinding>() {
                 imageUri?.let {
                     when (whichImage) {
                         1 -> {
+                            binding.tvAdd.visibility= View.INVISIBLE
+                            binding.icAddImg.visibility= View.VISIBLE
                             firstMultipartImage = convertMultipartPartGal1(it)
                             binding.icAddImg.setImageURI(imageUri)
                         }
 
                         2 -> {
+                            binding.icAddOwnershipImg.visibility= View.VISIBLE
+                            binding.tvAddOwnership.visibility= View.INVISIBLE
                             secondMultipartImage = convertMultipartPartGal2(it)
                             binding.icAddOwnershipImg.setImageURI(imageUri)
                         }
@@ -306,11 +310,15 @@ class UploadPhotoFragment : BaseFragment<FragmentUploadPhotoBinding>() {
                     imageUri.let {
                         when (whichImage) {
                             1 -> {
+                                binding.tvAdd.visibility= View.INVISIBLE
+                                binding.icAddImg.visibility= View.VISIBLE
                                 firstMultipartImage = convertMultipartPart1(it)
                                 binding.icAddImg.setImageURI(imageUri)
                             }
 
                             2 -> {
+                                binding.icAddOwnershipImg.visibility= View.VISIBLE
+                                binding.tvAddOwnership.visibility= View.INVISIBLE
                                 secondMultipartImage = convertMultipartPart2(it)
                                 binding.icAddOwnershipImg.setImageURI(imageUri)
                             }

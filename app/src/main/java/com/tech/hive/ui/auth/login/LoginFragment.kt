@@ -395,6 +395,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
                                         sharedPrefManager.setLoginData(myDataModel.data)
                                         sharedPrefManager.saveToken(myDataModel.data.token.toString())
                                         sharedPrefManager.saveRole(myDataModel.data.profileRole)
+
                                         val bundle = Bundle().apply {
                                             putString("userEmail", myDataModel.data.email)
                                         }

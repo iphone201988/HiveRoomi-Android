@@ -10,10 +10,6 @@
             type="com.tech.hive.ui.room_offering.basic_details.BasicDetailsVM" />
 
         <variable
-            name="roomType"
-            type="String" />
-
-        <variable
             name="titleType"
             type="String" />
 
@@ -56,12 +52,12 @@
 
             <TextView
                 android:id="@+id/tvTitle"
-                style="@style/TextView.Bold"
+                style="@style/TextView.PoppinsBold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_6sdp"
                 android:text="@string/basic_details"
-                android:textSize="@dimen/_22sdp"
+                android:textSize="@dimen/_20sdp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/ivBack" />
 
@@ -79,12 +75,12 @@
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tvRoom"
-                    style="@style/TextView.Regular"
+                    style="@style/TextView.SfMedium"
+                    android:textSize="@dimen/_13ssp"
                     android:layout_marginHorizontal="@dimen/_12sdp"
                     android:layout_marginTop="@dimen/_15sdp"
                     android:text="@string/room_type"
                     android:textColor="@color/black_24"
-                    android:textSize="@dimen/_12ssp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -93,13 +89,11 @@
                     style="@style/EditText"
                     android:layout_marginHorizontal="@dimen/_12sdp"
                     android:layout_marginTop="@dimen/_6sdp"
-                    android:background="@{roomType.isEmpty()?@drawable/unselect_edit_text_bg_color:@drawable/select_edittext_bg_color}"
+                    android:background="@drawable/unselect_edit_text_bg_color"
                     android:focusable="false"
                     android:hint="@string/room"
-                    android:imeOptions="actionNext"
-                    android:inputType="textPassword"
-                    android:nextFocusForward="@+id/etConfirmPassword"
-                    android:paddingStart="@dimen/_10sdp"
+                    android:onClick="@{v->vm.onClick(v)}"
+                    android:paddingStart="@dimen/_15sdp"
                     android:paddingEnd="@dimen/_40sdp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -121,11 +115,11 @@
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tvTitle2"
-                    style="@style/TextView.Regular"
+                    style="@style/TextView.SfMedium"
+                    android:textSize="@dimen/_13ssp"
                     android:layout_marginTop="@dimen/_15sdp"
                     android:text="@string/title"
                     android:textColor="@color/black_24"
-                    android:textSize="@dimen/_12ssp"
                     app:layout_constraintStart_toStartOf="@+id/etRoom"
                     app:layout_constraintTop_toBottomOf="@+id/etRoom" />
 
@@ -136,8 +130,9 @@
                     android:layout_marginTop="@dimen/_6sdp"
                     android:background="@{titleType.isEmpty()?@drawable/unselect_edit_text_bg_color:@drawable/select_edittext_bg_color}"
                     android:hint="@string/title"
-                    android:imeOptions="actionDone"
-                    android:paddingStart="@dimen/_10sdp"
+                    android:imeOptions="actionNext"
+                    android:nextFocusDown="@id/etShortBio"
+                    android:paddingStart="@dimen/_15sdp"
                     android:paddingEnd="@dimen/_40sdp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -145,11 +140,11 @@
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tvShortBio"
-                    style="@style/TextView.Regular"
+                    style="@style/TextView.SfMedium"
+                    android:textSize="@dimen/_13ssp"
                     android:layout_marginTop="@dimen/_15sdp"
                     android:text="@string/description"
                     android:textColor="@color/black_24"
-                    android:textSize="@dimen/_12ssp"
                     app:layout_constraintStart_toStartOf="@+id/etRoom"
                     app:layout_constraintTop_toBottomOf="@+id/etTitle" />
 
@@ -174,12 +169,12 @@
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tvLocation"
-                    style="@style/TextView.Regular"
+                    style="@style/TextView.SfMedium"
+                    android:textSize="@dimen/_13ssp"
                     android:layout_marginHorizontal="@dimen/_12sdp"
                     android:layout_marginTop="@dimen/_15sdp"
                     android:text="@string/location_address"
                     android:textColor="@color/black_24"
-                    android:textSize="@dimen/_12ssp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/etShortBio" />
 
@@ -190,9 +185,8 @@
                     android:layout_marginTop="@dimen/_6sdp"
                     android:background="@{locationType.isEmpty()?@drawable/unselect_edit_text_bg_color:@drawable/select_edittext_bg_color}"
                     android:hint="@string/address"
-                    android:imeOptions="actionNext"
-                    android:nextFocusForward="@+id/etBudget"
-                    android:paddingStart="@dimen/_10sdp"
+                    android:imeOptions="actionDone"
+                    android:paddingStart="@dimen/_15sdp"
                     android:paddingEnd="@dimen/_16sdp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -223,12 +217,12 @@
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tvUploadImages"
-                    style="@style/TextView.Regular"
+                    style="@style/TextView.SfMedium"
+                    android:textSize="@dimen/_13ssp"
                     android:layout_marginHorizontal="@dimen/_12sdp"
                     android:layout_marginTop="@dimen/_15sdp"
                     android:text="@string/upload_images"
                     android:textColor="@color/black_24"
-                    android:textSize="@dimen/_12ssp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/flMap" />
 
@@ -247,17 +241,18 @@
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tvUploadVideo"
-                    style="@style/TextView.Regular"
+                    style="@style/TextView.SfMedium"
+                    android:textSize="@dimen/_13ssp"
                     android:layout_marginHorizontal="@dimen/_12sdp"
                     android:layout_marginTop="@dimen/_15sdp"
                     android:text="@string/upload_videos"
                     android:textColor="@color/black_24"
-                    android:textSize="@dimen/_12ssp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/rvImages" />
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tvVideo"
-                    style="@style/TextView.Regular"
+                    style="@style/TextView.SfMedium"
+                    android:textSize="@dimen/_13ssp"
                     android:layout_width="0dp"
                     android:layout_height="@dimen/_105sdp"
                     android:background="@drawable/unselect_desc_bg"
@@ -273,23 +268,23 @@
                     android:singleLine="true"
                     android:text="@string/upload"
                     android:textColor="@color/et_hint_color"
-                    android:textSize="@dimen/_12ssp"
                     app:layout_constraintTop_toBottomOf="@id/tvUploadVideo"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"/>
 
-<!--                <androidx.recyclerview.widget.RecyclerView-->
-<!--                    android:id="@+id/rvVideo"-->
-<!--                    android:layout_width="0dp"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_marginHorizontal="@dimen/_6sdp"-->
-<!--                    android:layout_marginTop="@dimen/_5sdp"-->
-<!--                    android:orientation="horizontal"-->
-<!--                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"-->
-<!--                    app:layout_constraintEnd_toEndOf="parent"-->
-<!--                    app:layout_constraintStart_toStartOf="parent"-->
-<!--                    app:layout_constraintTop_toBottomOf="@id/tvUploadVideo"-->
-<!--                    tools:listitem="@layout/upload_image_item_view" />-->
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/icAddImg"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:scaleType="centerCrop"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="@+id/tvVideo"
+                    app:layout_constraintEnd_toEndOf="@+id/tvVideo"
+                    app:layout_constraintStart_toStartOf="@+id/tvVideo"
+                    app:layout_constraintTop_toTopOf="@+id/tvVideo"
+                    app:shapeAppearance="@style/Shape16" />
+
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/btnContinue"

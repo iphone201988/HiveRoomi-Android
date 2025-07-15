@@ -2,7 +2,7 @@ package com.tech.hive.data.api
 
 import com.google.gson.JsonObject
 import com.tech.hive.base.local.SharedPrefManager
-import com.tech.hive.data.model.AnswerSendResponse
+import com.tech.hive.data.model.AnswerSendRequest
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Response
@@ -29,7 +29,7 @@ class ApiHelperImpl @Inject constructor(
     override suspend fun apiPostForQuiz(
         lang: String,
         url: String,
-        request: AnswerSendResponse,
+        request: AnswerSendRequest,
     ): Response<JsonObject> {
         return apiService.apiPostForQuiz(lang, getTokenFromSPref(), url, request)
     }
@@ -50,14 +50,14 @@ class ApiHelperImpl @Inject constructor(
         return apiService.apiGetOutWithQuery(url)
     }
 
-    override suspend fun apiGetOnlyAuthToken(   lang: String,url: String): Response<JsonObject> {
-        return apiService.apiGetOnlyAuthToken(lang,url, getTokenFromSPref())
+    override suspend fun apiGetOnlyAuthToken(lang: String, url: String): Response<JsonObject> {
+        return apiService.apiGetOnlyAuthToken(lang, url, getTokenFromSPref())
     }
 
     override suspend fun apiGetWithQuery(
-        lang: String,data: HashMap<String, String>, url: String
+        lang: String, data: HashMap<String, String>, url: String
     ): Response<JsonObject> {
-        return apiService.apiGetWithQuery(lang,getTokenFromSPref(),url, data)
+        return apiService.apiGetWithQuery(lang, getTokenFromSPref(), url, data)
     }
 
     override suspend fun apiForPostMultipart(
@@ -102,7 +102,7 @@ class ApiHelperImpl @Inject constructor(
         url: String,
         userPic: MultipartBody.Part?,
     ): Response<JsonObject> {
-        return apiService.apiForImageUpload(lang,url, userPic, getTokenFromSPref())
+        return apiService.apiForImageUpload(lang, url, userPic, getTokenFromSPref())
     }
 
     override suspend fun apiForFormDataPutWithToken3(
@@ -114,13 +114,7 @@ class ApiHelperImpl @Inject constructor(
         ownershipPic: MultipartBody.Part?,
     ): Response<JsonObject> {
         return apiService.apiForFormDataPutWithToken3(
-            lang,
-            url,
-            map,
-            userPic,
-            idPic,
-            ownershipPic,
-            getTokenFromSPref()
+            lang, url, map, userPic, idPic, ownershipPic, getTokenFromSPref()
         )
     }
 

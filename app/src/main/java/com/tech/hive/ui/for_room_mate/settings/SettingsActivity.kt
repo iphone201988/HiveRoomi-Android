@@ -1,6 +1,7 @@
 package com.tech.hive.ui.for_room_mate.settings
 
 import android.content.Intent
+import android.util.Log
 import androidx.activity.viewModels
 import com.tech.hive.BR
 import com.tech.hive.R
@@ -9,6 +10,11 @@ import com.tech.hive.base.BaseViewModel
 import com.tech.hive.base.SimpleRecyclerViewAdapter
 import com.tech.hive.base.utils.BaseCustomDialog
 import com.tech.hive.base.utils.BindingUtils
+import com.tech.hive.base.utils.Status
+import com.tech.hive.base.utils.showErrorToast
+import com.tech.hive.base.utils.showSuccessToast
+import com.tech.hive.data.api.Constants
+import com.tech.hive.data.model.CommonResponse
 import com.tech.hive.data.model.SettingsModel
 import com.tech.hive.databinding.ActivitySettingsBinding
 import com.tech.hive.databinding.DialogDeleteLogoutBinding
@@ -18,6 +24,7 @@ import com.tech.hive.ui.for_room_mate.settings_screen.FrequentQuestionsActivity
 import com.tech.hive.ui.for_room_mate.settings_screen.HelpActivity
 import com.tech.hive.ui.for_room_mate.settings_screen.SafetyTipsActivity
 import com.tech.hive.ui.for_room_mate.settings_screen.CommunityActivity
+import com.tech.hive.ui.for_room_mate.settings_screen.ReportActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -82,13 +89,8 @@ class SettingsActivity : BaseActivity<ActivitySettingsBinding>() {
                     }
 
                     R.id.tvLogout -> {
-                        sharedPrefManager.clear()
-                        logoutDeleteDialog?.dismiss()
-                        val intent = Intent(this@SettingsActivity, AuthActivity::class.java)
-                        intent.flags =
-                            Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
-                        startActivity(intent)
-                        finishAffinity()
+                        val data = HashMap<String, Any>()
+                        viewModel.logoutApiCall(Constants.LOGOUT, data)
                     }
                 }
 
@@ -121,8 +123,49 @@ class SettingsActivity : BaseActivity<ActivitySettingsBinding>() {
 
     /** handle api response **/
     private fun initObserver() {
-        viewModel.settingObserver.observe(this) {
+        viewModel.settingObserver.observe(this@SettingsActivity) {
+            when (it?.status) {
+                Status.LOADING -> {
+                    showLoading()
+                }
 
+                Status.SUCCESS -> {
+                    when (it.message) {
+
+                        "logoutApiCall" -> {
+                            try {
+                                val myDataModel: CommonResponse? =
+                                    BindingUtils.parseJson(it.data.toString())
+                                if (myDataModel != null) {
+                                    showSuccessToast(myDataModel.message.toString())
+                                    sharedPrefManager.clear()
+                                    logoutDeleteDialog?.dismiss()
+                                    val intent =
+                                        Intent(this@SettingsActivity, AuthActivity::class.java)
+                                    intent.flags =
+                                        Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
+                                    startActivity(intent)
+                                    finishAffinity()
+                                }
+                            } catch (e: Exception) {
+                                Log.e("error", "getHomeApi: $e")
+                            } finally {
+                                hideLoading()
+                            }
+                        }
+
+                    }
+                }
+
+                Status.ERROR -> {
+                    hideLoading()
+                    showErrorToast(it.message.toString())
+                }
+
+                else -> {
+
+                }
+            }
         }
     }
 
@@ -229,9 +272,7 @@ class SettingsActivity : BaseActivity<ActivitySettingsBinding>() {
         list.add(SettingsModel(getString(R.string.account), getString(R.string.logout), true))
         list.add(
             SettingsModel(
-                getString(R.string.account),
-                getString(R.string.delete_account),
-                false
+                getString(R.string.account), getString(R.string.delete_account), false
             )
         )
         return list

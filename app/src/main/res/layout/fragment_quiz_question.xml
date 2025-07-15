@@ -69,48 +69,14 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tvSelectLanguage"
-                style="@style/TextView.PoppinsBold"
-                android:layout_marginTop="@dimen/_12sdp"
-                android:gravity="start"
-                android:text="@string/lifestyle_compatibility_quiz"
-                android:textColor="@color/black_24"
-                app:layout_constraintStart_toStartOf="@+id/ivBack"
-                app:layout_constraintTop_toBottomOf="@+id/passwordStrengthBar" />
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tvChoose"
-                style="@style/TextView.Regular"
-                android:layout_width="0dp"
-                android:layout_marginTop="-6dp"
-                android:layout_marginEnd="@dimen/_22sdp"
-                android:gravity="start"
-                android:text="@string/this_helps_us_match_you_with_the_most_compatible_people"
-                android:textColor="@color/black_24"
-                android:textSize="@dimen/_11ssp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/ivBack"
-                app:layout_constraintTop_toBottomOf="@+id/tvSelectLanguage" />
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tcCompleteLater"
-                style="@style/TextView.Medium"
-                android:layout_width="0dp"
-                android:text="Complete later >>"
-                android:onClick="@{v->vm.onClick(v)}"
-                android:layout_marginTop="@dimen/_6sdp"
-                android:textColor="@color/end_color"
-                android:textSize="@dimen/_11ssp"
-                app:layout_constraintEnd_toEndOf="@+id/passwordStrengthBar"
-                app:layout_constraintTop_toBottomOf="@+id/tvChoose" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvQuestion"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_marginHorizontal="@dimen/_10sdp"
-                android:layout_marginTop="@dimen/_16sdp"
+                android:layout_marginTop="@dimen/_5sdp"
                 android:overScrollMode="never"
                 android:nestedScrollingEnabled="false"
                 android:clipToPadding="false"
@@ -120,7 +86,7 @@
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tcCompleteLater"
+                app:layout_constraintTop_toBottomOf="@+id/passwordStrengthBar"
                 tools:itemCount="4"
                 tools:listitem="@layout/rv_qustion_item" />
 

@@ -64,7 +64,7 @@
     <string name="profession_role">Profession / Role</string>
     <string name="short_bio">Short Bio</string>
     <string name="tell_us_a_bit_about_yourself">Tell us a bit about yourself…</string>
-    <string name="student">Student</string>
+
     <string name="linkedin_link">LinkedIn Link</string>
     <string name="instagram_link">Instagram Link</string>
     <string name="add_link">Add link</string>
@@ -310,6 +310,55 @@
     <string name="age_65_plus">65+</string>
 
 
+    <string name="single">Single</string>
+    <string name="doubles">Double</string>
+    <string name="studios">Studio</string>
+    <string name="apartment">Apartment</string>
+
+    <string name="single_rooms">Single Room</string>
+    <string name="double_rooms">Double Room</string>
+    <string name="shared_room">Shared Room</string>
+
+
+    <string name="one_month">1 month</string>
+    <string name="two_months">3 months</string>
+    <string name="three_months">6 months</string>
+    <string name="four_months">12 months</string>
+    <string name="flexible">Flexible</string>
+
+
+    <string name="unfurnished">Unfurnished</string>
+    <string name="partially_furnished">Semi Furnished</string>
+    <string name="fully_furnished">Fully Furnished</string>
+
+    <string name="floor_ground">Ground</string>
+    <string name="floor_1st">1st</string>
+    <string name="floor_2nd">2nd</string>
+    <string name="floor_3rd">3rd</string>
+    <string name="floor_4th">4th</string>
+    <string name="floor_5th_plus">5th</string>
+
+    <string name="independent">Independent</string>
+    <string name="centralized">Centralized</string>
+    <string name="heating_no">No Heating</string>
+
+    <string name="never">Never</string>
+    <string name="sometimes">Sometimes</string>
+    <string name="often">Often</string>
+
+    <string name="one">1</string>
+    <string name="two">2</string>
+    <string name="three">3</string>
+    <string name="four">4</string>
+    <string name="five">5</string>
+
+
+    <string name="student">Student</string>
+    <string name="workers">Workers</string>
+    <string name="anyone">Anyone</string>
+
+
+
     <string name="campus_university_of_milan">University of Milan (La Statale)</string>
     <string name="campus_university_of_milan_bicocca">University of Milan-Bicocca</string>
     <string name="campus_polytechnic_university_of_milan">Polytechnic University of Milan</string>
@@ -477,5 +526,15 @@
     <string name="change_role">Change Role</string>
     <string name="save">Save</string>
     <string name="change">Change</string>
+    <string name="no_yet_notification">No yet notification.</string>
+    <string name="private_bathroom">Private Bathroom</string>
+    <string name="fast_wi_fi">Fast Wi-Fi</string>
+    <string name="equipped_kitchen">Equipped Kitchen</string>
+    <string name="air_conditioning">Air Conditioning</string>
+    <string name="washing_machine">Washing Machine</string>
+    <string name="balcony_terrace">Balcony/Terrace</string>
+    <string name="parking_space">Parking Space</string>
+    <string name="_6_months">6 months</string>
+    <string name="_6_may">6 May</string>
 
 </resources>
