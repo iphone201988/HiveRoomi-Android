@@ -9,8 +9,6 @@
             name="vm"
             type="com.tech.hive.ui.room_offering.basic_details.BasicDetailsVM" />
 
-
-
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -244,6 +242,17 @@
             app:layout_constraintBottom_toBottomOf="@+id/etLooking"
             app:layout_constraintEnd_toEndOf="@+id/etLooking"
             app:layout_constraintTop_toTopOf="@+id/etLooking" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvLooking"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_6sdp"
+            android:layout_marginHorizontal="@dimen/_12sdp"
+            android:orientation="horizontal"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintTop_toBottomOf="@id/etLooking"
+            tools:listitem="@layout/features_item_view" />
 
 
 

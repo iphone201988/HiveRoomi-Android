@@ -43,14 +43,14 @@ class MySplashActivity : BaseActivity<ActivityMySplashBinding>(), LocationResult
         if (userdata!=null){
             when {
                 userdata.profileRole==1 -> {
-                    Constants.userType = 1
+                   sharedPrefManager.saveRole(1)
                 }
                 userdata.profileRole==2 -> {
-                    Constants.userType = 2
+                    sharedPrefManager.saveRole(2)
 
                 }
                 userdata.profileRole==3 -> {
-                    Constants.userType = 3
+                    sharedPrefManager.saveRole(3)
 
                 }
             }

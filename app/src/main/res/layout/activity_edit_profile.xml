@@ -25,6 +25,10 @@
             name="bioType"
             type="String" />
 
+        <variable
+            name="visibilityType"
+            type="Integer" />
+
 
         <import type="android.view.View" />
     </data>
@@ -175,7 +179,7 @@
                     android:focusable="false"
                     android:hint="@string/_18_22"
                     android:onClick="@{v->vm.onClick(v)}"
-                    android:paddingStart="@dimen/_10sdp"
+                    android:paddingStart="@dimen/_15sdp"
                     android:paddingEnd="@dimen/_16sdp"
                     android:text="@{bean.ageRange}"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -214,7 +218,7 @@
                     android:focusable="false"
                     android:hint="@string/male"
                     android:onClick="@{v->vm.onClick(v)}"
-                    android:paddingStart="@dimen/_10sdp"
+                    android:paddingStart="@dimen/_15sdp"
                     android:paddingEnd="@dimen/_40sdp"
                     android:text="@{bean.gender}"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -254,7 +258,7 @@
                     android:focusable="false"
                     android:hint="@string/student"
                     android:onClick="@{v->vm.onClick(v)}"
-                    android:paddingStart="@dimen/_10sdp"
+                    android:paddingStart="@dimen/_15sdp"
                     android:paddingEnd="@dimen/_40sdp"
                     android:text="@{bean.profession}"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -295,7 +299,7 @@
                     android:focusable="false"
                     android:hint="Univercity of Milan (La Statale)"
                     android:onClick="@{v->vm.onClick(v)}"
-                    android:paddingStart="@dimen/_10sdp"
+                    android:paddingStart="@dimen/_15sdp"
                     android:paddingEnd="@dimen/_40sdp"
                     android:text="@{bean.campus}"
                     android:visibility="gone"
@@ -339,7 +343,7 @@
                     android:imeOptions="actionNext"
                     android:inputType="textMultiLine"
                     android:nextFocusForward="@+id/etConfirmPassword"
-                    android:paddingStart="@dimen/_12sdp"
+                    android:paddingStart="@dimen/_15sdp"
                     android:paddingTop="@dimen/_12sdp"
                     android:paddingEnd="@dimen/_12sdp"
                     android:text="@{bean.bio}"
@@ -384,6 +388,104 @@
                     app:layout_constraintStart_toStartOf="@+id/etLocation"
                     app:layout_constraintTop_toTopOf="@+id/etLocation" />
 
+
+
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvProvider"
+                    style="@style/TextView.Regular"
+                    android:layout_marginHorizontal="@dimen/_12sdp"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:text="@string/type_of_provider"
+                    android:visibility="@{visibilityType==2?View.VISIBLE:View.GONE}"
+                    android:textColor="@color/black_24"
+                    android:textSize="@dimen/_12ssp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/etLocation" />
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/etProvider"
+                    style="@style/EditText"
+                    android:layout_marginHorizontal="@dimen/_12sdp"
+                    android:layout_marginTop="@dimen/_6sdp"
+                    android:background="@{locationType.isEmpty()?@drawable/unselect_edit_text_bg_color:@drawable/select_edittext_bg_color}"
+                    android:hint="@string/tenant_subletting"
+                    android:visibility="@{visibilityType==2?View.VISIBLE:View.GONE}"
+                    android:paddingStart="@dimen/_15sdp"
+                    android:focusable="false"
+                    android:paddingEnd="@dimen/_16sdp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvProvider" />
+
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/ivProvider"
+                    android:layout_width="@dimen/_27sdp"
+                    android:layout_height="@dimen/_27sdp"
+                    android:layout_marginEnd="@dimen/_4sdp"
+                    android:onClick="@{v->vm.onClick(v)}"
+                    android:padding="@dimen/_5sdp"
+                    android:visibility="@{visibilityType==2?View.VISIBLE:View.GONE}"
+                    android:rotation="270"
+                    android:src="@drawable/arrow_up"
+                    app:layout_constraintBottom_toBottomOf="@+id/etProvider"
+                    app:layout_constraintEnd_toEndOf="@+id/etProvider"
+                    app:layout_constraintTop_toTopOf="@+id/etProvider" />
+
+
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvDocuments"
+                    style="@style/TextView.Semibold"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/_12sdp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="24dp"
+                    android:visibility="@{visibilityType==2?View.VISIBLE:View.GONE}"
+                    android:includeFontPadding="false"
+                    android:text="@string/documents"
+                    android:textColor="@color/start_color"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/etProvider" />
+
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/etDocuments"
+                    style="@style/TextView.Medium2"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_38sdp"
+                    android:layout_marginHorizontal="@dimen/_15sdp"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:background="@drawable/unselect_edit_text_bg_color"
+                    android:gravity="center_vertical"
+                    android:focusable="false"
+                    android:onClick="@{v->vm.onClick(v)}"
+                    android:paddingStart="@dimen/_15sdp"
+                    android:visibility="@{visibilityType==2?View.VISIBLE:View.GONE}"
+                    android:paddingEnd="@dimen/_40sdp"
+                    android:text="@string/update_documents"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvDocuments" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/ivDocuments"
+                    android:layout_width="@dimen/_27sdp"
+                    android:layout_height="@dimen/_27sdp"
+                    android:layout_marginEnd="@dimen/_4sdp"
+                    android:onClick="@{v->vm.onClick(v)}"
+                    android:padding="@dimen/_5sdp"
+                    android:visibility="@{visibilityType==2?View.VISIBLE:View.GONE}"
+                    android:rotation="270"
+                    android:src="@drawable/arrow_up"
+                    app:layout_constraintBottom_toBottomOf="@+id/etDocuments"
+                    app:layout_constraintEnd_toEndOf="@+id/etDocuments"
+                    app:layout_constraintTop_toTopOf="@+id/etDocuments" />
+
+
+
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tvPreferences"
                     style="@style/TextView.Semibold"
@@ -392,11 +494,12 @@
                     android:layout_marginHorizontal="@dimen/_12sdp"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="24dp"
+                    android:visibility="@{visibilityType==1?View.VISIBLE:View.GONE}"
                     android:includeFontPadding="false"
                     android:text="@string/preferences"
                     android:textColor="@color/start_color"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/etLocation" />
+                    app:layout_constraintTop_toBottomOf="@id/etDocuments" />
 
 
                 <androidx.appcompat.widget.AppCompatTextView
@@ -409,7 +512,8 @@
                     android:background="@drawable/unselect_edit_text_bg_color"
                     android:gravity="center_vertical"
                     android:onClick="@{v->vm.onClick(v)}"
-                    android:paddingStart="@dimen/_10sdp"
+                    android:visibility="@{visibilityType==1?View.VISIBLE:View.GONE}"
+                    android:paddingStart="@dimen/_15sdp"
                     android:paddingEnd="@dimen/_40sdp"
                     android:text="Edit Preferences Details"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -424,6 +528,7 @@
                     android:onClick="@{v->vm.onClick(v)}"
                     android:padding="@dimen/_5sdp"
                     android:rotation="270"
+                    android:visibility="@{visibilityType==1?View.VISIBLE:View.GONE}"
                     android:src="@drawable/arrow_up"
                     app:layout_constraintBottom_toBottomOf="@+id/tvEditPreferencesDetails"
                     app:layout_constraintEnd_toEndOf="@+id/tvEditPreferencesDetails"

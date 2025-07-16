@@ -60,10 +60,24 @@ class ApiHelperImpl @Inject constructor(
         return apiService.apiGetWithQuery(lang, getTokenFromSPref(), url, data)
     }
 
-    override suspend fun apiForPostMultipart(
-        url: String, map: HashMap<String, RequestBody>, part: MutableList<MultipartBody.Part>
+ override suspend fun apiDeleteListingWithQuery(
+        lang: String, url: String
     ): Response<JsonObject> {
-        return apiService.apiForPostMultipart(url, getTokenFromSPref(), map, part)
+        return apiService.apiDeleteListingWithQuery(lang, getTokenFromSPref(), url)
+    }
+
+    override suspend fun apiForPostMultipart(
+        lang: String,
+        url: String, map: HashMap<String, RequestBody>, part: MutableList<MultipartBody.Part> , video: MultipartBody.Part?
+    ): Response<JsonObject> {
+        return apiService.apiForPostMultipart(lang,url, getTokenFromSPref(), map, part,video)
+    }
+
+    override suspend fun apiForPostMultipartPut(
+        lang: String,
+        url: String, map: HashMap<String, RequestBody>, part: MutableList<MultipartBody.Part> , video: MultipartBody.Part?
+    ): Response<JsonObject> {
+        return apiService.apiForPostMultipartPut(lang,url, getTokenFromSPref(), map, part,video)
     }
 
     override suspend fun apiForPostMultipart(

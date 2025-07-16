@@ -11,6 +11,7 @@ import com.tech.hive.base.BaseViewModel
 import com.tech.hive.base.SimpleRecyclerViewAdapter
 import com.tech.hive.base.utils.BaseCustomDialog
 import com.tech.hive.base.utils.BindingUtils
+import com.tech.hive.data.model.GetListingData
 import com.tech.hive.databinding.ActivityPriceTermsBinding
 import com.tech.hive.databinding.PersonalDialogItemBinding
 import com.tech.hive.databinding.UnPinLayoutBinding
@@ -18,6 +19,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
+import java.util.TimeZone
 
 @AndroidEntryPoint
 class PriceTermsActivity : BaseActivity<ActivityPriceTermsBinding>() {
@@ -28,7 +30,7 @@ class PriceTermsActivity : BaseActivity<ActivityPriceTermsBinding>() {
     private var titleType: String? = null
     private var bioType: String? = null
     private var locationType: String? = null
-
+    private var listingData: GetListingData? = null
     override fun getLayoutResource(): Int {
         return R.layout.activity_price_terms
     }
@@ -62,6 +64,20 @@ class PriceTermsActivity : BaseActivity<ActivityPriceTermsBinding>() {
         bioType = intent.getStringExtra("bioType")
         locationType = intent.getStringExtra("locationType")
 
+        listingData = intent.getParcelableExtra<GetListingData>("basicDetail")
+        listingData?.let {
+            binding.etPrice.setText(it.price.toString())
+            binding.etUtilityPrice.setText(it.utilitiesPrice.toString())
+            binding.etDeposit.setText(it.deposit.toString())
+            binding.etContract.setText(it.contractLength)
+            binding.etStay.setText(it.minimumStay)
+            val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
+            inputFormat.timeZone = TimeZone.getTimeZone("UTC")
+            val outputFormat = SimpleDateFormat("MMMM dd yyyy", Locale.getDefault())
+            val date = inputFormat.parse(it.availableFrom.toString())
+            val formattedDate = outputFormat.format(date!!)
+            binding.etStatus.setText(formattedDate)
+        }
     }
 
     /** handle clicks **/
@@ -81,6 +97,10 @@ class PriceTermsActivity : BaseActivity<ActivityPriceTermsBinding>() {
                         intent.putExtra("contractType", binding.etContract.text.toString().trim())
                         intent.putExtra("availableType", binding.etStatus.text.toString().trim())
                         intent.putExtra("minimumStayType", binding.etStay.text.toString().trim())
+                        if (listingData!=null){
+                            intent.putExtra("basicDetail", listingData)
+                        }
+
                         startActivity(intent)
                     }
 

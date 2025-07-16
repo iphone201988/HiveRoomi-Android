@@ -1,6 +1,6 @@
 package com.tech.hive.data.model
 
-import android.net.Uri
+
 
 data class SettingsModel(
     val heading: String, val title: String, val isFirst: Boolean
@@ -11,9 +11,10 @@ data class ImageModel(var image : String, var type : Int)
 data class CompatibilityModel(
     val title:String
 )
-data class RoomMateModel(
-    val gender:String, val age:String
-)
+
+
+
+
 
 data class BoostPlanModel(
     val duration:String,val price:String,val perDayCost:String,val saving:String,var isSelected:Boolean=false
@@ -38,14 +39,6 @@ data class PrivacyModel(
 )
 
 
-data class ThirdTypeModel(
-    var heading: String,
-    var price: String,
-    var firstTitle :String,
-    var secondTitle: String,
-    var isCheck :Boolean = false
-
-)
 
 data class MatchProfileModel(
     var title: String,

@@ -32,8 +32,8 @@ class MatchesFragment : BaseFragment<FragmentMatchesBinding>() {
     private lateinit var matchesAdapter: SimpleRecyclerViewAdapter<PendingMatchData, MatchesItemViewBinding>
     private lateinit var pendingMatchesAdapter: SimpleRecyclerViewAdapter<PendingMatchData, PendingMatchRvItemBinding>
     private var position = -1
+    var userType = 0
     var check = false
-    var userType = ""
     override fun onCreateView(view: View) {
         // view
         initView()
@@ -41,34 +41,32 @@ class MatchesFragment : BaseFragment<FragmentMatchesBinding>() {
         initOnClick()
         // observer
         initObserver()
-        // check
         binding.check = 1
-        binding.visibilityHandel = Constants.userType
-
         var userData = sharedPrefManager.getRole()
-        if (userData != null) {
-            if (userData == 2) {
-                check = false
-                sharedPrefManager.saveSide("2")
-            } else {
-                check = true
-                sharedPrefManager.saveSide("1")
-            }
-            if (sharedPrefManager.getSide() == "1") {
-                binding.ivSettings.setImageResource(R.drawable.first_selected)
-            } else if (sharedPrefManager.getSide() == "2") {
-                binding.ivSettings.setImageResource(R.drawable.second_selected)
-            } else {
-                binding.ivSettings.visibility = View.GONE
-            }
+        if (userData != 0) {
+            userType = userData
+            // check
             if (userData == 1) {
+                sharedPrefManager.saveSide("1")
+                check = true
+                binding.ivSettings.setImageResource(R.drawable.first_selected)
                 val data = HashMap<String, String>()
                 data["type"] = "user"
                 viewModel.getMatchApi(Constants.GET_MATCH, data)
-            } else {
+            } else if (userData == 2) {
+                sharedPrefManager.saveSide("2")
+                check = false
+                binding.ivSettings.setImageResource(R.drawable.second_selected)
                 val data = HashMap<String, String>()
                 data["type"] = "listing"
                 viewModel.getMatchApi(Constants.GET_MATCH, data)
+            } else {
+                sharedPrefManager.saveSide("2")
+                check = false
+                val data = HashMap<String, String>()
+                data["type"] = "listing"
+                viewModel.getMatchApi(Constants.GET_MATCH, data)
+                binding.ivSettings.visibility = View.GONE
             }
         }
 
@@ -97,7 +95,7 @@ class MatchesFragment : BaseFragment<FragmentMatchesBinding>() {
             when (it?.id) {
                 // filter click
                 R.id.ivSettings -> {
-                    if (Constants.userType == 1) {
+                    if (userType == 1) {
                         startActivity(Intent(requireContext(), FilterActivity::class.java))
                     } else {
                         startActivity(
@@ -277,18 +275,16 @@ class MatchesFragment : BaseFragment<FragmentMatchesBinding>() {
                 when (v.id) {
                     // view profile
                     R.id.ivImage -> {
-                        if (sharedPrefManager.getSide() == "1") {
+                        if (m.type?.contains("user") == true) {
                             val intent = Intent(context, MatchedProfileActivity::class.java)
                             intent.putExtra("profileIdFirst", m.userId?._id)
                             requireContext().startActivity(intent)
-                        } else {
+                        }else{
                             val intent = Intent(context, SecondMatchActivity::class.java)
                             intent.putExtra("profileIdSecond", m.listingId?._id)
                             requireContext().startActivity(intent)
                         }
-
                     }
-
                 }
             }
 

@@ -89,11 +89,11 @@
 
                 <com.google.android.material.imageview.ShapeableImageView
                     android:id="@+id/ivImage"
+                    setImageFromUrl="@{bean.profileImage}"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_300sdp"
                     android:layout_marginHorizontal="@dimen/_10sdp"
                     android:scaleType="centerCrop"
-                    setImageFromUrl="@{bean.profileImage}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
@@ -384,8 +384,8 @@
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/clCompatibility"
                     android:layout_width="match_parent"
-                    android:visibility="gone"
                     android:layout_height="wrap_content"
+                    android:visibility="gone"
                     app:layout_constraintTop_toBottomOf="@id/clPreference">
 
                     <androidx.appcompat.widget.AppCompatTextView
@@ -480,9 +480,9 @@
                     android:layout_marginTop="@dimen/_6sdp"
                     android:includeFontPadding="false"
                     android:text="@string/media_shared"
-                    android:visibility="gone"
                     android:textColor="@color/start_color"
                     android:textSize="@dimen/_12ssp"
+                    android:visibility="gone"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tvLinkedin" />
 
@@ -494,10 +494,10 @@
                     android:layout_marginTop="@dimen/_6sdp"
                     android:background="@drawable/bg_chat_corner_radius_10"
                     android:padding="@dimen/_10sdp"
-                    android:visibility="gone"
                     android:text="Top_floor_apartment.pdf"
                     android:textColor="@color/et_hint_color"
                     android:textSize="@dimen/_10ssp"
+                    android:visibility="gone"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tvMedia" />
@@ -507,10 +507,10 @@
                     style="@style/TextView.Medium2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:visibility="gone"
                     android:layout_marginTop="@dimen/_5sdp"
                     android:text="@string/apartment_kitchen_images"
                     android:textSize="@dimen/_12ssp"
+                    android:visibility="gone"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tvMediaShare" />
 
@@ -519,8 +519,8 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_5sdp"
-                    android:visibility="gone"
                     android:orientation="horizontal"
+                    android:visibility="gone"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -530,18 +530,19 @@
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tvTitle1"
                     style="@style/TextView.Medium2"
-                    android:layout_height="@dimen/_38sdp"
                     android:layout_width="match_parent"
+                    android:layout_height="@dimen/_38sdp"
                     android:layout_marginTop="@dimen/_16sdp"
+                    android:background="@drawable/unselect_edit_text_bg_color"
                     android:gravity="center_vertical"
                     android:onClick="@{v-> vm.onClick(v)}"
-                    android:background="@drawable/unselect_edit_text_bg_color"
-                    android:text="@string/rate_user"
                     android:paddingStart="@dimen/_10sdp"
                     android:paddingEnd="@dimen/_40sdp"
+                    android:text="@string/rate_user"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/rvApartmentImage" />
+
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/ivArrow"
                     android:layout_width="@dimen/_27sdp"
@@ -549,12 +550,11 @@
                     android:layout_marginEnd="@dimen/_14sdp"
                     android:onClick="@{v-> vm.onClick(v)}"
                     android:padding="@dimen/_5sdp"
-                    android:src="@drawable/arrow_up"
                     android:rotation="270"
+                    android:src="@drawable/arrow_up"
                     app:layout_constraintBottom_toBottomOf="@+id/tvTitle1"
                     app:layout_constraintEnd_toEndOf="@+id/tvTitle1"
                     app:layout_constraintTop_toTopOf="@+id/tvTitle1" />
-
 
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -565,9 +565,9 @@
                     android:layout_marginTop="@dimen/_20sdp"
                     android:background="@drawable/btn_bg_color"
                     android:visibility="@{match==2?View.VISIBLE:View.GONE}"
-                    app:layout_constraintTop_toBottomOf="@+id/tvTitle1"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent">
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvTitle1">
 
                     <androidx.appcompat.widget.AppCompatImageView
                         android:id="@+id/ivLike"
@@ -575,7 +575,6 @@
                         android:layout_height="@dimen/_22sdp"
                         android:layout_marginStart="@dimen/_12sdp"
                         android:src="@drawable/ic_heart"
-                        android:onClick="@{v->vm.onClick(v)}"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toStartOf="@id/tvLike"
                         app:layout_constraintStart_toStartOf="parent"
@@ -585,7 +584,6 @@
                         android:id="@+id/tvLike"
                         style="@style/TextView.SfMedium"
                         android:layout_width="wrap_content"
-                        android:onClick="@{v->vm.onClick(v)}"
                         android:layout_height="wrap_content"
                         app:layout_constraintBottom_toBottomOf="@id/ivLike"
                         app:layout_constraintEnd_toStartOf="@id/view1"
@@ -605,7 +603,6 @@
                         android:id="@+id/ivChat"
                         android:layout_width="@dimen/_22sdp"
                         android:layout_height="@dimen/_22sdp"
-                        android:onClick="@{v->vm.onClick(v)}"
                         android:src="@drawable/ic_message_selected"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toStartOf="@id/tvChat"
@@ -616,7 +613,6 @@
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/tvChat"
                         style="@style/TextView.SfMedium"
-                        android:onClick="@{v->vm.onClick(v)}"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/chat"
@@ -639,7 +635,6 @@
                         android:layout_width="@dimen/_22sdp"
                         android:layout_height="@dimen/_22sdp"
                         android:src="@drawable/ic_report"
-                        android:onClick="@{v->vm.onClick(v)}"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toStartOf="@id/tvReport"
                         app:layout_constraintStart_toEndOf="@id/view2"
@@ -651,7 +646,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="@dimen/_12sdp"
-                        android:onClick="@{v->vm.onClick(v)}"
                         android:text="@string/report"
                         app:layout_constraintBottom_toBottomOf="@id/ivLike"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -666,15 +660,14 @@
                     android:layout_marginTop="@dimen/_20sdp"
                     android:background="@drawable/btn_bg_color"
                     android:visibility="@{match==1?View.VISIBLE:View.GONE}"
-                    app:layout_constraintTop_toBottomOf="@+id/tvTitle1"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent">
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvTitle1">
 
                     <androidx.appcompat.widget.AppCompatImageView
                         android:id="@+id/ivLikeBefore"
                         android:layout_width="@dimen/_22sdp"
                         android:layout_height="@dimen/_22sdp"
-                        android:onClick="@{v->vm.onClick(v)}"
                         android:layout_marginEnd="@dimen/_5sdp"
                         android:src="@drawable/ic_heart"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -686,7 +679,6 @@
                         style="@style/TextView.SfMedium"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:onClick="@{v->vm.onClick(v)}"
                         android:layout_marginStart="@dimen/_40sdp"
                         android:text="@string/like"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -709,7 +701,6 @@
                         android:layout_height="@dimen/_22sdp"
                         android:layout_marginEnd="@dimen/_40sdp"
                         android:src="@drawable/ic_report"
-                        android:onClick="@{v->vm.onClick(v)}"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@id/view1Before"
@@ -720,7 +711,6 @@
                         style="@style/TextView.SfMedium"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:onClick="@{v->vm.onClick(v)}"
                         android:layout_marginStart="@dimen/_5sdp"
                         android:layout_marginEnd="@dimen/_12sdp"
                         android:text="@string/report"
@@ -731,8 +721,6 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.core.widget.NestedScrollView>
-
-
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

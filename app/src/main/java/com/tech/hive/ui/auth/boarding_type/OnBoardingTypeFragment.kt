@@ -27,8 +27,8 @@ class OnBoardingTypeFragment : BaseFragment<FragmentOnBoardingTypeBinding>() {
 
     override fun onCreateView(view: View) {
         // select type
-        Constants.userType = 0
-        binding.selectType = 0
+        binding.selectType = 1
+        sharedPrefManager.saveRole(1)
         // click
         initClick()
     }
@@ -40,43 +40,28 @@ class OnBoardingTypeFragment : BaseFragment<FragmentOnBoardingTypeBinding>() {
                 // Roommate button click
                 R.id.clRoommate -> {
                     binding.selectType = 1
-                    Constants.userType = 1
+                    sharedPrefManager.saveRole(1)
 
                 }
                 // Home button click
                 R.id.clHome -> {
                     binding.selectType = 2
-                    Constants.userType = 2
-
+                    sharedPrefManager.saveRole(2)
                 }
                 // Offering button click
                 R.id.clOffering -> {
                     binding.selectType = 3
-                    Constants.userType = 3
+                    sharedPrefManager.saveRole(3)
 
                 }
                 // btnContinue button click
                 R.id.btnContinue -> {
-                    if (validate()) {
-
-                        BindingUtils.navigateWithSlide(
-                            findNavController(), R.id.navigateToLoginFragment, null
-                        )
-                    }
-
+                        BindingUtils.navigateWithSlide(findNavController(), R.id.navigateToLoginFragment, null)
                 }
             }
         }
     }
 
 
-    /*** add validation ***/
-    private fun validate(): Boolean {
-        if (Constants.userType == 0) {
-            showInfoToast("Please select any role")
-            return false
-        }
-        return true
-    }
 
 }

@@ -1,7 +1,9 @@
 package com.tech.hive.ui.for_room_mate.home.second
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.util.Log
+import android.view.MotionEvent
 import android.view.View
 import androidx.activity.viewModels
 import com.google.android.gms.maps.GoogleMap
@@ -89,6 +91,7 @@ class SecondMatchActivity : BaseActivity<ActivitySecondMatchBinding>(), OnMapRea
 
     /** handle click **/
 
+    @SuppressLint("ClickableViewAccessibility")
     private fun initOnClick() {
         viewModel.onClick.observe(this) {
             when (it?.id) {
@@ -139,6 +142,60 @@ class SecondMatchActivity : BaseActivity<ActivitySecondMatchBinding>(), OnMapRea
                 }
             }
         }
+
+
+        binding.clAfterMatch.setOnTouchListener { v, event ->
+            if (event.action == MotionEvent.ACTION_DOWN) {
+                val totalWidth = v.width
+                val sectionWidth = totalWidth / 3
+                val x = event.x.toInt()
+
+                when {
+                    x < sectionWidth -> {
+
+                    }
+                    x < sectionWidth * 2 -> {
+                        if (chatClick) {
+                            val intent = Intent(this@SecondMatchActivity, ChatActivity::class.java)
+                            intent.putExtra("socketId", commonId)
+                            intent.putExtra("matchId", commonId)
+                            startActivity(intent)
+                        }
+                    }
+                    else -> {
+                        val intent = Intent(this@SecondMatchActivity, ReportActivity::class.java)
+                        intent.putExtra("reportId", commonId)
+                        intent.putExtra("reportType", "listing")
+                        startActivity(intent)
+                    }
+                }
+            }
+            true
+        }
+
+
+
+
+        binding.clBeforeMatch.setOnTouchListener { v, event ->
+            if (event.action == MotionEvent.ACTION_UP) {
+                val width = v.width
+                val clickedX = event.x
+                if (clickedX < width / 2) {
+                    val data = HashMap<String, Any>()
+                    data["id"] = commonId
+                    data["action"] = "like"
+                    data["type"] = "listing"
+                    viewModel.matchLikeApi(Constants.MATCH_LIKE, data)
+                } else {
+                    val intent = Intent(this@SecondMatchActivity, ReportActivity::class.java)
+                    intent.putExtra("reportId", commonId)
+                    intent.putExtra("reportType", "listing")
+                    startActivity(intent)
+                }
+            }
+            true
+        }
+
     }
 
 

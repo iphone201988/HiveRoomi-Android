@@ -1,5 +1,8 @@
 package com.tech.hive.data.model
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
 
 /** common response ***/
 data class CommonResponse(
@@ -47,7 +50,6 @@ data class LoginData(
     val totalQuizDone: Int?,
     val userIdProof: String?
 )
-
 
 
 /** Verify account response ***/
@@ -124,10 +126,10 @@ data class UserProfileData(
 data class LinkedAccount(
     val _id: String?, val socialId: String?, val socialType: Int?
 )
-
+@Parcelize
 data class Location(
     val coordinates: List<Double?>?, val type: String?
-)
+): Parcelable
 
 /*** quiz question response ***/
 data class QuizQuestionResponse(
@@ -157,7 +159,10 @@ data class GroupValue(
 )
 
 data class Option(
-    val label: String?, var value: String?, var selectedAnswer : Boolean = false , var inputValue : String? = ""
+    val label: String?,
+    var value: String?,
+    var selectedAnswer: Boolean = false,
+    var inputValue: String? = ""
 )
 
 /** quiz answer model **/
@@ -187,13 +192,14 @@ data class QuizAnswerData(
 )
 
 /** home api model **/
+@Parcelize
 data class HomeApiResponse(
     val `data`: List<HomeApiData?>?,
     val message: String?,
     val pagination: Pagination?,
     val success: Boolean?
-)
-
+): Parcelable
+@Parcelize
 data class HomeApiData(
     val _id: String?,
     val ageRange: String?,
@@ -210,14 +216,15 @@ data class HomeApiData(
     val timezone: String?
 
 
-)
+): Parcelable
 
-
+@Parcelize
 data class HomeApiDataQuiz(
     val answer: String?, val title: String?
-)
+): Parcelable
 
 /** second type home api model **/
+@Parcelize
 data class HomeRoomType(
     val `data`: List<HomeRoomTData?>?,
     val message: String?,
@@ -225,8 +232,8 @@ data class HomeRoomType(
     val success: Boolean?
 
 
-)
-
+): Parcelable
+@Parcelize
 data class HomeRoomTData(
     val _id: String?,
     val address: String?,
@@ -243,22 +250,23 @@ data class HomeRoomTData(
     val userId: String?,
     val videos: String?
 
-)
+): Parcelable
 
-
+@Parcelize
 data class Roommate(
     val _id: String?, val age: Int?, val gender: String?
-)
+): Parcelable
 
 
 /** Pending Match Response  **/
+@Parcelize
 data class PendingMatchResponse(
     val `data`: List<PendingMatchData?>?,
     val message: String?,
     val pagination: Pagination?,
     val success: Boolean?
-)
-
+): Parcelable
+@Parcelize
 data class PendingMatchData(
     val _id: String?,
     val createdAt: String?,
@@ -268,18 +276,17 @@ data class PendingMatchData(
     val listingId: ListingId?,
 
 
-
-)
-
+    ): Parcelable
+@Parcelize
 data class UserId(
     val _id: String?,
     val email: String?,
     val likeCount: Int?,
     val name: String?,
     val profileImage: String?
-)
+): Parcelable
 
-
+@Parcelize
 data class ListingId(
     val _id: String?,
     val address: String?,
@@ -295,20 +302,16 @@ data class ListingId(
     val smoke: String?,
     val title: String?,
     val videos: String?
-)
+): Parcelable
 
-
+@Parcelize
 data class ListingRoommate(
-    val _id: String?,
-    val age: Int?,
-    val gender: String?
-)
-
-
-
+    val _id: String?, val age: Int?, val gender: String?
+): Parcelable
 
 
 /** Get Chat Response  **/
+@Parcelize
 data class GetChatResponse(
     val `data`: List<GetChatData>?,
     val message: String?,
@@ -316,20 +319,20 @@ data class GetChatResponse(
     val pagination: Pagination?,
     val success: Boolean?,
     val unReadMessageCount: Int?
-)
-
+): Parcelable
+@Parcelize
 data class GetChatData(
     val _id: String?, val messages: Messages?, val otherUser: OtherUser?, val updatedAt: String?
-)
-
+): Parcelable
+@Parcelize
 data class OnlineUser(
     val _id: String?, val otherUser: OtherUser?, val updatedAt: String?
-)
-
+): Parcelable
+@Parcelize
 data class Pagination(
     val limit: Int?, val page: Int?, val total: Int?
-)
-
+): Parcelable
+@Parcelize
 data class Messages(
     val __v: Int?,
     val _id: String?,
@@ -337,16 +340,16 @@ data class Messages(
     val content: String?,
     val contentType: String?,
     val createdAt: String?,
-    val deletedBy: List<Any?>?,
+    val deletedBy: List<String?>?,
     val isRead: Boolean?,
     val `receiver`: String?,
     val sender: String?,
     val updatedAt: String?
-)
+): Parcelable
 
 /** Get User Message Response  **/
 data class GetUserMessageResponse(
-    val checkUserBlock:CheckUserBlock?,
+    val checkUserBlock: CheckUserBlock?,
     val `data`: List<GetUserData?>?,
     val isBlocked: Boolean?,
     val message: String?,
@@ -364,10 +367,10 @@ data class GetUserData(
     val isRead: Boolean?,
     val sender: Sender?
 )
-
+@Parcelize
 data class OtherUser(
     val _id: String?, val isOnline: Boolean?, val name: String?, val profileImage: String?
-)
+): Parcelable
 
 data class ChatPagination(
     val limit: Int?, val page: Int?, val total: Int?
@@ -385,8 +388,6 @@ data class CheckUserBlock(
     val createdAt: String?,
     val userId: String?
 )
-
-
 
 
 /** Upload Image Response  **/
@@ -494,12 +495,9 @@ data class SecondRoommate(
 )
 
 
-
 /** get user profile Response  **/
 data class GetUserProfileResponse(
-    val `data`: UserProfile?,
-    val message: String?,
-    val success: Boolean?
+    val `data`: UserProfile?, val message: String?, val success: Boolean?
 )
 
 data class UserProfile(
@@ -528,8 +526,7 @@ data class UserProfile(
 
 /** quiz answer model **/
 data class UserProfileQuiz(
-    val answer: String?,
-    val title: String?
+    val answer: String?, val title: String?
 )
 
 data class UserResponse(
@@ -543,9 +540,7 @@ data class UserResponse(
 
 /** role change response **/
 data class RoleChangeResponse(
-    val `data`: RoleChangeData?,
-    val message: String?,
-    val success: Boolean?
+    val `data`: RoleChangeData?, val message: String?, val success: Boolean?
 )
 
 data class RoleChangeData(
@@ -582,14 +577,14 @@ data class UserQuizAnswer(
     val quizId: String?,
     val answer: String?,
 
-)
-/** get notification response **/
-data class GetNotificationResponse(
-    val `data`: List<NotificationData?>?,
-    val pagination: Pagination?,
-    val success: Boolean?
-)
+    )
 
+/** get notification response **/
+@Parcelize
+data class GetNotificationResponse(
+    val `data`: List<NotificationData?>?, val pagination: Pagination?, val success: Boolean?
+): Parcelable
+@Parcelize
 data class NotificationData(
     val __v: Int?,
     val _id: String?,
@@ -602,8 +597,8 @@ data class NotificationData(
     val title: String?,
     val type: String?,
     val userId: String?
-)
-
+): Parcelable
+@Parcelize
 data class LikeId(
     val __v: Int?,
     val _id: String?,
@@ -612,11 +607,131 @@ data class LikeId(
     val status: Int?,
     val type: String?,
     val userId: String?
+): Parcelable
+@Parcelize
+data class SenderId(
+    val _id: String?, val name: String?, val profileImage: String?
+): Parcelable
+
+/** roommates request  model **/
+
+class RoomMateModel : ArrayList<RoomMateModelItem>()
+
+data class RoomMateModelItem(
+    val gender: String?, val age: String?
+
 )
 
-data class SenderId(
-    val _id: String?,
-    val name: String?,
-    val profileImage: String?
+
+/** post listing  response **/
+data class PostListingResponse(
+    val `data`: PostListingData?, val message: String?, val success: Boolean?
 )
+
+data class PostListingData(
+    val _id: String?,
+    val address: String?,
+    val airConditioner: Boolean?,
+    val availableFrom: String?,
+    val balcony: Boolean?,
+    val cleanliness: Int?,
+    val contractLength: String?,
+    val createdAt: String?,
+    val deposit: Int?,
+    val description: String?,
+    val elevator: Boolean?,
+    val floor: String?,
+    val furnishingStatus: String?,
+    val heating: String?,
+    val images: List<String?>?,
+    val isDeleted: Boolean?,
+    val kitchen: Boolean?,
+    val latitude: Double?,
+    val likeCount: Int?,
+    val listingType: String?,
+    val location: Location?,
+    val longitude: Double?,
+    val lookingFor: List<String?>?,
+    val minimumStay: String?,
+    val parking: Boolean?,
+    val pets: Boolean?,
+    val price: Int?,
+    val privateBathroom: Boolean?,
+    val roomType: String?,
+    val roommates: List<Roommate?>?,
+    val size: String?,
+    val smoke: String?,
+    val status: Int?,
+    val title: String?,
+    val updatedAt: String?,
+    val userId: PostListingUserId?,
+    val utilitiesPrice: Int?,
+    val videos: String?,
+    val viewCount: Int?,
+    val washingMachine: Boolean?,
+    val wifi: Boolean?
+)
+
+@Parcelize
+data class PostListingUserId(
+    val _id: String?, val name: String?, val profileImage: String?
+): Parcelable
+
+
+/** get listing response **/
+@Parcelize
+data class GetListingResponse(
+    val `data`: List<GetListingData?>?,
+    val message: String?,
+    val pagination: Pagination?,
+    val success: Boolean?,
+    val unReadNotifications: Int?
+):Parcelable
+
+@Parcelize
+data class GetListingData(
+    val _id: String?,
+    val address: String?,
+    val airConditioner: Boolean?,
+    val availableFrom: String?,
+    val balcony: Boolean?,
+    val cleanliness: Int?,
+    val contractLength: String?,
+    val createdAt: String?,
+    val deposit: Int?,
+    val description: String?,
+    val elevator: Boolean?,
+    val floor: String?,
+    val furnishingStatus: String?,
+    val heating: String?,
+    val images: List<String?>?,
+    val isDeleted: Boolean?,
+    val kitchen: Boolean?,
+    val latitude: Double?,
+    val likeCount: Int?,
+    val listingType: String?,
+    val location: Location?,
+    val longitude: Double?,
+    val lookingFor: List<String?>?,
+    val minimumStay: String?,
+    val parking: Boolean?,
+    val pets: Boolean?,
+    val price: Int?,
+    val privateBathroom: Boolean?,
+    val roomType: String?,
+    val roommates: List<Roommate?>?,
+    val size: String?,
+    val smoke: String?,
+    val status: Int?,
+    val title: String?,
+    val updatedAt: String?,
+    val userId: PostListingUserId?,
+    val utilitiesPrice: Int?,
+    val videos: String?,
+    val viewCount: Int?,
+    val washingMachine: Boolean?,
+    val wifi: Boolean?,
+    var check : Boolean = false
+):Parcelable
+
 

@@ -13,9 +13,6 @@
             name="check"
             type="Integer" />
 
-        <variable
-            name="visibilityHandel"
-            type="Integer" />
 
         <import type="android.view.View" />
 
@@ -70,7 +67,6 @@
             android:layout_marginHorizontal="@dimen/_12sdp"
             android:layout_marginBottom="-10dp"
             android:background="@drawable/et_bg_end_color_strock"
-            android:visibility="@{visibilityHandel==3?View.GONE:View.VISIBLE}"
             app:layout_constraintBottom_toBottomOf="@+id/clHeader"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">
@@ -113,7 +109,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/_92sdp"
             android:layout_marginTop="-80dp"
-            android:visibility="@{visibilityHandel==3?View.VISIBLE:View.GONE}"
+             android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/clHeader" />

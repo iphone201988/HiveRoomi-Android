@@ -2,6 +2,9 @@ package com.tech.hive.ui.for_room_mate.home
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.os.Handler
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.MotionEvent
 import android.view.View
@@ -19,11 +22,12 @@ import com.tech.hive.base.utils.BindingUtils
 import com.tech.hive.base.utils.Status
 import com.tech.hive.data.api.Constants
 import com.tech.hive.data.model.CommonResponse
+import com.tech.hive.data.model.GetListingData
+import com.tech.hive.data.model.GetListingResponse
 import com.tech.hive.data.model.HomeApiResponse
 import com.tech.hive.data.model.HomeFilterList
 import com.tech.hive.data.model.HomeRoomTData
 import com.tech.hive.data.model.HomeRoomType
-import com.tech.hive.data.model.ThirdTypeModel
 import com.tech.hive.databinding.FragmentHomeBinding
 import com.tech.hive.databinding.RvDiscoverItemBinding
 import com.tech.hive.databinding.RvHomeFilterItemBinding
@@ -40,6 +44,7 @@ import com.tech.hive.ui.for_room_mate.home.cardstackview.SwipeableMethod
 import com.tech.hive.ui.for_room_mate.home.sample.CardStackAdapter
 import com.tech.hive.ui.for_room_mate.home.sample.SpotDiffCallback
 import com.tech.hive.ui.for_room_mate.home.second.SecondMatchActivity
+import com.tech.hive.ui.for_room_mate.home.third.ThirdMatchActivity
 import com.tech.hive.ui.notification.NotificationActivity
 import com.tech.hive.ui.room_offering.basic_details.BasicDetailsActivity
 import com.tech.hive.ui.room_offering.discover.DiscoverySettingsActivity
@@ -51,14 +56,16 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), CardStackListener {
     private val viewModel: HomeFragmentVM by viewModels()
 
     private lateinit var homeAdapter: SimpleRecyclerViewAdapter<HomeRoomTData, RvDiscoverItemBinding>
-    private lateinit var homeThirdAdapter: SimpleRecyclerViewAdapter<ThirdTypeModel, ThirdUserRvItemBinding>
+    private lateinit var homeThirdAdapter: SimpleRecyclerViewAdapter<GetListingData, ThirdUserRvItemBinding>
     private lateinit var homeThirdFilterAdapter: SimpleRecyclerViewAdapter<HomeFilterList, RvHomeFilterItemBinding>
     var createSpots = ArrayList<CardItem>()
     private var userTypeLike = 1
     private val cardAdapter by lazy { CardStackAdapter(createSpots, requireContext()) }
     private val manager by lazy { CardStackLayoutManager(requireActivity(), this) }
     private var scrollType = ""
-
+    private var searchHandler: Handler? = Handler()
+    private var searchRunnable: Runnable? = null
+    var progressType = false
     override fun getLayoutResource(): Int {
         return R.layout.fragment_home
     }
@@ -71,6 +78,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), CardStackListener {
         // click
         initOnClick()
         var userData = sharedPrefManager.getRole()
+
         binding.userType = userData
         binding.buttonClick = 1
         binding.check = userData
@@ -84,14 +92,16 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), CardStackListener {
             viewModel.getHomeApiListening(Constants.MATCH_LOOKING_LISTING)
         } else {
             // api call
-            viewModel.getListing(Constants.LISTING)
+            val data = HashMap<String, String>()
+            viewModel.getListing(Constants.LISTING,data)
         }
         // observer
         initObserver()
         // adapter
         initAdapter()
+        // search
+        searchListing()
     }
-
 
 
     /** handle adapter **/
@@ -112,22 +122,59 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), CardStackListener {
             SimpleRecyclerViewAdapter(R.layout.third_user_rv_item, BR.bean) { v, m, pos ->
                 when (v.id) {
                     R.id.ivThreeDot -> {
-                        val isAlreadyChecked = m.isCheck
-                        for (i in homeThirdAdapter.list) {
-                            i.isCheck = false
-                        }
-                        m.isCheck = !isAlreadyChecked
-                        homeThirdAdapter.notifyDataSetChanged()
+                        val intent = Intent(requireContext(), BasicDetailsActivity::class.java)
+                        intent.putExtra("basicDetail", m)
+                        startActivity(intent)
+
+//                        val isAlreadyChecked = m.check
+//                        for (i in homeThirdAdapter.list) {
+//                            i.check = false
+//                        }
+//                        m.check = !isAlreadyChecked
+//                        homeThirdAdapter.notifyDataSetChanged()
+                    }
+
+                    R.id.clImage->{
+                        val intent = Intent(requireContext(), ThirdMatchActivity::class.java)
+                        intent.putExtra("basicDetail", m)
+                        startActivity(intent)
                     }
                 }
             }
-        homeThirdAdapter.list = getHomeThirdList()
+
         binding.rvThirdHome.adapter = homeThirdAdapter
 
         homeThirdFilterAdapter =
             SimpleRecyclerViewAdapter(R.layout.rv_home_filter_item, BR.bean) { v, m, pos ->
                 when (v.id) {
                     R.id.clImage -> {
+                        when(m.name){
+                            "All"->{
+                                val data = HashMap<String, String>()
+                                viewModel.getListing(Constants.LISTING,data)
+                            }
+                            "Active"->{
+                                val data = HashMap<String, String>()
+                                data["status"]= "1"
+                                viewModel.getListing(Constants.LISTING,data)
+                            }
+                            "In Review"->{
+                                val data = HashMap<String, String>()
+                                data["status"]= "2"
+                                viewModel.getListing(Constants.LISTING,data)
+                            }
+                            "Rented"->{
+                                val data = HashMap<String, String>()
+                                data["status"]= "3"
+                                viewModel.getListing(Constants.LISTING,data)
+                            }
+                            "Expired"->{
+                                val data = HashMap<String, String>()
+                                data["status"]= "4"
+                                viewModel.getListing(Constants.LISTING,data)
+                            }
+                        }
+
                         for (i in homeThirdFilterAdapter.list) {
                             i.isSelected = i.name == m.name
                         }
@@ -141,68 +188,45 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), CardStackListener {
 
     }
 
+    /*** search Api call **/
+    private fun searchListing(){
+        binding.etSearch.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(
+                s: CharSequence?,
+                start: Int,
+                count: Int,
+                after: Int
+            ) {
 
-    // home List
-    private fun getHomeThirdList(): ArrayList<ThirdTypeModel> {
-        val list = ArrayList<ThirdTypeModel>()
-        list.add(
-            ThirdTypeModel(
-                "Cozy Room in NYC",
-                "$600/month",
-                "Isola Single 1 Roommates",
-                "No Smoking Pets Allowed"
-            )
-        )
-        list.add(
-            ThirdTypeModel(
-                "Cozy Room in NYC",
-                "$600/month",
-                "Isola Single 2 Roommates",
-                "No Smoking Pets Allowed"
-            )
-        )
-        list.add(
-            ThirdTypeModel(
-                "Cozy Room in NYC",
-                "$600/month",
-                "Isola Single 3 Roommates",
-                "No Smoking Pets Allowed"
-            )
-        )
-        list.add(
-            ThirdTypeModel(
-                "Cozy Room in NYC",
-                "$600/month",
-                "Isola Single 4 Roommates",
-                "No Smoking Pets Allowed"
-            )
-        )
-        list.add(
-            ThirdTypeModel(
-                "Cozy Room in NYC",
-                "$600/month",
-                "Isola Single 5 Roommates",
-                "No Smoking Pets Allowed"
-            )
-        )
-        list.add(
-            ThirdTypeModel(
-                "Cozy Room in NYC",
-                "$600/month",
-                "Isola Single 6 Roommates",
-                "No Smoking Pets Allowed"
-            )
-        )
-        list.add(
-            ThirdTypeModel(
-                "Cozy Room in NYC",
-                "$600/month",
-                "Isola Single 7 Roommates",
-                "No Smoking Pets Allowed"
-            )
-        )
+            }
 
-        return list
+            override fun onTextChanged(
+                s: CharSequence?,
+                start: Int,
+                before: Int,
+                count: Int
+            ) {
+
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                if (s.toString().isNotEmpty()){
+                    searchRunnable?.let { searchHandler?.removeCallbacks(it) }
+                    searchRunnable = Runnable {
+                        progressType = true
+                        val data = HashMap<String, String>()
+                        data["search"]= s.toString()
+                        viewModel.getListing(Constants.LISTING,data)
+                    }
+                    searchHandler?.postDelayed(searchRunnable!!, 1000)
+
+                }else{
+                    val data = HashMap<String, String>()
+                    viewModel.getListing(Constants.LISTING,data)
+                }
+            }
+
+        })
     }
 
 
@@ -213,7 +237,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), CardStackListener {
             when (it?.id) {
                 // filter click
                 R.id.ivFilter -> {
-                    if (Constants.userType == 1) {
+                    val data = sharedPrefManager.getRole()
+                    if (data == 1) {
                         startActivity(Intent(requireContext(), FilterActivity::class.java))
                     } else {
                         startActivity(
@@ -243,7 +268,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), CardStackListener {
                     scrollType = ""
                     binding.check = 1
                     binding.userType = 1
-                    Constants.userType = 1
                     userTypeLike = 1
                     viewModel.getHomeApi(Constants.MATCH_LOOKING_ROOMMATE)
                 }
@@ -261,6 +285,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), CardStackListener {
 
         binding.ivCard.setOnTouchListener { v, event ->
             if (event.action == MotionEvent.ACTION_UP) {
+                var data =  sharedPrefManager.getRole()
                 val width = v.width
                 val clickedX = event.x
                 if (clickedX < width / 2) {
@@ -279,7 +304,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), CardStackListener {
                         .setDuration(Duration.Normal.duration)
                         .setInterpolator(AccelerateInterpolator()).build()
                     manager.setSwipeAnimationSetting(setting)
-                    if (Constants.userType == 1) {
+                    if (data == 1) {
                         binding.cardStackView.swipe()
                     } else {
                         binding.cardStackView1.swipe()
@@ -299,7 +324,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), CardStackListener {
                     binding.buttonClick = 1
                 } else {
                     binding.buttonClick = 2
-                    Constants.userType = 2
+
                 }
             }
             true
@@ -322,7 +347,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), CardStackListener {
         viewModel.observeCommon.observe(viewLifecycleOwner) {
             when (it?.status) {
                 Status.LOADING -> {
-                    showLoading()
+                    if (!progressType){
+                        progressType=false
+                        showLoading()
+                    }
+
                 }
 
                 Status.SUCCESS -> {
@@ -382,11 +411,15 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), CardStackListener {
 
                         "getListing" -> {
                             try {
-                                val myDataModel: CommonResponse? =
+                                val myDataModel: GetListingResponse? =
                                     BindingUtils.parseJson(it.data.toString())
                                 if (myDataModel != null) {
-
-
+                                    homeThirdAdapter.list = myDataModel.data
+                                    if (homeThirdAdapter.list.isNotEmpty()) {
+                                        binding.tvEmptyChat.visibility = View.GONE
+                                    } else {
+                                        binding.tvEmptyChat.visibility = View.VISIBLE
+                                    }
                                 }
 
                             } catch (e: Exception) {
@@ -415,10 +448,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), CardStackListener {
 
     private fun filterList(): ArrayList<HomeFilterList> {
         val filterList = ArrayList<HomeFilterList>()
-        filterList.add(HomeFilterList("All",true))
-        filterList.add(HomeFilterList("Active",false))
-        filterList.add(HomeFilterList("In Review",false))
-        filterList.add(HomeFilterList("Rented",false))
+        filterList.add(HomeFilterList("All", true))
+        filterList.add(HomeFilterList("Active", false))
+        filterList.add(HomeFilterList("In Review", false))
+        filterList.add(HomeFilterList("Rented", false))
+        filterList.add(HomeFilterList("Expired", false))
         return filterList
     }
 
@@ -561,6 +595,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), CardStackListener {
 
 
     }
+
 
     private fun paginate() {
         val old = cardAdapter.getItems()

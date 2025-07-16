@@ -97,14 +97,11 @@ class MessagesFragment : BaseFragment<FragmentMessagesBinding>() {
 
                                     if (chatAdapter.list.isEmpty()){
                                         binding.tvEmptyChat.visibility = View.VISIBLE
-                                        binding.tvTitle.visibility = View.GONE
                                         binding.ivSettings.visibility = View.GONE
                                         binding.tvAllMsgs.visibility = View.GONE
-                                        binding.tvTitle.visibility = View.GONE
                                         binding.ivSettings.visibility = View.GONE
                                         binding.tvAllMsgs.visibility = View.GONE
                                     }else{
-                                        binding.tvTitle.visibility = View.VISIBLE
                                         binding.ivSettings.visibility = View.VISIBLE
                                         binding.tvAllMsgs.visibility = View.VISIBLE
                                     }
@@ -112,10 +109,8 @@ class MessagesFragment : BaseFragment<FragmentMessagesBinding>() {
                                 }
                             } catch (e: Exception) {
                                 binding.tvEmptyChat.visibility = View.VISIBLE
-                                binding.tvTitle.visibility = View.GONE
                                 binding.ivSettings.visibility = View.GONE
                                 binding.tvAllMsgs.visibility = View.GONE
-                                binding.tvTitle.visibility = View.GONE
                                 binding.ivSettings.visibility = View.GONE
                                 binding.tvAllMsgs.visibility = View.GONE
 
@@ -132,7 +127,6 @@ class MessagesFragment : BaseFragment<FragmentMessagesBinding>() {
 
                 Status.ERROR -> {
                     binding.tvEmptyChat.visibility = View.VISIBLE
-                    binding.tvTitle.visibility = View.GONE
                     binding.ivSettings.visibility = View.GONE
                     binding.tvAllMsgs.visibility = View.GONE
                     hideLoading()

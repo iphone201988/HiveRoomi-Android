@@ -12,6 +12,7 @@ import com.tech.hive.base.SimpleRecyclerViewAdapter
 import com.tech.hive.base.utils.BaseCustomDialog
 import com.tech.hive.base.utils.BindingUtils
 import com.tech.hive.data.model.CompatibilityModel
+import com.tech.hive.data.model.GetListingData
 import com.tech.hive.databinding.ActivityApartmentFeaturesBinding
 import com.tech.hive.databinding.FeaturesItemViewBinding
 import com.tech.hive.databinding.PersonalDialogItemBinding
@@ -40,7 +41,7 @@ class ApartmentFeaturesActivity : BaseActivity<ActivityApartmentFeaturesBinding>
     private var sizeType: String? = null
     private var furnishedType: String? = null
     private var roommateType: String? = null
-
+    private var listingData: GetListingData? = null
     override fun getLayoutResource(): Int {
         return R.layout.activity_apartment_features
     }
@@ -79,6 +80,17 @@ class ApartmentFeaturesActivity : BaseActivity<ActivityApartmentFeaturesBinding>
         sizeType = intent.getStringExtra("sizeType")
         furnishedType = intent.getStringExtra("furnishedType")
         roommateType = intent.getStringExtra("roommateType")
+
+        listingData = intent.getParcelableExtra<GetListingData>("basicDetail")
+        listingData?.let {
+            binding.etFloor.setText(it.floor)
+            binding.etHeating.setText(it.heating)
+            if (it.elevator == true){
+                binding.etElevator.setText(getString(R.string.yes))
+            }else{
+                binding.etElevator.setText(getString(R.string.no))
+            }
+        }
     }
 
     /** handle click **/
@@ -87,26 +99,30 @@ class ApartmentFeaturesActivity : BaseActivity<ActivityApartmentFeaturesBinding>
             when (it?.id) {
                 // btn next
                 R.id.btnContinue -> {
-                    val intent = Intent(this@ApartmentFeaturesActivity, AmenityActivity::class.java)
-                    intent.putExtra("roomType", roomType)
-                    intent.putExtra("titleType", titleType)
-                    intent.putExtra("bioType", bioType)
-                    intent.putExtra("locationType", locationType)
-                    intent.putExtra("priceType", priceType)
-                    intent.putExtra("utilityPriceType", utilityPriceType)
-                    intent.putExtra("depositType", depositType)
-                    intent.putExtra("contractType", contractType)
-                    intent.putExtra("availableType", availableType)
-                    intent.putExtra("minimumStayType", minimumStayType)
-                    intent.putExtra("roomDetailType", roomDetailType)
-                    intent.putExtra("sizeType", sizeType)
-                    intent.putExtra("furnishedType", furnishedType)
-                    intent.putExtra("roommateType", roommateType)
-                    intent.putExtra("floorType", binding.etFloor.text.toString().trim())
-                    intent.putExtra("elevatorType", binding.etElevator.text.toString().trim())
-                    intent.putExtra("heatingType", binding.etHeating.text.toString().trim())
-
-                    startActivity(intent)
+                    if (validate()){
+                        val intent = Intent(this@ApartmentFeaturesActivity, AmenityActivity::class.java)
+                        intent.putExtra("roomType", roomType)
+                        intent.putExtra("titleType", titleType)
+                        intent.putExtra("bioType", bioType)
+                        intent.putExtra("locationType", locationType)
+                        intent.putExtra("priceType", priceType)
+                        intent.putExtra("utilityPriceType", utilityPriceType)
+                        intent.putExtra("depositType", depositType)
+                        intent.putExtra("contractType", contractType)
+                        intent.putExtra("availableType", availableType)
+                        intent.putExtra("minimumStayType", minimumStayType)
+                        intent.putExtra("roomDetailType", roomDetailType)
+                        intent.putExtra("sizeType", sizeType)
+                        intent.putExtra("furnishedType", furnishedType)
+                        intent.putExtra("roommateType", roommateType)
+                        intent.putExtra("floorType", binding.etFloor.text.toString().trim())
+                        intent.putExtra("elevatorType", binding.etElevator.text.toString().trim())
+                        intent.putExtra("heatingType", binding.etHeating.text.toString().trim())
+                        if (listingData!=null){
+                            intent.putExtra("basicDetail", listingData)
+                        }
+                        startActivity(intent)
+                    }
                 }
                 R.id.ivBack->{
                     onBackPressedDispatcher.onBackPressed()
@@ -203,5 +219,22 @@ class ApartmentFeaturesActivity : BaseActivity<ActivityApartmentFeaturesBinding>
         )
     }
 
+    /*** add validation ***/
+    private fun validate(): Boolean {
+        val floor = binding.etFloor.text.toString().trim()
+        val elevator = binding.etElevator.text.toString().trim()
+        val heating = binding.etHeating.text.toString().trim()
 
+        if (floor.isEmpty()) {
+            showInfoToast("Please select floor type")
+            return false
+        } else if (elevator.isEmpty()) {
+            showInfoToast("Please select elevator")
+            return false
+        } else if (heating.isEmpty()) {
+            showInfoToast("Please select heating")
+            return false
+        }
+        return true
+    }
 }

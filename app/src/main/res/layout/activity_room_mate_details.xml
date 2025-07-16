@@ -8,9 +8,6 @@
             name="vm"
             type="com.tech.hive.ui.room_offering.basic_details.BasicDetailsVM" />
 
-        <variable
-            name="genderType"
-            type="String" />
 
         <variable
             name="ageType"
@@ -79,7 +76,8 @@
             android:layout_marginTop="@dimen/_6sdp"
             android:background="@drawable/unselect_edit_text_bg_color"
             android:focusable="false"
-            android:hint="Male"
+            android:hint="@string/male"
+            android:onClick="@{v->vm.onClick(v)}"
             android:paddingStart="@dimen/_15sdp"
             android:paddingEnd="@dimen/_40sdp"
             app:layout_constraintStart_toStartOf="parent"
@@ -92,7 +90,6 @@
             android:layout_width="@dimen/_27sdp"
             android:layout_height="@dimen/_27sdp"
             android:layout_marginEnd="@dimen/_14sdp"
-            android:onClick="@{v->vm.onClick(v)}"
             android:padding="@dimen/_5sdp"
             android:src="@drawable/arrow_up"
             app:layout_constraintBottom_toBottomOf="@+id/etGender"
@@ -120,8 +117,8 @@
             android:layout_width="0dp"
             android:layout_marginHorizontal="@dimen/_12sdp"
             android:layout_marginTop="@dimen/_6sdp"
-            android:background="@drawable/unselect_edit_text_bg_color"
-            android:hint="@string/in_sq"
+            android:background="@{ageType.isEmpty()?@drawable/unselect_edit_text_bg_color:@drawable/select_edittext_bg_color}"
+            android:hint="@string/age"
             android:imeOptions="actionDone"
             android:inputType="number"
             android:paddingStart="@dimen/_10sdp"

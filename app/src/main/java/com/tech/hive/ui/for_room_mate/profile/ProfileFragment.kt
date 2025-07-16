@@ -12,6 +12,7 @@ import com.tech.hive.base.utils.Status
 import com.tech.hive.data.api.Constants
 import com.tech.hive.data.model.GetUserProfileResponse
 import com.tech.hive.databinding.FragmentProfileBinding
+import com.tech.hive.ui.for_room_mate.calenders.CalenderActivity
 import com.tech.hive.ui.for_room_mate.settings.SettingsActivity
 import com.tech.hive.ui.role.ChangeRoleActivity
 import dagger.hilt.android.AndroidEntryPoint
@@ -19,7 +20,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
     private val viewModel: ProfileFragmentVM by viewModels()
-    private var userRole = 0
+    private var userRole = 1
     private var userLanguage = ""
 
     override fun getLayoutResource(): Int {
@@ -54,16 +55,22 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
                 }
                 // edit profile
                 R.id.tvEditProfile, R.id.ivEditProfile -> {
-                    when (Constants.userType) {
+                    var userType = sharedPrefManager.getRole()
+
+                    when (userType) {
                         1 -> {
-                            startActivity(Intent(requireContext(), EditProfileActivity::class.java))
+                            val intent = Intent(requireContext(), EditProfileActivity::class.java)
+                            intent.putExtra("sendType","first")
+                            startActivity(intent)
                         }
                         2 -> {
                             val intent = Intent(requireContext(), EditProfileSecondTypeActivity::class.java)
                             startActivity(intent)
                         }
                         else -> {
-                            startActivity(Intent(requireContext(), EditProfileActivity::class.java))
+                            val intent = Intent(requireContext(), EditProfileActivity::class.java)
+                            intent.putExtra("sendType","third")
+                            startActivity(intent)
                         }
                     }
                 }
@@ -85,6 +92,11 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
                 R.id.tvChangePassword, R.id.ivPass -> {
                     startActivity(Intent(requireContext(), ChangePasswordActivity::class.java))
                 }
+                // change password
+                R.id.tvScheduled, R.id.ivScheduled -> {
+                    startActivity(Intent(requireContext(), CalenderActivity::class.java))
+                }
+
             }
 
         }
@@ -105,8 +117,9 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
                                 val myDataModel: GetUserProfileResponse? =
                                     BindingUtils.parseJson(it.data.toString())
                                 if (myDataModel?.data != null) {
-                                    sharedPrefManager.saveRole(myDataModel.data.profileRole)
-                                    when (myDataModel.data.profileRole) {
+                                    var data = sharedPrefManager.getRole()
+                                    userRole = data
+                                    when (data) {
                                         1 -> {
                                             binding.typeCheck = 1
                                         }
@@ -121,16 +134,17 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
                                     }
                                     if (myDataModel.data.instagram?.isEmpty() == true) {
                                         binding.tvInstagram.text = "Not Connected"
-                                    } else {
+                                    }
+                                    else {
                                         binding.tvInstagram.text = myDataModel.data.instagram
                                     }
                                     if (myDataModel.data.linkedin?.isEmpty() == true) {
                                         binding.tvLinkedin.text = "Not Connected"
-                                    } else {
+                                    }
+                                    else {
                                         binding.tvLinkedin.text = myDataModel.data.linkedin
                                     }
                                     binding.bean = myDataModel.data
-                                    userRole = myDataModel.data.profileRole ?: 0
                                     userLanguage = myDataModel.data.language ?: ""
                                     for (i in myDataModel.data.quizs!!) {
                                         when (i?.title) {

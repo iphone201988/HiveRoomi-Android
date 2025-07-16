@@ -7,7 +7,6 @@ import android.media.MediaMetadataRetriever
 import android.net.Uri
 import android.provider.MediaStore
 import android.util.Log
-import android.util.Patterns
 import android.view.View
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
@@ -28,6 +27,8 @@ import com.tech.hive.base.SimpleRecyclerViewAdapter
 import com.tech.hive.base.utils.AppUtils
 import com.tech.hive.base.utils.BaseCustomDialog
 import com.tech.hive.base.utils.BindingUtils
+import com.tech.hive.data.api.Constants
+import com.tech.hive.data.model.GetListingData
 import com.tech.hive.data.model.ImageModel
 import com.tech.hive.databinding.ActivityBasicDetailsBinding
 import com.tech.hive.databinding.PersonalDialogItemBinding
@@ -49,12 +50,15 @@ class BasicDetailsActivity : BaseActivity<ActivityBasicDetailsBinding>(), OnMapR
     private var imageDialog: BaseCustomDialog<VideoImagePickerDialogBoxBinding>? = null
     private var personal: BaseCustomDialog<PersonalDialogItemBinding>? = null
     private lateinit var ageAdapter: SimpleRecyclerViewAdapter<String, UnPinLayoutBinding>
-    private var imageMultiplatform: MultipartBody.Part? = null
+    private var imageMultiplatform: MutableList<MultipartBody.Part> = mutableListOf()
     private var photoFile2: File? = null
     private var photoURI: Uri? = null
     private var imageList = ArrayList<ImageModel>()
     private var videoUriCover: File? = null
+    private var videoUriData: String = ""
     private var thumbnail: Uri? = null
+    private var listingData: GetListingData? = null
+
     // image adapter
     private lateinit var uploadImageAdapter: SimpleRecyclerViewAdapter<ImageModel, UploadImageItemViewBinding>
     override fun getLayoutResource(): Int {
@@ -84,6 +88,35 @@ class BasicDetailsActivity : BaseActivity<ActivityBasicDetailsBinding>(), OnMapR
 
         // adapter
         initAdapter()
+        // get intent data
+        listingData = intent.getParcelableExtra<GetListingData>("basicDetail")
+        listingData?.let {
+            binding.etRoom.setText(it.roomType?.replaceFirstChar { c -> c.uppercase() })
+            binding.etTitle.setText(it.title?.replaceFirstChar { c -> c.uppercase() })
+            binding.etShortBio.setText(it.description?.replaceFirstChar { c -> c.uppercase() })
+            binding.etLocation.setText(it.location?.type)
+            imageList.removeAll { it.type == 2 }
+
+            it.images?.filterNotNull()?.forEach { imageUrl ->
+                imageList.add(ImageModel(imageUrl, 3))
+            }
+
+            imageList.add(ImageModel("image", 2))
+            uploadImageAdapter.list = imageList
+            uploadImageAdapter.notifyDataSetChanged()
+
+            videoUriData = it.videos.toString()
+
+            if (it.videos?.isEmpty() == true) {
+                binding.tvVideo.visibility = View.VISIBLE
+                binding.icAddImg.visibility = View.GONE
+            } else {
+                binding.tvVideo.visibility = View.INVISIBLE
+                binding.icAddImg.visibility = View.VISIBLE
+                Glide.with(binding.icAddImg.context).load(Constants.BASE_URL_IMAGE + it.videos)
+                    .into(binding.icAddImg)
+            }
+        }
     }
 
     /** handle clicks **/
@@ -99,14 +132,17 @@ class BasicDetailsActivity : BaseActivity<ActivityBasicDetailsBinding>(), OnMapR
                 }
                 // btn Next
                 R.id.btnContinue -> {
-                    if (validate()){
-                        HouseholdLifestyleActivity.sendImage = imageList
+                    if (validate()) {
+                        HouseholdLifestyleActivity.sendImage = imageMultiplatform
                         HouseholdLifestyleActivity.sendVideo = videoUriCover
                         val intent = Intent(this@BasicDetailsActivity, PriceTermsActivity::class.java)
-                        intent.putExtra("roomType",binding.etRoom.text.toString().trim())
-                        intent.putExtra("titleType",binding.etTitle.text.toString().trim())
-                        intent.putExtra("bioType",binding.etShortBio.text.toString().trim())
-                        intent.putExtra("locationType",binding.etLocation.text.toString().trim())
+                        intent.putExtra("roomType", binding.etRoom.text.toString().trim())
+                        intent.putExtra("titleType", binding.etTitle.text.toString().trim())
+                        intent.putExtra("bioType", binding.etShortBio.text.toString().trim())
+                        intent.putExtra("locationType", binding.etLocation.text.toString().trim())
+                        if (listingData!=null){
+                            intent.putExtra("basicDetail", listingData)
+                        }
                         startActivity(intent)
                     }
 
@@ -376,7 +412,10 @@ class BasicDetailsActivity : BaseActivity<ActivityBasicDetailsBinding>(), OnMapR
                     uploadImageAdapter.list = imageList
                     uploadImageAdapter.notifyDataSetChanged()
 
-                    imageMultiplatform = convertMultipartPartGal(it)
+                    convertMultipartPartGal(it).let { part ->
+                        imageMultiplatform.add(part)
+                    }
+
                 }
             }
         }
@@ -428,7 +467,12 @@ class BasicDetailsActivity : BaseActivity<ActivityBasicDetailsBinding>(), OnMapR
                         imageList.add(ImageModel("image", 2))
                         uploadImageAdapter.list = imageList
                         uploadImageAdapter.notifyDataSetChanged()
-                        imageMultiplatform = convertMultipartPart(it)
+
+
+                        convertMultipartPart(it)?.let { part ->
+                            imageMultiplatform.add(part)
+                        }
+
                     }
 
                 }
@@ -467,22 +511,19 @@ class BasicDetailsActivity : BaseActivity<ActivityBasicDetailsBinding>(), OnMapR
         if (room.isEmpty()) {
             showInfoToast("Please select room type")
             return false
-        }  else if (title.isEmpty()) {
+        } else if (title.isEmpty()) {
             showInfoToast("Please enter title")
             return false
-        }
-        else if (desc.isEmpty()) {
+        } else if (desc.isEmpty()) {
             showInfoToast("Please enter description")
             return false
         } else if (location.isEmpty()) {
             showInfoToast("Please enter address")
             return false
-        }
-        else if (imageList.size < 2){
+        } else if (imageList.size < 2) {
             showInfoToast("Please select images")
             return false
-        }
-        else if (videoUriCover == null){
+        } else if (videoUriData.isEmpty()) {
             showInfoToast("Please select video")
             return false
         }

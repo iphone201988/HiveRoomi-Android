@@ -350,5 +350,19 @@
             app:layout_constraintEnd_toEndOf="@+id/etSearch"
             app:layout_constraintStart_toStartOf="@id/etSearch" />
 
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvEmptyChat"
+            style="@style/TextView.Medium"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:textColor="@color/black_24"
+            android:textSize="@dimen/_14sdp"
+            app:layout_constraintTop_toTopOf="parent"
+            android:text="@string/no_listing_data"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -10,6 +10,7 @@ import com.tech.hive.base.BaseViewModel
 import com.tech.hive.base.SimpleRecyclerViewAdapter
 import com.tech.hive.base.utils.BaseCustomDialog
 import com.tech.hive.base.utils.BindingUtils
+import com.tech.hive.data.model.GetListingData
 import com.tech.hive.databinding.ActivityRoomDetailsBinding
 import com.tech.hive.databinding.PersonalDialogItemBinding
 import com.tech.hive.databinding.UnPinLayoutBinding
@@ -30,6 +31,7 @@ class RoomDetailsActivity : BaseActivity<ActivityRoomDetailsBinding>() {
     private var contractType: String? = null
     private var availableType: String? = null
     private var minimumStayType: String? = null
+    private var listingData: GetListingData? = null
     override fun getLayoutResource(): Int {
         return R.layout.activity_room_details
     }
@@ -57,6 +59,18 @@ class RoomDetailsActivity : BaseActivity<ActivityRoomDetailsBinding>() {
         contractType = intent.getStringExtra("contractType")
         availableType = intent.getStringExtra("availableType")
         minimumStayType = intent.getStringExtra("minimumStayType")
+        listingData = intent.getParcelableExtra<GetListingData>("basicDetail")
+        listingData?.let {
+            binding.etRoom.setText(it.roomType)
+            binding.etSize.setText(it.size.toString())
+            binding.etStatus.setText(it.furnishingStatus)
+            if (it.roommates?.isNotEmpty() == true){
+                binding.etRoommate.setText(getString(R.string.yes))
+            }else{
+                binding.etRoommate.setText(getString(R.string.no))
+            }
+
+        }
     }
 
     /** handle clicks **/
@@ -66,23 +80,48 @@ class RoomDetailsActivity : BaseActivity<ActivityRoomDetailsBinding>() {
                 // btn Next
                 R.id.btnContinue -> {
                     if (validate()) {
-                        val intent =
-                            Intent(this@RoomDetailsActivity, RoomMateDetailsActivity::class.java)
-                        intent.putExtra("roomType", roomType)
-                        intent.putExtra("titleType", titleType)
-                        intent.putExtra("bioType", bioType)
-                        intent.putExtra("locationType", locationType)
-                        intent.putExtra("priceType", priceType)
-                        intent.putExtra("utilityPriceType", utilityPriceType)
-                        intent.putExtra("depositType", depositType)
-                        intent.putExtra("contractType", contractType)
-                        intent.putExtra("availableType", availableType)
-                        intent.putExtra("minimumStayType", minimumStayType)
-                        intent.putExtra("roomDetailType", binding.etRoom.text.toString().trim())
-                        intent.putExtra("sizeType", binding.etSize.text.toString().trim())
-                        intent.putExtra("furnishedType", binding.etStatus.text.toString().trim())
-                        intent.putExtra("roommateType", binding.etRoommate.text.toString().trim())
-                        startActivity(intent)
+                        if (binding.etRoommate.text.toString().trim().contains("Yes")){
+                            val intent = Intent(this@RoomDetailsActivity, RoomMateDetailsActivity::class.java)
+                            intent.putExtra("roomType", roomType)
+                            intent.putExtra("titleType", titleType)
+                            intent.putExtra("bioType", bioType)
+                            intent.putExtra("locationType", locationType)
+                            intent.putExtra("priceType", priceType)
+                            intent.putExtra("utilityPriceType", utilityPriceType)
+                            intent.putExtra("depositType", depositType)
+                            intent.putExtra("contractType", contractType)
+                            intent.putExtra("availableType", availableType)
+                            intent.putExtra("minimumStayType", minimumStayType)
+                            intent.putExtra("roomDetailType", binding.etRoom.text.toString().trim())
+                            intent.putExtra("sizeType", binding.etSize.text.toString().trim())
+                            intent.putExtra("furnishedType", binding.etStatus.text.toString().trim())
+                            intent.putExtra("roommateType", binding.etRoommate.text.toString().trim())
+                            if (listingData!=null){
+                                intent.putExtra("basicDetail", listingData)
+                            }
+                            startActivity(intent)
+                        }else{
+                            val intent = Intent(this@RoomDetailsActivity, ApartmentFeaturesActivity::class.java)
+                            intent.putExtra("roomType", roomType)
+                            intent.putExtra("titleType", titleType)
+                            intent.putExtra("bioType", bioType)
+                            intent.putExtra("locationType", locationType)
+                            intent.putExtra("priceType", priceType)
+                            intent.putExtra("utilityPriceType", utilityPriceType)
+                            intent.putExtra("depositType", depositType)
+                            intent.putExtra("contractType", contractType)
+                            intent.putExtra("availableType", availableType)
+                            intent.putExtra("minimumStayType", minimumStayType)
+                            intent.putExtra("roomDetailType", binding.etRoom.text.toString().trim())
+                            intent.putExtra("sizeType", binding.etSize.text.toString().trim())
+                            intent.putExtra("furnishedType", binding.etStatus.text.toString().trim())
+                            intent.putExtra("roommateType", binding.etRoommate.text.toString().trim())
+                            if (listingData!=null){
+                                intent.putExtra("basicDetail", listingData)
+                            }
+                            startActivity(intent)
+                        }
+
                     }
 
                 }
@@ -211,7 +250,7 @@ class RoomDetailsActivity : BaseActivity<ActivityRoomDetailsBinding>() {
             showInfoToast("Please enter size")
             return false
         } else if (deposit.isEmpty()) {
-            showInfoToast("Please select fully furnished")
+            showInfoToast("Please select  furnished status")
             return false
         } else if (roommate.isEmpty()) {
             showInfoToast("Please select roommate type")

@@ -14,7 +14,7 @@
 
         <variable
             name="bean"
-            type="com.tech.hive.data.model.ThirdTypeModel" />
+            type="com.tech.hive.data.model.GetListingData" />
 
         <import type="android.view.View" />
     </data>
@@ -34,6 +34,7 @@
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/ivPerson"
+            setImageFromUrl="@{bean.images.get(0)}"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_105sdp"
             android:scaleType="centerCrop"
@@ -71,7 +72,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/_20sdp"
                 android:layout_marginStart="@dimen/_5ssp"
-                android:text="Active"
+                android:text='@{bean.status == 1 ? "Active" : "Rented"}'
                 android:textColor="@color/white"
                 android:textSize="@dimen/_9ssp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -89,7 +90,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_2sdp"
             android:layout_marginTop="@dimen/_4sdp"
-            android:text="@string/cozy_room_in_nyc"
+            android:text="@{bean.title}"
             android:textColor="@color/black_24"
             android:textSize="@dimen/_12ssp"
             app:layout_constraintStart_toStartOf="@+id/ivPerson"
@@ -102,7 +103,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_4sdp"
-            android:text="@string/_6_months_min_stay"
+            android:text="@{bean.minimumStay}"
             android:textColor="@color/black_24"
             android:textSize="@dimen/_10ssp"
             app:layout_constraintBottom_toBottomOf="@+id/tvTitle"
@@ -125,7 +126,7 @@
             style="@style/TextView.Semibold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/_600_month"
+            android:text='@{"$"+String.valueOf(bean.price) + "/month"}'
             android:textColor="@color/end_color"
             android:textSize="@dimen/_14ssp"
             app:layout_constraintStart_toStartOf="@+id/tvTitle"
@@ -144,10 +145,12 @@
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/ivThreeDot"
-            android:layout_width="@dimen/_20sdp"
-            android:layout_height="@dimen/_20sdp"
+            android:layout_width="@dimen/_30sdp"
+            android:layout_height="@dimen/_30sdp"
+            android:layout_marginTop="-8dp"
             android:onClick="@{v->callback.onItemClick(v,bean,pos)}"
-            android:src="@drawable/dot_with_circle"
+            android:padding="@dimen/_5sdp"
+            android:src="@drawable/iv_edit_icon"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvPrice" />
 
@@ -160,7 +163,7 @@
             android:layout_marginBottom="@dimen/_6sdp"
             android:onClick="@{v->callback.onItemClick(v,bean,pos)}"
             android:src="@drawable/home_three_group"
-            android:visibility="@{bean.check?View.VISIBLE:View.GONE}"
+            android:visibility="gone"
             app:layout_constraintBottom_toTopOf="@+id/ivThreeDot"
             app:layout_constraintEnd_toEndOf="@id/ivThreeDot"
             app:layout_constraintStart_toStartOf="@+id/ivThreeDot" />
@@ -172,7 +175,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_4sdp"
-            android:text="@string/_120_views"
+            android:text='@{String.valueOf(bean.viewCount) + " View"}'
             android:textColor="@color/black_24"
             android:textSize="@dimen/_10ssp"
             app:layout_constraintBottom_toBottomOf="@+id/ivView"
@@ -196,7 +199,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_4sdp"
-            android:text="@string/_34_matches"
+            android:text='@{String.valueOf(bean.likeCount) + " Matches"}'
             android:textColor="@color/black_24"
             android:textSize="@dimen/_10ssp"
             app:layout_constraintBottom_toBottomOf="@+id/ivView"

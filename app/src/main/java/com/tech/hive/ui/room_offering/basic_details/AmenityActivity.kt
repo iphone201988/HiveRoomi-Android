@@ -8,6 +8,7 @@ import com.tech.hive.base.BaseActivity
 import com.tech.hive.base.BaseViewModel
 import com.tech.hive.base.SimpleRecyclerViewAdapter
 import com.tech.hive.base.utils.BaseCustomDialog
+import com.tech.hive.data.model.GetListingData
 import com.tech.hive.databinding.ActivityAmenityBinding
 import com.tech.hive.databinding.PersonalDialogItemBinding
 import com.tech.hive.databinding.UnPinLayoutBinding
@@ -35,7 +36,7 @@ class AmenityActivity : BaseActivity<ActivityAmenityBinding>() {
     private var floorType: String? = null
     private var elevatorType: String? = null
     private var heatingType: String? = null
-
+    private var listingData: GetListingData? = null
     override fun getLayoutResource(): Int {
         return R.layout.activity_amenity
     }
@@ -71,6 +72,46 @@ class AmenityActivity : BaseActivity<ActivityAmenityBinding>() {
         elevatorType = intent.getStringExtra("elevatorType")
         heatingType = intent.getStringExtra("heatingType")
 
+        listingData = intent.getParcelableExtra<GetListingData>("basicDetail")
+        listingData?.let {
+            if (it.privateBathroom == true){
+                binding.etPrivate.setText(getString(R.string.yes))
+            }else{
+                binding.etPrivate.setText(getString(R.string.no))
+            }
+            if (it.wifi == true){
+                binding.etWifi.setText(getString(R.string.yes))
+            }else{
+                binding.etWifi.setText(getString(R.string.no))
+            }
+            if (it.kitchen == true){
+                binding.etEquipped.setText(getString(R.string.yes))
+            }else{
+                binding.etEquipped.setText(getString(R.string.no))
+            }
+            if (it.washingMachine == true){
+                binding.etWashing.setText(getString(R.string.yes))
+            }else{
+                binding.etWashing.setText(getString(R.string.no))
+            }
+            if (it.airConditioner == true){
+                binding.etAir.setText(getString(R.string.yes))
+            }else{
+                binding.etAir.setText(getString(R.string.no))
+            }
+            if (it.balcony == true){
+                binding.etBalcony.setText(getString(R.string.yes))
+            }else{
+                binding.etBalcony.setText(getString(R.string.no))
+            }
+            if (it.parking == true){
+                binding.etParking.setText(getString(R.string.yes))
+            }else{
+                binding.etParking.setText(getString(R.string.no))
+            }
+
+        }
+
     }
 
 
@@ -80,34 +121,39 @@ class AmenityActivity : BaseActivity<ActivityAmenityBinding>() {
             when (it?.id) {
                 // btn next
                 R.id.btnContinue -> {
-                    val intent = Intent(this@AmenityActivity, HouseholdLifestyleActivity::class.java)
-                    intent.putExtra("roomType", roomType)
-                    intent.putExtra("titleType", titleType)
-                    intent.putExtra("bioType", bioType)
-                    intent.putExtra("locationType", locationType)
-                    intent.putExtra("priceType", priceType)
-                    intent.putExtra("utilityPriceType", utilityPriceType)
-                    intent.putExtra("depositType", depositType)
-                    intent.putExtra("contractType", contractType)
-                    intent.putExtra("availableType", availableType)
-                    intent.putExtra("minimumStayType", minimumStayType)
-                    intent.putExtra("roomDetailType", roomDetailType)
-                    intent.putExtra("sizeType", sizeType)
-                    intent.putExtra("furnishedType", furnishedType)
-                    intent.putExtra("roommateType", roommateType)
-                    intent.putExtra("floorType", floorType)
-                    intent.putExtra("elevatorType", elevatorType)
-                    intent.putExtra("heatingType", heatingType)
+                    if (validate()){
+                        val intent = Intent(this@AmenityActivity, HouseholdLifestyleActivity::class.java)
+                        intent.putExtra("roomType", roomType)
+                        intent.putExtra("titleType", titleType)
+                        intent.putExtra("bioType", bioType)
+                        intent.putExtra("locationType", locationType)
+                        intent.putExtra("priceType", priceType)
+                        intent.putExtra("utilityPriceType", utilityPriceType)
+                        intent.putExtra("depositType", depositType)
+                        intent.putExtra("contractType", contractType)
+                        intent.putExtra("availableType", availableType)
+                        intent.putExtra("minimumStayType", minimumStayType)
+                        intent.putExtra("roomDetailType", roomDetailType)
+                        intent.putExtra("sizeType", sizeType)
+                        intent.putExtra("furnishedType", furnishedType)
+                        intent.putExtra("roommateType", roommateType)
+                        intent.putExtra("floorType", floorType)
+                        intent.putExtra("elevatorType", elevatorType)
+                        intent.putExtra("heatingType", heatingType)
 
-                    intent.putExtra("privateType", binding.etPrivate.text.toString().trim())
-                    intent.putExtra("wifiType", binding.etWifi.text.toString().trim())
-                    intent.putExtra("equippedType", binding.etEquipped.text.toString().trim())
-                    intent.putExtra("washingType", binding.etWashing.text.toString().trim())
-                    intent.putExtra("airType", binding.etAir.text.toString().trim())
-                    intent.putExtra("balconyType", binding.etBalcony.text.toString().trim())
-                    intent.putExtra("parkingType", binding.etParking.text.toString().trim())
+                        intent.putExtra("privateType", binding.etPrivate.text.toString().trim())
+                        intent.putExtra("wifiType", binding.etWifi.text.toString().trim())
+                        intent.putExtra("equippedType", binding.etEquipped.text.toString().trim())
+                        intent.putExtra("washingType", binding.etWashing.text.toString().trim())
+                        intent.putExtra("airType", binding.etAir.text.toString().trim())
+                        intent.putExtra("balconyType", binding.etBalcony.text.toString().trim())
+                        intent.putExtra("parkingType", binding.etParking.text.toString().trim())
+                        if (listingData!=null){
+                            intent.putExtra("basicDetail", listingData)
+                        }
+                        startActivity(intent)
+                    }
 
-                    startActivity(intent)
                 }
 
                 R.id.ivBack -> {
@@ -208,5 +254,41 @@ class AmenityActivity : BaseActivity<ActivityAmenityBinding>() {
             getString(R.string.no),
         )
     }
+    /*** add validation ***/
+    private fun validate(): Boolean {
+        val private = binding.etPrivate.text.toString().trim()
+        val wifi = binding.etWifi.text.toString().trim()
+        val equipped = binding.etEquipped.text.toString().trim()
+        val washing = binding.etWashing.text.toString().trim()
+        val air = binding.etAir.text.toString().trim()
+        val balcony = binding.etBalcony.text.toString().trim()
+        val parking = binding.etParking.text.toString().trim()
 
+        if (private.isEmpty()) {
+            showInfoToast("Please select bathroom type")
+            return false
+        } else if (wifi.isEmpty()) {
+            showInfoToast("Please select wifi type")
+            return false
+        } else if (equipped.isEmpty()) {
+            showInfoToast("Please select equipped kitchen")
+            return false
+        }
+        else if (washing.isEmpty()) {
+            showInfoToast("Please select washing machine")
+            return false
+        }
+        else if (air.isEmpty()) {
+            showInfoToast("Please select air conditioning")
+            return false
+        }
+        else if (balcony.isEmpty()) {
+            showInfoToast("Please select balcony")
+            return false
+        }else if (parking.isEmpty()) {
+            showInfoToast("Please select parking")
+            return false
+        }
+        return true
+    }
 }

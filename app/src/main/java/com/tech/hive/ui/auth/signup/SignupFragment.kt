@@ -476,7 +476,7 @@ class SignupFragment : BaseFragment<FragmentSignupBinding>() {
         data["deviceToken"] = token
         data["loginType"] = LoginType.GMAIL.value
         data["deviceType"] = DeviceType.ANDROID.value
-        data["profileRole"] = Constants.userType
+        data["profileRole"] = sharedPrefManager.getRole()
 
         if (BindingUtils.latitude != null) {
             data["latitude"] = BindingUtils.latitude!!
@@ -502,7 +502,7 @@ class SignupFragment : BaseFragment<FragmentSignupBinding>() {
             data["deviceToken"] = token
             data["loginType"] = LoginType.MANUAL.value
             data["deviceType"] = DeviceType.ANDROID.value
-            data["profileRole"] = Constants.userType
+            data["profileRole"] = sharedPrefManager.getRole()
             if (BindingUtils.latitude != null) {
                 data["latitude"] = BindingUtils.latitude!!
             }
@@ -579,7 +579,7 @@ class SignupFragment : BaseFragment<FragmentSignupBinding>() {
                                         sharedPrefManager.setLoginData(myDataModel.data)
                                         sharedPrefManager.saveToken(myDataModel.data.token.toString())
                                         sharedPrefManager.saveRole(myDataModel.data.profileRole)
-                                        if (Constants.userType == 3) {
+                                        if (myDataModel.data.profileRole == 3) {
                                             BindingUtils.navigateWithSlide(
                                                 findNavController(),
                                                 R.id.navigateToProviderTypeFragment,

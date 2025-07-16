@@ -1,7 +1,9 @@
 package com.tech.hive.ui.for_room_mate.home
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.util.Log
+import android.view.MotionEvent
 import androidx.activity.viewModels
 import com.tech.hive.BR
 import com.tech.hive.R
@@ -22,6 +24,7 @@ import com.tech.hive.databinding.ActivityMatchedProfileBinding
 import com.tech.hive.databinding.ApartmentImageItemViewBinding
 import com.tech.hive.databinding.CompatibilityItemViewBinding
 import com.tech.hive.databinding.RatingDialogItemBinding
+import com.tech.hive.ui.for_room_mate.home.second.SecondMatchActivity
 import com.tech.hive.ui.for_room_mate.messages.chat.ChatActivity
 import com.tech.hive.ui.for_room_mate.settings_screen.ReportActivity
 import dagger.hilt.android.AndroidEntryPoint
@@ -115,6 +118,7 @@ class MatchedProfileActivity : BaseActivity<ActivityMatchedProfileBinding>() {
 
 
     /** handle click **/
+    @SuppressLint("ClickableViewAccessibility")
     private fun initOnClick() {
         viewModel.onClick.observe(this) {
             when (it?.id) {
@@ -158,6 +162,60 @@ class MatchedProfileActivity : BaseActivity<ActivityMatchedProfileBinding>() {
                     startActivity(intent)
                 }
             }
+        }
+
+
+
+        binding.clAfterMatch.setOnTouchListener { v, event ->
+            if (event.action == MotionEvent.ACTION_DOWN) {
+                val totalWidth = v.width
+                val sectionWidth = totalWidth / 3
+                val x = event.x.toInt()
+
+                when {
+                    x < sectionWidth -> {
+
+                    }
+                    x < sectionWidth * 2 -> {
+                        if (chatClick) {
+                            val intent = Intent(this@MatchedProfileActivity, ChatActivity::class.java)
+                            intent.putExtra("socketId", commonId)
+                            intent.putExtra("matchId", commonId)
+                            startActivity(intent)
+                        }
+                    }
+                    else -> {
+                        val intent = Intent(this@MatchedProfileActivity, ReportActivity::class.java)
+                        intent.putExtra("reportId", commonId)
+                        intent.putExtra("reportType", "user")
+                        startActivity(intent)
+                    }
+                }
+            }
+            true
+        }
+
+
+
+
+        binding.clBeforeMatch.setOnTouchListener { v, event ->
+            if (event.action == MotionEvent.ACTION_UP) {
+                val width = v.width
+                val clickedX = event.x
+                if (clickedX < width / 2) {
+                    val data = HashMap<String, Any>()
+                    data["id"] = commonId
+                    data["action"] = "like"
+                    data["type"] = "user"
+                    viewModel.matchLikeApi(Constants.MATCH_LIKE, data)
+                } else {
+                    val intent = Intent(this@MatchedProfileActivity, ReportActivity::class.java)
+                    intent.putExtra("reportId", commonId)
+                    intent.putExtra("reportType", "user")
+                    startActivity(intent)
+                }
+            }
+            true
         }
     }
 

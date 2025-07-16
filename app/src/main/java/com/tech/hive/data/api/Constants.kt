@@ -9,7 +9,6 @@ object Constants {
     const val BASE_URL_IMAGE = BuildConfig.MEDIA_BASE_URL
     const val SOCKET_URL = BuildConfig.SOCKET_URL
 
-    var userType = 0
     var userLanguage = "en"
     var userId = ""
 
@@ -45,6 +44,7 @@ object Constants {
     const val USER_SAFETY_TIPS_CREATE = "user/safety-tips/create"
     const val USER_SAFETY_TIPS = "user/safety-tips"
     const val LISTING = "listing"
+    const val LISTING_CREATE = "listing/create"
     const val LOGOUT = "user/logout"
 
 

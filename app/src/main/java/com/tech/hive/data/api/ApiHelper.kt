@@ -28,8 +28,18 @@ interface ApiHelper {
         lang: String, data: HashMap<String, String>, url: String
     ): Response<JsonObject>
 
+    suspend fun apiDeleteListingWithQuery(
+        lang: String,  url: String
+    ): Response<JsonObject>
+
     suspend fun apiForPostMultipart(
-        url: String, map: HashMap<String, RequestBody>, part: MutableList<MultipartBody.Part>
+        lang: String,
+        url: String, map: HashMap<String, RequestBody>, part: MutableList<MultipartBody.Part>,video: MultipartBody.Part?
+    ): Response<JsonObject>
+
+    suspend fun apiForPostMultipartPut(
+        lang: String,
+        url: String, map: HashMap<String, RequestBody>, part: MutableList<MultipartBody.Part>,video: MultipartBody.Part?
     ): Response<JsonObject>
 
     suspend fun apiForPostMultipart(

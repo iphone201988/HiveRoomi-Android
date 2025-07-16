@@ -5,6 +5,7 @@ import com.google.gson.Gson
 import com.tech.hive.data.model.LoginData
 import javax.inject.Inject
 import androidx.core.content.edit
+import com.tech.hive.base.utils.saveValue
 
 class SharedPrefManager @Inject constructor(private val sharedPreferences: SharedPreferences) {
 
@@ -13,7 +14,7 @@ class SharedPrefManager @Inject constructor(private val sharedPreferences: Share
         const val USER_TOKEN = "userToken"
         const val USER_PROFILE = "UserProfile"
         const val USER_ID = "userId"
-        const val ROLE_TYPE = "userId"
+        const val ROLE_TYPE = "roleType"
     }
 
     fun setLoginData(bean: LoginData) {
@@ -51,17 +52,14 @@ class SharedPrefManager @Inject constructor(private val sharedPreferences: Share
         return token
     }
 
-    fun saveRole(role: Int) {
-        sharedPreferences.edit().putInt(KEY.ROLE_TYPE, role).apply()
+
+
+    fun saveRole(type: Int) {
+        sharedPreferences.saveValue(KEY.ROLE_TYPE, type)
     }
 
     fun getRole(): Int {
-        return try {
-            sharedPreferences.getInt(KEY.ROLE_TYPE, 1)
-        } catch (e: ClassCastException) {
-            sharedPreferences.edit { remove(KEY.ROLE_TYPE) }
-            1
-        }
+        return sharedPreferences.getInt(KEY.ROLE_TYPE, 1)
     }
 
     fun clear() {

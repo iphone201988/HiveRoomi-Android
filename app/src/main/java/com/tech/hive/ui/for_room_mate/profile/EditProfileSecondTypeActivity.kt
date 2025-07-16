@@ -28,7 +28,6 @@ import com.tech.hive.data.model.GetUserProfileResponse
 import com.tech.hive.databinding.ActivityEditProfileSecondTypeBinding
 import com.tech.hive.databinding.PersonalDialogItemBinding
 import com.tech.hive.databinding.UnPinLayoutBinding
-import com.tech.hive.ui.for_room_mate.profile.EditProfileActivity
 import com.tech.hive.ui.quiz.QuizActivity
 import dagger.hilt.android.AndroidEntryPoint
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -71,6 +70,7 @@ class EditProfileSecondTypeActivity : BaseActivity<ActivityEditProfileSecondType
         viewModel.getUserProfile(Constants.USER_ME)
         // observer
         initObserver()
+
 
     }
 
@@ -158,8 +158,8 @@ class EditProfileSecondTypeActivity : BaseActivity<ActivityEditProfileSecondType
         data["profession"] = professionRole.toRequestBody()
         data["bio"] = shortBio.toRequestBody()
         data["address"] = location.toRequestBody()
-        data["latitude"] =  BindingUtils.latitude.toString().toRequestBody()
-        data["longitude"] =  BindingUtils.longitude.toString().toRequestBody()
+        data["latitude"] = BindingUtils.latitude.toString().toRequestBody()
+        data["longitude"] = BindingUtils.longitude.toString().toRequestBody()
         viewModel.userUpdateProfile(data, multipartImage)
     }
 
@@ -172,7 +172,7 @@ class EditProfileSecondTypeActivity : BaseActivity<ActivityEditProfileSecondType
                     onBackPressedDispatcher.onBackPressed()
                 }
 
-                R.id.btnContinue->{
+                R.id.btnContinue -> {
                     updateProfile()
                 }
                 // camera button click
@@ -218,7 +218,8 @@ class EditProfileSecondTypeActivity : BaseActivity<ActivityEditProfileSecondType
                 }
 
                 R.id.tvEditPreferencesDetails, R.id.ivChangeLanguage -> {
-                    val intent = Intent(this@EditProfileSecondTypeActivity, QuizActivity::class.java)
+                    val intent =
+                        Intent(this@EditProfileSecondTypeActivity, QuizActivity::class.java)
                     startActivity(intent)
                 }
             }

@@ -11,7 +11,7 @@
             type="Integer" />
         <variable
             name="bean"
-            type="com.tech.hive.data.model.RoomMateModel" />
+            type="com.tech.hive.data.model.RoomMateModelItem" />
         <import type="android.view.View"/>
     </data>
 

@@ -129,7 +129,8 @@ class VerifyAccountFragment : BaseFragment<FragmentVerifyAccountBinding>() {
                                 val myDataModel: AccountVerifyResponse? =
                                     BindingUtils.parseJson(it.data.toString())
                                 if (myDataModel != null) {
-                                    if (Constants.userType == 3) {
+                                    var data = sharedPrefManager.getRole()
+                                    if (data == 3) {
                                         BindingUtils.navigateWithSlide(
                                             findNavController(),
                                             R.id.navigateToProviderTypeFragment,

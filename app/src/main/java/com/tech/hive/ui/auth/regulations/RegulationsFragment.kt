@@ -43,7 +43,8 @@ class RegulationsFragment : BaseFragment<FragmentRegulationsBinding>() {
         viewModel.onClick.observe(viewLifecycleOwner) {
              when(it?.id){
                  R.id.btnAccept->{
-                     when (Constants.userType) {
+                     val data = sharedPrefManager.getRole()
+                     when (data) {
                          1 -> {
                              val intent = Intent(requireActivity(), QuizActivity::class.java)
                              startActivity(intent)

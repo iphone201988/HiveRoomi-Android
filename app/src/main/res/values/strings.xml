@@ -358,7 +358,6 @@
     <string name="anyone">Anyone</string>
 
 
-
     <string name="campus_university_of_milan">University of Milan (La Statale)</string>
     <string name="campus_university_of_milan_bicocca">University of Milan-Bicocca</string>
     <string name="campus_polytechnic_university_of_milan">Polytechnic University of Milan</string>
@@ -526,6 +525,7 @@
     <string name="change_role">Change Role</string>
     <string name="save">Save</string>
     <string name="change">Change</string>
+    <string name="update">Update</string>
     <string name="no_yet_notification">No yet notification.</string>
     <string name="private_bathroom">Private Bathroom</string>
     <string name="fast_wi_fi">Fast Wi-Fi</string>
@@ -536,5 +536,11 @@
     <string name="parking_space">Parking Space</string>
     <string name="_6_months">6 months</string>
     <string name="_6_may">6 May</string>
+    <string name="no_listing_data">No listing data.</string>
+    <string name="scheduled_visits">Scheduled Visits</string>
+    <string name="type_of_provider">Type Of Provider</string>
+    <string name="tenant_subletting">Tenant Subletting</string>
+    <string name="documents">Documents</string>
+    <string name="update_documents">Update Documents</string>
 
 </resources>

@@ -317,7 +317,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
                 data["deviceToken"] = token
                 data["loginType"] = LoginType.MANUAL.value
                 data["deviceType"] = DeviceType.ANDROID.value
-                data["profileRole"] = Constants.userType
+                data["profileRole"] = sharedPrefManager.getRole()
                 if (BindingUtils.latitude != null) {
                     data["latitude"] = BindingUtils.latitude!!
                 }
@@ -361,7 +361,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
         data["deviceToken"] = token
         data["loginType"] = LoginType.GMAIL.value
         data["deviceType"] = DeviceType.ANDROID.value
-        data["profileRole"] = Constants.userType
+        data["profileRole"] = sharedPrefManager.getRole()
 
         if (BindingUtils.latitude != null) {
             data["latitude"] = BindingUtils.latitude!!

@@ -68,6 +68,20 @@ class EditProfileActivity : BaseActivity<ActivityEditProfileBinding>() {
         type = 1
         // api call for profile
         viewModel.getUserProfile(Constants.USER_ME)
+
+        // intent
+        val intent = intent
+        val type = intent.getStringExtra("sendType")
+        when (type) {
+            "first" -> {
+                binding.visibilityType = 1
+            }
+
+            "third" -> {
+                binding.visibilityType = 2
+            }
+
+        }
     }
 
     /** handle view **/
@@ -164,6 +178,13 @@ class EditProfileActivity : BaseActivity<ActivityEditProfileBinding>() {
                 R.id.tvEditPreferencesDetails, R.id.ivChangeLanguage -> {
                     val intent = Intent(this@EditProfileActivity, QuizActivity::class.java)
                     startActivity(intent)
+                }
+                R.id.etDocuments , R.id.ivDocuments->{
+                    val intent = Intent(this@EditProfileActivity, UpdateDocumentActivity::class.java)
+                    startActivity(intent)
+                }
+                R.id.etProvider , R.id.ivProvider->{
+
                 }
             }
         }

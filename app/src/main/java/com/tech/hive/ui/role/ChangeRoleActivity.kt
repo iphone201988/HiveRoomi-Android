@@ -147,21 +147,21 @@ class ChangeRoleActivity : BaseActivity<ActivityChangeRoleBinding>() {
                 R.id.clRoommate -> {
                     roleType = 1
                     binding.selectType = 1
-                    Constants.userType = 1
+                  sharedPrefManager.saveRole(1)
 
                 }
                 // Home button click
                 R.id.clHome -> {
                     roleType = 2
                     binding.selectType = 2
-                    Constants.userType = 2
+                    sharedPrefManager.saveRole(2)
 
                 }
                 // Offering button click
                 R.id.clOffering -> {
                     roleType = 3
                     binding.selectType = 3
-                    Constants.userType = 3
+                    sharedPrefManager.saveRole(3)
 
                 }
             }

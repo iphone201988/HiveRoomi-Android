@@ -3,6 +3,7 @@ package com.tech.hive.ui.room_offering.basic_details
 import android.content.Intent
 import android.util.Log
 import androidx.activity.viewModels
+import com.google.gson.Gson
 import com.tech.hive.BR
 import com.tech.hive.R
 import com.tech.hive.base.BaseActivity
@@ -12,20 +13,31 @@ import com.tech.hive.base.utils.BaseCustomDialog
 import com.tech.hive.base.utils.BindingUtils
 import com.tech.hive.base.utils.Status
 import com.tech.hive.base.utils.showErrorToast
-import com.tech.hive.data.model.HomeRoomType
-import com.tech.hive.data.model.ImageModel
+import com.tech.hive.data.api.Constants
+import com.tech.hive.data.model.GetListingData
+import com.tech.hive.data.model.PostListingResponse
+import com.tech.hive.data.model.RoomMateModelItem
 import com.tech.hive.databinding.ActivityHouseholdLifestyleBinding
+import com.tech.hive.databinding.FeaturesItemViewBinding
 import com.tech.hive.databinding.PersonalDialogItemBinding
 import com.tech.hive.databinding.UnPinLayoutBinding
 import com.tech.hive.ui.dashboard.DashboardActivity
 import dagger.hilt.android.AndroidEntryPoint
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.asRequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.File
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 @AndroidEntryPoint
 class HouseholdLifestyleActivity : BaseActivity<ActivityHouseholdLifestyleBinding>() {
     private val viewModel: BasicDetailsVM by viewModels()
     private var personal: BaseCustomDialog<PersonalDialogItemBinding>? = null
     private lateinit var ageAdapter: SimpleRecyclerViewAdapter<String, UnPinLayoutBinding>
+    private var videoMultiplatform: MultipartBody.Part? = null
     private var roomType: String? = null
     private var titleType: String? = null
     private var bioType: String? = null
@@ -52,11 +64,16 @@ class HouseholdLifestyleActivity : BaseActivity<ActivityHouseholdLifestyleBindin
     private var airType: String? = null
     private var balconyType: String? = null
     private var parkingType: String? = null
-
+    private var listingData: GetListingData? = null
+    private var editApiCall =false
     companion object {
-        var sendImage = ArrayList<ImageModel>()
+        var sendImage: MutableList<MultipartBody.Part> = mutableListOf()
         var sendVideo: File? = null
+        var roomMateModelItem = ArrayList<RoomMateModelItem>()
     }
+
+    // adapter
+    private lateinit var lookingAdapter: SimpleRecyclerViewAdapter<String, FeaturesItemViewBinding>
 
     override fun getLayoutResource(): Int {
         return R.layout.activity_household_lifestyle
@@ -71,15 +88,20 @@ class HouseholdLifestyleActivity : BaseActivity<ActivityHouseholdLifestyleBindin
         initView()
         // click
         initOnClick()
+
         // observer
         initObserver()
+
     }
 
     /** handle view **/
     private fun initView() {
+
         // set status bar color
         BindingUtils.statusBarStyle(this@HouseholdLifestyleActivity)
         BindingUtils.statusBarTextColor(this@HouseholdLifestyleActivity, false)
+        // adapter
+        initAdapter()
         // intent data
         roomType = intent.getStringExtra("roomType")
         titleType = intent.getStringExtra("titleType")
@@ -107,6 +129,24 @@ class HouseholdLifestyleActivity : BaseActivity<ActivityHouseholdLifestyleBindin
         airType = intent.getStringExtra("airType")
         balconyType = intent.getStringExtra("balconyType")
         parkingType = intent.getStringExtra("parkingType")
+
+        listingData = intent.getParcelableExtra<GetListingData>("basicDetail")
+        listingData?.let {
+            editApiCall =true
+            binding.btnContinue.text = getString(R.string.update)
+            val lookingList = it.lookingFor?.filterNotNull() ?: emptyList()
+            lookingAdapter.list = ArrayList(lookingList)
+            if (lookingAdapter.list.isNotEmpty()) {
+                binding.etLooking.setText(lookingAdapter.list[0])
+            }
+            binding.etSmoking.setText(it.smoke)
+            binding.etClean.setText(it.cleanliness.toString())
+            if (it.pets == true){
+                binding.etPets.setText(getString(R.string.yes))
+            }else{
+                binding.etPets.setText(getString(R.string.no))
+            }
+        }
     }
 
     /** handle click **/
@@ -115,9 +155,10 @@ class HouseholdLifestyleActivity : BaseActivity<ActivityHouseholdLifestyleBindin
             when (it?.id) {
                 // btn next
                 R.id.btnContinue -> {
-                    val intent = Intent(this, DashboardActivity::class.java)
-                    startActivity(intent)
-                    finishAffinity()
+                    if (validate()) {
+                        apiCallListingCreate()
+                    }
+
                 }
 
                 R.id.ivBack -> {
@@ -158,9 +199,29 @@ class HouseholdLifestyleActivity : BaseActivity<ActivityHouseholdLifestyleBindin
                     when (it.message) {
                         "basicDetailApiCall" -> {
                             try {
-                                val myDataModel: HomeRoomType? =
+                                val myDataModel: PostListingResponse? =
                                     BindingUtils.parseJson(it.data.toString())
                                 if (myDataModel?.data != null) {
+                                    val intent = Intent(this, DashboardActivity::class.java)
+                                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                                    startActivity(intent)
+
+                                }
+                            } catch (e: Exception) {
+                                Log.e("error", "getHomeApiListening: $e")
+                            } finally {
+                                hideLoading()
+                            }
+                        }
+
+                        "basicDetailEditAPiCall" -> {
+                            try {
+                                val myDataModel: PostListingResponse? =
+                                    BindingUtils.parseJson(it.data.toString())
+                                if (myDataModel?.data != null) {
+                                    val intent = Intent(this, DashboardActivity::class.java)
+                                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                                    startActivity(intent)
 
                                 }
                             } catch (e: Exception) {
@@ -183,6 +244,29 @@ class HouseholdLifestyleActivity : BaseActivity<ActivityHouseholdLifestyleBindin
             }
         }
 
+    }
+
+
+    /** handle adapter **/
+    private fun initAdapter() {
+        // main adapter
+        lookingAdapter =
+            SimpleRecyclerViewAdapter(R.layout.features_item_view, BR.bean) { v, m, pos ->
+                when (v.id) {
+                    // cancel item
+                    R.id.ivCancel -> {
+                        lookingAdapter.removeItem(pos)
+                        lookingAdapter.notifyItemChanged(pos, null)
+                        if (lookingAdapter.list.isEmpty()) {
+                            binding.etLooking.setText("")
+                        } else {
+                            binding.etLooking.setText(lookingAdapter.list[0])
+                        }
+                    }
+                }
+            }
+
+        binding.rvLooking.adapter = lookingAdapter
     }
 
 
@@ -217,7 +301,13 @@ class HouseholdLifestyleActivity : BaseActivity<ActivityHouseholdLifestyleBindin
                         }
 
                         4 -> {
-                            binding.etLooking.setText(m.toString())
+                            val value = m.toString().lowercase()
+                            if (!lookingAdapter.list.contains(value)) {
+                                lookingAdapter.list.add(value)
+                                lookingAdapter.notifyDataSetChanged()
+                                binding.etLooking.setText(lookingAdapter.list[0])
+                            }
+
                         }
 
                     }
@@ -286,5 +376,106 @@ class HouseholdLifestyleActivity : BaseActivity<ActivityHouseholdLifestyleBindin
             )
     }
 
+    var formattedDate = ""
+
+    /** api call listing **/
+    private fun apiCallListingCreate() {
+        val roomMatesJson = Gson().toJson(roomMateModelItem)
+        val lookingJson = Gson().toJson(lookingAdapter.list)
+        if (sendVideo != null) {
+            val requestFile = sendVideo!!.asRequestBody("video/*".toMediaTypeOrNull())
+            val body: MultipartBody.Part = MultipartBody.Part.createFormData(
+                "uploadVideos", sendVideo!!.name, requestFile
+            )
+            videoMultiplatform = body
+        }
+        if (availableType?.isNotEmpty() == true) {
+            val inputFormat = SimpleDateFormat("MMMM dd yyyy", Locale.getDefault())
+            val outputFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+            val parsedDate = inputFormat.parse(availableType.toString())
+            val convertedDate = outputFormat.format(parsedDate!!)
+            formattedDate = convertedDate
+
+        }
+
+        var pets = binding.etPets.text.toString().trim()
+        val data = HashMap<String, RequestBody>()
+        data["listingType"] = roomType.toString().toRequestBody()
+        data["title"] = titleType.toString().toRequestBody()
+        data["description"] = bioType.toString().toRequestBody()
+        data["address"] = locationType.toString().toRequestBody()
+        data["latitude"] = "30.7333148".toRequestBody()
+        data["longitude"] = "76.7794179".toRequestBody()
+        data["price"] = priceType.toString().toRequestBody()
+        data["utilitiesPrice"] = utilityPriceType.toString().toRequestBody()
+        data["deposit"] = depositType.toString().toRequestBody()
+        data["contractLength"] = contractType.toString().toRequestBody()
+        data["availableFrom"] = formattedDate.toRequestBody()
+        data["minimumStay"] = minimumStayType.toString().toRequestBody()
+        data["roomType"] = roomDetailType.toString().toRequestBody()
+        data["size"] = sizeType.toString().toRequestBody()
+        data["furnishingStatus"] = furnishedType.toString().toRequestBody()
+        data["floor"] = floorType.toString().toRequestBody()
+        data["elevator"] =
+            (elevatorType?.lowercase()?.contains("yes") == true).toString().toRequestBody()
+        data["heating"] = heatingType.toString().toRequestBody()
+        data["privateBathroom"] =
+            (privateType?.lowercase()?.contains("yes") == true).toString().toRequestBody()
+        data["wifi"] = (wifiType?.lowercase()?.contains("yes") == true).toString().toRequestBody()
+        data["kitchen"] =
+            (equippedType?.lowercase()?.contains("yes") == true).toString().toRequestBody()
+        data["washingMachine"] =
+            (washingType?.lowercase()?.contains("yes") == true).toString().toRequestBody()
+        data["airConditioner"] =
+            (airType?.lowercase()?.contains("yes") == true).toString().toRequestBody()
+        data["balcony"] =
+            (balconyType?.lowercase()?.contains("yes") == true).toString().toRequestBody()
+        data["parking"] =
+            (parkingType?.lowercase()?.contains("yes") == true).toString().toRequestBody()
+        data["roommates"] =
+            roomMatesJson.toRequestBody()  // [{"gender":"men","age":"36"},{"gender":"women","age":"32"}]
+
+        data["smoke"] = binding.etSmoking.text.toString().trim().toRequestBody()
+        data["pets"] = (pets.lowercase().contains("yes") == true).toString().toRequestBody()
+        data["cleanliness"] = binding.etClean.text.toString().trim().toRequestBody()
+        data["lookingFor"] = lookingJson.toRequestBody() // ["student","workers","anyone"]
+
+        if (editApiCall){
+            listingData?._id?.let { id ->
+                viewModel.basicDetailEditAPiCall("listing/$id", data, sendImage, videoMultiplatform)
+            }
+        }else{
+            viewModel.basicDetailApiCall(
+                Constants.LISTING_CREATE, data, sendImage, videoMultiplatform
+            )
+        }
+
+    }
+
+
+    /*** add validation ***/
+    private fun validate(): Boolean {
+        val smoking = binding.etSmoking.text.toString().trim()
+        val pets = binding.etPets.text.toString().trim()
+        val clean = binding.etClean.text.toString().trim()
+        val looking = binding.etLooking.text.toString().trim()
+
+
+        if (smoking.isEmpty()) {
+            showInfoToast("Please select smoke")
+            return false
+        } else if (pets.isEmpty()) {
+            showInfoToast("Please select pets")
+            return false
+        } else if (clean.isEmpty()) {
+            showInfoToast("Please select cleaning")
+            return false
+        } else if (looking.isEmpty()) {
+            showInfoToast("Please select looking")
+            return false
+        }
+
+        return true
+    }
 
 }

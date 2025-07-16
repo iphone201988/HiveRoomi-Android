@@ -43,7 +43,7 @@
             android:onClick="@{v-> callback.onItemClick(v,bean,pos)}"
             android:background="@drawable/unselect_edit_text_bg_color"
             android:text="@{bean.title}"
-            android:paddingStart="@dimen/_10sdp"
+            android:paddingStart="@dimen/_15sdp"
             android:paddingEnd="@dimen/_40sdp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

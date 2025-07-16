@@ -6,17 +6,16 @@ import android.app.Activity
 import android.content.Context
 import android.content.pm.PackageManager
 import android.graphics.Color
-import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
-import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.Guideline
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.net.toUri
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.databinding.BindingAdapter
@@ -29,13 +28,13 @@ import com.google.gson.Gson
 import com.tech.hive.R
 import com.tech.hive.data.api.Constants
 import com.tech.hive.data.model.HomeRoomTData
+import com.tech.hive.data.model.ImageModel
 import com.tech.hive.data.model.NotificationData
 import com.tech.hive.data.model.PendingMatchData
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 import java.util.TimeZone
-import androidx.core.net.toUri
 
 object BindingUtils {
     var latitude: Double? = null
@@ -127,14 +126,23 @@ object BindingUtils {
 
     @BindingAdapter("setImageFromUri")
     @JvmStatic
-    fun setImageFromUri(imageView: ShapeableImageView, imageUri: String?) {
-        if (!imageUri.isNullOrEmpty()) {
-            imageView.setImageURI(imageUri.toUri())
+    fun setImageFromUri(imageView: ShapeableImageView, data: ImageModel?) {
+        if (data != null) {
+            if (data.type == 1) {
+                imageView.setImageURI(data.image.toUri())
+            } else if (data.type == 3) {
+                Glide.with(imageView.context).load(Constants.BASE_URL_IMAGE + data.image)
+                    .placeholder(R.drawable.progress_animation_small)
+                    .error(R.drawable.user_place_holder).diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .into(imageView)
+            } else {
+                imageView.setImageResource(R.drawable.user_place_holder)
+            }
+
         } else {
             imageView.setImageResource(R.drawable.user_place_holder)
         }
     }
-
 
 
     @BindingAdapter("setImageFromUrlMatch")

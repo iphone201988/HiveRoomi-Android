@@ -170,11 +170,11 @@ class HomeFragmentVM @Inject constructor(val apiHelper: ApiHelper) : BaseViewMod
 
     }
 
-    fun getListing(url: String) {
+    fun getListing(url: String,data: HashMap<String, String>) {
         CoroutineScope(Dispatchers.IO).launch {
             observeCommon.postValue(Resource.loading(null))
             try {
-                apiHelper.apiGetOnlyAuthToken(Constants.userLanguage, url).let {
+                apiHelper.apiGetWithQuery(Constants.userLanguage, data,url).let {
                     if (it.isSuccessful) {
                         observeCommon.postValue(Resource.success("getListing", it.body()))
                     } else observeCommon.postValue(
@@ -185,6 +185,27 @@ class HomeFragmentVM @Inject constructor(val apiHelper: ApiHelper) : BaseViewMod
                 }
             } catch (e: Exception) {
                 Log.i("getListing", "getListing: $e")
+            }
+
+        }
+
+    }
+
+    fun deleteListingList(url: String) {
+        CoroutineScope(Dispatchers.IO).launch {
+            observeCommon.postValue(Resource.loading(null))
+            try {
+                apiHelper.apiDeleteListingWithQuery(Constants.userLanguage,url).let {
+                    if (it.isSuccessful) {
+                        observeCommon.postValue(Resource.success("deleteListingList", it.body()))
+                    } else observeCommon.postValue(
+                        Resource.error(
+                            handleErrorResponse(it.errorBody()), null
+                        )
+                    )
+                }
+            } catch (e: Exception) {
+                Log.i("deleteListingList", "deleteListingList: $e")
             }
 
         }

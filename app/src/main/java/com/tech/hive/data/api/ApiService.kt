@@ -6,6 +6,7 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Response
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.FieldMap
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
@@ -123,16 +124,42 @@ interface ApiService {
         @QueryMap data: HashMap<String, String>
     ): Response<JsonObject>
 
+    @DELETE
+    suspend fun apiDeleteListingWithQuery(
+        @Header("Accept-Language") lang: String,
+        @Header("Authorization") token: String,
+        @Url url: String,
+    ): Response<JsonObject>
+
 
     @Multipart
     @JvmSuppressWildcards
     @POST
     suspend fun apiForPostMultipart(
+        @Header("Accept-Language") lang: String,
         @Url url: String,
         @Header("Authorization") token: String,
         @PartMap data: Map<String, RequestBody>,
-        @Part parts: MutableList<MultipartBody.Part>
+        @Part image: MutableList<MultipartBody.Part>,
+        @Part video: MultipartBody.Part?
     ): Response<JsonObject>
+
+
+    @Multipart
+    @JvmSuppressWildcards
+    @PUT
+    suspend fun apiForPostMultipartPut(
+        @Header("Accept-Language") lang: String,
+        @Url url: String,
+        @Header("Authorization") token: String,
+        @PartMap data: Map<String, RequestBody>,
+        @Part image: MutableList<MultipartBody.Part>,
+        @Part video: MultipartBody.Part?
+    ): Response<JsonObject>
+
+
+
+
 
     @Multipart
     @JvmSuppressWildcards
@@ -155,6 +182,8 @@ interface ApiService {
         @PartMap data: Map<String, RequestBody>?,
         @Part profilePic: MultipartBody.Part?,
     ): Response<JsonObject>
+
+
 
 
 }

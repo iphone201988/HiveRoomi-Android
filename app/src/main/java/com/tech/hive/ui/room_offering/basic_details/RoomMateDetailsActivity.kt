@@ -3,24 +3,36 @@ package com.tech.hive.ui.room_offering.basic_details
 import android.content.Intent
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
+import android.view.View
 import androidx.activity.viewModels
+import com.google.gson.Gson
 import com.tech.hive.BR
 import com.tech.hive.R
 import com.tech.hive.base.BaseActivity
 import com.tech.hive.base.BaseViewModel
 import com.tech.hive.base.SimpleRecyclerViewAdapter
+import com.tech.hive.base.utils.BaseCustomDialog
 import com.tech.hive.base.utils.BindingUtils
+import com.tech.hive.base.utils.showInfoToast
+import com.tech.hive.data.model.GetListingData
+import com.tech.hive.data.model.ImageModel
 import com.tech.hive.data.model.RoomMateModel
+import com.tech.hive.data.model.RoomMateModelItem
 import com.tech.hive.databinding.ActivityRoomMateDetailsBinding
 import com.tech.hive.databinding.AddRoomMateItemViewBinding
+import com.tech.hive.databinding.PersonalDialogItemBinding
+import com.tech.hive.databinding.UnPinLayoutBinding
+import com.tech.hive.ui.room_offering.basic_details.RoomDetailsActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class RoomMateDetailsActivity : BaseActivity<ActivityRoomMateDetailsBinding>() {
     private val viewModel: BasicDetailsVM by viewModels()
-    private lateinit var roomMateAdapter: SimpleRecyclerViewAdapter<RoomMateModel, AddRoomMateItemViewBinding>
-    private var roomiesList = ArrayList<RoomMateModel>()
-
+    private lateinit var roomMateAdapter: SimpleRecyclerViewAdapter<RoomMateModelItem, AddRoomMateItemViewBinding>
+    private var roomiesList = ArrayList<RoomMateModelItem>()
+    private var personal: BaseCustomDialog<PersonalDialogItemBinding>? = null
+    private lateinit var ageAdapter: SimpleRecyclerViewAdapter<String, UnPinLayoutBinding>
     private var roomType: String? = null
     private var titleType: String? = null
     private var bioType: String? = null
@@ -35,7 +47,7 @@ class RoomMateDetailsActivity : BaseActivity<ActivityRoomMateDetailsBinding>() {
     private var sizeType: String? = null
     private var furnishedType: String? = null
     private var roommateType: String? = null
-
+    private var listingData: GetListingData? = null
     override fun getLayoutResource(): Int {
         return R.layout.activity_room_mate_details
     }
@@ -59,7 +71,6 @@ class RoomMateDetailsActivity : BaseActivity<ActivityRoomMateDetailsBinding>() {
         BindingUtils.statusBarStyle(this@RoomMateDetailsActivity)
         BindingUtils.statusBarTextColor(this@RoomMateDetailsActivity, false)
         // check state
-        binding.genderType = ""
         binding.ageType = ""
 
         // adapter
@@ -81,6 +92,14 @@ class RoomMateDetailsActivity : BaseActivity<ActivityRoomMateDetailsBinding>() {
         sizeType = intent.getStringExtra("sizeType")
         furnishedType = intent.getStringExtra("furnishedType")
         roommateType = intent.getStringExtra("roommateType")
+        listingData = intent.getParcelableExtra<GetListingData>("basicDetail")
+        listingData?.let {
+            it.roommates?.filterNotNull()?.forEach { list ->
+                roomiesList.add(RoomMateModelItem(list.gender?:"", list.age.toString() ?:""))
+            }
+
+            roomMateAdapter.list = roomiesList
+        }
     }
 
     /** handle click **/
@@ -91,82 +110,69 @@ class RoomMateDetailsActivity : BaseActivity<ActivityRoomMateDetailsBinding>() {
                 R.id.btnAdd -> {
                     if (validate()) {
                         roomMateAdapter.list.add(
-                            RoomMateModel(
-                                "M",
-                                binding.etAge.text.toString().trim()
-                            )
-                        )
-                        roomMateAdapter.list.reverse()
+                            RoomMateModelItem(
+                                binding.etGender.text.toString().trim().lowercase(),
+                                binding.etAge.text.toString().trim()))
                         binding.etAge.setText("")
+                        binding.etGender.setText("")
                         binding.etAge.clearFocus()
                         roomMateAdapter.notifyDataSetChanged()
                     }
                 }
                 // btn next
                 R.id.btnContinue -> {
-                    val intent = Intent(this@RoomMateDetailsActivity, ApartmentFeaturesActivity::class.java)
-                    intent.putExtra("roomType", roomType)
-                    intent.putExtra("titleType", titleType)
-                    intent.putExtra("bioType", bioType)
-                    intent.putExtra("locationType", locationType)
-                    intent.putExtra("priceType", priceType)
-                    intent.putExtra("utilityPriceType", utilityPriceType)
-                    intent.putExtra("depositType", depositType)
-                    intent.putExtra("contractType", contractType)
-                    intent.putExtra("availableType", availableType)
-                    intent.putExtra("minimumStayType", minimumStayType)
+                    if (roomMateAdapter.list.isNotEmpty()){
+                        HouseholdLifestyleActivity.roomMateModelItem = roomMateAdapter.list as ArrayList<RoomMateModelItem>
+                        val intent = Intent(this@RoomMateDetailsActivity, ApartmentFeaturesActivity::class.java)
+                        intent.putExtra("roomType", roomType)
+                        intent.putExtra("titleType", titleType)
+                        intent.putExtra("bioType", bioType)
+                        intent.putExtra("locationType", locationType)
+                        intent.putExtra("priceType", priceType)
+                        intent.putExtra("utilityPriceType", utilityPriceType)
+                        intent.putExtra("depositType", depositType)
+                        intent.putExtra("contractType", contractType)
+                        intent.putExtra("availableType", availableType)
+                        intent.putExtra("minimumStayType", minimumStayType)
 
-                    intent.putExtra("roomDetailType", roomDetailType)
-                    intent.putExtra("sizeType", sizeType)
-                    intent.putExtra("furnishedType", furnishedType)
-                    intent.putExtra("roommateType", roommateType)
+                        intent.putExtra("roomDetailType", roomDetailType)
+                        intent.putExtra("sizeType", sizeType)
+                        intent.putExtra("furnishedType", furnishedType)
+                        intent.putExtra("roommateType", roommateType)
+                        if (listingData!=null){
+                            intent.putExtra("basicDetail", listingData)
+                        }
 
-                    startActivity(intent)
+                        startActivity(intent)
+                    }else{
+                        showInfoToast("Please add at least one room mate")
+                    }
+
                 }
 
                 R.id.ivBack->{
                     onBackPressedDispatcher.onBackPressed()
                 }
+
+                R.id.etGender->{
+                    personalDialog()
+                }
             }
         }
-        // etGender
-        binding.etGender.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-
-            }
-
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-
-            }
-
-            override fun afterTextChanged(p0: Editable?) {
-                binding.genderType = p0.toString()
-            }
-
-        })
 
         // etAge
-        binding.etAge.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
 
+        binding.etAge.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
+            if (hasFocus) {
+                binding.ageType = "ageType"
+            } else {
+                binding.ageType = ""
             }
+        }
 
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-
-            }
-
-            override fun afterTextChanged(p0: Editable?) {
-                binding.ageType = p0.toString()
-            }
-
-        })
 
     }
 
-    /** handle api response  **/
-    private fun initObserver() {
-
-    }
 
     /** handle adapter **/
     private fun initAdapter() {
@@ -186,10 +192,54 @@ class RoomMateDetailsActivity : BaseActivity<ActivityRoomMateDetailsBinding>() {
 
     /** validations **/
     private fun validate(): Boolean {
-        if (binding.etAge.text.toString().isEmpty()) {
+       if (binding.etGender.text.toString().isEmpty()) {
+            showToast("Please select gender")
+            return false
+        }
+        else if (binding.etAge.text.toString().isEmpty()) {
             showToast("Please enter age")
             return false
         }
         return true
     }
+
+
+    /** personal dialog  handel ***/
+    private fun personalDialog() {
+        personal = BaseCustomDialog(this@RoomMateDetailsActivity, R.layout.personal_dialog_item) {
+
+        }
+        personal!!.create()
+        personal!!.show()
+        // adapter
+        initAdapterRoom()
+    }
+
+    /** handle adapter **/
+    private fun initAdapterRoom() {
+        ageAdapter = SimpleRecyclerViewAdapter(R.layout.un_pin_layout, BR.bean) { v, m, pos ->
+            when (v?.id) {
+                R.id.consMainUnPin -> {
+                    binding.etGender.setText(m.toString())
+                    personal?.dismiss()
+                }
+            }
+        }
+        ageAdapter.list = firstTypeList()
+        personal?.binding?.rvPersonal?.adapter = ageAdapter
+    }
+
+
+    private fun firstTypeList(): ArrayList<String> {
+        return arrayListOf(
+            getString(R.string.men),
+            getString(R.string.women),
+            getString(R.string.other),
+
+            )
+    }
+
+
+
+
 }

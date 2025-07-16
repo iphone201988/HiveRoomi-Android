@@ -85,7 +85,8 @@ class PersonalFragment : BaseFragment<FragmentPersonalBinding>() {
                 // ivVisiblePassword button click
                 R.id.btnContinue -> {
                     if (validate()) {
-                        if (Constants.userType == 3) {
+                        val data = sharedPrefManager.getRole()
+                        if (data == 3) {
                             if (multipartImage!=null){
                                 UploadPhotoFragment.multipartImage = multipartImage
                             }

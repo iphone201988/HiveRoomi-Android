@@ -102,7 +102,7 @@
             android:id="@+id/clNested"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:visibility="gone"
+
             android:layout_marginVertical="@dimen/_10sdp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvPersonName">
@@ -832,7 +832,7 @@
                     android:background="@drawable/unselect_edit_text_bg_color"
                     android:gravity="center_vertical"
                     android:onClick="@{v->vm.onClick(v)}"
-                    android:paddingStart="@dimen/_10sdp"
+                    android:paddingStart="@dimen/_15sdp"
                     android:paddingEnd="@dimen/_40sdp"
                     android:text="@string/edit_profile"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -861,7 +861,7 @@
                     android:background="@drawable/unselect_edit_text_bg_color"
                     android:gravity="center_vertical"
                     android:onClick="@{v->vm.onClick(v)}"
-                    android:paddingStart="@dimen/_10sdp"
+                    android:paddingStart="@dimen/_15sdp"
                     android:paddingEnd="@dimen/_40sdp"
                     android:text="@string/change_password"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -893,7 +893,7 @@
                     android:background="@drawable/unselect_edit_text_bg_color"
                     android:gravity="center_vertical"
                     android:onClick="@{v->vm.onClick(v)}"
-                    android:paddingStart="@dimen/_10sdp"
+                    android:paddingStart="@dimen/_15sdp"
                     android:paddingEnd="@dimen/_40sdp"
                     android:text="@string/change_role"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -924,7 +924,7 @@
                     android:background="@drawable/unselect_edit_text_bg_color"
                     android:gravity="center_vertical"
                     android:onClick="@{v->vm.onClick(v)}"
-                    android:paddingStart="@dimen/_10sdp"
+                    android:paddingStart="@dimen/_15sdp"
                     android:paddingEnd="@dimen/_40sdp"
                     android:text="@string/change_language"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -943,6 +943,37 @@
                     app:layout_constraintBottom_toBottomOf="@+id/tvChangeLanguage"
                     app:layout_constraintEnd_toEndOf="@+id/tvChangeLanguage"
                     app:layout_constraintTop_toTopOf="@+id/tvChangeLanguage" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvScheduled"
+                    style="@style/TextView.Medium2"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_38sdp"
+                    android:visibility="@{typeCheck==3?View.VISIBLE:View.GONE}"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:background="@drawable/unselect_edit_text_bg_color"
+                    android:gravity="center_vertical"
+                    android:onClick="@{v->vm.onClick(v)}"
+                    android:paddingStart="@dimen/_15sdp"
+                    android:paddingEnd="@dimen/_40sdp"
+                    android:text="@string/scheduled_visits"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvChangeLanguage" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/ivScheduled"
+                    android:layout_width="@dimen/_27sdp"
+                    android:layout_height="@dimen/_27sdp"
+                    android:layout_marginEnd="@dimen/_14sdp"
+                    android:onClick="@{v->vm.onClick(v)}"
+                    android:visibility="@{typeCheck==3?View.VISIBLE:View.GONE}"
+                    android:padding="@dimen/_5sdp"
+                    android:rotation="270"
+                    android:src="@drawable/arrow_up"
+                    app:layout_constraintBottom_toBottomOf="@+id/tvScheduled"
+                    app:layout_constraintEnd_toEndOf="@+id/tvScheduled"
+                    app:layout_constraintTop_toTopOf="@+id/tvScheduled" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.core.widget.NestedScrollView>
 
