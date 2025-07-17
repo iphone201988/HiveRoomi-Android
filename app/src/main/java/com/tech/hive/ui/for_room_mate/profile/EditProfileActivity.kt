@@ -47,8 +47,10 @@ class EditProfileActivity : BaseActivity<ActivityEditProfileBinding>() {
     private var multipartImage: MultipartBody.Part? = null
     private var personal: BaseCustomDialog<PersonalDialogItemBinding>? = null
     private lateinit var ageAdapter: SimpleRecyclerViewAdapter<String, UnPinLayoutBinding>
-
-    var type = 0
+    private var type = 1
+    private var editType =0
+    private var userIdProof = ""
+    private var ownerShipProof = ""
 
     override fun getLayoutResource(): Int {
         return R.layout.activity_edit_profile
@@ -65,23 +67,29 @@ class EditProfileActivity : BaseActivity<ActivityEditProfileBinding>() {
         initOnClick()
         // observer
         initObserver()
-        type = 1
-        // api call for profile
-        viewModel.getUserProfile(Constants.USER_ME)
+        type = 0
 
         // intent
         val intent = intent
         val type = intent.getStringExtra("sendType")
         when (type) {
             "first" -> {
+                editType =1
                 binding.visibilityType = 1
             }
 
             "third" -> {
+                editType =2
                 binding.visibilityType = 2
             }
 
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        // api call for profile
+        viewModel.getUserProfile(Constants.USER_ME)
     }
 
     /** handle view **/
@@ -119,6 +127,10 @@ class EditProfileActivity : BaseActivity<ActivityEditProfileBinding>() {
         data["address"] = location.toRequestBody()
         data["latitude"] = BindingUtils.latitude.toString().toRequestBody()
         data["longitude"] = BindingUtils.longitude.toString().toRequestBody()
+
+        if (editType==2){
+            data["providerType"] = binding.etProvider.text.toString().trim().toRequestBody()
+        }
         viewModel.userUpdateProfile(data, multipartImage)
     }
 
@@ -181,10 +193,12 @@ class EditProfileActivity : BaseActivity<ActivityEditProfileBinding>() {
                 }
                 R.id.etDocuments , R.id.ivDocuments->{
                     val intent = Intent(this@EditProfileActivity, UpdateDocumentActivity::class.java)
+                    intent.putExtra("userIdImage",userIdProof)
+                    intent.putExtra("ownerIdImage",ownerShipProof)
                     startActivity(intent)
                 }
                 R.id.etProvider , R.id.ivProvider->{
-
+                    personalDialog(5)
                 }
             }
         }
@@ -269,6 +283,8 @@ class EditProfileActivity : BaseActivity<ActivityEditProfileBinding>() {
                                     BindingUtils.parseJson(it.data.toString())
                                 if (myDataModel?.data != null) {
                                     binding.bean = myDataModel.data
+                                    userIdProof = myDataModel.data.userIdProof.toString()
+                                    ownerShipProof = myDataModel.data.onwershipProof.toString()
                                 }
                             } catch (e: Exception) {
                                 Log.e("error", "getHomeApi: $e")
@@ -342,6 +358,9 @@ class EditProfileActivity : BaseActivity<ActivityEditProfileBinding>() {
                         4 -> {
                             binding.etCampus.setText(m.toString())
                         }
+                        5 -> {
+                            binding.etProvider.setText(m.toString())
+                        }
                     }
                     personal?.dismiss()
                 }
@@ -362,6 +381,9 @@ class EditProfileActivity : BaseActivity<ActivityEditProfileBinding>() {
 
             4 -> {
                 ageAdapter.list = campusList()
+            }
+            5 -> {
+                ageAdapter.list = providerList()
             }
         }
         personal?.binding?.rvPersonal?.adapter = ageAdapter
@@ -536,5 +558,16 @@ class EditProfileActivity : BaseActivity<ActivityEditProfileBinding>() {
         )
     }
 
+
+    private fun providerList(): ArrayList<String> {
+        return arrayListOf(
+            getString(R.string.landlord),
+            getString(R.string.tenant_subletting),
+            getString(R.string.real_estate_agency),
+            getString(R.string.property_owner),
+            getString(R.string.current_tenant_leaving_the_room),
+
+        )
+    }
 
 }

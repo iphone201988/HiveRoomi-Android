@@ -1,5 +1,6 @@
 package com.tech.hive.ui.for_room_mate.settings_screen
 
+import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
 import com.tech.hive.BR
@@ -8,12 +9,18 @@ import com.tech.hive.base.BaseActivity
 import com.tech.hive.base.BaseViewModel
 import com.tech.hive.base.SimpleRecyclerViewAdapter
 import com.tech.hive.base.utils.BindingUtils
+import com.tech.hive.base.utils.Status
+import com.tech.hive.base.utils.showErrorToast
+import com.tech.hive.base.utils.showSuccessToast
+import com.tech.hive.data.model.CommonQuestionsData
+import com.tech.hive.data.model.CommonQuestionsResponse
 import com.tech.hive.data.model.CommunityModel
 import com.tech.hive.data.model.PrivacyModel
 import com.tech.hive.databinding.ActivityCommunityBinding
 import com.tech.hive.databinding.CommunityRvItemBinding
 import com.tech.hive.databinding.PrivacyPolicyRvItemBinding
 import com.tech.hive.ui.for_room_mate.settings.SettingsVM
+import com.tech.hive.ui.for_room_mate.settings_screen.FrequentQuestionsActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -21,7 +28,7 @@ class CommunityActivity : BaseActivity<ActivityCommunityBinding>() {
     private val viewModel: SettingsVM by viewModels()
 
     // adapter
-    private lateinit var communityAdapter: SimpleRecyclerViewAdapter<CommunityModel, CommunityRvItemBinding>
+    private lateinit var communityAdapter: SimpleRecyclerViewAdapter<CommonQuestionsData, CommunityRvItemBinding>
     private lateinit var privacyPolicyAdapter: SimpleRecyclerViewAdapter<PrivacyModel, PrivacyPolicyRvItemBinding>
     override fun getLayoutResource(): Int {
         return R.layout.activity_community
@@ -43,6 +50,7 @@ class CommunityActivity : BaseActivity<ActivityCommunityBinding>() {
         val intent = intent.getStringExtra("typeCommunity")
         if (intent != null) {
             if (intent.contains("community")) {
+
                 binding.tvHeading.text = getString(R.string.welcome_to_nour_community)
                 binding.tvSubHeading.text = getString(R.string.community_title)
                 binding.btnGotIt.text = getString(R.string.got_it)
@@ -51,6 +59,8 @@ class CommunityActivity : BaseActivity<ActivityCommunityBinding>() {
                     getString(R.string.i_have_read_and_agree_to_follow_the_community_guidelines)
                 binding.rvPrivacy.visibility = View.INVISIBLE
                 binding.rvCommunity.visibility = View.VISIBLE
+                // api call
+                viewModel.askedQuestionsApiCall(com.tech.hive.data.api.Constants.USER_COMMUNITY_GUIDELINES)
             } else {
                 binding.tvHeading.text = getString(R.string.your_privacy_matters)
                 binding.tvSubHeading.text = getString(R.string.privacy_policy_title)
@@ -78,7 +88,10 @@ class CommunityActivity : BaseActivity<ActivityCommunityBinding>() {
         viewModel.onClick.observe(this) {
             when (it?.id) {
                 R.id.ivBack -> {
-                    onBackPressedDispatcher.onBackPressed()
+                    finish()
+                }
+                R.id.btnGotIt -> {
+                  finish()
                 }
 
                 R.id.ivCheck -> {
@@ -92,8 +105,45 @@ class CommunityActivity : BaseActivity<ActivityCommunityBinding>() {
 
     /** handle api response **/
     private fun initObserver() {
+        viewModel.settingObserver.observe(this@CommunityActivity) {
+            when (it?.status) {
+                Status.LOADING -> {
+                    showLoading()
+                }
 
+                Status.SUCCESS -> {
+                    when (it.message) {
+                        "askedQuestionsApiCall" -> {
+                            try {
+                                val myDataModel: CommonQuestionsResponse? =
+                                    BindingUtils.parseJson(it.data.toString())
+                                if (myDataModel != null) {
+                                    communityAdapter.list = myDataModel.data
+                                    showSuccessToast(myDataModel.message.toString())
+
+                                }
+                            } catch (e: Exception) {
+                                Log.e("error", "getHomeApi: $e")
+                            } finally {
+                                hideLoading()
+                            }
+                        }
+
+                    }
+                }
+
+                Status.ERROR -> {
+                    hideLoading()
+                    showErrorToast(it.message.toString())
+                }
+
+                else -> {
+
+                }
+            }
+        }
     }
+
 
     /** handle adapter **/
     private fun initAdapter() {
@@ -105,7 +155,7 @@ class CommunityActivity : BaseActivity<ActivityCommunityBinding>() {
                     }
                 }
             }
-        communityAdapter.list = getList()
+
         binding.rvCommunity.adapter = communityAdapter
 
         privacyPolicyAdapter =
@@ -118,60 +168,6 @@ class CommunityActivity : BaseActivity<ActivityCommunityBinding>() {
             }
         privacyPolicyAdapter.list = getPrivacyList()
         binding.rvPrivacy.adapter = privacyPolicyAdapter
-    }
-
-    // list
-    private fun getList(): ArrayList<CommunityModel> {
-        val list = ArrayList<CommunityModel>()
-        list.add(
-            CommunityModel(
-                "Be Respectful",
-                "Lorem Ipsum is simply dummy text of the printing and typesetting industry."
-            )
-        )
-        list.add(
-            CommunityModel(
-                "Be Respectful",
-                "Lorem Ipsum is simply dummy text of the printing and typesetting industry."
-            )
-        )
-        list.add(
-            CommunityModel(
-                "Be Respectful",
-                "Lorem Ipsum is simply dummy text of the printing and typesetting industry."
-            )
-        )
-        list.add(
-            CommunityModel(
-                "Be Respectful",
-                "Lorem Ipsum is simply dummy text of the printing and typesetting industry."
-            )
-        )
-        list.add(
-            CommunityModel(
-                "Be Respectful",
-                "Lorem Ipsum is simply dummy text of the printing and typesetting industry."
-            )
-        )
-        list.add(
-            CommunityModel(
-                "Be Respectful",
-                "Lorem Ipsum is simply dummy text of the printing and typesetting industry."
-            )
-        )
-        list.add(
-            CommunityModel(
-                "Be Respectful",
-                "Lorem Ipsum is simply dummy text of the printing and typesetting industry."
-            )
-        )
-        list.add(
-            CommunityModel(
-                "Be Respectful",
-                "Lorem Ipsum is simply dummy text of the printing and typesetting industry."
-            )
-        )
-        return list
     }
 
 

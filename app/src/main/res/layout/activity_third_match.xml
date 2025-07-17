@@ -119,6 +119,92 @@
                     app:shapeAppearance="@style/Shape10" />
 
 
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/ivViews"
+                    android:layout_width="@dimen/_18sdp"
+                    android:layout_height="@dimen/_18sdp"
+                    android:layout_marginBottom="@dimen/_15sdp"
+                    android:layout_marginStart="@dimen/_15sdp"
+                    android:src="@drawable/eyes"
+                    app:layout_constraintStart_toStartOf="@id/ivImage"
+                    app:layout_constraintBottom_toBottomOf="@+id/ivImage"
+                    app:tint="@color/white" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvViews"
+                    style="@style/TextView.Regular"
+                    android:layout_marginStart="@dimen/_4sdp"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_11ssp"
+                    app:layout_constraintStart_toEndOf="@+id/ivViews"
+                    app:layout_constraintTop_toTopOf="@+id/ivViews"
+                    app:layout_constraintBottom_toBottomOf="@+id/ivViews" />
+
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/ivFav"
+                    android:layout_width="@dimen/_18sdp"
+                    android:layout_height="@dimen/_18sdp"
+                    android:layout_marginStart="@dimen/_8sdp"
+                    android:src="@drawable/eyes"
+                    app:layout_constraintStart_toEndOf="@id/tvViews"
+                    app:layout_constraintTop_toTopOf="@+id/ivViews"
+                    app:layout_constraintBottom_toBottomOf="@+id/ivViews"
+                    app:tint="@color/white" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvFav"
+                    style="@style/TextView.Regular"
+                    android:layout_marginStart="@dimen/_4sdp"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_11ssp"
+                    app:layout_constraintStart_toEndOf="@+id/ivFav"
+                    app:layout_constraintTop_toTopOf="@+id/ivFav"
+                    app:layout_constraintBottom_toBottomOf="@+id/ivFav" />
+
+
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/clRoommate"
+                    android:layout_width="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="@+id/ivFav"
+                    app:layout_constraintTop_toTopOf="@+id/ivFav"
+                    app:layout_constraintEnd_toEndOf="@+id/ivImage"
+                    android:layout_height="@dimen/_24sdp"
+                    android:paddingEnd="@dimen/_6sdp"
+                    android:paddingStart="@dimen/_8sdp"
+                    android:layout_marginStart="@dimen/_15sdp"
+                    android:onClick="@{v->vm.onClick(v)}"
+                    android:layout_marginEnd="@dimen/_12sdp"
+                    android:background="@drawable/bg_matches"
+                  >
+
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tvRoommate"
+                        style="@style/TextView.Medium"
+                        android:layout_width="wrap_content"
+                        android:text="@string/roommate"
+                        android:textColor="@color/white"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                         android:textSize="@dimen/_10ssp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/ivRoommate"
+                        android:layout_width="@dimen/_12sdp"
+                        android:layout_height="@dimen/_12sdp"
+                        android:layout_marginStart="@dimen/_4sdp"
+                        android:src="@drawable/arrow_up"
+                        android:tint="@color/white"
+                        app:layout_constraintBottom_toBottomOf="@id/tvRoommate"
+                        app:layout_constraintStart_toEndOf="@+id/tvRoommate"
+                        app:layout_constraintTop_toTopOf="@id/tvRoommate" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
                 <View
                     android:id="@+id/reverse"
                     android:layout_width="0dp"

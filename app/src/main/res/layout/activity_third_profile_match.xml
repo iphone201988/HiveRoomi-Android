@@ -18,15 +18,14 @@
             type="com.tech.hive.data.model.MatchProfileData" />
 
         <import type="android.view.View" />
-
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/main"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/white"
-        tools:context=".ui.for_room_mate.home.MatchedProfileActivity">
+        tools:context=".ui.for_room_mate.home.third.ThirdProfileMatchActivity">
+
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/clHeader"
@@ -84,7 +83,7 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/_14sdp">
 
 
@@ -101,6 +100,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:shapeAppearance="@style/Shape15" />
+
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/clStar"
@@ -136,8 +136,8 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
-
                 </androidx.constraintlayout.widget.ConstraintLayout>
+
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tvNameTitle"
@@ -149,7 +149,7 @@
                     android:textSize="@dimen/_12ssp"
                     app:layout_constraintEnd_toStartOf="@id/tvName"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/ivImage" />
+                    app:layout_constraintTop_toBottomOf="@+id/ivImage" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tvName"
@@ -257,6 +257,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tvBioTitle" />
+
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/clPreference"
@@ -751,10 +752,9 @@
                         app:layout_constraintStart_toEndOf="@id/ivReportBefore"
                         app:layout_constraintTop_toTopOf="parent" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
-
             </androidx.constraintlayout.widget.ConstraintLayout>
-        </androidx.core.widget.NestedScrollView>
 
+        </androidx.core.widget.NestedScrollView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -44,7 +44,6 @@ class ProfileFragmentVM @Inject constructor(val apiHelper: ApiHelper) : BaseView
     fun userUpdateProfile(
         data: HashMap<String, RequestBody>,
         userPic: MultipartBody.Part?,
-
         ) {
         CoroutineScope(Dispatchers.IO).launch {
             profileObserver.postValue(Resource.loading(null))
@@ -53,6 +52,26 @@ class ProfileFragmentVM @Inject constructor(val apiHelper: ApiHelper) : BaseView
                     apiHelper.apiForFormDataPutWithToken(Constants.USER_ME, data,userPic)
                 if (response.isSuccessful && response.body() != null) {
                     profileObserver.postValue(Resource.success("userUpdateProfile", response.body()))
+                } else {
+                    profileObserver.postValue(
+                        Resource.error(handleErrorResponse(response.errorBody(),response.code()), null)
+                    )
+                }
+            } catch (e: java.lang.Exception) {
+                profileObserver.postValue(Resource.error(e.message, null))
+            }
+        }
+    }
+
+    fun documentUpdateApiCall(part: MultipartBody.Part?,ownershipProof: MultipartBody.Part?
+        ) {
+        CoroutineScope(Dispatchers.IO).launch {
+            profileObserver.postValue(Resource.loading(null))
+            try {
+                val response =
+                    apiHelper.apiMultipartPutWithoutParam(Constants.USER_ME,part,ownershipProof)
+                if (response.isSuccessful && response.body() != null) {
+                    profileObserver.postValue(Resource.success("documentUpdateApiCall", response.body()))
                 } else {
                     profileObserver.postValue(
                         Resource.error(handleErrorResponse(response.errorBody(),response.code()), null)

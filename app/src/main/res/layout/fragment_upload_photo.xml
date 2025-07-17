@@ -73,18 +73,6 @@
             app:layout_constraintStart_toEndOf="@+id/tvIdUpload"
             app:layout_constraintTop_toTopOf="@+id/tvIdUpload" />
 
-        <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/icAddImg"
-            android:layout_width="0dp"
-            android:layout_height="@dimen/_120sdp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/dummy_person"
-            android:visibility="invisible"
-            android:layout_marginHorizontal="@dimen/_15sdp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvDriver"
-            app:shapeAppearance="@style/Shape16" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvAdd"
@@ -109,6 +97,19 @@
             app:layout_constraintStart_toStartOf="@+id/icAddImg"
             app:layout_constraintTop_toTopOf="@id/icAddImg" />
 
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/icAddImg"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/_120sdp"
+            android:scaleType="centerCrop"
+            android:onClick="@{v->vm.onClick(v)}"
+            android:src="@drawable/dummy_person"
+            android:visibility="invisible"
+            android:layout_marginHorizontal="@dimen/_15sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvDriver"
+            app:shapeAppearance="@style/Shape16" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvOwnership"
@@ -134,19 +135,6 @@
             app:layout_constraintStart_toEndOf="@+id/tvOwnership"
             app:layout_constraintTop_toTopOf="@+id/tvOwnership" />
 
-        <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/icAddOwnershipImg"
-            android:layout_width="0dp"
-            android:layout_height="@dimen/_120sdp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/dummy_person"
-            android:visibility="invisible"
-            android:layout_marginHorizontal="@dimen/_15sdp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvLandlords"
-            app:shapeAppearance="@style/Shape16" />
-
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvAddOwnership"
             style="@style/TextView.Regular"
@@ -170,6 +158,20 @@
             app:layout_constraintStart_toStartOf="@+id/icAddOwnershipImg"
             app:layout_constraintTop_toTopOf="@id/icAddOwnershipImg" />
 
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/icAddOwnershipImg"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/_120sdp"
+            android:onClick="@{v->vm.onClick(v)}"
+            android:scaleType="centerCrop"
+            android:src="@drawable/dummy_person"
+            android:visibility="invisible"
+            android:layout_marginHorizontal="@dimen/_15sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvLandlords"
+            app:shapeAppearance="@style/Shape16" />
 
 
         <androidx.appcompat.widget.AppCompatTextView

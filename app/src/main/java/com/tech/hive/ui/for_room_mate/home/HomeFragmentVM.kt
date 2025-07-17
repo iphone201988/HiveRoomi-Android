@@ -11,6 +11,8 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import javax.inject.Inject
 
 @HiltViewModel
@@ -206,6 +208,28 @@ class HomeFragmentVM @Inject constructor(val apiHelper: ApiHelper) : BaseViewMod
                 }
             } catch (e: Exception) {
                 Log.i("deleteListingList", "deleteListingList: $e")
+            }
+
+        }
+
+    }
+
+
+    fun basicDetailEditAPiCall(url: String, map: HashMap<String, RequestBody>) {
+        CoroutineScope(Dispatchers.IO).launch {
+            observeCommon.postValue(Resource.loading(null))
+            try {
+                apiHelper.apiForMultipartPut(Constants.userLanguage, url,map).let {
+                    if (it.isSuccessful) {
+                        observeCommon.postValue(Resource.success("basicDetailEditAPiCall", it.body()))
+                    } else observeCommon.postValue(
+                        Resource.error(
+                            handleErrorResponse(it.errorBody()), null
+                        )
+                    )
+                }
+            } catch (e: Exception) {
+                Log.i("basicDetailEditAPiCall", "basicDetailEditAPiCall: $e")
             }
 
         }

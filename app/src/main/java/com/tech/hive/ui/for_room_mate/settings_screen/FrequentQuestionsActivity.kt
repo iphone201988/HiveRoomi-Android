@@ -1,5 +1,6 @@
 package com.tech.hive.ui.for_room_mate.settings_screen
 
+import android.util.Log
 import androidx.activity.viewModels
 import com.tech.hive.BR
 import com.tech.hive.R
@@ -7,7 +8,11 @@ import com.tech.hive.base.BaseActivity
 import com.tech.hive.base.BaseViewModel
 import com.tech.hive.base.SimpleRecyclerViewAdapter
 import com.tech.hive.base.utils.BindingUtils
-import com.tech.hive.data.model.FrequentModel
+import com.tech.hive.base.utils.Status
+import com.tech.hive.base.utils.showErrorToast
+import com.tech.hive.base.utils.showSuccessToast
+import com.tech.hive.data.model.CommonQuestionsData
+import com.tech.hive.data.model.CommonQuestionsResponse
 import com.tech.hive.databinding.ActivityFrequentQuestionsBinding
 import com.tech.hive.databinding.FrequentItemViewBinding
 import com.tech.hive.ui.for_room_mate.settings.SettingsVM
@@ -18,7 +23,7 @@ class FrequentQuestionsActivity : BaseActivity<ActivityFrequentQuestionsBinding>
     private val viewModel: SettingsVM by viewModels()
 
     // adapter
-    private lateinit var frequentAdapter: SimpleRecyclerViewAdapter<FrequentModel, FrequentItemViewBinding>
+    private lateinit var frequentAdapter: SimpleRecyclerViewAdapter<CommonQuestionsData, FrequentItemViewBinding>
     override fun getLayoutResource(): Int {
         return R.layout.activity_frequent_questions
     }
@@ -34,6 +39,8 @@ class FrequentQuestionsActivity : BaseActivity<ActivityFrequentQuestionsBinding>
         initOnClick()
         // observer
         initObserver()
+        // api call
+        viewModel.askedQuestionsApiCall(com.tech.hive.data.api.Constants.USER_FAX)
     }
 
     /** handle view **/
@@ -50,7 +57,7 @@ class FrequentQuestionsActivity : BaseActivity<ActivityFrequentQuestionsBinding>
         viewModel.onClick.observe(this) {
             when (it?.id) {
                 R.id.ivBack -> {
-                    onBackPressedDispatcher.onBackPressed()
+                  finish()
                 }
             }
         }
@@ -59,7 +66,43 @@ class FrequentQuestionsActivity : BaseActivity<ActivityFrequentQuestionsBinding>
 
     /** handle api response **/
     private fun initObserver() {
+        viewModel.settingObserver.observe(this@FrequentQuestionsActivity) {
+            when (it?.status) {
+                Status.LOADING -> {
+                    showLoading()
+                }
 
+                Status.SUCCESS -> {
+                    when (it.message) {
+                        "askedQuestionsApiCall" -> {
+                            try {
+                                val myDataModel: CommonQuestionsResponse? =
+                                    BindingUtils.parseJson(it.data.toString())
+                                if (myDataModel != null) {
+                                    frequentAdapter.list = myDataModel.data
+                                    showSuccessToast(myDataModel.message.toString())
+
+                                }
+                            } catch (e: Exception) {
+                                Log.e("error", "getHomeApi: $e")
+                            } finally {
+                                hideLoading()
+                            }
+                        }
+
+                    }
+                }
+
+                Status.ERROR -> {
+                    hideLoading()
+                    showErrorToast(it.message.toString())
+                }
+
+                else -> {
+
+                }
+            }
+        }
     }
 
     /** handle adapter **/
@@ -72,21 +115,8 @@ class FrequentQuestionsActivity : BaseActivity<ActivityFrequentQuestionsBinding>
                     }
                 }
             }
-        frequentAdapter.list = getList()
-        binding.rvFrequentQn.adapter = frequentAdapter
-    }
 
-    // list
-    private fun getList(): ArrayList<FrequentModel> {
-        val list = ArrayList<FrequentModel>()
-        list.add(FrequentModel("Lorem Ipsum is simply dummy text of the printing and typesetting industry."))
-        list.add(FrequentModel("Lorem Ipsum is simply dummy text of the printing and typesetting industry."))
-        list.add(FrequentModel("Lorem Ipsum is simply dummy text of the printing and typesetting industry."))
-        list.add(FrequentModel("Lorem Ipsum is simply dummy text of the printing and typesetting industry."))
-        list.add(FrequentModel("Lorem Ipsum is simply dummy text of the printing and typesetting industry."))
-        list.add(FrequentModel("Lorem Ipsum is simply dummy text of the printing and typesetting industry."))
-        list.add(FrequentModel("Lorem Ipsum is simply dummy text of the printing and typesetting industry."))
-        return list
+        binding.rvFrequentQn.adapter = frequentAdapter
     }
 
 

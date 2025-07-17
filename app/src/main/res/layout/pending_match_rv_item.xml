@@ -1,71 +1,101 @@
-<?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="callback"
             type="com.tech.hive.base.SimpleRecyclerViewAdapter.SimpleCallback" />
+
         <variable
             name="pos"
             type="Integer" />
+
         <variable
             name="bean"
             type="com.tech.hive.data.model.PendingMatchData" />
-
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/_15sdp"
-        android:layout_marginHorizontal="@dimen/_6sdp">
-        <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/ivImage"
+        android:layout_marginHorizontal="@dimen/_6sdp"
+        android:layout_marginBottom="@dimen/_15sdp">
+
+        <androidx.cardview.widget.CardView
             android:layout_width="wrap_content"
             android:layout_height="@dimen/_175sdp"
-            app:shapeAppearance="@style/Shape15"
-            setImageFromUrlMatch="@{bean}"
-            android:clipToOutline="true"
-            android:scaleType="centerCrop"
-            android:onClick="@{v->callback.onItemClick(v,bean,pos)}"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"/>
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/ivCancel"
-            android:layout_width="@dimen/_32sdp"
-            android:layout_height="@dimen/_32sdp"
-            android:src="@drawable/ic_match_cancel"
-            android:padding="@dimen/_4sdp"
-            android:onClick="@{v->callback.onItemClick(v,bean,pos)}"
-            android:layout_marginStart="@dimen/_30sdp"
-            android:layout_marginBottom="@dimen/_7sdp"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="2dp"
+            app:cardPreventCornerOverlap="true"
+            app:cardUseCompatPadding="true"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/ivLike"
-            app:layout_constraintBottom_toBottomOf="parent"/>
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/ivLike"
-            android:layout_width="@dimen/_32sdp"
-            android:layout_height="@dimen/_32sdp"
-            android:padding="@dimen/_4sdp"
-            android:src="@drawable/ic_match_like"
-            android:onClick="@{v->callback.onItemClick(v,bean,pos)}"
-            android:layout_marginEnd="@dimen/_30sdp"
-            app:layout_constraintStart_toEndOf="@id/ivCancel"
-            app:layout_constraintTop_toTopOf="@+id/ivCancel"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="@id/ivCancel"/>
-        <androidx.appcompat.widget.AppCompatTextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            style="@style/TextView.Bold"
-            android:textSize="@dimen/_12ssp"
-            setUserNameMatch="@{bean}"
-            android:gravity="center"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginBottom="@dimen/_2sdp"
-            app:layout_constraintBottom_toTopOf="@id/ivCancel"/>
+            app:layout_constraintTop_toTopOf="parent">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/ivImage"
+                    setImageFromUrlMatch="@{bean}"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:clipToOutline="true"
+                    android:foreground="@drawable/gradient_overlay"
+                    android:onClick="@{v -> callback.onItemClick(v, bean, pos)}"
+                    android:scaleType="centerCrop"
+                    app:shapeAppearance="@style/Shape15" />
+
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvUserName"
+                    style="@style/TextView.Bold"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:layout_marginBottom="@dimen/_35sdp"
+                    android:gravity="center"
+                    android:padding="@dimen/_6sdp"
+                    setUserNameMatch="@{bean}"
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/_12ssp"
+             />
+
+
+                <LinearLayout
+                    android:id="@+id/clLinier"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:layout_marginBottom="@dimen/_8sdp"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:paddingTop="@dimen/_6sdp">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/ivCancel"
+                        android:layout_width="@dimen/_32sdp"
+                        android:layout_height="@dimen/_32sdp"
+                        android:layout_marginStart="@dimen/_15sdp"
+                        android:onClick="@{v -> callback.onItemClick(v, bean, pos)}"
+                        android:padding="@dimen/_4sdp"
+                        android:src="@drawable/ic_match_cancel" />
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/ivLike"
+                        android:layout_width="@dimen/_32sdp"
+                        android:layout_height="@dimen/_32sdp"
+                        android:layout_marginStart="@dimen/_6sdp"
+                        android:layout_marginEnd="@dimen/_15sdp"
+                        android:onClick="@{v -> callback.onItemClick(v, bean, pos)}"
+                        android:padding="@dimen/_4sdp"
+                        android:src="@drawable/ic_match_like" />
+                </LinearLayout>
+
+            </FrameLayout>
+        </androidx.cardview.widget.CardView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

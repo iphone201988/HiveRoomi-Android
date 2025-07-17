@@ -50,7 +50,7 @@ class MySplashActivity : BaseActivity<ActivityMySplashBinding>(), LocationResult
 
                 }
                 userdata.profileRole==3 -> {
-                    sharedPrefManager.saveRole(3)
+                 sharedPrefManager.saveRole(3)
 
                 }
             }

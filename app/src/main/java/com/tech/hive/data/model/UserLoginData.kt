@@ -9,12 +9,24 @@ data class CommonResponse(
     val message: String?, val success: Boolean?
 )
 
+/*** rating response **/
 data class RatingsResponse(
-    val `data`: Data?, val message: String?, val success: Boolean?
+    val `data`: RatingsData?, val message: String?, val success: Boolean?
 )
 
-data class Data(
+data class RatingsData(
     val averageRating: Double?, val totalRatings: Int?
+)
+/** Frequently Asked Questions Response **/
+data class CommonQuestionsResponse(
+    val `data`: List<CommonQuestionsData?>?,
+    val message: String?,
+    val success: Boolean?
+)
+
+data class CommonQuestionsData(
+    val answer: String?,
+    val question: String?
 )
 
 /** login and signup response ***/
@@ -197,7 +209,8 @@ data class HomeApiResponse(
     val `data`: List<HomeApiData?>?,
     val message: String?,
     val pagination: Pagination?,
-    val success: Boolean?
+    val success: Boolean?,
+    val unReadNotifications: Int?
 ): Parcelable
 @Parcelize
 data class HomeApiData(
@@ -229,7 +242,8 @@ data class HomeRoomType(
     val `data`: List<HomeRoomTData?>?,
     val message: String?,
     val pagination: Pagination?,
-    val success: Boolean?
+    val success: Boolean?,
+    val unReadNotifications: Int?
 
 
 ): Parcelable
@@ -309,7 +323,6 @@ data class ListingRoommate(
     val _id: String?, val age: Int?, val gender: String?
 ): Parcelable
 
-
 /** Get Chat Response  **/
 @Parcelize
 data class GetChatResponse(
@@ -318,7 +331,8 @@ data class GetChatResponse(
     val onlineUsers: List<OnlineUser>?,
     val pagination: Pagination?,
     val success: Boolean?,
-    val unReadMessageCount: Int?
+    val unReadMessageCount: Int?,
+    val unReadNotifications: Int?
 ): Parcelable
 @Parcelize
 data class GetChatData(
@@ -330,7 +344,10 @@ data class OnlineUser(
 ): Parcelable
 @Parcelize
 data class Pagination(
-    val limit: Int?, val page: Int?, val total: Int?
+    val currentPage: Int?,
+    val total: Int?,
+    val totalPages: Int?
+
 ): Parcelable
 @Parcelize
 data class Messages(
@@ -373,7 +390,9 @@ data class OtherUser(
 ): Parcelable
 
 data class ChatPagination(
-    val limit: Int?, val page: Int?, val total: Int?
+    val currentPage: Int?,
+    val total: Int?,
+    val totalPages: Int?
 )
 
 data class Sender(
@@ -614,9 +633,6 @@ data class SenderId(
 ): Parcelable
 
 /** roommates request  model **/
-
-class RoomMateModel : ArrayList<RoomMateModelItem>()
-
 data class RoomMateModelItem(
     val gender: String?, val age: String?
 
@@ -664,20 +680,13 @@ data class PostListingData(
     val status: Int?,
     val title: String?,
     val updatedAt: String?,
-    val userId: PostListingUserId?,
+    val userId: String?,
     val utilitiesPrice: Int?,
     val videos: String?,
     val viewCount: Int?,
     val washingMachine: Boolean?,
     val wifi: Boolean?
 )
-
-@Parcelize
-data class PostListingUserId(
-    val _id: String?, val name: String?, val profileImage: String?
-): Parcelable
-
-
 /** get listing response **/
 @Parcelize
 data class GetListingResponse(
@@ -725,13 +734,55 @@ data class GetListingData(
     val status: Int?,
     val title: String?,
     val updatedAt: String?,
-    val userId: PostListingUserId?,
+    val userId: String?,
     val utilitiesPrice: Int?,
     val videos: String?,
     val viewCount: Int?,
     val washingMachine: Boolean?,
     val wifi: Boolean?,
-    var check : Boolean = false
+    var check : Boolean = false,
+    val lsitingCreatedUser: LisitingCreatedUser?,
+
+
+):Parcelable
+
+@Parcelize
+data class LisitingCreatedUser(
+    val _id: String?,
+    val name: String?,
+    val profileImage: String?
 ):Parcelable
 
 
+/** id update response **/
+data class UserIdUpdateResponse(
+    val `data`: UserIdUpdateData?,
+    val message: String?,
+    val success: Boolean?
+)
+
+data class UserIdUpdateData(
+    val _id: String?,
+    val ageRange: String?,
+    val bio: String?,
+    val campus: String?,
+    val email: String?,
+    val gender: String?,
+    val instagram: String?,
+    val isProfileComplete: Boolean?,
+    val isQuizComplete: Boolean?,
+    val isVerified: Boolean?,
+    val language: String?,
+    val latitute: Double?,
+    val linkedin: String?,
+    val longitude: Double?,
+    val name: String?,
+    val onwershipProof: String?,
+    val profession: String?,
+    val profileImage: String?,
+    val profileRole: Int?,
+    val providerType: String?,
+    val timezone: String?,
+    val token: String?,
+    val userIdProof: String?
+)

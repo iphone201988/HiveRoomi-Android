@@ -10,7 +10,8 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.core.content.FileProvider
 import androidx.core.net.toUri
-import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.github.dhaval2404.imagepicker.util.FileUtil
 import com.tech.hive.R
 import com.tech.hive.base.BaseActivity
@@ -20,6 +21,9 @@ import com.tech.hive.base.utils.BaseCustomDialog
 import com.tech.hive.base.utils.BindingUtils
 import com.tech.hive.base.utils.Status
 import com.tech.hive.base.utils.showErrorToast
+import com.tech.hive.base.utils.showSuccessToast
+import com.tech.hive.data.api.Constants
+import com.tech.hive.data.model.UserIdUpdateResponse
 import com.tech.hive.data.model.UserProfileResponse
 import com.tech.hive.databinding.ActivityUpdateDocumentBinding
 import com.tech.hive.databinding.VideoImagePickerDialogBoxBinding
@@ -29,10 +33,8 @@ import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.asRequestBody
-import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.File
 import java.io.IOException
-import kotlin.io.extension
 
 @AndroidEntryPoint
 class UpdateDocumentActivity : BaseActivity<ActivityUpdateDocumentBinding>() {
@@ -56,27 +58,60 @@ class UpdateDocumentActivity : BaseActivity<ActivityUpdateDocumentBinding>() {
         initClick()
         // observer
         initObserver()
+        // get intent data
+        val userIdImage = intent.getStringExtra("userIdImage")
+        val ownerIdImage = intent.getStringExtra("ownerIdImage")
+
+        if (userIdImage?.isNotEmpty() == true) {
+            binding.tvAdd.visibility = View.INVISIBLE
+            binding.icAddImg.visibility = View.VISIBLE
+            Glide.with(this).load(Constants.BASE_URL_IMAGE + userIdImage)
+                .placeholder(R.drawable.progress_animation_small).error(R.drawable.home_dummy_icon)
+                .diskCacheStrategy(DiskCacheStrategy.ALL).into(binding.icAddImg)
+        } else {
+            binding.tvAdd.visibility = View.VISIBLE
+            binding.icAddImg.visibility = View.INVISIBLE
+        }
+        if (ownerIdImage?.isNotEmpty() == true) {
+            Glide.with(this).load(Constants.BASE_URL_IMAGE + ownerIdImage)
+                .placeholder(R.drawable.progress_animation_small).error(R.drawable.home_dummy_icon)
+                .diskCacheStrategy(DiskCacheStrategy.ALL).into(binding.icAddOwnershipImg)
+            binding.icAddOwnershipImg.visibility = View.VISIBLE
+            binding.tvAddOwnership.visibility = View.INVISIBLE
+        } else {
+            binding.icAddOwnershipImg.visibility = View.INVISIBLE
+            binding.tvAddOwnership.visibility = View.VISIBLE
+        }
     }
+
     /*** click event handel ***/
     private fun initClick() {
         viewModel.onClick.observe(this@UpdateDocumentActivity) {
             when (it?.id) {
                 // back button click
                 R.id.ivBack -> {
-                   finish()
+                    finish()
                 }
                 // btnContinue button click
                 R.id.btnContinue -> {
+                    if (firstMultipartImage!=null || secondMultipartImage!=null){
+                        viewModel.documentUpdateApiCall(
+                            firstMultipartImage,
+                            secondMultipartImage
+                        )
+                    }else{
+                        showInfoToast("Please select image")
+                    }
 
 
                 }
                 // open camera
-                R.id.tvAdd -> {
+                R.id.tvAdd,R.id.icAddImg -> {
                     whichImage = 1
                     imageDialog()
                 }
                 // open gallery
-                R.id.tvAddOwnership -> {
+                R.id.tvAddOwnership ,R.id.icAddOwnershipImg-> {
                     whichImage = 2
                     imageDialog()
                 }
@@ -97,12 +132,12 @@ class UpdateDocumentActivity : BaseActivity<ActivityUpdateDocumentBinding>() {
 
                 Status.SUCCESS -> {
                     when (it.message) {
-                        "userPersonalInformation" -> {
+                        "documentUpdateApiCall" -> {
                             try {
-                                val myDataModel: UserProfileResponse? =
+                                val myDataModel: UserIdUpdateResponse? =
                                     BindingUtils.parseJson(it.data.toString())
                                 if (myDataModel != null) {
-
+                                    showSuccessToast(myDataModel.message.toString())
                                 }
 
                             } catch (e: Exception) {
@@ -130,37 +165,38 @@ class UpdateDocumentActivity : BaseActivity<ActivityUpdateDocumentBinding>() {
 
     /**** Edit date and time dialog  handel ***/
     private fun imageDialog() {
-        imageDialog = BaseCustomDialog(this@UpdateDocumentActivity, R.layout.video_image_picker_dialog_box) {
-            when (it.id) {
-                R.id.tvCamera, R.id.imageCamera -> {
-                    if (!BindingUtils.hasPermissions(
-                            this@UpdateDocumentActivity, BindingUtils.permissions
-                        )
-                    ) {
-                        permissionResultLauncher1.launch(BindingUtils.permissions)
-                    } else {
-                        // camera
-                        openCameraIntent()
+        imageDialog =
+            BaseCustomDialog(this@UpdateDocumentActivity, R.layout.video_image_picker_dialog_box) {
+                when (it.id) {
+                    R.id.tvCamera, R.id.imageCamera -> {
+                        if (!BindingUtils.hasPermissions(
+                                this@UpdateDocumentActivity, BindingUtils.permissions
+                            )
+                        ) {
+                            permissionResultLauncher1.launch(BindingUtils.permissions)
+                        } else {
+                            // camera
+                            openCameraIntent()
+                        }
+                        imageDialog!!.dismiss()
                     }
-                    imageDialog!!.dismiss()
-                }
 
-                R.id.imageGallery, R.id.tvGallery -> {
-                    if (!BindingUtils.hasPermissions(
-                            this@UpdateDocumentActivity, BindingUtils.permissions
-                        )
-                    ) {
-                        permissionResultLauncher.launch(BindingUtils.permissions)
+                    R.id.imageGallery, R.id.tvGallery -> {
+                        if (!BindingUtils.hasPermissions(
+                                this@UpdateDocumentActivity, BindingUtils.permissions
+                            )
+                        ) {
+                            permissionResultLauncher.launch(BindingUtils.permissions)
 
-                    } else {
-                        galleryImagePicker()
+                        } else {
+                            galleryImagePicker()
 
+                        }
+                        imageDialog!!.dismiss()
                     }
-                    imageDialog!!.dismiss()
-                }
 
+                }
             }
-        }
         imageDialog!!.create()
         imageDialog!!.show()
 
@@ -204,15 +240,15 @@ class UpdateDocumentActivity : BaseActivity<ActivityUpdateDocumentBinding>() {
                 imageUri?.let {
                     when (whichImage) {
                         1 -> {
-                            binding.tvAdd.visibility= View.INVISIBLE
-                            binding.icAddImg.visibility= View.VISIBLE
+                            binding.tvAdd.visibility = View.INVISIBLE
+                            binding.icAddImg.visibility = View.VISIBLE
                             firstMultipartImage = convertMultipartPartGal1(it)
                             binding.icAddImg.setImageURI(imageUri)
                         }
 
                         2 -> {
-                            binding.icAddOwnershipImg.visibility= View.VISIBLE
-                            binding.tvAddOwnership.visibility= View.INVISIBLE
+                            binding.icAddOwnershipImg.visibility = View.VISIBLE
+                            binding.tvAddOwnership.visibility = View.INVISIBLE
                             secondMultipartImage = convertMultipartPartGal2(it)
                             binding.icAddOwnershipImg.setImageURI(imageUri)
                         }
@@ -270,15 +306,15 @@ class UpdateDocumentActivity : BaseActivity<ActivityUpdateDocumentBinding>() {
                     imageUri.let {
                         when (whichImage) {
                             1 -> {
-                                binding.tvAdd.visibility= View.INVISIBLE
-                                binding.icAddImg.visibility= View.VISIBLE
+                                binding.tvAdd.visibility = View.INVISIBLE
+                                binding.icAddImg.visibility = View.VISIBLE
                                 firstMultipartImage = convertMultipartPart1(it)
                                 binding.icAddImg.setImageURI(imageUri)
                             }
 
                             2 -> {
-                                binding.icAddOwnershipImg.visibility= View.VISIBLE
-                                binding.tvAddOwnership.visibility= View.INVISIBLE
+                                binding.icAddOwnershipImg.visibility = View.VISIBLE
+                                binding.tvAddOwnership.visibility = View.INVISIBLE
                                 secondMultipartImage = convertMultipartPart2(it)
                                 binding.icAddOwnershipImg.setImageURI(imageUri)
                             }

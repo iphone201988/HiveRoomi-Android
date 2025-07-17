@@ -163,12 +163,12 @@ interface ApiService {
 
     @Multipart
     @JvmSuppressWildcards
-    @POST
-    suspend fun apiForPostMultipart(
+    @PUT
+    suspend fun apiMultipartPutWithoutParam(
         @Url url: String,
         @Header("Authorization") token: String,
-        @PartMap data: Map<String, RequestBody>?,
-        @Part parts: MultipartBody.Part?
+        @Part userIdProof: MultipartBody.Part?,
+        @Part ownershipProof: MultipartBody.Part?
     ): Response<JsonObject>
 
 
@@ -177,10 +177,10 @@ interface ApiService {
     @JvmSuppressWildcards
     @PUT
     suspend fun apiForMultipartPut(
+        @Header("Accept-Language") lang: String,
         @Url url: String,
         @Header("Authorization") token: String,
         @PartMap data: Map<String, RequestBody>?,
-        @Part profilePic: MultipartBody.Part?,
     ): Response<JsonObject>
 
 

@@ -34,6 +34,9 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".ui.for_room_mate.home.third.ThirdProfileMatchActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.for_room_mate.profile.UpdateDocumentActivity"
             android:exported="false" />
         <activity

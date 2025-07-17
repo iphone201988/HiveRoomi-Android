@@ -92,11 +92,11 @@ class ProviderTypeFragment : BaseFragment<FragmentProviderTypeBinding>() {
     // question List
     private fun getAnswerList(): ArrayList<Answer> {
         val list = ArrayList<Answer>()
-        list.add(Answer(1, "Landlord","fsfs"))
-        list.add(Answer(1, "Tenant Subletting","fsfs"))
-        list.add(Answer(1, "Real Estate Agency","fsfs"))
-        list.add(Answer(1, "Property Owner","fsfs"))
-        list.add(Answer(1, "Current Tenant Leaving The Room","fsfs"))
+        list.add(Answer(1, getString(R.string.landlord),"fsfs"))
+        list.add(Answer(1, getString(R.string.tenant_subletting),"fsfs"))
+        list.add(Answer(1, getString(R.string.real_estate_agency),"fsfs"))
+        list.add(Answer(1, getString(R.string.property_owner),"fsfs"))
+        list.add(Answer(1, getString(R.string.current_tenant_leaving_the_room),"fsfs"))
         return list
     }
 

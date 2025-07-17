@@ -1,4 +1,4 @@
-package com.tech.hive.ui.for_room_mate.home
+package com.tech.hive.ui.for_room_mate.home.third
 
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -20,18 +20,17 @@ import com.tech.hive.data.model.CommonResponse
 import com.tech.hive.data.model.CompatibilityModel
 import com.tech.hive.data.model.MatchProfileUserResponse
 import com.tech.hive.data.model.RatingsResponse
-import com.tech.hive.databinding.ActivityMatchedProfileBinding
+import com.tech.hive.databinding.ActivityThirdProfileMatchBinding
 import com.tech.hive.databinding.ApartmentImageItemViewBinding
 import com.tech.hive.databinding.CompatibilityItemViewBinding
 import com.tech.hive.databinding.RatingDialogItemBinding
-import com.tech.hive.ui.for_room_mate.home.second.SecondMatchActivity
+import com.tech.hive.ui.for_room_mate.home.HomeFragmentVM
 import com.tech.hive.ui.for_room_mate.messages.chat.ChatActivity
 import com.tech.hive.ui.for_room_mate.settings_screen.ReportActivity
 import dagger.hilt.android.AndroidEntryPoint
 
-
 @AndroidEntryPoint
-class MatchedProfileActivity : BaseActivity<ActivityMatchedProfileBinding>() {
+class ThirdProfileMatchActivity : BaseActivity<ActivityThirdProfileMatchBinding>() {
     private val viewModel: HomeFragmentVM by viewModels()
 
     // adapter
@@ -43,9 +42,8 @@ class MatchedProfileActivity : BaseActivity<ActivityMatchedProfileBinding>() {
     var chatClick = false
     var ratingCount: Int = 0
     var ratingAverage: Double = 0.0
-
     override fun getLayoutResource(): Int {
-        return R.layout.activity_matched_profile
+        return R.layout.activity_third_profile_match
     }
 
     override fun getViewModel(): BaseViewModel {
@@ -60,7 +58,7 @@ class MatchedProfileActivity : BaseActivity<ActivityMatchedProfileBinding>() {
         // observer
         initObserver()
         // intent data
-        profileIdFirst = intent.getStringExtra("profileIdFirst").toString()
+        profileIdFirst = intent.getStringExtra("profileIdThird").toString()
         if (profileIdFirst.isNotEmpty()) {
             val data = HashMap<String, String>()
             viewModel.getMatchedProfile(data, Constants.MATCH_USER_ID + "$profileIdFirst")
@@ -70,8 +68,8 @@ class MatchedProfileActivity : BaseActivity<ActivityMatchedProfileBinding>() {
     /** handle view **/
     private fun initView() {
         // set status bar color
-        BindingUtils.statusBarStyle(this@MatchedProfileActivity)
-        BindingUtils.statusBarTextColor(this@MatchedProfileActivity, false)
+        BindingUtils.statusBarStyle(this@ThirdProfileMatchActivity)
+        BindingUtils.statusBarTextColor(this@ThirdProfileMatchActivity, false)
         // adapter
         initAdapter()
         // get data intent
@@ -89,7 +87,7 @@ class MatchedProfileActivity : BaseActivity<ActivityMatchedProfileBinding>() {
     /** personal dialog  handel ***/
     private fun ratingDialog() {
         ratingDialogItem =
-            BaseCustomDialog(this@MatchedProfileActivity, R.layout.rating_dialog_item) {
+            BaseCustomDialog(this@ThirdProfileMatchActivity, R.layout.rating_dialog_item) {
                 when (it?.id) {
                     R.id.btnContinue -> {
                         val rating = ratingDialogItem?.binding?.llStars?.rating ?: 0f
@@ -102,6 +100,9 @@ class MatchedProfileActivity : BaseActivity<ActivityMatchedProfileBinding>() {
                             showInfoToast("Please select rating")
                         }
 
+                    }
+                    R.id.ivClose->{
+                        ratingDialogItem?.dismiss()
                     }
                 }
             }
@@ -135,7 +136,7 @@ class MatchedProfileActivity : BaseActivity<ActivityMatchedProfileBinding>() {
                 }
 
                 R.id.ivReportBefore, R.id.tvReportBefore -> {
-                    val intent = Intent(this@MatchedProfileActivity, ReportActivity::class.java)
+                    val intent = Intent(this@ThirdProfileMatchActivity, ReportActivity::class.java)
                     intent.putExtra("reportId", commonId)
                     intent.putExtra("reportType", "user")
                     startActivity(intent)
@@ -147,7 +148,8 @@ class MatchedProfileActivity : BaseActivity<ActivityMatchedProfileBinding>() {
 
                 R.id.ivChat, R.id.tvChat -> {
                     if (chatClick) {
-                        val intent = Intent(this@MatchedProfileActivity, ChatActivity::class.java)
+                        val intent =
+                            Intent(this@ThirdProfileMatchActivity, ChatActivity::class.java)
                         intent.putExtra("socketId", commonId)
                         intent.putExtra("matchId", commonId)
                         startActivity(intent)
@@ -156,7 +158,7 @@ class MatchedProfileActivity : BaseActivity<ActivityMatchedProfileBinding>() {
                 }
 
                 R.id.ivReport, R.id.tvReport -> {
-                    val intent = Intent(this@MatchedProfileActivity, ReportActivity::class.java)
+                    val intent = Intent(this@ThirdProfileMatchActivity, ReportActivity::class.java)
                     intent.putExtra("reportId", commonId)
                     intent.putExtra("reportType", "user")
                     startActivity(intent)
@@ -176,16 +178,20 @@ class MatchedProfileActivity : BaseActivity<ActivityMatchedProfileBinding>() {
                     x < sectionWidth -> {
 
                     }
+
                     x < sectionWidth * 2 -> {
                         if (chatClick) {
-                            val intent = Intent(this@MatchedProfileActivity, ChatActivity::class.java)
+                            val intent =
+                                Intent(this@ThirdProfileMatchActivity, ChatActivity::class.java)
                             intent.putExtra("socketId", commonId)
                             intent.putExtra("matchId", commonId)
                             startActivity(intent)
                         }
                     }
+
                     else -> {
-                        val intent = Intent(this@MatchedProfileActivity, ReportActivity::class.java)
+                        val intent =
+                            Intent(this@ThirdProfileMatchActivity, ReportActivity::class.java)
                         intent.putExtra("reportId", commonId)
                         intent.putExtra("reportType", "user")
                         startActivity(intent)
@@ -209,7 +215,7 @@ class MatchedProfileActivity : BaseActivity<ActivityMatchedProfileBinding>() {
                     data["type"] = "user"
                     viewModel.matchLikeApi(Constants.MATCH_LIKE, data)
                 } else {
-                    val intent = Intent(this@MatchedProfileActivity, ReportActivity::class.java)
+                    val intent = Intent(this@ThirdProfileMatchActivity, ReportActivity::class.java)
                     intent.putExtra("reportId", commonId)
                     intent.putExtra("reportType", "user")
                     startActivity(intent)
@@ -221,7 +227,7 @@ class MatchedProfileActivity : BaseActivity<ActivityMatchedProfileBinding>() {
 
     /** handle api response **/
     private fun initObserver() {
-        viewModel.observeCommon.observe(this@MatchedProfileActivity) {
+        viewModel.observeCommon.observe(this@ThirdProfileMatchActivity) {
             when (it?.status) {
                 Status.LOADING -> {
                     showLoading()
@@ -238,16 +244,17 @@ class MatchedProfileActivity : BaseActivity<ActivityMatchedProfileBinding>() {
                                     ratingCount = myDataModel.data.totalRatings ?: 0
                                     ratingAverage = myDataModel.data.averageRating ?: 0.0
                                     commonId = myDataModel.data._id.toString()
-                                    if (!myDataModel.data.linkedin.isNullOrEmpty()){
-                                        binding.tvLinkedin.text = myDataModel.data.linkedin
-                                    }else{
-                                        binding.tvLinkedin.text = getString(R.string.not_connected)
-                                    }
+                                     if (!myDataModel.data.linkedin.isNullOrEmpty()){
+                                         binding.tvLinkedin.text = myDataModel.data.linkedin
+                                     }else{
+                                         binding.tvLinkedin.text = getString(R.string.not_connected)
+                                     }
                                     if (!myDataModel.data.instagram.isNullOrEmpty()) {
                                         binding.tvInstagram.text = myDataModel.data.instagram
                                     } else {
                                         binding.tvInstagram.text = getString(R.string.not_connected)
                                     }
+
                                     when (myDataModel.data.likeStatus) {
                                         1 -> {
                                             binding.tvLike.text = getString(R.string.pending)
@@ -269,6 +276,7 @@ class MatchedProfileActivity : BaseActivity<ActivityMatchedProfileBinding>() {
                                             binding.match = 1
                                         }
                                     }
+
 
                                     for (i in myDataModel.data.quizs!!) {
                                         when (i?.title) {
@@ -296,6 +304,7 @@ class MatchedProfileActivity : BaseActivity<ActivityMatchedProfileBinding>() {
                                         }
 
                                     }
+
                                 }
                             } catch (e: Exception) {
                                 Log.e("error", "getHomeApi: $e")
@@ -320,12 +329,13 @@ class MatchedProfileActivity : BaseActivity<ActivityMatchedProfileBinding>() {
                                 hideLoading()
                             }
                         }
+
                         "userRatings" -> {
                             try {
                                 val myDataModel: RatingsResponse? =
                                     BindingUtils.parseJson(it.data.toString())
                                 if (myDataModel != null) {
-                                    if (myDataModel.data!=null){
+                                    if (myDataModel.data != null) {
                                         ratingCount = myDataModel.data.totalRatings ?: 0
                                         ratingAverage = myDataModel.data.averageRating ?: 0.0
                                     }

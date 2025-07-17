@@ -23,6 +23,7 @@ import com.tech.hive.databinding.PendingMatchRvItemBinding
 import com.tech.hive.ui.for_room_mate.filters.FilterActivity
 import com.tech.hive.ui.for_room_mate.home.MatchedProfileActivity
 import com.tech.hive.ui.for_room_mate.home.second.SecondMatchActivity
+import com.tech.hive.ui.for_room_mate.home.third.ThirdProfileMatchActivity
 import com.tech.hive.ui.room_offering.discover.DiscoverySettingsActivity
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -275,13 +276,18 @@ class MatchesFragment : BaseFragment<FragmentMatchesBinding>() {
                 when (v.id) {
                     // view profile
                     R.id.ivImage -> {
-                        if (m.type?.contains("user") == true) {
+                        val data =  sharedPrefManager.getRole()
+                        if (data ==1 ){
                             val intent = Intent(context, MatchedProfileActivity::class.java)
                             intent.putExtra("profileIdFirst", m.userId?._id)
                             requireContext().startActivity(intent)
-                        }else{
+                        }else if (data == 2){
                             val intent = Intent(context, SecondMatchActivity::class.java)
                             intent.putExtra("profileIdSecond", m.listingId?._id)
+                            requireContext().startActivity(intent)
+                        }else{
+                            val intent = Intent(context, ThirdProfileMatchActivity::class.java)
+                            intent.putExtra("profileIdThird", m.userId?._id)
                             requireContext().startActivity(intent)
                         }
                     }
@@ -301,9 +307,9 @@ class MatchesFragment : BaseFragment<FragmentMatchesBinding>() {
                         val data = HashMap<String, Any>()
                         data["action"] = "reject"   //accept,reject
                         if (m.type?.contains("user") == true) {
-                            data["id"] = m.userId?._id.toString()
+                            data["id"] = m._id.toString()
                         } else {
-                            data["id"] = m.listingId?._id.toString()
+                            data["id"] = m._id.toString()
                         }
                         viewModel.acceptRejectAPi(Constants.MATCH_ACCEPT_REJECT, data)
 
@@ -314,9 +320,9 @@ class MatchesFragment : BaseFragment<FragmentMatchesBinding>() {
                         val data = HashMap<String, Any>()
                         data["action"] = "accept"    //accept,reject
                         if (m.type?.contains("listing") == true) {
-                            data["id"] = m.userId?._id.toString()
+                            data["id"] = m._id.toString()
                         } else {
-                            data["id"] = m.listingId?._id.toString()
+                            data["id"] = m._id.toString()
                         }
                         viewModel.acceptRejectAPi(Constants.MATCH_ACCEPT_REJECT, data)
 

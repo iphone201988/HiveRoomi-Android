@@ -27,6 +27,7 @@ import com.google.android.material.imageview.ShapeableImageView
 import com.google.gson.Gson
 import com.tech.hive.R
 import com.tech.hive.data.api.Constants
+import com.tech.hive.data.model.GetListingData
 import com.tech.hive.data.model.HomeRoomTData
 import com.tech.hive.data.model.ImageModel
 import com.tech.hive.data.model.NotificationData
@@ -111,6 +112,31 @@ object BindingUtils {
     }
 
 
+    @BindingAdapter("setFilterName")
+    @JvmStatic
+    fun setFilterName(textView: AppCompatTextView, data: GetListingData?) {
+        if (data != null) {
+            when(data.status) {
+               0->{
+                   textView.text = textView.context.getString(R.string.all)
+               }
+                1->{
+                    textView.text = textView.context.getString(R.string.draft)
+                }
+                2->{
+                    textView.text = textView.context.getString(R.string.active)
+                }
+                3->{
+                    textView.text = textView.context.getString(R.string.paused)
+                }
+                4->{
+                    textView.text = textView.context.getString(R.string.rented)
+                }
+            }
+        }
+    }
+
+
     @BindingAdapter("setImageFromUrl")
     @JvmStatic
     fun setImageFromUrl(image: ShapeableImageView, url: String?) {
@@ -149,27 +175,32 @@ object BindingUtils {
     @JvmStatic
     fun setImageFromUrlMatch(imageView: ShapeableImageView, url: PendingMatchData?) {
         if (url != null) {
-            when {
-                url.type?.contains("user") == true -> {
-                    val imageUrl = url.userId?.profileImage
-                    Glide.with(imageView.context).load(Constants.BASE_URL_IMAGE + imageUrl)
-                        .placeholder(R.drawable.progress_animation_small)
-                        .error(R.drawable.user_place_holder)
-                        .diskCacheStrategy(DiskCacheStrategy.ALL).into(imageView)
-                }
-
-                url.type?.contains("listing") == true -> {
-                    val imageUrl = url.listingId?.images?.firstOrNull()
-                    Glide.with(imageView.context).load(Constants.BASE_URL_IMAGE + imageUrl)
-                        .placeholder(R.drawable.progress_animation_small)
-                        .error(R.drawable.user_place_holder)
-                        .diskCacheStrategy(DiskCacheStrategy.ALL).into(imageView)
-                }
-
-                else -> {
-                    Glide.with(imageView.context).load(R.drawable.user_place_holder).into(imageView)
-                }
-            }
+            val imageUrl = url.userId?.profileImage
+            Glide.with(imageView.context).load(Constants.BASE_URL_IMAGE + imageUrl)
+                .placeholder(R.drawable.progress_animation_small)
+                .error(R.drawable.user_place_holder)
+                .diskCacheStrategy(DiskCacheStrategy.ALL).into(imageView)
+//            when {
+//                url.type?.contains("user") == true -> {
+//                    val imageUrl = url.userId?.profileImage
+//                    Glide.with(imageView.context).load(Constants.BASE_URL_IMAGE + imageUrl)
+//                        .placeholder(R.drawable.progress_animation_small)
+//                        .error(R.drawable.user_place_holder)
+//                        .diskCacheStrategy(DiskCacheStrategy.ALL).into(imageView)
+//                }
+//
+//                url.type?.contains("listing") == true -> {
+//                    val imageUrl = url.listingId?.images?.firstOrNull()
+//                    Glide.with(imageView.context).load(Constants.BASE_URL_IMAGE + imageUrl)
+//                        .placeholder(R.drawable.progress_animation_small)
+//                        .error(R.drawable.user_place_holder)
+//                        .diskCacheStrategy(DiskCacheStrategy.ALL).into(imageView)
+//                }
+//
+//                else -> {
+//                    Glide.with(imageView.context).load(R.drawable.user_place_holder).into(imageView)
+//                }
+//            }
         } else {
             Glide.with(imageView.context).load(R.drawable.user_place_holder).into(imageView)
         }

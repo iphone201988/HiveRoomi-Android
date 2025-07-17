@@ -85,10 +85,17 @@ class MessagesFragment : BaseFragment<FragmentMessagesBinding>() {
                                     BindingUtils.parseJson(it.data.toString())
                                 if (myDataModel?.data != null) {
                                     var count = myDataModel.unReadMessageCount ?: 0
+                                    var notificationCount = myDataModel.unReadNotifications ?: 0
+                                    if (notificationCount>0){
+                                        binding.ivNotificationCount.text = "$notificationCount"
+                                        binding.ivNotificationCount.visibility = View.VISIBLE
+                                    }else{
+                                        binding.ivNotificationCount.visibility = View.GONE
+                                    }
                                     if (count > 0) {
                                         binding.tvMsgCount.text = "$count New Messages"
                                     } else {
-                                        binding.tvMsgCount.text = ""
+                                        binding.tvMsgCount.text = "0 New Message"
                                     }
                                     chatAdapter.clearList()
                                     statusAdapter.clearList()
@@ -97,21 +104,16 @@ class MessagesFragment : BaseFragment<FragmentMessagesBinding>() {
 
                                     if (chatAdapter.list.isEmpty()){
                                         binding.tvEmptyChat.visibility = View.VISIBLE
-                                        binding.ivSettings.visibility = View.GONE
                                         binding.tvAllMsgs.visibility = View.GONE
-                                        binding.ivSettings.visibility = View.GONE
                                         binding.tvAllMsgs.visibility = View.GONE
                                     }else{
-                                        binding.ivSettings.visibility = View.VISIBLE
                                         binding.tvAllMsgs.visibility = View.VISIBLE
                                     }
 
                                 }
                             } catch (e: Exception) {
                                 binding.tvEmptyChat.visibility = View.VISIBLE
-                                binding.ivSettings.visibility = View.GONE
                                 binding.tvAllMsgs.visibility = View.GONE
-                                binding.ivSettings.visibility = View.GONE
                                 binding.tvAllMsgs.visibility = View.GONE
 
                                 Log.e("error", "getHomeApi: $e")
@@ -127,7 +129,6 @@ class MessagesFragment : BaseFragment<FragmentMessagesBinding>() {
 
                 Status.ERROR -> {
                     binding.tvEmptyChat.visibility = View.VISIBLE
-                    binding.ivSettings.visibility = View.GONE
                     binding.tvAllMsgs.visibility = View.GONE
                     hideLoading()
                     showErrorToast(it.message.toString())

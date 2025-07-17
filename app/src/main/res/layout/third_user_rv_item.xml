@@ -72,7 +72,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/_20sdp"
                 android:layout_marginStart="@dimen/_5ssp"
-                android:text='@{bean.status == 1 ? "Active" : "Rented"}'
+                setFilterName="@{bean}"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_9ssp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -175,7 +175,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_4sdp"
-            android:text='@{String.valueOf(bean.viewCount) + " View"}'
+            android:text='@{String.valueOf(bean.viewCount) + " Views"}'
             android:textColor="@color/black_24"
             android:textSize="@dimen/_10ssp"
             app:layout_constraintBottom_toBottomOf="@+id/ivView"

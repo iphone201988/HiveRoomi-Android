@@ -42,12 +42,13 @@ interface ApiHelper {
         url: String, map: HashMap<String, RequestBody>, part: MutableList<MultipartBody.Part>,video: MultipartBody.Part?
     ): Response<JsonObject>
 
-    suspend fun apiForPostMultipart(
-        url: String, map: HashMap<String, RequestBody>?, part: MultipartBody.Part?
+    suspend fun apiMultipartPutWithoutParam(
+        url: String, part: MultipartBody.Part?,ownershipProof: MultipartBody.Part?
     ): Response<JsonObject>
 
     suspend fun apiForMultipartPut(
-        url: String, map: HashMap<String, RequestBody>?, part: MultipartBody.Part?
+        lang: String,
+        url: String, map: HashMap<String, RequestBody>?
     ): Response<JsonObject>
 
     suspend fun apiPutForRawBody(url: String, map: HashMap<String, Any>): Response<JsonObject>

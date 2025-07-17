@@ -70,7 +70,7 @@
                 android:layout_width="@dimen/_28sdp"
                 android:layout_height="@dimen/_28sdp"
                 android:layout_marginTop="-4dp"
-                android:layout_marginEnd="@dimen/_5sdp"
+                android:layout_marginEnd="@dimen/_8sdp"
                 android:onClick="@{v->vm.onClick(v)}"
                 android:padding="@dimen/_4sdp"
                 android:src="@drawable/bell_icon"
@@ -79,6 +79,25 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/tvTitle" />
 
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvNotificationCount"
+                style="@style/TextView.Medium"
+                android:layout_width="wrap_content"
+                android:minWidth="@dimen/_20sdp"
+                android:layout_height="@dimen/_20sdp"
+                android:background="@drawable/circle_icon"
+                android:backgroundTint="@color/white"
+                android:visibility="gone"
+                android:textSize="@dimen/_12ssp"
+                android:gravity="center"
+                android:layout_marginEnd="-8dp"
+                android:layout_marginTop="-8dp"
+                android:textColor="@color/start_color"
+                android:onClick="@{v->vm.onClick(v)}"
+                app:layout_constraintEnd_toEndOf="@+id/ivNotification"
+                app:layout_constraintTop_toTopOf="@id/ivNotification"
+                />
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/ivCalender"
@@ -122,6 +141,27 @@
                 app:layout_constraintBottom_toBottomOf="@id/ivFilter"
                 app:layout_constraintEnd_toStartOf="@+id/ivFilter"
                 app:layout_constraintTop_toTopOf="@id/ivFilter" />
+
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/ivNotificationCount"
+                style="@style/TextView.Medium"
+                android:layout_width="wrap_content"
+                android:minWidth="@dimen/_20sdp"
+                android:layout_height="@dimen/_20sdp"
+                android:background="@drawable/circle_icon"
+                android:backgroundTint="@color/white"
+                android:visibility="gone"
+                android:textSize="@dimen/_12ssp"
+                android:gravity="center"
+                android:layout_marginEnd="-8dp"
+                android:layout_marginTop="-8dp"
+                android:textColor="@color/start_color"
+                android:onClick="@{v->vm.onClick(v)}"
+                app:layout_constraintEnd_toEndOf="@+id/ivSettings"
+                app:layout_constraintTop_toTopOf="@id/ivSettings"
+                />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -321,8 +361,9 @@
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/rvThirdFilterHome"
+            app:layout_constraintVertical_bias="0.0"
+            tools:layout_editor_absoluteX="25dp"
             tools:listitem="@layout/third_user_rv_item" />
-
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/ivCard"

@@ -80,18 +80,19 @@ class ApiHelperImpl @Inject constructor(
         return apiService.apiForPostMultipartPut(lang,url, getTokenFromSPref(), map, part,video)
     }
 
-    override suspend fun apiForPostMultipart(
+    override suspend fun apiMultipartPutWithoutParam(
         url: String,
-        map: HashMap<String, RequestBody>?,
-        part: MultipartBody.Part?,
+        userIdProof: MultipartBody.Part?,
+        ownershipProof: MultipartBody.Part?
     ): Response<JsonObject> {
-        return apiService.apiForPostMultipart(url, getTokenFromSPref(), map, part)
+        return apiService.apiMultipartPutWithoutParam(url, getTokenFromSPref(), userIdProof,ownershipProof)
     }
 
     override suspend fun apiForMultipartPut(
-        url: String, map: HashMap<String, RequestBody>?, part: MultipartBody.Part?
+        lang: String,
+        url: String, map: HashMap<String, RequestBody>?
     ): Response<JsonObject> {
-        return apiService.apiForMultipartPut(url, getTokenFromSPref(), map, part)
+        return apiService.apiForMultipartPut(lang,url, getTokenFromSPref(), map)
     }
 
     override suspend fun apiPutForRawBody(

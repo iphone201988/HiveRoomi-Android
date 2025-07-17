@@ -46,14 +46,36 @@
                 app:layout_constraintStart_toStartOf="parent"/>
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/ivSettings"
-                android:layout_width="@dimen/_20sdp"
-                android:layout_height="@dimen/_20sdp"
+                android:layout_width="@dimen/_25sdp"
+                android:layout_height="@dimen/_25sdp"
                 android:src="@drawable/bell_icon"
-                android:visibility="invisible"
+                android:padding="@dimen/_3sdp"
                 android:onClick="@{v->vm.onClick(v)}"
+                android:layout_marginEnd="@dimen/_6ssp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/tvTitle"
                 app:layout_constraintBottom_toBottomOf="@id/tvTitle"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/ivNotificationCount"
+                style="@style/TextView.Medium"
+                android:layout_width="wrap_content"
+                android:minWidth="@dimen/_20sdp"
+                android:layout_height="@dimen/_20sdp"
+                android:background="@drawable/circle_icon"
+                android:backgroundTint="@color/white"
+                android:visibility="gone"
+                android:text="12"
+                android:textSize="@dimen/_12ssp"
+                android:gravity="center"
+                android:layout_marginEnd="-8dp"
+                android:layout_marginTop="-8dp"
+                android:textColor="@color/start_color"
+                android:onClick="@{v->vm.onClick(v)}"
+                app:layout_constraintEnd_toEndOf="@+id/ivSettings"
+                app:layout_constraintTop_toTopOf="@id/ivSettings"
+               />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvOnlineStatus"

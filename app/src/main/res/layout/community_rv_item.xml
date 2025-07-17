@@ -6,7 +6,7 @@
 
         <variable
             name="bean"
-            type="com.tech.hive.data.model.CommunityModel" />
+            type="com.tech.hive.data.model.CommonQuestionsData" />
 
         <variable
             name="callback"
@@ -24,9 +24,9 @@
         android:layout_height="wrap_content"
         android:layout_marginVertical="@dimen/_5sdp"
         android:background="@drawable/bg_radius_24_with_gradient"
-        android:onClick="@{v-> callback.onItemClick(v,bean,pos)}"
         android:clipToOutline="true"
         android:elevation="@dimen/_3sdp"
+        android:onClick="@{v-> callback.onItemClick(v,bean,pos)}"
         android:paddingTop="@dimen/_10sdp"
         app:layout_constraintTop_toBottomOf="@id/tvSubHeading">
 
@@ -51,7 +51,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_10sdp"
                     android:gravity="start"
-                    android:text="@{bean.title}"
+                    android:text="@{bean.question}"
                     android:textColor="@color/start_color"
                     android:textSize="@dimen/_13ssp"
                     app:layout_constraintStart_toStartOf="parent"
@@ -64,7 +64,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/_8sdp"
                     android:gravity="start"
-                    android:text="@{bean.subTitle}"
+                    android:text="@{bean.answer}"
                     android:textColor="@color/black_24"
                     android:textSize="@dimen/_10ssp"
                     app:layout_constraintBottom_toBottomOf="parent"

@@ -20,7 +20,7 @@ data class BoostPlanModel(
     val duration:String,val price:String,val perDayCost:String,val saving:String,var isSelected:Boolean=false
 )
 
-data class HomeFilterList(
+data class HomeFilterList(val userStatus :Int,
     val name:String,var isSelected:Boolean=false
 )
 

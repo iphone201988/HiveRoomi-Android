@@ -59,4 +59,49 @@ class SettingsVM @Inject constructor(val apiHelper: ApiHelper) : BaseViewModel()
 
     }
 
+
+    fun feedBackApiCall(url: String,request: HashMap<String, Any>) {
+        CoroutineScope(Dispatchers.IO).launch {
+            settingObserver.postValue(Resource.loading(null))
+            try {
+                apiHelper.apiPostForRawBody(Constants.userLanguage, url,request).let {
+                    if (it.isSuccessful) {
+                        settingObserver.postValue(Resource.success("feedBackApiCall", it.body()))
+                    } else settingObserver.postValue(
+                        Resource.error(
+                            handleErrorResponse(it.errorBody()), null
+                        )
+                    )
+                }
+            } catch (e: Exception) {
+                Log.i("feedBackApiCall", "feedBackApiCall: $e")
+            }
+
+        }
+
+    }
+
+
+    fun askedQuestionsApiCall(url: String) {
+        CoroutineScope(Dispatchers.IO).launch {
+            settingObserver.postValue(Resource.loading(null))
+            try {
+                apiHelper.apiGetOnlyAuthToken(Constants.userLanguage, url).let {
+                    if (it.isSuccessful) {
+                        settingObserver.postValue(Resource.success("askedQuestionsApiCall", it.body()))
+                    } else settingObserver.postValue(
+                        Resource.error(
+                            handleErrorResponse(it.errorBody()), null
+                        )
+                    )
+                }
+            } catch (e: Exception) {
+                Log.i("askedQuestionsApiCall", "askedQuestionsApiCall: $e")
+            }
+
+        }
+
+    }
+
+
 }

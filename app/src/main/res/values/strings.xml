@@ -542,5 +542,17 @@
     <string name="tenant_subletting">Tenant Subletting</string>
     <string name="documents">Documents</string>
     <string name="update_documents">Update Documents</string>
+    <string name="landlord">Landlord</string>
+    <string name="real_estate_agency">Real Estate Agency</string>
+    <string name="property_owner">Property Owner</string>
+    <string name="current_tenant_leaving_the_room">Current Tenant Leaving The Room</string>
+    <string name="fast_wi_fi_smart_working_gaming">Fast Wi-Fi (smart working/gaming)</string>
+    <string name="property_features">Property Features</string>
+    <string name="not_connected">Not Connected</string>
+    <string name="all">All</string>
+    <string name="draft">Draft</string>
+    <string name="active">Active</string>
+    <string name="paused">Paused</string>
+    <string name="rented">Rented</string>
 
 </resources>

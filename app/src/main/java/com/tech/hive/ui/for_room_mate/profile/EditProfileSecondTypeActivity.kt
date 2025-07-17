@@ -49,6 +49,7 @@ class EditProfileSecondTypeActivity : BaseActivity<ActivityEditProfileSecondType
     private var personal: BaseCustomDialog<PersonalDialogItemBinding>? = null
     private lateinit var ageAdapter: SimpleRecyclerViewAdapter<String, UnPinLayoutBinding>
 
+
     override fun getLayoutResource(): Int {
         return R.layout.activity_edit_profile_second_type
     }
