@@ -219,8 +219,8 @@ class EditProfileSecondTypeActivity : BaseActivity<ActivityEditProfileSecondType
                 }
 
                 R.id.tvEditPreferencesDetails, R.id.ivChangeLanguage -> {
-                    val intent =
-                        Intent(this@EditProfileSecondTypeActivity, QuizActivity::class.java)
+                    Constants.quiz = true
+                    val intent = Intent(this@EditProfileSecondTypeActivity, QuizActivity::class.java)
                     startActivity(intent)
                 }
             }

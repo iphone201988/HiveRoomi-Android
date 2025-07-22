@@ -395,16 +395,28 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
                                         sharedPrefManager.setLoginData(myDataModel.data)
                                         sharedPrefManager.saveToken(myDataModel.data.token.toString())
                                         sharedPrefManager.saveRole(myDataModel.data.profileRole)
+                                        if (myDataModel.data.isProfileComplete==true){
+                                            sharedPrefManager.saveProfile(true)
+                                        }else{
+                                            sharedPrefManager.saveProfile(false)
+                                        }
 
-                                        val bundle = Bundle().apply {
-                                            putString("userEmail", myDataModel.data.email)
+                                        if (myDataModel.data.isVerified==true){
+                                            sharedPrefManager.saveOtpToken(true)
+                                        }else{
+                                            sharedPrefManager.saveOtpToken(false)
+                                        }
+                                        if (myDataModel.data.isQuizComplete==true){
+                                            sharedPrefManager.saveQuiz(true)
+                                        }else{
+                                            sharedPrefManager.saveQuiz(false)
                                         }
 
                                         if (myDataModel.data.sendOtp == true) {
                                             BindingUtils.navigateWithSlide(
                                                 findNavController(),
                                                 R.id.navigateToVerifyFragment,
-                                                bundle
+                                                null
                                             )
                                         }
                                         else {

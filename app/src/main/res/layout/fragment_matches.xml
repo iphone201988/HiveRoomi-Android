@@ -109,12 +109,10 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/_92sdp"
             android:layout_marginTop="-80dp"
-             android:visibility="gone"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/clHeader" />
-
-
 
 
         <androidx.recyclerview.widget.RecyclerView
@@ -135,8 +133,8 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginTop="@dimen/_15sdp"
-            android:visibility="@{check==2?View.VISIBLE:View.GONE}"
             android:paddingHorizontal="@dimen/_8sdp"
+            android:visibility="@{check==2?View.VISIBLE:View.GONE}"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="@id/view"
@@ -152,12 +150,10 @@
             android:textColor="@color/black_24"
             android:textSize="@dimen/_14sdp"
             android:visibility="gone"
-            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
-
-
+            app:layout_constraintTop_toTopOf="parent" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

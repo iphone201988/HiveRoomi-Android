@@ -27,8 +27,10 @@ import com.tech.hive.databinding.RvFieldItemBinding
 import com.tech.hive.databinding.RvFieldSecondItemBinding
 import com.tech.hive.ui.for_room_mate.home.HomeFragmentVM
 import com.tech.hive.ui.for_room_mate.home.second.storiesprogressview.StoriesProgressView
+import com.tech.hive.ui.for_room_mate.home.third.ThirdMatchActivity
 import com.tech.hive.ui.for_room_mate.messages.chat.ChatActivity
 import com.tech.hive.ui.for_room_mate.settings_screen.ReportActivity
+import com.tech.hive.ui.video.ShowVideoPlayerActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -38,6 +40,7 @@ class SecondMatchActivity : BaseActivity<ActivitySecondMatchBinding>(), OnMapRea
     private val viewModel: HomeFragmentVM by viewModels()
     var profileIdSecond = ""
     var commonId = ""
+    var videosUrl = ""
     var chatClick = false
     // adapter
     private lateinit var matchAdapter: SimpleRecyclerViewAdapter<MatchProfileModel, RvFieldItemBinding>
@@ -140,6 +143,13 @@ class SecondMatchActivity : BaseActivity<ActivitySecondMatchBinding>(), OnMapRea
                     intent.putExtra("reportType", "listing")
                     startActivity(intent)
                 }
+
+                R.id.clVideo->{
+                    BindingUtils.preventMultipleClick(it)
+                    val intent = Intent(this@SecondMatchActivity, ShowVideoPlayerActivity::class.java)
+                    intent.putExtra("videoUrl", videosUrl)
+                    startActivity(intent)
+                }
             }
         }
 
@@ -216,6 +226,7 @@ class SecondMatchActivity : BaseActivity<ActivitySecondMatchBinding>(), OnMapRea
                                 if (myDataModel?.data != null) {
                                     binding.bean = myDataModel.data
                                     commonId = myDataModel.data._id.toString()
+                                    videosUrl = myDataModel.data.videos ?: ""
                                     when (myDataModel.likeStatus) {
                                         1 -> {
                                             binding.tvLike.text = getString(R.string.pending)

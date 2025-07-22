@@ -6,11 +6,12 @@ import com.tech.hive.R
 import com.tech.hive.base.BaseActivity
 import com.tech.hive.base.BaseViewModel
 import com.tech.hive.base.utils.BindingUtils
+import com.tech.hive.base.utils.Resource
 import com.tech.hive.base.utils.Status
 import com.tech.hive.base.utils.showErrorToast
-import com.tech.hive.data.api.Constants
 import com.tech.hive.data.model.RoleChangeResponse
 import com.tech.hive.databinding.ActivityChangeRoleBinding
+import com.tech.hive.ui.dashboard.DashboardActivity.Companion.bottomNavigationItemCountChange
 import dagger.hilt.android.AndroidEntryPoint
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
@@ -91,6 +92,12 @@ class ChangeRoleActivity : BaseActivity<ActivityChangeRoleBinding>() {
                                     BindingUtils.parseJson(it.data.toString())
                                 if (myDataModel?.data != null) {
                                     sharedPrefManager.saveRole(myDataModel.data.profileRole)
+                                    bottomNavigationItemCountChange.postValue(
+                                        Resource.success(
+                                            "changeItemCount",
+                                            true
+                                        )
+                                    )
                                     finish()
                                 }
                             } catch (e: Exception) {
@@ -147,7 +154,7 @@ class ChangeRoleActivity : BaseActivity<ActivityChangeRoleBinding>() {
                 R.id.clRoommate -> {
                     roleType = 1
                     binding.selectType = 1
-                  sharedPrefManager.saveRole(1)
+                    sharedPrefManager.saveRole(1)
 
                 }
                 // Home button click

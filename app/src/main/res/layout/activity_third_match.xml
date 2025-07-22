@@ -243,6 +243,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_60sdp"
                     android:layout_marginHorizontal="@dimen/_16sdp"
+                    android:onClick="@{v->vm.onClick(v)}"
                     android:layout_marginTop="@dimen/_10sdp"
                     android:background="@drawable/gradiant_strock"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -317,6 +318,111 @@
                 </androidx.cardview.widget.CardView>
 
 
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvNameTitle"
+                    style="@style/TextView.Semibold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:layout_marginHorizontal="@dimen/_16sdp"
+                    android:text="@string/provider_information"
+                    android:visibility="@{bean.check?View.GONE:View.VISIBLE}"
+                    android:textSize="@dimen/_12ssp"
+                    android:textColor="@color/start_color"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/flMap" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvName"
+                    style="@style/TextView.Medium"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:gravity="end"
+                    android:maxLines="3"
+                    android:textColor="@color/text_color_grey"
+                    android:text="@string/name"
+                    android:textSize="@dimen/_12ssp"
+                    app:layout_constraintStart_toStartOf="@id/tvNameTitle"
+                    app:layout_constraintTop_toBottomOf="@id/tvNameTitle" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvPreferences"
+                    style="@style/TextView.Regular"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:includeFontPadding="false"
+                    android:layout_marginHorizontal="@dimen/_16sdp"
+                    android:text="Jason Lear"
+                    android:textColor="@color/start_color"
+                    android:textSize="@dimen/_12ssp"
+                    app:layout_constraintBottom_toBottomOf="@+id/tvName"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/tvName" />
+
+
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvProviderType"
+                    style="@style/TextView.Medium"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:gravity="end"
+                    android:maxLines="3"
+                    android:textColor="@color/text_color_grey"
+                    android:text="@string/provider_type"
+                    android:textSize="@dimen/_12ssp"
+                    app:layout_constraintStart_toStartOf="@id/tvName"
+                    app:layout_constraintTop_toBottomOf="@id/tvName" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvProviderTypeValue"
+                    style="@style/TextView.Regular"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:includeFontPadding="false"
+                    android:layout_marginHorizontal="@dimen/_16sdp"
+                    android:text="Jason Lear"
+                    android:textColor="@color/start_color"
+                    android:textSize="@dimen/_12ssp"
+                    app:layout_constraintBottom_toBottomOf="@+id/tvProviderType"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/tvProviderType" />
+
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvInterestedPeoples"
+                    style="@style/TextView.Medium"
+                    android:layout_height="@dimen/_38sdp"
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="@dimen/_12sdp"
+                    android:layout_marginHorizontal="@dimen/_16sdp"
+                    android:gravity="center_vertical"
+                    android:onClick="@{v->vm.onClick(v)}"
+                    android:background="@drawable/unselect_edit_text_bg_color"
+                    android:backgroundTint="#E3E3E7"
+                    android:textSize="@dimen/_12ssp"
+                    android:textColor="@color/black_24"
+                    android:text="@string/interested_peoples"
+                    android:paddingStart="@dimen/_15sdp"
+                    android:paddingEnd="@dimen/_40sdp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvProviderTypeValue" />
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="@dimen/_27sdp"
+                    android:layout_height="@dimen/_27sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:padding="@dimen/_5sdp"
+                    android:src="@drawable/arrow_up"
+                    android:rotation="270"
+                    app:layout_constraintBottom_toBottomOf="@+id/tvInterestedPeoples"
+                    app:layout_constraintEnd_toEndOf="@+id/tvInterestedPeoples"
+                    app:layout_constraintTop_toTopOf="@+id/tvInterestedPeoples" />
+
+
+
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/ivLikeBefore"
                     android:layout_width="0dp"
@@ -328,7 +434,7 @@
                     android:src="@drawable/edit_third_type"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/flMap" />
+                    app:layout_constraintTop_toBottomOf="@+id/tvInterestedPeoples" />
 
 
                 <androidx.appcompat.widget.AppCompatTextView

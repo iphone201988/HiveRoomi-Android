@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="bean"
+            type="com.tech.hive.data.model.VisitData" />
+
+        <variable
+            name="pos"
+            type="Integer" />
+
+        <variable
+            name="callback"
+            type="com.tech.hive.base.SimpleRecyclerViewAdapter.SimpleCallback" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clVisit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:background="@drawable/green_bg"
+        android:backgroundTint="#D9D9D9"
+        android:onClick="@{v->callback.onItemClick(v,bean,pos)}"
+        android:paddingVertical="@dimen/_6sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvEvents">
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvName1"
+            style="@style/TextView.Medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:text="@string/meeting_with"
+            android:textColor="@color/black_24"
+            android:textSize="@dimen/_11ssp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvName"
+            style="@style/TextView.Medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_3sdp"
+            android:text='@{bean.VisitorId.name != null &amp;&amp; !bean.VisitorId.name.isEmpty() ? bean.VisitorId.name : "Unknown"}'
+            android:textColor="@color/end_color"
+            android:textSize="@dimen/_11ssp"
+            app:layout_constraintStart_toEndOf="@+id/tvName1"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvTime"
+            style="@style/TextView.Medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:text="@{bean.time}"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_10ssp"
+            app:layout_constraintBottom_toBottomOf="@+id/tvName"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/tvName" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvAddress"
+            style="@style/TextView.Medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{bean.note}"
+            android:textColor="@color/black_24"
+            android:textSize="@dimen/_10ssp"
+            app:layout_constraintStart_toStartOf="@+id/tvName1"
+            app:layout_constraintTop_toBottomOf="@+id/tvName1" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</layout>

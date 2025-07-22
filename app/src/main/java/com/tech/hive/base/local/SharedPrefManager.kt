@@ -5,6 +5,7 @@ import com.google.gson.Gson
 import com.tech.hive.data.model.LoginData
 import javax.inject.Inject
 import androidx.core.content.edit
+import com.tech.hive.base.utils.getValue
 import com.tech.hive.base.utils.saveValue
 
 class SharedPrefManager @Inject constructor(private val sharedPreferences: SharedPreferences) {
@@ -15,6 +16,9 @@ class SharedPrefManager @Inject constructor(private val sharedPreferences: Share
         const val USER_PROFILE = "UserProfile"
         const val USER_ID = "userId"
         const val ROLE_TYPE = "roleType"
+        const val OTP_TOKEN = "otpToken"
+        const val PROFILE_TOKEN = "profileToken"
+        const val QUIZ_TOKEN = "quizToken"
     }
 
     fun setLoginData(bean: LoginData) {
@@ -40,6 +44,33 @@ class SharedPrefManager @Inject constructor(private val sharedPreferences: Share
         return token
     }
 
+
+
+
+
+    fun saveOtpToken(isProfile: Boolean) {
+        sharedPreferences.saveValue(KEY.OTP_TOKEN, isProfile)
+    }
+
+    fun getOtpToken(): Boolean? {
+        return sharedPreferences.getValue(KEY.OTP_TOKEN, false)
+    }
+
+    fun saveProfile(isProfile: Boolean) {
+        sharedPreferences.saveValue(KEY.PROFILE_TOKEN, isProfile)
+    }
+
+    fun getProfile(): Boolean? {
+        return sharedPreferences.getValue(KEY.PROFILE_TOKEN, false)
+    }
+
+    fun saveQuiz(isProfile: Boolean) {
+        sharedPreferences.saveValue(KEY.QUIZ_TOKEN, isProfile)
+    }
+
+    fun getQuiz(): Boolean? {
+        return sharedPreferences.getValue(KEY.QUIZ_TOKEN, false)
+    }
 
     fun saveSide(token: String) {
         val editor = sharedPreferences.edit()

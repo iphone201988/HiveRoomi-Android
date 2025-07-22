@@ -1,0 +1,99 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="callback"
+            type="com.tech.hive.base.SimpleRecyclerViewAdapter.SimpleCallback" />
+
+        <variable
+            name="pos"
+            type="Integer" />
+
+        <variable
+            name="bean"
+            type="com.tech.hive.data.model.GetMatchData" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_8sdp"
+        android:layout_marginTop="@dimen/_4sdp"
+        android:layout_marginEnd="@dimen/_8sdp"
+        android:paddingBottom="@dimen/_12ssp">
+
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/ivImage"
+            setImageByIdMatch="@{bean.userId.profileImage}"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_175sdp"
+            android:clipToOutline="true"
+            android:foreground="@drawable/gradient_overlay"
+            android:onClick="@{v -> callback.onItemClick(v, bean, pos)}"
+            android:scaleType="centerCrop"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:shapeAppearance="@style/Shape15" />
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvUserName"
+            style="@style/TextView.Bold"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:text="@{bean.userId.name}"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/_12ssp"
+            app:layout_constraintBottom_toTopOf="@+id/ivCancel"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/ivCancel"
+            android:layout_width="@dimen/_32sdp"
+            android:layout_height="@dimen/_32sdp"
+            android:layout_marginStart="@dimen/_15sdp"
+            android:layout_marginBottom="@dimen/_12ssp"
+            android:onClick="@{v -> callback.onItemClick(v, bean, pos)}"
+            android:padding="@dimen/_4sdp"
+            android:src="@drawable/ic_match_cancel"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/ivLike"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/ivLike"
+            android:layout_width="@dimen/_32sdp"
+            android:layout_height="@dimen/_32sdp"
+            android:layout_marginStart="@dimen/_4sdp"
+            android:layout_marginEnd="@dimen/_4sdp"
+            android:onClick="@{v -> callback.onItemClick(v, bean, pos)}"
+            android:padding="@dimen/_4sdp"
+            android:src="@drawable/ic_match_like"
+            app:layout_constraintBottom_toBottomOf="@+id/ivCancel"
+            app:layout_constraintEnd_toStartOf="@+id/ivChat"
+            app:layout_constraintStart_toEndOf="@+id/ivCancel"
+            app:layout_constraintTop_toTopOf="@+id/ivCancel" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/ivChat"
+            android:layout_width="@dimen/_32sdp"
+            android:layout_height="@dimen/_32sdp"
+            android:layout_marginEnd="@dimen/_15sdp"
+            android:onClick="@{v -> callback.onItemClick(v, bean, pos)}"
+            android:padding="@dimen/_4sdp"
+            android:src="@drawable/ic_chat"
+            app:layout_constraintBottom_toBottomOf="@+id/ivCancel"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/ivLike"
+            app:layout_constraintTop_toTopOf="@+id/ivCancel" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -235,4 +235,47 @@ class HomeFragmentVM @Inject constructor(val apiHelper: ApiHelper) : BaseViewMod
         }
 
     }
+
+
+    fun getMatchId(url: String, data : HashMap<String, String>) {
+        CoroutineScope(Dispatchers.IO).launch {
+            observeCommon.postValue(Resource.loading(null))
+            try {
+                apiHelper.apiGetWithQuery(Constants.userLanguage, data,url).let {
+                    if (it.isSuccessful) {
+                        observeCommon.postValue(Resource.success("getMatchId", it.body()))
+                    } else observeCommon.postValue(
+                        Resource.error(
+                            handleErrorResponse(it.errorBody()), null
+                        )
+                    )
+                }
+            } catch (e: Exception) {
+                Log.i("getMatchId", "getMatchId: $e")
+            }
+
+        }
+
+    }
+
+    fun acceptRejectAPi(url: String, request: HashMap<String, Any>) {
+        CoroutineScope(Dispatchers.IO).launch {
+            observeCommon.postValue(Resource.loading(null))
+            try {
+                apiHelper.apiPostForRawBody(Constants.userLanguage, url,request).let {
+                    if (it.isSuccessful) {
+                        observeCommon.postValue(Resource.success("acceptRejectAPi", it.body()))
+                    } else observeCommon.postValue(
+                        Resource.error(
+                            handleErrorResponse(it.errorBody()), null
+                        )
+                    )
+                }
+            } catch (e: Exception) {
+                Log.i("acceptRejectAPi", "likeDisLike: $e")
+            }
+
+        }
+
+    }
 }

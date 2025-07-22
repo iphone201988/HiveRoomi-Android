@@ -20,11 +20,10 @@ import com.tech.hive.databinding.ActivitySettingsBinding
 import com.tech.hive.databinding.DialogDeleteLogoutBinding
 import com.tech.hive.databinding.SettingsItemViewBinding
 import com.tech.hive.ui.auth.AuthActivity
+import com.tech.hive.ui.for_room_mate.settings_screen.CommunityActivity
 import com.tech.hive.ui.for_room_mate.settings_screen.FrequentQuestionsActivity
 import com.tech.hive.ui.for_room_mate.settings_screen.HelpActivity
 import com.tech.hive.ui.for_room_mate.settings_screen.SafetyTipsActivity
-import com.tech.hive.ui.for_room_mate.settings_screen.CommunityActivity
-import com.tech.hive.ui.for_room_mate.settings_screen.ReportActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

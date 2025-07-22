@@ -65,7 +65,8 @@ class HouseholdLifestyleActivity : BaseActivity<ActivityHouseholdLifestyleBindin
     private var balconyType: String? = null
     private var parkingType: String? = null
     private var listingData: GetListingData? = null
-    private var editApiCall =false
+    private var editApiCall = false
+
     companion object {
         var sendImage: MutableList<MultipartBody.Part> = mutableListOf()
         var sendVideo: File? = null
@@ -132,7 +133,7 @@ class HouseholdLifestyleActivity : BaseActivity<ActivityHouseholdLifestyleBindin
 
         listingData = intent.getParcelableExtra<GetListingData>("basicDetail")
         listingData?.let {
-            editApiCall =true
+            editApiCall = true
             binding.btnContinue.text = getString(R.string.update)
             val lookingList = it.lookingFor?.filterNotNull() ?: emptyList()
             lookingAdapter.list = ArrayList(lookingList)
@@ -141,9 +142,9 @@ class HouseholdLifestyleActivity : BaseActivity<ActivityHouseholdLifestyleBindin
             }
             binding.etSmoking.setText(it.smoke)
             binding.etClean.setText(it.cleanliness.toString())
-            if (it.pets == true){
+            if (it.pets == true) {
                 binding.etPets.setText(getString(R.string.yes))
-            }else{
+            } else {
                 binding.etPets.setText(getString(R.string.no))
             }
         }
@@ -203,7 +204,8 @@ class HouseholdLifestyleActivity : BaseActivity<ActivityHouseholdLifestyleBindin
                                     BindingUtils.parseJson(it.data.toString())
                                 if (myDataModel?.data != null) {
                                     val intent = Intent(this, DashboardActivity::class.java)
-                                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                                    intent.flags =
+                                        Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                                     startActivity(intent)
 
                                 }
@@ -216,14 +218,11 @@ class HouseholdLifestyleActivity : BaseActivity<ActivityHouseholdLifestyleBindin
 
                         "basicDetailEditAPiCall" -> {
                             try {
-                                val myDataModel: PostListingResponse? =
-                                    BindingUtils.parseJson(it.data.toString())
-                                if (myDataModel?.data != null) {
-                                    val intent = Intent(this, DashboardActivity::class.java)
-                                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                                    startActivity(intent)
+                                val intent = Intent(this, DashboardActivity::class.java)
+                                intent.flags =
+                                    Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                                startActivity(intent)
 
-                                }
                             } catch (e: Exception) {
                                 Log.e("error", "getHomeApiListening: $e")
                             } finally {
@@ -440,11 +439,11 @@ class HouseholdLifestyleActivity : BaseActivity<ActivityHouseholdLifestyleBindin
         data["cleanliness"] = binding.etClean.text.toString().trim().toRequestBody()
         data["lookingFor"] = lookingJson.toRequestBody() // ["student","workers","anyone"]
 
-        if (editApiCall){
+        if (editApiCall) {
             listingData?._id?.let { id ->
                 viewModel.basicDetailEditAPiCall("listing/$id", data, sendImage, videoMultiplatform)
             }
-        }else{
+        } else {
             viewModel.basicDetailApiCall(
                 Constants.LISTING_CREATE, data, sendImage, videoMultiplatform
             )

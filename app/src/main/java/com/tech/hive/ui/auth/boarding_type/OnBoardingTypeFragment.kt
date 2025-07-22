@@ -1,6 +1,5 @@
 package com.tech.hive.ui.auth.boarding_type
 
-import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -8,7 +7,6 @@ import com.tech.hive.R
 import com.tech.hive.base.BaseFragment
 import com.tech.hive.base.BaseViewModel
 import com.tech.hive.base.utils.BindingUtils
-import com.tech.hive.data.api.Constants
 import com.tech.hive.databinding.FragmentOnBoardingTypeBinding
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -56,12 +54,15 @@ class OnBoardingTypeFragment : BaseFragment<FragmentOnBoardingTypeBinding>() {
                 }
                 // btnContinue button click
                 R.id.btnContinue -> {
-                        BindingUtils.navigateWithSlide(findNavController(), R.id.navigateToLoginFragment, null)
+                    BindingUtils.navigateWithSlide(
+                        findNavController(),
+                        R.id.navigateToLoginFragment,
+                        null
+                    )
                 }
             }
         }
     }
-
 
 
 }

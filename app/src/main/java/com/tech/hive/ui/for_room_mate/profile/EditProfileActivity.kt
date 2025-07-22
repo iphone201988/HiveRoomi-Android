@@ -188,6 +188,7 @@ class EditProfileActivity : BaseActivity<ActivityEditProfileBinding>() {
                 }
 
                 R.id.tvEditPreferencesDetails, R.id.ivChangeLanguage -> {
+                    Constants.quiz = true
                     val intent = Intent(this@EditProfileActivity, QuizActivity::class.java)
                     startActivity(intent)
                 }

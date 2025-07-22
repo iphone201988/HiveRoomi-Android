@@ -39,15 +39,15 @@
 
 
             <com.applandeo.materialcalendarview.CalendarView
-                android:id="@+id/rangeCalenderOneTime"
+                android:id="@+id/calenderView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/_6sdp"
+                android:layout_marginTop="@dimen/_23sdp"
                 app:abbreviationsLabelsColor="@color/black_24"
                 app:daysLabelsColor="@color/black_24"
                 app:headerColor="@color/white"
                 app:headerLabelColor="@color/white"
-                android:layout_marginTop="@dimen/_23sdp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -63,7 +63,7 @@
                 android:onClick="@{v->callback.onViewClick(v)}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/rangeCalenderOneTime" />
+                app:layout_constraintTop_toTopOf="@+id/calenderView" />
 
 
             <androidx.appcompat.widget.AppCompatImageView
@@ -85,8 +85,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:onClick="@{v->callback.onViewClick(v)}"
-                android:textSize="@dimen/_13ssp"
                 android:text="January"
+                android:textSize="@dimen/_13ssp"
                 app:layout_constraintBottom_toBottomOf="@+id/ivStart"
                 app:layout_constraintStart_toEndOf="@id/ivStart"
                 app:layout_constraintTop_toTopOf="@+id/ivStart" />
@@ -153,7 +153,7 @@
                 android:textColor="@color/black_24"
                 android:textSize="@dimen/_14ssp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/rangeCalenderOneTime" />
+                app:layout_constraintTop_toBottomOf="@+id/calenderView" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tvTimes"
@@ -162,12 +162,12 @@
                 android:layout_height="@dimen/_38sdp"
                 android:layout_marginTop="@dimen/_6sdp"
                 android:layout_marginEnd="@dimen/_14sdp"
-                android:textColor="@color/et_hint_color"
                 android:background="@drawable/unselect_edit_text_bg_color"
                 android:gravity="center_vertical"
                 android:onClick="@{v->callback.onViewClick(v)}"
-                android:paddingStart="@dimen/_10sdp"
+                android:paddingStart="@dimen/_15sdp"
                 android:paddingEnd="@dimen/_40sdp"
+                android:textColor="@color/et_hint_color"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/tvTimesTitle"
                 app:layout_constraintTop_toBottomOf="@+id/tvTimesTitle" />
@@ -202,57 +202,59 @@
             <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/etNotes"
                 style="@style/EditText"
+                android:layout_width="0dp"
                 android:layout_height="@dimen/_80sdp"
                 android:layout_marginHorizontal="@dimen/_10sdp"
                 android:layout_marginTop="@dimen/_6sdp"
                 android:background="@drawable/note_bg"
-                android:gravity="start"
+                android:gravity="start|top"
+                android:paddingTop="@dimen/_10sdp"
+                android:paddingBottom="@dimen/_10sdp"
+                android:paddingStart="@dimen/_5sdp"
+                android:paddingEnd="@dimen/_5sdp"
                 android:hint="type here..."
                 android:inputType="textMultiLine"
-                android:imeOptions="actionNext"
-               android:padding="@dimen/_10sdp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tvNote" />
 
 
             <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tvCancel"
-                android:layout_width="0dp"
-                android:layout_height="@dimen/_42sdp"
+                android:id="@+id/tvSendInvite"
                 style="@style/TextView.Medium"
-                android:padding="@dimen/_6sdp"
-                android:onClick="@{v->callback.onViewClick(v)}"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/_38sdp"
                 android:layout_marginStart="@dimen/_10sdp"
                 android:layout_marginTop="@dimen/_20sdp"
-                android:layout_marginBottom="@dimen/_10sdp"
                 android:layout_marginEnd="@dimen/_5sdp"
+                android:layout_marginBottom="@dimen/_10sdp"
                 android:background="@drawable/btn_bg_color"
+                android:onClick="@{v->callback.onViewClick(v)}"
+                android:padding="@dimen/_6sdp"
                 android:text="@string/send_invite"
                 android:textColor="@color/white"
-                app:layout_constraintTop_toBottomOf="@id/etNotes"
+                app:layout_constraintEnd_toStartOf="@id/tvCancel"
                 app:layout_constraintStart_toStartOf="@id/tvTitle"
-                app:layout_constraintEnd_toStartOf="@id/tvLogout"
-                 />
+                app:layout_constraintTop_toBottomOf="@id/etNotes" />
 
             <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tvLogout"
-                android:layout_width="0dp"
-                android:layout_height="@dimen/_42sdp"
+                android:id="@+id/tvCancel"
                 style="@style/TextView.Medium"
-                android:background="@drawable/plan_unselected_bg"
-                app:layout_constraintWidth_percent="0.35"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/_38sdp"
                 android:layout_marginStart="@dimen/_5sdp"
                 android:layout_marginEnd="@dimen/_10sdp"
-                android:padding="@dimen/_6sdp"
+                android:background="@drawable/plan_unselected_bg"
                 android:gravity="center"
-                android:text="@string/cancel"
                 android:onClick="@{v->callback.onViewClick(v)}"
+                android:padding="@dimen/_6sdp"
+                android:text="@string/cancel"
                 android:textColor="@color/black_24"
-                app:layout_constraintTop_toTopOf="@id/tvCancel"
-                app:layout_constraintStart_toEndOf="@+id/tvCancel"
+                app:layout_constraintBottom_toBottomOf="@id/tvSendInvite"
                 app:layout_constraintEnd_toEndOf="@id/tvTitle"
-                app:layout_constraintBottom_toBottomOf="@id/tvCancel" />
+                app:layout_constraintStart_toEndOf="@+id/tvSendInvite"
+                app:layout_constraintTop_toTopOf="@id/tvSendInvite"
+                app:layout_constraintWidth_percent="0.35" />
 
             <androidx.appcompat.widget.AppCompatEditText
                 style="@style/EditText"
@@ -260,12 +262,12 @@
                 android:background="@drawable/note_bg"
                 android:gravity="start"
                 android:hint="type here..."
-                android:visibility="invisible"
                 android:imeOptions="actionNext"
                 android:padding="@dimen/_10sdp"
+                android:visibility="invisible"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvCancel" />
+                app:layout_constraintTop_toBottomOf="@+id/tvSendInvite" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

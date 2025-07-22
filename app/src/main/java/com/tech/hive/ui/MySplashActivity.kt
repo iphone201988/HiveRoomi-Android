@@ -4,9 +4,7 @@ import android.Manifest
 import android.content.Context
 import android.content.Intent
 import android.location.Location
-import android.os.Bundle
 import androidx.activity.viewModels
-import androidx.navigation.fragment.findNavController
 import com.tech.hive.R
 import com.tech.hive.base.BaseActivity
 import com.tech.hive.base.BaseViewModel
@@ -15,7 +13,6 @@ import com.tech.hive.base.location.LocationResultListener
 import com.tech.hive.base.permission.PermissionHandler
 import com.tech.hive.base.permission.Permissions
 import com.tech.hive.base.utils.BindingUtils
-import com.tech.hive.data.api.Constants
 import com.tech.hive.databinding.ActivityMySplashBinding
 import com.tech.hive.ui.auth.AuthActivity
 import com.tech.hive.ui.dashboard.DashboardActivity
@@ -39,28 +36,11 @@ class MySplashActivity : BaseActivity<ActivityMySplashBinding>(), LocationResult
     }
 
     override fun onCreateView() {
-        var userdata = sharedPrefManager.getLoginData()
-        if (userdata!=null){
-            when {
-                userdata.profileRole==1 -> {
-                   sharedPrefManager.saveRole(1)
-                }
-                userdata.profileRole==2 -> {
-                    sharedPrefManager.saveRole(2)
-
-                }
-                userdata.profileRole==3 -> {
-                 sharedPrefManager.saveRole(3)
-
-                }
-            }
-            val intent = Intent(this@MySplashActivity, AuthActivity::class.java)
-            startActivity(intent)
-        }
         // set status bar color
         BindingUtils.statusBarStyle(this@MySplashActivity)
         BindingUtils.statusBarTextColor(this@MySplashActivity, false)
-
+        // check login or verification
+        checkLogin()
         // click
         initClick()
         CoroutineScope(Dispatchers.Main).launch {
@@ -68,8 +48,63 @@ class MySplashActivity : BaseActivity<ActivityMySplashBinding>(), LocationResult
             // check location
             checkLocation()
         }
+    }
+
+    /** check login function **/
+    private fun checkLogin() {
+        var userdata = sharedPrefManager.getLoginData()
+        var otpVerify = sharedPrefManager.getOtpToken()
+        var profileVerify = sharedPrefManager.getProfile()
+        var quizVerify = sharedPrefManager.getQuiz()
+        if (userdata != null) {
+            if (otpVerify == false) {
+                val intent = Intent(this@MySplashActivity, AuthActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                intent.putExtra("rute", "otp")
+                startActivity(intent)
+
+            } else {
+                if (profileVerify == false) {
+                    if (userdata.profileRole == 3) {
+                        val intent = Intent(this@MySplashActivity, AuthActivity::class.java)
+                        intent.flags =
+                            Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                        intent.putExtra("rute", "provider")
+                        startActivity(intent)
+                        // navigate to provider fragment
+                    } else {
+                        val intent = Intent(this@MySplashActivity, AuthActivity::class.java)
+                        intent.flags =
+                            Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                        intent.putExtra("rute", "personal")
+                        startActivity(intent)
+                        // navigate to personal fragment
+                    }
+
+                } else if (quizVerify == false) {
+                    if (userdata.profileRole == 3) {
+                        val intent = Intent(this@MySplashActivity, DashboardActivity::class.java)
+                        intent.flags =
+                            Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                        startActivity(intent)
+                    } else {
+                        val intent = Intent(this@MySplashActivity, QuizActivity::class.java)
+                        intent.flags =
+                            Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                        startActivity(intent)
+
+                    }
+
+                } else {
+                    val intent = Intent(this@MySplashActivity, DashboardActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    startActivity(intent)
 
 
+                }
+            }
+
+        }
     }
 
     /* check location Function */
@@ -111,6 +146,8 @@ class MySplashActivity : BaseActivity<ActivityMySplashBinding>(), LocationResult
                 //  button click
                 R.id.clEmail, R.id.clGoogle, R.id.clFaceBook -> {
                     val intent = Intent(this@MySplashActivity, AuthActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    intent.putExtra("rute", "language")
                     startActivity(intent)
                 }
 

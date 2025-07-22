@@ -17,7 +17,6 @@ import com.tech.hive.base.utils.BindingUtils
 import com.tech.hive.base.utils.Status
 import com.tech.hive.data.api.Constants
 import com.tech.hive.data.model.AccountVerifyResponse
-import com.tech.hive.data.model.CommonResponse
 import com.tech.hive.data.model.ResendOtpResponse
 import com.tech.hive.databinding.FragmentVerifyAccountBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -28,7 +27,7 @@ class VerifyAccountFragment : BaseFragment<FragmentVerifyAccountBinding>() {
     private lateinit var otpETs: Array<AppCompatEditText?>
     private lateinit var otpTimer: CountDownTimer
     private var isOtpComplete = false
-    private var userEmail = ""
+    private var userEmail: String? = null
     override fun getLayoutResource(): Int {
         return R.layout.fragment_verify_account
     }
@@ -45,9 +44,17 @@ class VerifyAccountFragment : BaseFragment<FragmentVerifyAccountBinding>() {
         // observer
         initObserver()
         // intent
-        userEmail = arguments?.getString("userEmail").toString()
+        userEmail = arguments?.getString("userEmail")
         // start timer
         startOtpTimer()
+
+        if (userEmail.isNullOrEmpty()) {
+            val userData = sharedPrefManager.getLoginData()
+            val data = HashMap<String, Any>()
+            data["email"] = userData?.email.toString()
+            data["type"] = 2
+            viewModel.resendOtpApi(Constants.userLanguage, data, Constants.RESEND_OTP)
+        }
     }
 
     /*** click event handel ***/
@@ -67,9 +74,14 @@ class VerifyAccountFragment : BaseFragment<FragmentVerifyAccountBinding>() {
                 }
                 // resend otp button click
                 R.id.tvResendTime -> {
+                    val userData = sharedPrefManager.getLoginData()
                     val data = HashMap<String, Any>()
+                    if (!userEmail.isNullOrEmpty()) {
+                        data["email"] = userEmail.toString()
+                    } else {
+                        data["email"] = userData?.email.toString()
+                    }
                     data["type"] = 2
-                    data["email"] = userEmail
                     viewModel.resendOtpApi(Constants.userLanguage, data, Constants.RESEND_OTP)
                 }
 
@@ -103,10 +115,15 @@ class VerifyAccountFragment : BaseFragment<FragmentVerifyAccountBinding>() {
         try {
             val otpData =
                 "${binding.otpET1.text}" + "${binding.otpET2.text}" + "${binding.otpET3.text}" + "${binding.otpET4.text}"
+            val userData = sharedPrefManager.getLoginData()
             val data = HashMap<String, Any>()
             data["otp"] = otpData
             data["type"] = 1
-            data["email"] = userEmail
+            if (!userEmail.isNullOrEmpty()) {
+                data["email"] = userEmail.toString()
+            } else {
+                data["email"] = userData?.email.toString()
+            }
             viewModel.verifyAccount(Constants.userLanguage, data, Constants.VERIFY_OTP)
         } catch (e: Exception) {
             Log.e("error", "verifyAccount: $e")
@@ -129,8 +146,8 @@ class VerifyAccountFragment : BaseFragment<FragmentVerifyAccountBinding>() {
                                 val myDataModel: AccountVerifyResponse? =
                                     BindingUtils.parseJson(it.data.toString())
                                 if (myDataModel != null) {
-                                    var data = sharedPrefManager.getRole()
-                                    if (data == 3) {
+                                    sharedPrefManager.saveOtpToken(true)
+                                    if (myDataModel.data?.profileRole == 3) {
                                         BindingUtils.navigateWithSlide(
                                             findNavController(),
                                             R.id.navigateToProviderTypeFragment,
@@ -156,8 +173,8 @@ class VerifyAccountFragment : BaseFragment<FragmentVerifyAccountBinding>() {
                             try {
                                 val myDataModel: ResendOtpResponse? =
                                     BindingUtils.parseJson(it.data.toString())
-                                if (myDataModel!=null) {
-                                    if (myDataModel.data!=null){
+                                if (myDataModel != null) {
+                                    if (myDataModel.data != null) {
                                         startOtpTimer()
                                     }
 

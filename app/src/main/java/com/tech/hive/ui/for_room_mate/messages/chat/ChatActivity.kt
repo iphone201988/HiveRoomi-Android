@@ -8,12 +8,15 @@ import android.provider.MediaStore
 import android.util.Log
 import android.view.MotionEvent
 import android.view.View
+import android.view.WindowManager
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.core.content.FileProvider
 import androidx.core.net.toUri
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import com.applandeo.materialcalendarview.EventDay
 import com.applandeo.materialcalendarview.listeners.OnCalendarPageChangeListener
 import com.applandeo.materialcalendarview.listeners.OnDayClickListener
@@ -35,7 +38,6 @@ import com.tech.hive.data.model.GetUserMessageResponse
 import com.tech.hive.data.model.UploadImageResponse
 import com.tech.hive.databinding.ActivityChatBinding
 import com.tech.hive.databinding.CalenderDialogItemBinding
-import com.tech.hive.databinding.PersonalDialogItemBinding
 import com.tech.hive.databinding.UserBlockBottomSheetBinding
 import com.tech.hive.databinding.UserBlockDialogItemBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -51,6 +53,7 @@ import java.net.URISyntaxException
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
+import java.util.TimeZone
 
 
 @AndroidEntryPoint
@@ -68,6 +71,8 @@ class ChatActivity : BaseActivity<ActivityChatBinding>() {
     private var currentPage = 1
     private var filetype = ""
     private var blockById = ""
+    private var selectedDate = ""
+    private var selectedTime = ""
     private lateinit var socket: Socket
 
 
@@ -85,7 +90,6 @@ class ChatActivity : BaseActivity<ActivityChatBinding>() {
             Constants.userId = shareData._id.toString()
             // connect Socket
             socketHandle(shareData._id)
-            Log.d("gfdgfgfg", "onCreateView:${shareData._id} ")
         }
         // view
         initView()
@@ -93,9 +97,21 @@ class ChatActivity : BaseActivity<ActivityChatBinding>() {
         initOnClick()
         // observer
         initObserver()
+        // Make keyboard resize layout
+        window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
+
+        // set status bar color
+        BindingUtils.statusBarStyle(this@ChatActivity)
+
+        // Keyboard insets listener to avoid send button getting hidden
+        ViewCompat.setOnApplyWindowInsetsListener(binding.main) { view, insets ->
+            val imeHeight = insets.getInsets(WindowInsetsCompat.Type.ime()).bottom
+            view.setPadding(0, 0, 0, imeHeight)
+            insets
+        }
     }
 
-
+    /** socket handel **/
     private fun socketHandle(userId: String?) {
         try {
             val options = IO.Options()
@@ -149,6 +165,7 @@ class ChatActivity : BaseActivity<ActivityChatBinding>() {
 
     }
 
+    /** chat data convert **/
     fun convertToChatHistoryApiResponseData(messageDataResponse: GetUserData): GetUserData {
         return GetUserData(
             _id = messageDataResponse._id,
@@ -161,7 +178,7 @@ class ChatActivity : BaseActivity<ActivityChatBinding>() {
     }
 
 
-    // sendMessage
+    /**  send Message   **/
     fun sendMessage(message: String) {
         val messageObject = JSONObject()
         messageObject.put("receiver", socketId)
@@ -172,7 +189,7 @@ class ChatActivity : BaseActivity<ActivityChatBinding>() {
         Log.d("Sockets", "sendMessage: $messageObject")
     }
 
-    // sendImage
+    /**  send Image   **/
     fun sendFileMessage(fileUrl: String, receiverId: String) {
         val messageObject = JSONObject()
         messageObject.put("receiver", receiverId)
@@ -200,7 +217,7 @@ class ChatActivity : BaseActivity<ActivityChatBinding>() {
                                     binding.bean = myDataModel.otherUser
                                     chatAdapter.setList(myDataModel.data.reversed() as List<GetUserData>?)
                                     blockById = myDataModel.checkUserBlock?.blockBy ?: ""
-                                    if (myDataModel.isBlocked == true){
+                                    if (myDataModel.isBlocked == true) {
                                         unBockBottomSheet(1)
                                     }
 
@@ -243,12 +260,28 @@ class ChatActivity : BaseActivity<ActivityChatBinding>() {
                                 hideLoading()
                             }
                         }
+
                         "userUnBlockAPi" -> {
                             try {
                                 val myDataModel: CommonResponse? =
                                     BindingUtils.parseJson(it.data.toString())
                                 if (myDataModel != null) {
-                                    showSuccessToast("user unblock successfully")
+                                    showSuccessToast(myDataModel.message.toString())
+                                }
+                            } catch (e: Exception) {
+                                Log.e("error", "getHomeApi: $e")
+                            } finally {
+                                hideLoading()
+                            }
+                        }
+
+                        "userVisitSchedule" -> {
+                            try {
+                                val myDataModel: CommonResponse? =
+                                    BindingUtils.parseJson(it.data.toString())
+                                if (myDataModel != null) {
+                                    showSuccessToast(myDataModel.message.toString())
+                                    calenderDialog?.dismiss()
                                 }
                             } catch (e: Exception) {
                                 Log.e("error", "getHomeApi: $e")
@@ -271,18 +304,17 @@ class ChatActivity : BaseActivity<ActivityChatBinding>() {
                 }
             }
         }
-
     }
-
 
     /** block dialog  handel ***/
     private fun blockDialogItem() {
         blockDialog = BaseCustomDialog(this@ChatActivity, R.layout.user_block_dialog_item) {
-            when(it?.id){
-                R.id.tvCancel ->{
+            when (it?.id) {
+                R.id.tvCancel -> {
                     blockDialog?.dismiss()
                 }
-                R.id.tvLogout ->{
+
+                R.id.tvLogout -> {
                     val data = HashMap<String, Any>()
                     data["id"] = socketId.toString()
                     viewModel.userBlockAPi(data, Constants.USER_BLOCK)
@@ -297,28 +329,31 @@ class ChatActivity : BaseActivity<ActivityChatBinding>() {
 
     /** block bottom sheet  handel ***/
     private fun unBockBottomSheet(type: Int) {
-        unBlockBottomSheet = BaseCustomBottomSheet(this@ChatActivity, R.layout.user_block_bottom_sheet) {
-           when(it?.id){
-               R.id.tvUnBlock ->{
-                   val data = HashMap<String, Any>()
-                   data["id"] = socketId.toString()
-                   viewModel.userUnBlockAPi(data, Constants.USER_BLOCK)
-                   unBlockBottomSheet?.dismiss()
-               }
-           }
-        }
+        unBlockBottomSheet =
+            BaseCustomBottomSheet(this@ChatActivity, R.layout.user_block_bottom_sheet) {
+                when (it?.id) {
+                    R.id.tvUnBlock -> {
+                        val data = HashMap<String, Any>()
+                        data["id"] = socketId.toString()
+                        viewModel.userUnBlockAPi(data, Constants.USER_BLOCK)
+                        unBlockBottomSheet?.dismiss()
+                    }
+                }
+            }
         unBlockBottomSheet!!.create()
         unBlockBottomSheet!!.show()
-    //    unBlockBottomSheet!!.setCancelable(false)
+        //    unBlockBottomSheet!!.setCancelable(false)
         unBlockBottomSheet!!.setCancelable(true)
         unBlockBottomSheet!!.setCanceledOnTouchOutside(false)
-        if (type==1){
-            if (blockById == sharedPrefManager.getLoginData()?._id){
-                unBlockBottomSheet!!.binding.tvSubHeading.text = getString(R.string.are_you_sure_to_block)
+        if (type == 1) {
+            if (blockById == sharedPrefManager.getLoginData()?._id) {
+                unBlockBottomSheet!!.binding.tvSubHeading.text =
+                    getString(R.string.are_you_sure_to_block)
                 unBlockBottomSheet!!.binding.tvUnBlock.visibility = View.VISIBLE
-            }else{
+            } else {
                 unBlockBottomSheet!!.binding.tvUnBlock.visibility = View.GONE
-                unBlockBottomSheet!!.binding.tvSubHeading.text = getString(R.string.you_have_block_this_user)
+                unBlockBottomSheet!!.binding.tvSubHeading.text =
+                    getString(R.string.you_have_block_this_user)
 
 
             }
@@ -341,8 +376,8 @@ class ChatActivity : BaseActivity<ActivityChatBinding>() {
             data["page"] = currentPage.toString()
             data["limit"] = "10"
             viewModel.getChatWithIdApi(Constants.CHAT_MESSAGE, data)
-        }else{
-            if (matchId?.isNotEmpty() == true){
+        } else {
+            if (matchId?.isNotEmpty() == true) {
                 val data = HashMap<String, String>()
                 data["userId"] = matchId.toString()
                 data["page"] = currentPage.toString()
@@ -355,6 +390,7 @@ class ChatActivity : BaseActivity<ActivityChatBinding>() {
         // adapter initialize
         chatAdapter = ChatAdapter()
         binding.rvChat.adapter = chatAdapter
+
 
     }
 
@@ -370,6 +406,10 @@ class ChatActivity : BaseActivity<ActivityChatBinding>() {
                     } else {
                         binding.clEdit.visibility = View.VISIBLE
                     }
+                }
+
+                R.id.ivBack -> {
+                    finish()
                 }
                 // user block
                 R.id.tvEditBlog -> {
@@ -467,20 +507,17 @@ class ChatActivity : BaseActivity<ActivityChatBinding>() {
 
     }
 
+    /** open pdf **/
     private fun openPdfFile() {
         pdfPickerLauncher.launch(arrayOf("application/pdf"))
     }
 
+    /** pdf launcher **/
     private val pdfPickerLauncher =
         registerForActivityResult(ActivityResultContracts.OpenDocument()) { uri: Uri? ->
             if (uri != null) {
                 uri.let {
                     uploadPdfFile(it)
-//                    multipartImage = convertMultipartPartGal(it)
-//                    if (multipartImage != null) {
-//                        filetype = "document"
-//                        viewModel.sendImageAPi(Constants.USER_UPLOAD, multipartImage)
-//                    }
 
                 }
             } else {
@@ -488,7 +525,7 @@ class ChatActivity : BaseActivity<ActivityChatBinding>() {
             }
         }
 
-
+    /** upload file **/
     private fun uploadPdfFile(uri: Uri) {
         try {
             val inputStream = contentResolver.openInputStream(uri)
@@ -544,6 +581,7 @@ class ChatActivity : BaseActivity<ActivityChatBinding>() {
             }
         }
 
+    /** open camera **/
     private fun openCameraIntent() {
         val pictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         if (pictureIntent.resolveActivity(packageManager) != null) {
@@ -566,6 +604,7 @@ class ChatActivity : BaseActivity<ActivityChatBinding>() {
         }
     }
 
+    /*** camera launcher ***/
     private var resultLauncherCamera =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == RESULT_OK) {
@@ -584,7 +623,7 @@ class ChatActivity : BaseActivity<ActivityChatBinding>() {
             }
         }
 
-
+    /** convert multipart part to camera image **/
     private fun convertMultipartPart(imageUri: Uri): MultipartBody.Part? {
         val filePath = imageUri.path ?: return null
         val file = File(filePath)
@@ -595,6 +634,7 @@ class ChatActivity : BaseActivity<ActivityChatBinding>() {
         return MultipartBody.Part.createFormData("file", file.name, requestFile)
     }
 
+    /** convert multipart part to gallery image **/
     private fun convertMultipartPartGal(imageUri: Uri): MultipartBody.Part {
         val file = FileUtil.getTempFile(this@ChatActivity, imageUri)
         val fileName =
@@ -638,6 +678,7 @@ class ChatActivity : BaseActivity<ActivityChatBinding>() {
         }
 
     /** dialog **/
+    @SuppressLint("DefaultLocale")
     private fun initDialog() {
         calenderDialog = BaseCustomDialog(this@ChatActivity, R.layout.calender_dialog_item) {
             when (it?.id) {
@@ -645,8 +686,24 @@ class ChatActivity : BaseActivity<ActivityChatBinding>() {
                     calenderDialog?.dismiss()
                 }
 
-                R.id.tvLogout -> {
-                    calenderDialog?.dismiss()
+                R.id.tvSendInvite -> {
+                    val message = calenderDialog?.binding?.etNotes?.text.toString().trim()
+                    if (selectedDate.isEmpty()) {
+                        showInfoToast("Please select date")
+                    } else if (selectedTime.isEmpty()) {
+                        showInfoToast("Please select time")
+                    } else if (message.isEmpty()) {
+                        showInfoToast("Please enter note")
+                    } else {
+                        val data = HashMap<String, Any>()
+                        data["visitorId"] = userId.toString()
+                        data["date"] = selectedDate
+                        data["time"] = selectedTime
+                        data["note"] = message
+                        viewModel.userVisitSchedule(data, Constants.VISIT_SCHEDULE)
+                    }
+
+
                 }
 
                 // time button  click
@@ -654,13 +711,11 @@ class ChatActivity : BaseActivity<ActivityChatBinding>() {
                     val calendar = Calendar.getInstance()
                     val hour = calendar[Calendar.HOUR_OF_DAY]
                     val minute = calendar[Calendar.MINUTE]
-
                     val timePickerDialog = TimePickerDialog(
                         this@ChatActivity, { view, hourOfDay, minute ->
-                            calenderDialog?.binding?.tvTimes?.text = String.format(
-                                "%02d:%02d", hourOfDay, minute
-                            )
-
+                            val date = String.format("%02d:%02d", hourOfDay, minute)
+                            calenderDialog?.binding?.tvTimes?.text = date
+                            selectedTime = date
                         }, hour, minute, true
                     ) // 'true' for 24-hour format
 
@@ -675,7 +730,7 @@ class ChatActivity : BaseActivity<ActivityChatBinding>() {
 
 
         var calendar = Calendar.getInstance()
-        calenderDialog?.binding?.rangeCalenderOneTime?.setDate(calendar)
+        calenderDialog?.binding?.calenderView?.setDate(calendar)
         val monthFormat = SimpleDateFormat("MMMM", Locale.getDefault())
         val yearFormat = SimpleDateFormat("yyyy", Locale.getDefault())
         val currentMonthName = monthFormat.format(calendar.time)
@@ -683,10 +738,10 @@ class ChatActivity : BaseActivity<ActivityChatBinding>() {
         calenderDialog?.binding?.tvMonth?.text = currentMonthName
         calenderDialog?.binding?.tvYear?.text = currentYear
 
-        calenderDialog?.binding?.rangeCalenderOneTime?.setOnPreviousPageChangeListener(object :
+        calenderDialog?.binding?.calenderView?.setOnPreviousPageChangeListener(object :
             OnCalendarPageChangeListener {
             override fun onChange() {
-                calendar = calenderDialog?.binding?.rangeCalenderOneTime?.currentPageDate!!
+                calendar = calenderDialog?.binding?.calenderView?.currentPageDate!!
                 calendar.set(Calendar.DAY_OF_MONTH, 1)
 
                 val monthName = monthFormat.format(calendar.time)
@@ -698,10 +753,10 @@ class ChatActivity : BaseActivity<ActivityChatBinding>() {
             }
         })
 
-        calenderDialog?.binding?.rangeCalenderOneTime?.setOnForwardPageChangeListener(object :
+        calenderDialog?.binding?.calenderView?.setOnForwardPageChangeListener(object :
             OnCalendarPageChangeListener {
             override fun onChange() {
-                calendar = calenderDialog?.binding?.rangeCalenderOneTime?.currentPageDate!!
+                calendar = calenderDialog?.binding?.calenderView?.currentPageDate!!
                 calendar.set(Calendar.DAY_OF_MONTH, 1)
                 val monthName = monthFormat.format(calendar.time)
                 val year = yearFormat.format(calendar.time)
@@ -716,20 +771,27 @@ class ChatActivity : BaseActivity<ActivityChatBinding>() {
 
     }
 
+    /** calender **/
+    @SuppressLint("SimpleDateFormat")
     private fun calenderClick() {
-        calenderDialog?.binding?.rangeCalenderOneTime?.setOnDayClickListener(object :
-            OnDayClickListener {
-            @SuppressLint("SimpleDateFormat")
+        calenderDialog?.binding?.calenderView?.setOnDayClickListener(object : OnDayClickListener {
             override fun onDayClick(eventDay: EventDay) {
-                val clickedDayCalendar = eventDay.calendar.time
-                val sdf = SimpleDateFormat("yyyy-MM-dd")
-                val startDate1 = clickedDayCalendar.time
-                val strStartDate: String = sdf.format(startDate1)
-                Log.d("fgdfgfgdg", "onDayClick: $strStartDate")
+                val clickedDayCalendar = eventDay.calendar
+                val now = Calendar.getInstance()
+                clickedDayCalendar.set(Calendar.HOUR_OF_DAY, now.get(Calendar.HOUR_OF_DAY))
+                clickedDayCalendar.set(Calendar.MINUTE, now.get(Calendar.MINUTE))
+                clickedDayCalendar.set(Calendar.SECOND, now.get(Calendar.SECOND))
+                clickedDayCalendar.set(Calendar.MILLISECOND, now.get(Calendar.MILLISECOND))
+                val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX", Locale.US)
+                dateFormat.timeZone = TimeZone.getTimeZone("UTC")
+                val utcDateString = dateFormat.format(clickedDayCalendar.time)
+                selectedDate = utcDateString
             }
         })
     }
 
+
+    /** dis connect socket **/
     fun disconnectSocket() {
         if (this::socket.isInitialized) {
             socket.disconnect()

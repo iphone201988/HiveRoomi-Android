@@ -276,16 +276,16 @@ class MatchesFragment : BaseFragment<FragmentMatchesBinding>() {
                 when (v.id) {
                     // view profile
                     R.id.ivImage -> {
-                        val data =  sharedPrefManager.getRole()
-                        if (data ==1 ){
+                        val data = sharedPrefManager.getRole()
+                        if (data == 1) {
                             val intent = Intent(context, MatchedProfileActivity::class.java)
                             intent.putExtra("profileIdFirst", m.userId?._id)
                             requireContext().startActivity(intent)
-                        }else if (data == 2){
+                        } else if (data == 2) {
                             val intent = Intent(context, SecondMatchActivity::class.java)
                             intent.putExtra("profileIdSecond", m.listingId?._id)
                             requireContext().startActivity(intent)
-                        }else{
+                        } else {
                             val intent = Intent(context, ThirdProfileMatchActivity::class.java)
                             intent.putExtra("profileIdThird", m.userId?._id)
                             requireContext().startActivity(intent)
@@ -305,12 +305,8 @@ class MatchesFragment : BaseFragment<FragmentMatchesBinding>() {
                     R.id.ivCancel -> {
                         position = pos
                         val data = HashMap<String, Any>()
-                        data["action"] = "reject"   //accept,reject
-                        if (m.type?.contains("user") == true) {
-                            data["id"] = m._id.toString()
-                        } else {
-                            data["id"] = m._id.toString()
-                        }
+                        data["action"] = "reject"
+                        data["id"] = m._id.toString()
                         viewModel.acceptRejectAPi(Constants.MATCH_ACCEPT_REJECT, data)
 
                     }
@@ -318,12 +314,8 @@ class MatchesFragment : BaseFragment<FragmentMatchesBinding>() {
                     R.id.ivLike -> {
                         position = pos
                         val data = HashMap<String, Any>()
-                        data["action"] = "accept"    //accept,reject
-                        if (m.type?.contains("listing") == true) {
-                            data["id"] = m._id.toString()
-                        } else {
-                            data["id"] = m._id.toString()
-                        }
+                        data["action"] = "accept"
+                        data["id"] = m._id.toString()
                         viewModel.acceptRejectAPi(Constants.MATCH_ACCEPT_REJECT, data)
 
                     }

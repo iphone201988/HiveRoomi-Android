@@ -27,7 +27,7 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvNameTitle"
-            style="@style/TextView.Medium"
+            style="@style/TextView.Semibold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@{bean.title}"

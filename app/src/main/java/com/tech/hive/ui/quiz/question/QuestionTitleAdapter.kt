@@ -23,17 +23,21 @@ class QuestionTitleAdapter(private val questions: List<GroupValue>) :
             }
             val options = questionModel.options ?: emptyList()
             val adapterAnswers = QuestionAnswerAdapter(
-                questionModel.answer?:"",
+                questionModel.answer ?: "",
                 questionModel.type,
                 options
-            ) { selectedPosition ->
+            ) { selectedAnswer, selectedPosition ->
                 questionModel.options?.forEachIndexed { index, option ->
                     option?.selectedAnswer = index == selectedPosition
                 }
+                questionModel.answer = questionModel.options?.getOrNull(selectedPosition)?.value
+            //    questionModel.answer = selectedAnswer
                 notifyItemChanged(adapterPosition)
             }
             rvAnswers.adapter = adapterAnswers
         }
+
+
 
     }
 

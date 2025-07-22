@@ -537,6 +537,8 @@
     <string name="_6_months">6 months</string>
     <string name="_6_may">6 May</string>
     <string name="no_listing_data">No listing data.</string>
+    <string name="no_roommate_data">No roommate data.</string>
+    <string name="no_room_data">No home data.</string>
     <string name="scheduled_visits">Scheduled Visits</string>
     <string name="type_of_provider">Type Of Provider</string>
     <string name="tenant_subletting">Tenant Subletting</string>
@@ -554,5 +556,14 @@
     <string name="active">Active</string>
     <string name="paused">Paused</string>
     <string name="rented">Rented</string>
+    <string name="video">Video</string>
+    <string name="meeting_with">Meeting with</string>
+    <string name="newest">Newest</string>
+    <string name="oldest">Oldest</string>
+    <string name="name_z_to_a">Name: Z to A</string>
+    <string name="name_a_to_z">Name: A to Z</string>
+    <string name="provider_information">Provider Information</string>
+    <string name="provider_type">Provider Type</string>
+    <string name="interested_peoples">Interested Peoples</string>
 
 </resources>

@@ -95,6 +95,7 @@ class BasicDetailsActivity : BaseActivity<ActivityBasicDetailsBinding>(), OnMapR
             binding.etTitle.setText(it.title?.replaceFirstChar { c -> c.uppercase() })
             binding.etShortBio.setText(it.description?.replaceFirstChar { c -> c.uppercase() })
             binding.etLocation.setText(it.location?.type)
+
             imageList.removeAll { it.type == 2 }
 
             it.images?.filterNotNull()?.forEach { imageUrl ->
@@ -520,7 +521,7 @@ class BasicDetailsActivity : BaseActivity<ActivityBasicDetailsBinding>(), OnMapR
         } else if (location.isEmpty()) {
             showInfoToast("Please enter address")
             return false
-        } else if (imageList.size < 2) {
+        } else if (imageList.size < 4) {
             showInfoToast("Please select images")
             return false
         } else if (videoUriData.isEmpty()) {

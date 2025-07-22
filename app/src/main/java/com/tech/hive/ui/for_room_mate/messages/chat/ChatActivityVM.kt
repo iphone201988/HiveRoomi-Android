@@ -83,6 +83,28 @@ fun getChatWithIdApi(url: String, data: HashMap<String, String>) {
 
     }
 
+
+    fun userVisitSchedule( request: HashMap<String, Any>,url: String) {
+        CoroutineScope(Dispatchers.IO).launch {
+            chatObserver.postValue(Resource.loading(null))
+            try {
+                apiHelper.apiPostForRawBody(Constants.userLanguage, url,request).let {
+                    if (it.isSuccessful) {
+                        chatObserver.postValue(Resource.success("userVisitSchedule", it.body()))
+                    } else chatObserver.postValue(
+                        Resource.error(
+                            handleErrorResponse(it.errorBody()), null
+                        )
+                    )
+                }
+            } catch (e: Exception) {
+                Log.i("userVisitSchedule", "userVisitSchedule: $e")
+            }
+
+        }
+
+    }
+
     fun userUnBlockAPi( request: HashMap<String, Any>,url: String) {
         CoroutineScope(Dispatchers.IO).launch {
             chatObserver.postValue(Resource.loading(null))

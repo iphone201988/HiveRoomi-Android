@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="vm"
             type="com.tech.hive.ui.for_room_mate.messages.chat.ChatActivityVM" />
@@ -12,10 +13,8 @@
             name="bean"
             type="com.tech.hive.data.model.OtherUser" />
 
-        
+
     </data>
-
-
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -37,10 +36,12 @@
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/ivBack"
-                android:layout_width="@dimen/_18sdp"
-                android:layout_height="@dimen/_18sdp"
+                android:layout_width="@dimen/_28sdp"
+                android:layout_height="@dimen/_28sdp"
                 android:onClick="@{v->vm.onClick(v)}"
                 android:rotation="90"
+                android:padding="@dimen/_5sdp"
+                android:layout_marginStart="-8dp"
                 android:src="@drawable/arrow_up"
                 app:layout_constraintBottom_toBottomOf="@+id/ivPerson"
                 app:layout_constraintStart_toStartOf="parent"
@@ -64,13 +65,13 @@
 
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/ivPerson"
+                setImageFromUrl="@{bean.profileImage}"
                 android:layout_width="@dimen/_40sdp"
                 android:layout_height="@dimen/_40sdp"
+                android:layout_marginTop="@dimen/_30sdp"
                 android:onClick="@{v->vm.onClick(v)}"
                 android:scaleType="centerCrop"
-                android:layout_marginTop="@dimen/_30sdp"
-                setImageFromUrl="@{bean.profileImage}"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintStart_toEndOf="@id/ivBack"
                 app:layout_constraintTop_toTopOf="parent"
                 app:shapeAppearance="@style/Shape50" />
 
@@ -99,18 +100,16 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-
-
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvChat"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:orientation="vertical"
             android:layout_marginHorizontal="@dimen/_2sdp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:orientation="vertical"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintBottom_toTopOf="@id/ivCalender"
+            app:layout_constraintBottom_toTopOf="@id/clBottom"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/clHeader"
             tools:itemCount="4"
             tools:listitem="@layout/chat_sender_item" />
@@ -123,18 +122,18 @@
             android:visibility="gone"
             app:layout_constraintBottom_toTopOf="@id/ivAdd"
             app:layout_constraintEnd_toEndOf="@+id/ivAdd"
-            app:layout_constraintStart_toStartOf="@id/ivCalender" />
+            app:layout_constraintStart_toStartOf="@id/ivAdd" />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/ivAdd"
             android:layout_width="@dimen/_40sdp"
             android:layout_height="@dimen/_40sdp"
+            android:layout_marginStart="@dimen/_12sdp"
             android:layout_marginBottom="@dimen/_8sdp"
             android:onClick="@{v->vm.onClick(v)}"
             android:src="@drawable/add_icon"
-            app:layout_constraintBottom_toTopOf="@id/ivCalender"
-            app:layout_constraintEnd_toEndOf="@+id/ivCalender"
-            app:layout_constraintStart_toStartOf="@id/ivCalender" />
+            app:layout_constraintBottom_toTopOf="@id/clBottom"
+            app:layout_constraintStart_toStartOf="@id/clBottom" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvAddContent"
@@ -147,59 +146,73 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/ivAdd"
             tools:itemCount="3"
-            tools:listitem="@layout/rv_qustion_item" />
+            tools:listitem="@layout/chat_sender_item" />
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/ivCalender"
-            android:layout_width="@dimen/_40sdp"
-            android:layout_height="@dimen/_40sdp"
-            android:layout_marginStart="@dimen/_12sdp"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/clBottom"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_42sdp"
             android:layout_marginBottom="@dimen/_12sdp"
-            android:onClick="@{v->vm.onClick(v)}"
-            android:src="@drawable/calender_icon"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/ivSend"
-            android:layout_width="@dimen/_40sdp"
-            android:layout_height="@dimen/_40sdp"
-            android:layout_marginEnd="@dimen/_12sdp"
-            android:onClick="@{v->vm.onClick(v)}"
-            android:src="@drawable/send_message"
-            app:layout_constraintBottom_toBottomOf="@id/ivCalender"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/ivCalender" />
+            app:layout_constraintStart_toStartOf="parent">
 
-        <androidx.appcompat.widget.AppCompatEditText
-            android:id="@+id/etEmail"
-            style="@style/EditText"
-            android:layout_width="0dp"
-            android:layout_marginHorizontal="@dimen/_6sdp"
-            android:background="@drawable/select_bg_strock_with_radius_24"
-            android:hint="@string/type_message_here"
-            android:inputType="textMultiLine"
-            android:maxLines="4"
-            android:paddingStart="@dimen/_15sdp"
-            android:paddingEnd="@dimen/_35sdp"
-            android:textColor="@color/black_24"
-            android:textColorHint="@color/message_color"
-            app:layout_constraintBottom_toBottomOf="@+id/ivCalender"
-            app:layout_constraintEnd_toStartOf="@id/ivSend"
-            app:layout_constraintStart_toEndOf="@id/ivCalender"
-            app:layout_constraintTop_toTopOf="@+id/ivCalender" />
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/ivMic"
-            android:layout_width="@dimen/_16sdp"
-            android:layout_height="@dimen/_16sdp"
-            android:layout_marginEnd="@dimen/_12sdp"
-            android:onClick="@{v->vm.onClick(v)}"
-            android:src="@drawable/mic_icon"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="@id/etEmail"
-            app:layout_constraintEnd_toEndOf="@id/etEmail"
-            app:layout_constraintTop_toTopOf="@+id/etEmail" />
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/ivCalender"
+                android:layout_width="@dimen/_40sdp"
+                android:layout_height="@dimen/_40sdp"
+                android:layout_marginStart="@dimen/_12sdp"
+                android:onClick="@{v->vm.onClick(v)}"
+                android:src="@drawable/calender_icon"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/ivSend"
+                android:layout_width="@dimen/_40sdp"
+                android:layout_height="@dimen/_40sdp"
+                android:layout_marginEnd="@dimen/_12sdp"
+                android:onClick="@{v->vm.onClick(v)}"
+                android:src="@drawable/send_message"
+                app:layout_constraintBottom_toBottomOf="@id/ivCalender"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/ivCalender" />
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/etEmail"
+                style="@style/EditText"
+                android:layout_width="0dp"
+                android:layout_marginHorizontal="@dimen/_6sdp"
+                android:background="@drawable/select_bg_strock_with_radius_24"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:hint="@string/type_message_here"
+                android:inputType="textMultiLine"
+                android:maxLines="4"
+                android:paddingStart="@dimen/_15sdp"
+                android:paddingEnd="@dimen/_35sdp"
+                android:textColor="@color/black_24"
+                android:textColorHint="@color/message_color"
+                app:layout_constraintBottom_toBottomOf="@+id/ivCalender"
+                app:layout_constraintEnd_toStartOf="@id/ivSend"
+                app:layout_constraintStart_toEndOf="@id/ivCalender"
+                app:layout_constraintTop_toTopOf="@+id/ivCalender" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/ivMic"
+                android:layout_width="@dimen/_16sdp"
+                android:layout_height="@dimen/_16sdp"
+                android:layout_marginEnd="@dimen/_12sdp"
+                android:onClick="@{v->vm.onClick(v)}"
+                android:src="@drawable/mic_icon"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@id/etEmail"
+                app:layout_constraintEnd_toEndOf="@id/etEmail"
+                app:layout_constraintTop_toTopOf="@+id/etEmail" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/clEdit"
@@ -221,8 +234,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_12sdp"
                 android:layout_marginTop="@dimen/_10sdp"
-                android:text="@string/block_user"
                 android:onClick="@{v->vm.onClick(v)}"
+                android:text="@string/block_user"
                 android:textColor="@color/black_24"
                 android:textSize="@dimen/_13ssp"
                 app:layout_constraintStart_toStartOf="parent"
@@ -234,8 +247,8 @@
                 style="@style/TextView.Medium"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="@{v->vm.onClick(v)}"
                 android:layout_marginTop="@dimen/_5sdp"
+                android:onClick="@{v->vm.onClick(v)}"
                 android:text="@string/report_user"
                 android:textColor="@color/black_24"
                 android:textSize="@dimen/_13ssp"
@@ -244,6 +257,7 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 </layout>

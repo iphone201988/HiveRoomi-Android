@@ -14,8 +14,6 @@ import com.tech.hive.base.utils.showSuccessToast
 import com.tech.hive.data.api.Constants
 import com.tech.hive.data.model.CommonResponse
 import com.tech.hive.databinding.ActivityHelpBinding
-import com.tech.hive.ui.auth.AuthActivity
-import com.tech.hive.ui.for_room_mate.settings.SettingsActivity
 import com.tech.hive.ui.for_room_mate.settings.SettingsVM
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -61,7 +59,7 @@ class HelpActivity : BaseActivity<ActivityHelpBinding>() {
                 }
                 // send message
                 R.id.btnContinue -> {
-                    if ((validate())){
+                    if ((validate())) {
                         val name = binding.etFullName.text.toString().trim()
                         val email = binding.etEmail.text.toString().trim()
                         val desc = binding.etShortBio.text.toString().trim()
@@ -74,6 +72,7 @@ class HelpActivity : BaseActivity<ActivityHelpBinding>() {
                         viewModel.feedBackApiCall(Constants.USER_FEEDBACK, data)
                     }
                 }
+
                 R.id.ivAskQn -> {
                     startActivity(Intent(this, FrequentQuestionsActivity::class.java))
                 }
@@ -84,8 +83,7 @@ class HelpActivity : BaseActivity<ActivityHelpBinding>() {
 
     /** handle api response **/
     private fun initObserver() {
-        viewModel.settingObserver.observe(this@HelpActivity)
-        {
+        viewModel.settingObserver.observe(this@HelpActivity) {
             when (it?.status) {
                 Status.LOADING -> {
                     showLoading()
@@ -99,7 +97,7 @@ class HelpActivity : BaseActivity<ActivityHelpBinding>() {
                                     BindingUtils.parseJson(it.data.toString())
                                 if (myDataModel != null) {
                                     showSuccessToast(myDataModel.message.toString())
-                                        finish()
+                                    finish()
                                 }
                             } catch (e: Exception) {
                                 Log.e("error", "getHomeApi: $e")
@@ -133,7 +131,7 @@ class HelpActivity : BaseActivity<ActivityHelpBinding>() {
         if (name.isEmpty()) {
             showInfoToast("Please enter  name")
             return false
-        }else if (email.isEmpty()) {
+        } else if (email.isEmpty()) {
             showInfoToast("Please enter email")
             return false
         } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
@@ -145,7 +143,6 @@ class HelpActivity : BaseActivity<ActivityHelpBinding>() {
         }
         return true
     }
-
 
 
 }

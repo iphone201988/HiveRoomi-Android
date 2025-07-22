@@ -26,6 +26,7 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clRoot"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/white"
@@ -46,6 +47,7 @@
                 style="@style/TextView.PoppinsBold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_4sdp"
                 android:layout_marginTop="@dimen/_20sdp"
                 android:text="@string/discover"
                 app:layout_constraintStart_toStartOf="parent"
@@ -84,20 +86,19 @@
                 android:id="@+id/tvNotificationCount"
                 style="@style/TextView.Medium"
                 android:layout_width="wrap_content"
-                android:minWidth="@dimen/_20sdp"
                 android:layout_height="@dimen/_20sdp"
+                android:layout_marginTop="-8dp"
+                android:layout_marginEnd="-8dp"
                 android:background="@drawable/circle_icon"
                 android:backgroundTint="@color/white"
-                android:visibility="gone"
-                android:textSize="@dimen/_12ssp"
                 android:gravity="center"
-                android:layout_marginEnd="-8dp"
-                android:layout_marginTop="-8dp"
-                android:textColor="@color/start_color"
+                android:minWidth="@dimen/_20sdp"
                 android:onClick="@{v->vm.onClick(v)}"
+                android:textColor="@color/start_color"
+                android:textSize="@dimen/_12ssp"
+                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="@+id/ivNotification"
-                app:layout_constraintTop_toTopOf="@id/ivNotification"
-                />
+                app:layout_constraintTop_toTopOf="@id/ivNotification" />
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/ivCalender"
@@ -143,32 +144,32 @@
                 app:layout_constraintTop_toTopOf="@id/ivFilter" />
 
 
-
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/ivNotificationCount"
                 style="@style/TextView.Medium"
                 android:layout_width="wrap_content"
-                android:minWidth="@dimen/_20sdp"
                 android:layout_height="@dimen/_20sdp"
+                android:layout_marginTop="-8dp"
+                android:layout_marginEnd="-8dp"
                 android:background="@drawable/circle_icon"
                 android:backgroundTint="@color/white"
-                android:visibility="gone"
-                android:textSize="@dimen/_12ssp"
                 android:gravity="center"
-                android:layout_marginEnd="-8dp"
-                android:layout_marginTop="-8dp"
-                android:textColor="@color/start_color"
+                android:minWidth="@dimen/_20sdp"
                 android:onClick="@{v->vm.onClick(v)}"
+                android:textColor="@color/start_color"
+                android:textSize="@dimen/_12ssp"
+                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="@+id/ivSettings"
-                app:layout_constraintTop_toTopOf="@id/ivSettings"
-                />
+                app:layout_constraintTop_toTopOf="@id/ivSettings" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/etSearch"
             style="@style/EditText"
-            android:layout_marginHorizontal="@dimen/_12sdp"
+            android:layout_width="0dp"
+            android:layout_marginStart="@dimen/_15sdp"
+            android:layout_marginEnd="@dimen/_8sdp"
             android:layout_marginBottom="-8dp"
             android:background="@drawable/et_bg_end_color_strock"
             android:hint="@string/search_here"
@@ -178,8 +179,21 @@
             android:paddingEnd="@dimen/_16sdp"
             android:visibility="@{userType==3?View.VISIBLE:View.GONE}"
             app:layout_constraintBottom_toBottomOf="@+id/clHeader"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/ivProviderFilter"
             app:layout_constraintStart_toStartOf="parent" />
+
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/ivProviderFilter"
+            android:layout_width="@dimen/_40sdp"
+            android:layout_height="@dimen/_40sdp"
+            android:layout_marginEnd="@dimen/_16sdp"
+            android:onClick="@{v->vm.onClick(v)}"
+            android:src="@drawable/provide_filter"
+            android:visibility="@{userType==3?View.VISIBLE:View.GONE}"
+            app:layout_constraintBottom_toBottomOf="@id/etSearch"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/etSearch" />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/ivSearch"
@@ -209,14 +223,14 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/clRoommate"
                 android:layout_width="0dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/clHome"
                 android:layout_height="@dimen/_33sdp"
                 android:layout_marginStart="@dimen/_5sdp"
-                android:onClick="@{v->vm.onClick(v)}"
                 android:layout_marginEnd="@dimen/_10sdp"
                 android:layout_marginBottom="1dp"
                 android:background="@{check==1?@drawable/bg_matches:null}"
+                android:onClick="@{v->vm.onClick(v)}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/clHome"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
@@ -237,9 +251,9 @@
                     android:id="@+id/tvRoommate"
                     style="@style/TextView.Medium"
                     android:layout_width="wrap_content"
+                    android:layout_marginStart="@dimen/_20sdp"
                     android:text="@string/roommate"
                     android:textColor="@{check==1?@color/white:@color/black_24}"
-                    android:layout_marginStart="@dimen/_20sdp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -249,15 +263,14 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/clHome"
                 android:layout_width="0dp"
-                app:layout_constraintBottom_toBottomOf="@+id/clRoommate"
-                app:layout_constraintEnd_toEndOf="parent"
                 android:layout_height="@dimen/_33sdp"
                 android:layout_marginEnd="@dimen/_5sdp"
                 android:background="@{check==2?@drawable/bg_matches:null}"
                 android:onClick="@{v->vm.onClick(v)}"
+                app:layout_constraintBottom_toBottomOf="@+id/clRoommate"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/clRoommate"
-                app:layout_constraintTop_toTopOf="@+id/clRoommate"
-              >
+                app:layout_constraintTop_toTopOf="@+id/clRoommate">
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/ivHome"
@@ -276,14 +289,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="@dimen/_33sdp"
                     android:layout_marginStart="@dimen/_20sdp"
-                    android:textColor="@{check==2?@color/white:@color/black_24}"
                     android:text="@string/home"
+                    android:textColor="@{check==2?@color/white:@color/black_24}"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
-
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -388,22 +400,131 @@
             android:text="@string/create_new_listing"
             android:visibility="@{userType == 3?View.VISIBLE:View.GONE}"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/etSearch"
+            app:layout_constraintEnd_toEndOf="@+id/ivProviderFilter"
             app:layout_constraintStart_toStartOf="@id/etSearch" />
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tvEmptyChat"
+            android:id="@+id/tvEmpty"
             style="@style/TextView.Medium"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="gone"
+            android:text="@string/no_roommate_data"
             android:textColor="@color/black_24"
             android:textSize="@dimen/_14sdp"
-            app:layout_constraintTop_toTopOf="parent"
-            android:text="@string/no_listing_data"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/clFilter"
+            android:layout_width="@dimen/_110sdp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_2sdp"
+            android:background="@drawable/green_bg"
+            android:backgroundTint="@color/text_color_grey"
+                android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="@+id/ivProviderFilter"
+            app:layout_constraintTop_toBottomOf="@+id/ivProviderFilter">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvFirst"
+                style="@style/TextView.Medium"
+                android:layout_width="0dp"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:onClick="@{v->vm.onClick(v)}"
+                android:gravity="start"
+                android:text="@string/newest"
+                android:textColor="@color/white"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <View
+                android:id="@+id/view"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_1sdp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:background="@color/white"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvFirst" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvSecond"
+                style="@style/TextView.Medium"
+                android:layout_width="0dp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:gravity="start"
+                android:onClick="@{v->vm.onClick(v)}"
+                android:text="@string/oldest"
+                android:textColor="@color/white"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/tvFirst"
+                app:layout_constraintTop_toBottomOf="@+id/view" />
+
+            <View
+                android:id="@+id/view1"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_1sdp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:background="@color/white"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvSecond" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvThird"
+                style="@style/TextView.Medium"
+                android:layout_width="0dp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:onClick="@{v->vm.onClick(v)}"
+                android:gravity="start"
+                android:text="@string/name_a_to_z"
+                android:textColor="@color/white"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/tvFirst"
+                app:layout_constraintTop_toBottomOf="@+id/view1" />
+
+            <View
+                android:id="@+id/view2"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_1sdp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:background="@color/white"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvThird" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvFourth"
+                style="@style/TextView.Medium"
+                android:layout_width="0dp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:gravity="start"
+                android:onClick="@{v->vm.onClick(v)}"
+                android:text="@string/name_z_to_a"
+                android:textColor="@color/white"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/tvFirst"
+                app:layout_constraintTop_toBottomOf="@+id/view2" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                style="@style/TextView.Medium"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/_5sdp"
+                android:gravity="start"
+                android:textColor="@color/white"
+                android:visibility="invisible"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/tvFirst"
+                app:layout_constraintTop_toBottomOf="@+id/tvFourth" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

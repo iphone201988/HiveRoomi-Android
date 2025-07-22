@@ -78,6 +78,7 @@ class QuizQuestionFragment : BaseFragment<FragmentQuizQuestionBinding>() {
                                 val myDataModel: QuizAnswerResponse? =
                                     BindingUtils.parseJson(it.data.toString())
                                 if (myDataModel != null) {
+                                    sharedPrefManager.saveQuiz(true)
                                     findNavController().navigate(
                                         R.id.navigateToQuizCompleteFragment,
                                         null,
@@ -101,8 +102,7 @@ class QuizQuestionFragment : BaseFragment<FragmentQuizQuestionBinding>() {
                                     BindingUtils.parseJson(it.data.toString())
                                 if (myDataModel != null) {
                                     allQuestions = myDataModel.data as List<QuestionData>
-                                    questionAdapter =
-                                        QuestionHeaderAdapter(allQuestions.getOrNull(currentIndex))
+                                    questionAdapter = QuestionHeaderAdapter(allQuestions.getOrNull(currentIndex))
                                     binding.rvQuestion.adapter = questionAdapter
 
                                 }

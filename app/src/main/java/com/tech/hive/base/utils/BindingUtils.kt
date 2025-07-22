@@ -9,6 +9,7 @@ import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.view.View
+import android.view.WindowManager
 import android.widget.ImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -28,6 +29,8 @@ import com.google.gson.Gson
 import com.tech.hive.R
 import com.tech.hive.data.api.Constants
 import com.tech.hive.data.model.GetListingData
+import com.tech.hive.data.model.GetMatchData
+import com.tech.hive.data.model.GetMatchListingId
 import com.tech.hive.data.model.HomeRoomTData
 import com.tech.hive.data.model.ImageModel
 import com.tech.hive.data.model.NotificationData
@@ -167,6 +170,21 @@ object BindingUtils {
 
         } else {
             imageView.setImageResource(R.drawable.user_place_holder)
+        }
+    }
+
+
+    @BindingAdapter("setImageByIdMatch")
+    @JvmStatic
+    fun setImageByIdMatch(imageView: ShapeableImageView, url: String?) {
+        if (url != null) {
+                Glide.with(imageView.context).load(Constants.BASE_URL_IMAGE + url)
+                    .placeholder(R.drawable.progress_animation_small)
+                    .error(R.drawable.user_place_holder)
+                    .diskCacheStrategy(DiskCacheStrategy.ALL).into(imageView)
+
+        } else {
+            Glide.with(imageView.context).load(R.drawable.user_place_holder).into(imageView)
         }
     }
 
@@ -350,16 +368,6 @@ object BindingUtils {
                 View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
             activity.window.statusBarColor = Color.TRANSPARENT
         }
-    }
-
-
-    fun statusBarTextColor1(activity: Activity, isDark: Boolean = false) {
-        // Allow content to draw behind status bar
-        WindowCompat.setDecorFitsSystemWindows(activity.window, false)
-
-        WindowInsetsControllerCompat(
-            activity.window, activity.window.decorView
-        ).isAppearanceLightStatusBars = isDark
     }
 
 

@@ -27,6 +27,7 @@ import com.tech.hive.databinding.UnPinLayoutBinding
 import com.tech.hive.ui.for_room_mate.home.HomeFragmentVM
 import com.tech.hive.ui.for_room_mate.home.second.storiesprogressview.StoriesProgressView
 import com.tech.hive.ui.room_offering.basic_details.BasicDetailsActivity
+import com.tech.hive.ui.video.ShowVideoPlayerActivity
 import dagger.hilt.android.AndroidEntryPoint
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
@@ -200,7 +201,21 @@ class ThirdMatchActivity : BaseActivity<ActivityThirdMatchBinding>(), OnMapReady
                     finish()
                 }
                 R.id.clRoommate -> {
+                    BindingUtils.preventMultipleClick(it)
                     personalDialog()
+                }
+                R.id.tvInterestedPeoples -> {
+                    BindingUtils.preventMultipleClick(it)
+                    val intent = Intent(this@ThirdMatchActivity, ViewMatchPeopleActivity::class.java)
+                    intent.putExtra("sendTitle", listingData?.title)
+                    intent.putExtra("matchId", listingData?._id)
+                    startActivity(intent)
+                }
+                R.id.clVideo->{
+                    BindingUtils.preventMultipleClick(it)
+                    val intent = Intent(this@ThirdMatchActivity, ShowVideoPlayerActivity::class.java)
+                    intent.putExtra("videoUrl", listingData?.videos)
+                    startActivity(intent)
                 }
             }
         }

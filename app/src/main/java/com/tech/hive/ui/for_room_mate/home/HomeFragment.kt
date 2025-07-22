@@ -10,9 +10,9 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.animation.AccelerateInterpolator
 import android.view.animation.LinearInterpolator
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DefaultItemAnimator
-import androidx.recyclerview.widget.DiffUtil
 import com.tech.hive.BR
 import com.tech.hive.R
 import com.tech.hive.base.BaseFragment
@@ -42,7 +42,6 @@ import com.tech.hive.ui.for_room_mate.home.cardstackview.StackFrom
 import com.tech.hive.ui.for_room_mate.home.cardstackview.SwipeAnimationSetting
 import com.tech.hive.ui.for_room_mate.home.cardstackview.SwipeableMethod
 import com.tech.hive.ui.for_room_mate.home.sample.CardStackAdapter
-import com.tech.hive.ui.for_room_mate.home.sample.SpotDiffCallback
 import com.tech.hive.ui.for_room_mate.home.second.SecondMatchActivity
 import com.tech.hive.ui.for_room_mate.home.third.ThirdMatchActivity
 import com.tech.hive.ui.notification.NotificationActivity
@@ -52,7 +51,6 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class HomeFragment : BaseFragment<FragmentHomeBinding>(), CardStackListener {
-
     private val viewModel: HomeFragmentVM by viewModels()
 
     private lateinit var homeAdapter: SimpleRecyclerViewAdapter<HomeRoomTData, RvDiscoverItemBinding>
@@ -75,6 +73,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), CardStackListener {
         return viewModel
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onCreateView(view: View) {
         // click
         initOnClick()
@@ -85,13 +84,31 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), CardStackListener {
         // search
         searchListing()
 
+        binding.clRoot.setOnTouchListener { v, event ->
+            val filter = binding.clFilter
+            if (filter.isVisible) {
+                val location = IntArray(2)
+                filter.getLocationOnScreen(location)
+                val x = event.rawX.toInt()
+                val y = event.rawY.toInt()
+                val left = location[0]
+                val top = location[1]
+                val right = left + filter.width
+                val bottom = top + filter.height
+                if (x < left || x > right || y < top || y > bottom) {
+                    filter.visibility = View.GONE
+                }
+            }
+            false
+        }
+
     }
 
 
     override fun onResume() {
         super.onResume()
         var userData = sharedPrefManager.getRole()
-
+        binding.clFilter.visibility = View.GONE
         binding.userType = userData
         binding.buttonClick = 1
         binding.check = userData
@@ -131,6 +148,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), CardStackListener {
             SimpleRecyclerViewAdapter(R.layout.third_user_rv_item, BR.bean) { v, m, pos ->
                 when (v.id) {
                     R.id.ivThreeDot -> {
+                        binding.clFilter.visibility = View.GONE
                         val intent = Intent(requireContext(), BasicDetailsActivity::class.java)
                         intent.putExtra("basicDetail", m)
                         startActivity(intent)
@@ -144,6 +162,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), CardStackListener {
                     }
 
                     R.id.clImage -> {
+                        binding.clFilter.visibility = View.GONE
                         val intent = Intent(requireContext(), ThirdMatchActivity::class.java)
                         intent.putExtra("basicDetail", m)
                         startActivity(intent)
@@ -157,6 +176,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), CardStackListener {
             SimpleRecyclerViewAdapter(R.layout.rv_home_filter_item, BR.bean) { v, m, pos ->
                 when (v.id) {
                     R.id.clImage -> {
+                        binding.clFilter.visibility = View.GONE
                         when (m.name) {
                             "All" -> {
                                 val data = HashMap<String, String>()
@@ -245,6 +265,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), CardStackListener {
             when (it?.id) {
                 // filter click
                 R.id.ivFilter -> {
+
                     if (filterOpen == 1) {
                         startActivity(Intent(requireContext(), FilterActivity::class.java))
                     } else if (filterOpen == 2) {
@@ -257,21 +278,25 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), CardStackListener {
                 }
 
                 R.id.ivCalender -> {
+
                     val intent = Intent(requireActivity(), CalenderActivity::class.java)
                     startActivity(intent)
                 }
                 // bell icon click
                 R.id.ivSettings, R.id.ivNotification -> {
+
                     val intent = Intent(requireActivity(), NotificationActivity::class.java)
                     startActivity(intent)
                 }
                 // btn CreateNewLis click
                 R.id.btnCreateNewLis -> {
+
                     val intent = Intent(requireActivity(), BasicDetailsActivity::class.java)
                     startActivity(intent)
                 }
                 // btn roommate click
                 R.id.clRoommate -> {
+
                     scrollType = ""
                     binding.check = 1
                     binding.userType = 1
@@ -289,10 +314,48 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), CardStackListener {
                     filterOpen = 2
                     viewModel.getHomeApiListening(Constants.MATCH_LOOKING_LISTING)
                 }
+
+                R.id.ivProviderFilter -> {
+                    if (binding.clFilter.visibility == View.GONE) {
+                        binding.clFilter.visibility = View.VISIBLE
+                    } else {
+                        binding.clFilter.visibility = View.GONE
+                    }
+                }
+
+                R.id.tvFirst -> {
+                    val data = HashMap<String, String>()
+                    data["sort"] = "sort_newest"
+                    viewModel.getListing(Constants.LISTING, data)
+                    binding.clFilter.visibility = View.GONE
+                }
+
+                R.id.tvSecond -> {
+                    val data = HashMap<String, String>()
+                    data["sort"] = "sort_oldest"
+                    viewModel.getListing(Constants.LISTING, data)
+                    binding.clFilter.visibility = View.GONE
+                }
+
+                R.id.tvThird -> {
+                    val data = HashMap<String, String>()
+                    data["sort"] = "sort_name_az"
+                    viewModel.getListing(Constants.LISTING, data)
+                    binding.clFilter.visibility = View.GONE
+                }
+
+                R.id.tvFourth -> {
+                    val data = HashMap<String, String>()
+                    data["sort"] = "sort_name_za"
+                    viewModel.getListing(Constants.LISTING, data)
+                    binding.clFilter.visibility = View.GONE
+                }
+
             }
         }
 
         binding.ivCard.setOnTouchListener { v, event ->
+            binding.clFilter.visibility = View.GONE
             if (event.action == MotionEvent.ACTION_UP) {
                 var data = sharedPrefManager.getRole()
                 val width = v.width
@@ -326,6 +389,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), CardStackListener {
 
 
         binding.ivLine.setOnTouchListener { v, event ->
+            binding.clFilter.visibility = View.GONE
             if (event.action == MotionEvent.ACTION_UP) {
                 val width = v.width
                 val clickedX = event.x
@@ -385,6 +449,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), CardStackListener {
                                         createSpots.add(CardItem.HomeRoom(user))
                                     }
                                     initialize()
+
+                                    if ((myDataModel.data.size > 0)) {
+                                        binding.tvEmpty.visibility = View.GONE
+                                    } else {
+                                        binding.tvEmpty.text = getString(R.string.no_roommate_data)
+                                        binding.tvEmpty.visibility = View.VISIBLE
+                                    }
                                 }
                             } catch (e: Exception) {
                                 Log.e("error", "getHomeApi: $e")
@@ -413,6 +484,14 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), CardStackListener {
                                     }
                                     initialize()
                                     homeAdapter.list = myDataModel.data
+
+                                    if (homeAdapter.list.size > 0) {
+                                        binding.tvEmpty.visibility = View.GONE
+                                    } else {
+                                        binding.tvEmpty.text = getString(R.string.no_room_data)
+                                        binding.tvEmpty.visibility = View.VISIBLE
+                                    }
+
                                 }
                             } catch (e: Exception) {
                                 Log.e("error", "getHomeApiListening: $e")
@@ -444,7 +523,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), CardStackListener {
                                 if (myDataModel != null) {
                                     var messageCount = myDataModel.unReadNotifications ?: 0
 
-
                                     if (messageCount > 0) {
                                         binding.ivNotificationCount.visibility = View.GONE
                                         binding.tvNotificationCount.visibility = View.VISIBLE
@@ -455,10 +533,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), CardStackListener {
                                     }
                                     homeThirdAdapter.list = myDataModel.data
 
-                                    if (homeThirdAdapter.list.isNotEmpty()) {
-                                        binding.tvEmptyChat.visibility = View.GONE
+                                    if (homeThirdAdapter.list.size > 0) {
+                                        binding.tvEmpty.visibility = View.GONE
                                     } else {
-                                        binding.tvEmptyChat.visibility = View.VISIBLE
+                                        binding.tvEmpty.text = getString(R.string.no_listing_data)
+                                        binding.tvEmpty.visibility = View.VISIBLE
                                     }
 
                                 }

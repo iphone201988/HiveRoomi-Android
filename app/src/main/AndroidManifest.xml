@@ -34,6 +34,12 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".ui.for_room_mate.home.third.ViewMatchPeopleActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.video.ShowVideoPlayerActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.for_room_mate.home.third.ThirdProfileMatchActivity"
             android:exported="false" />
         <activity
@@ -102,7 +108,8 @@
             android:exported="false" />
         <activity
             android:name=".ui.for_room_mate.messages.chat.ChatActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".ui.room_offering.basic_details.BasicDetailsActivity"
             android:exported="true" />
@@ -117,24 +124,11 @@
             android:exported="false" />
         <activity
             android:name=".ui.quiz.QuizActivity"
-            android:exported="true">
-
-            <!-- <intent-filter> -->
-            <!-- <action android:name="android.intent.action.MAIN" /> -->
-            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
-            <!-- </intent-filter> -->
-        </activity>
+            android:exported="true"></activity>
         <activity
             android:name=".ui.dashboard.DashboardActivity"
-            android:exported="true">
-
-            <!-- <intent-filter> -->
-            <!-- <action android:name="android.intent.action.MAIN" /> -->
-
-
-            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
-            <!-- </intent-filter> -->
-        </activity>
+            android:exported="true"
+            android:windowSoftInputMode="adjustPan"></activity>
         <activity
             android:name=".ui.auth.AuthActivity"
             android:exported="false" />

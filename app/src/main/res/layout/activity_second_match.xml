@@ -159,6 +159,7 @@
                     android:layout_height="@dimen/_60sdp"
                     android:layout_marginHorizontal="@dimen/_5sdp"
                     android:layout_marginTop="@dimen/_10sdp"
+                    android:onClick="@{v->vm.onClick(v)}"
                     android:background="@drawable/gradiant_strock"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"

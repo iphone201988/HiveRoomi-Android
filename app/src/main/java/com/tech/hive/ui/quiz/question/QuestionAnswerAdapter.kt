@@ -15,11 +15,13 @@ import com.tech.hive.data.model.Option
 
 
 class QuestionAnswerAdapter(
-    private val selectedAnswer: String,
+    private var selectedAnswer: String,
     private val type: String?,
     private val answers: List<Option?>,
-    private val onAnswerSelected: (Int) -> Unit
+    private val onAnswerSelected: (String, Int) -> Unit
 ) : RecyclerView.Adapter<QuestionAnswerAdapter.AnswerViewHolder>() {
+
+
     inner class AnswerViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val etEmail = itemView.findViewById<AppCompatEditText>(R.id.etEmail)
         private val tvAnswer = itemView.findViewById<AppCompatTextView>(R.id.tvAnswer)
@@ -28,14 +30,8 @@ class QuestionAnswerAdapter(
 
         fun bind(answer: Option, position: Int) {
             tvAnswer.text = answer.label
-
-
-            val isSelected = if (selectedAnswer.isNotEmpty()) {
-                answer.value == selectedAnswer
-            } else {
-                answer.selectedAnswer
-            }
-
+            val isSelected = selectedAnswer == answer.value
+             answer.selectedAnswer = isSelected
             if (isSelected) {
                 ivFirstQuiz.setImageResource(R.drawable.selected_circle)
                 etEmail.setBackgroundResource(R.drawable.select_edittext_bg_color)
@@ -56,12 +52,14 @@ class QuestionAnswerAdapter(
 
                 "text" -> {
                     etEmail.setText(selectedAnswer)
+                    answer.inputValue = selectedAnswer
                     etEmail.visibility = View.VISIBLE
                     ivLocation.visibility = View.VISIBLE
                     tvAnswer.visibility = View.GONE
                     ivFirstQuiz.visibility = View.GONE
                 }
             }
+
 
             etEmail.addTextChangedListener(object : TextWatcher {
                 override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
@@ -73,25 +71,32 @@ class QuestionAnswerAdapter(
                         val currentOption = answers[position]
                         if (s?.isNotEmpty() == true) {
                             currentOption?.inputValue = s.toString()
-                            currentOption?.selectedAnswer = true
                         } else {
                             currentOption?.inputValue = ""
-                            currentOption?.selectedAnswer = false
                         }
                     }
                 }
             })
 
-            tvAnswer.setOnClickListener {
-                answers.forEachIndexed { index, option ->
-                    option?.selectedAnswer = index == position
+            etEmail.setOnFocusChangeListener { _, hasFocus ->
+                if (hasFocus) {
+                    etEmail.setBackgroundResource(R.drawable.select_edittext_bg_color)
+                } else {
+                    etEmail.setBackgroundResource(R.drawable.unselect_edit_text_bg_color)
                 }
-                notifyDataSetChanged()
-                onAnswerSelected(position)
             }
+
+            tvAnswer.setOnClickListener {
+                selectedAnswer = answer.value.toString()
+                notifyDataSetChanged()
+                onAnswerSelected(selectedAnswer, position)
+
+            }
+
         }
 
     }
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AnswerViewHolder {
 
@@ -100,7 +105,6 @@ class QuestionAnswerAdapter(
         return AnswerViewHolder(view)
     }
 
-    //override fun getItemCount(): Int = answers.size
 
     override fun getItemCount(): Int {
         return if (type == "text" && answers.isEmpty()) {

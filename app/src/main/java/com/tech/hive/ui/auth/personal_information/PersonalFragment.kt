@@ -343,6 +343,7 @@ class PersonalFragment : BaseFragment<FragmentPersonalBinding>() {
                                 val myDataModel: UserProfileResponse? =
                                     BindingUtils.parseJson(it.data.toString())
                                 if (myDataModel != null) {
+                                    sharedPrefManager.saveProfile(true)
                                     BindingUtils.navigateWithSlide(
                                         findNavController(),
                                         R.id.navigateToAccountCreatedSuccessfulFragment,

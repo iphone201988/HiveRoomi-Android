@@ -162,7 +162,7 @@ data class Quiz(
 
 data class GroupValue(
     val _id: String?,
-    val answer: String?,
+    var answer: String?,
     var options: List<Option?>?,
     val quizPosition: Int?,
     val title: String?,
@@ -786,3 +786,92 @@ data class UserIdUpdateData(
     val token: String?,
     val userIdProof: String?
 )
+
+/** get visit response **/
+data class GetVisitResponse(
+    val `data`: List<VisitData?>?,
+    val message: String?,
+    val success: Boolean?
+)
+
+data class VisitData(
+    val __v: Int?,
+    val _id: String?,
+    val createdAt: String?,
+    val date: String?,
+    val listingId: Any?,
+    val note: String?,
+    val schedulerId: SchedulerId?,
+    val status: Int?,
+    val time: String?,
+    val updatedAt: String?,
+    val visitorId: VisitorId?
+)
+
+data class SchedulerId(
+    val _id: String?,
+    val name: String?,
+    val profileImage: String?
+)
+
+data class VisitorId(
+    val _id: String?,
+    val name: String?,
+    val profileImage: String?
+)
+
+/** Get Match By Id response **/
+@Parcelize
+data class GetMatchByIdResponse(
+    val `data`: List<GetMatchData?>?,
+    val message: String?,
+    val pagination: GetMatchPagination?,
+    val success: Boolean?
+): Parcelable
+@Parcelize
+data class GetMatchData(
+    val __v: Int?,
+    val _id: String?,
+    val createdAt: String?,
+    val listingId: GetMatchListingId?,
+    val profileId: String?,
+    val status: Int?,
+    val type: String?,
+    val userId: GetMatchUserId?
+): Parcelable
+@Parcelize
+data class  GetMatchPagination(
+    val limit: Int?,
+    val page: Int?,
+    val total: Int?,
+    val totalPages: Int?
+): Parcelable
+@Parcelize
+data class GetMatchListingId(
+    val _id: String?,
+    val address: String?,
+    val description: String?,
+    val images: List<String?>?,
+    val latitude: Int?,
+    val likeCount: Int?,
+    val longitude: Int?,
+    val pets: Boolean?,
+    val price: Int?,
+    val roomType: String?,
+    val roommates: List<Roommate?>?,
+    val smoke: String?,
+    val title: String?,
+    val videos: String?
+): Parcelable
+@Parcelize
+data class GetMatchUserId(
+    val _id: String?,
+    val email: String?,
+    val likeCount: Int?,
+    val name: String?,
+    val profileImage: String?
+
+
+
+): Parcelable
+

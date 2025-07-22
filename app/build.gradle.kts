@@ -91,9 +91,14 @@ dependencies {
     //  image picker
     implementation(libs.imagepicker)
     //firebase
-    implementation(platform("com.google.firebase:firebase-bom:32.8.0"))
+
+    //firebase
+    implementation(platform("com.google.firebase:firebase-bom:34.0.0"))
     implementation("com.google.android.gms:play-services-auth:21.3.0")
-    implementation("com.google.firebase:firebase-auth-ktx")
+    implementation ("com.google.firebase:firebase-messaging")
+    implementation ("com.google.firebase:firebase-auth")
+    implementation ("com.google.firebase:firebase-messaging-ktx:24.0.1")
+
 
     //facebook login dependency
     implementation("com.facebook.android:facebook-login:17.0.2")
@@ -109,5 +114,10 @@ dependencies {
     implementation("io.socket:socket.io-client:2.0.1")
     implementation("com.tbuonomo:dotsindicator:5.0")
     implementation("com.github.wdsqjq:AndRatingBar:1.0.6")
+
+    // Video Player
+    implementation ("com.google.android.exoplayer:exoplayer-core:2.18.1")
+    implementation ("com.google.android.exoplayer:exoplayer-ui:2.18.1")
+    implementation ("com.google.android.exoplayer:exoplayer-smoothstreaming:2.18.1")
 
 }
