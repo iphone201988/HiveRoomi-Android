@@ -75,7 +75,7 @@
                 android:onClick="@{v->vm.onClick(v)}"
                 android:paddingStart="@dimen/_15sdp"
                 android:paddingEnd="@dimen/_40sdp"
-                android:text="@string/yes"
+                android:hint="@string/yes"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tvFloor" />
@@ -111,7 +111,7 @@
                 android:onClick="@{v->vm.onClick(v)}"
                 android:paddingStart="@dimen/_15sdp"
                 android:paddingEnd="@dimen/_40sdp"
-                android:text="@string/yes"
+                android:hint="@string/yes"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tvElevator" />
@@ -147,7 +147,7 @@
                 android:onClick="@{v->vm.onClick(v)}"
                 android:paddingStart="@dimen/_15sdp"
                 android:paddingEnd="@dimen/_40sdp"
-                android:text="@string/yes"
+                android:hint="@string/yes"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tvHeating" />
@@ -184,7 +184,7 @@
                 android:onClick="@{v->vm.onClick(v)}"
                 android:paddingStart="@dimen/_15sdp"
                 android:paddingEnd="@dimen/_40sdp"
-                android:text="@string/yes"
+                android:hint="@string/yes"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tvWashing" />
@@ -258,7 +258,7 @@
                 android:onClick="@{v->vm.onClick(v)}"
                 android:paddingStart="@dimen/_15sdp"
                 android:paddingEnd="@dimen/_40sdp"
-                android:text="@string/yes"
+                android:hint="@string/yes"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tvBalcony" />
@@ -295,7 +295,7 @@
                 android:onClick="@{v->vm.onClick(v)}"
                 android:paddingStart="@dimen/_15sdp"
                 android:paddingEnd="@dimen/_40sdp"
-                android:text="@string/yes"
+                android:hint="@string/yes"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tvParking" />

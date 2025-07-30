@@ -18,16 +18,18 @@
             type="String" />
 
         <variable
-            name="locationType"
-            type="String" />
-
-        <variable
             name="bioType"
             type="String" />
 
         <variable
             name="visibilityType"
             type="Integer" />
+        <variable
+            name="locationName"
+            type="String" />
+        <variable
+            name="professionOther"
+            type="String" />
 
 
         <import type="android.view.View" />
@@ -111,12 +113,15 @@
             app:layout_constraintEnd_toEndOf="@+id/ivPerson"
             app:layout_constraintStart_toEndOf="@+id/ivCamera" />
 
-        <androidx.core.widget.NestedScrollView
+        <ScrollView
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:fillViewport="true"
             android:layout_marginTop="@dimen/_10sdp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@id/ivPerson">
+
+
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -280,6 +285,36 @@
 
 
                 <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvProfessionRoleOther"
+                    style="@style/TextView.Regular"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:text="@string/profession"
+                    android:visibility="gone"
+                    android:textColor="@color/black_24"
+                    android:textSize="@dimen/_12ssp"
+                    app:layout_constraintStart_toStartOf="@+id/etGender"
+                    app:layout_constraintTop_toBottomOf="@+id/etProfessionRole" />
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/etProfessionOther"
+                    style="@style/EditText"
+                    android:layout_marginHorizontal="@dimen/_12sdp"
+                    android:layout_marginTop="@dimen/_6sdp"
+                    android:visibility="gone"
+                    android:background="@{professionOther.isEmpty()?@drawable/unselect_edit_text_bg_color:@drawable/select_edittext_bg_color}"
+                    android:hint="@string/enter_profession"
+                    android:imeOptions="actionNext"
+                    android:onClick="@{v->vm.onClick(v)}"
+                    android:nextFocusForward="@id/etShortBio"
+                    android:paddingStart="@dimen/_15sdp"
+                    android:paddingEnd="@dimen/_40sdp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvProfessionRoleOther" />
+
+
+
+                <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tvCampus"
                     style="@style/TextView.Regular"
                     android:layout_marginTop="@dimen/_15sdp"
@@ -288,7 +323,7 @@
                     android:textSize="@dimen/_12ssp"
                     android:visibility="gone"
                     app:layout_constraintStart_toStartOf="@+id/etGender"
-                    app:layout_constraintTop_toBottomOf="@+id/etProfessionRole" />
+                    app:layout_constraintTop_toBottomOf="@+id/etProfessionOther" />
 
                 <androidx.appcompat.widget.AppCompatEditText
                     android:id="@+id/etCampus"
@@ -362,15 +397,18 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/etShortBio" />
 
-                <androidx.appcompat.widget.AppCompatEditText
+                <androidx.appcompat.widget.AppCompatAutoCompleteTextView
                     android:id="@+id/etLocation"
                     style="@style/EditText"
                     android:layout_marginHorizontal="@dimen/_12sdp"
                     android:layout_marginTop="@dimen/_6sdp"
-                    android:background="@{locationType.isEmpty()?@drawable/unselect_edit_text_bg_color:@drawable/select_edittext_bg_color}"
+                    android:background="@{locationName.isEmpty()?@drawable/unselect_edit_text_bg_color:@drawable/select_edittext_bg_color}"
                     android:hint="@string/enter_location"
-                    android:imeOptions="actionNext"
-                    android:nextFocusForward="@+id/etBudget"
+                    android:imeOptions="actionDone"
+                    android:singleLine="true"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    android:scrollHorizontally="true"
                     android:paddingStart="@dimen/_40sdp"
                     android:paddingEnd="@dimen/_16sdp"
                     android:text="@{bean.address}"
@@ -378,12 +416,12 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/tvLocation" />
 
+
                 <androidx.appcompat.widget.AppCompatImageView
                     android:layout_width="@dimen/_17sdp"
                     android:layout_height="@dimen/_17sdp"
                     android:layout_marginStart="@dimen/_14sdp"
                     android:src="@drawable/ic_location"
-                    android:tint="@{locationType.isEmpty()?@color/et_hint_color:@color/start_color}"
                     app:layout_constraintBottom_toBottomOf="@+id/etLocation"
                     app:layout_constraintStart_toStartOf="@+id/etLocation"
                     app:layout_constraintTop_toTopOf="@+id/etLocation" />
@@ -564,6 +602,8 @@
                     app:layout_constraintTop_toBottomOf="@+id/btnContinue" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
-        </androidx.core.widget.NestedScrollView>
+
+        </ScrollView>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

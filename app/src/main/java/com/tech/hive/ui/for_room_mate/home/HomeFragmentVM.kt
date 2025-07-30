@@ -7,6 +7,7 @@ import com.tech.hive.base.utils.Resource
 import com.tech.hive.base.utils.event.SingleRequestEvent
 import com.tech.hive.data.api.ApiHelper
 import com.tech.hive.data.api.Constants
+import com.tech.hive.data.model.HomeApiData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -20,11 +21,11 @@ class HomeFragmentVM @Inject constructor(val apiHelper: ApiHelper) : BaseViewMod
 
     val observeCommon = SingleRequestEvent<JsonObject>()
 
-    fun getHomeApi(url: String) {
+    fun getHomeApi(url: String,data : HashMap<String, String>) {
         CoroutineScope(Dispatchers.IO).launch {
             observeCommon.postValue(Resource.loading(null))
             try {
-                apiHelper.apiGetOnlyAuthToken(Constants.userLanguage, url).let {
+                apiHelper.apiGetWithQuery(Constants.userLanguage, data,url).let {
                     if (it.isSuccessful) {
                         observeCommon.postValue(Resource.success("getHomeApi", it.body()))
                     } else observeCommon.postValue(
@@ -85,11 +86,11 @@ class HomeFragmentVM @Inject constructor(val apiHelper: ApiHelper) : BaseViewMod
     }
 
 
-    fun getHomeApiListening(url: String) {
+    fun getHomeApiListening(url: String,data: HashMap<String, String>) {
         CoroutineScope(Dispatchers.IO).launch {
             observeCommon.postValue(Resource.loading(null))
             try {
-                apiHelper.apiGetOnlyAuthToken(Constants.userLanguage, url).let {
+                apiHelper.apiGetWithQuery(Constants.userLanguage, data,url).let {
                     if (it.isSuccessful) {
                         observeCommon.postValue(Resource.success("getHomeApiListening", it.body()))
                     } else observeCommon.postValue(

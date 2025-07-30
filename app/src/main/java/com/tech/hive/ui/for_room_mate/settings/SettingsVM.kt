@@ -60,6 +60,29 @@ class SettingsVM @Inject constructor(val apiHelper: ApiHelper) : BaseViewModel()
     }
 
 
+    fun deleteApiCall(url: String,request: HashMap<String, Any>) {
+        CoroutineScope(Dispatchers.IO).launch {
+            settingObserver.postValue(Resource.loading(null))
+            try {
+                apiHelper.apiPostForRawBody(Constants.userLanguage, url,request).let {
+                    if (it.isSuccessful) {
+                        settingObserver.postValue(Resource.success("deleteApiCall", it.body()))
+                    } else settingObserver.postValue(
+                        Resource.error(
+                            handleErrorResponse(it.errorBody()), null
+                        )
+                    )
+                }
+            } catch (e: Exception) {
+                Log.i("deleteApiCall", "deleteApiCall: $e")
+            }
+
+        }
+
+    }
+
+
+
     fun feedBackApiCall(url: String,request: HashMap<String, Any>) {
         CoroutineScope(Dispatchers.IO).launch {
             settingObserver.postValue(Resource.loading(null))

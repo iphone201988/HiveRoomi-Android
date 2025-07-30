@@ -174,7 +174,9 @@ data class Option(
     val label: String?,
     var value: String?,
     var selectedAnswer: Boolean = false,
-    var inputValue: String? = ""
+    var inputValue: String? = "",
+    var lat: Double?=0.0,
+    var long: Double?=0.0
 )
 
 /** quiz answer model **/
@@ -476,7 +478,7 @@ data class SecondMatchData(
     val floor: String?,
     val furnishingStatus: String?,
     val heating: String?,
-    val images: List<Any?>?,
+    val images: List<String?>?,
     val isDeleted: Boolean?,
     val kitchen: Boolean?,
     val latitude: Double?,
@@ -665,7 +667,7 @@ data class PostListingData(
     val latitude: Double?,
     val likeCount: Int?,
     val listingType: String?,
-    val location: Location?,
+    val location: PostListingLocation?,
     val longitude: Double?,
     val lookingFor: List<String?>?,
     val minimumStay: String?,
@@ -674,19 +676,50 @@ data class PostListingData(
     val price: Int?,
     val privateBathroom: Boolean?,
     val roomType: String?,
-    val roommates: List<Roommate?>?,
+    val roommates: List<PostListingRoommate?>?,
     val size: String?,
     val smoke: String?,
     val status: Int?,
     val title: String?,
     val updatedAt: String?,
-    val userId: String?,
+    val userId: PostListingUserId?,
     val utilitiesPrice: Int?,
     val videos: String?,
     val viewCount: Int?,
     val washingMachine: Boolean?,
     val wifi: Boolean?
 )
+
+
+data class PostListingLocation(
+    val coordinates: List<Double?>?,
+    val type: String?
+)
+
+data class PostListingRoommate(
+    val _id: String?,
+    val age: Int?,
+    val gender: String?
+)
+
+data class PostListingUserId(
+    val _id: String?,
+    val name: String?,
+    val profileImage: String?
+)
+
+
+
+
+
+
+
+
+
+
+
+
+
 /** get listing response **/
 @Parcelize
 data class GetListingResponse(

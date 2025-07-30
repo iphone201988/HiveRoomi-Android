@@ -14,13 +14,11 @@ import com.tech.hive.base.utils.showErrorToast
 import com.tech.hive.base.utils.showSuccessToast
 import com.tech.hive.data.model.CommonQuestionsData
 import com.tech.hive.data.model.CommonQuestionsResponse
-import com.tech.hive.data.model.CommunityModel
 import com.tech.hive.data.model.PrivacyModel
 import com.tech.hive.databinding.ActivityCommunityBinding
 import com.tech.hive.databinding.CommunityRvItemBinding
 import com.tech.hive.databinding.PrivacyPolicyRvItemBinding
 import com.tech.hive.ui.for_room_mate.settings.SettingsVM
-import com.tech.hive.ui.for_room_mate.settings_screen.FrequentQuestionsActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -90,8 +88,9 @@ class CommunityActivity : BaseActivity<ActivityCommunityBinding>() {
                 R.id.ivBack -> {
                     finish()
                 }
+
                 R.id.btnGotIt -> {
-                  finish()
+                    finish()
                 }
 
                 R.id.ivCheck -> {

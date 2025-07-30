@@ -301,7 +301,7 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-        <com.tech.hive.ui.for_room_mate.home.cardstackview.CardStackView
+        <com.yalantis.library.Koloda
             android:id="@+id/cardStackView"
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -310,13 +310,11 @@
             android:elevation="@dimen/_20sdp"
             android:visibility="@{userType==1?View.VISIBLE:View.GONE}"
             app:layout_constraintBottom_toTopOf="@+id/ivCard"
-            app:layout_constraintTop_toBottomOf="@+id/clHeader">
-
-        </com.tech.hive.ui.for_room_mate.home.cardstackview.CardStackView>
+            app:layout_constraintTop_toBottomOf="@+id/clHeader" />
 
 
-        <com.tech.hive.ui.for_room_mate.home.cardstackview.CardStackView
-            android:id="@+id/cardStackView1"
+        <com.yalantis.library.Koloda
+            android:id="@+id/kolodaHomeType"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginTop="@dimen/_20sdp"
@@ -324,9 +322,7 @@
             android:elevation="@dimen/_20sdp"
             android:visibility="@{userType==2 &amp;&amp; buttonClick == 1 ?View.VISIBLE:View.GONE}"
             app:layout_constraintBottom_toTopOf="@+id/ivCard"
-            app:layout_constraintTop_toBottomOf="@+id/clHeader">
-
-        </com.tech.hive.ui.for_room_mate.home.cardstackview.CardStackView>
+            app:layout_constraintTop_toBottomOf="@+id/clHeader" />
 
 
         <androidx.recyclerview.widget.RecyclerView
@@ -417,6 +413,19 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvEmptySecond"
+            style="@style/TextView.Medium"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/no_roommate_data"
+            android:textColor="@color/black_24"
+            android:textSize="@dimen/_14sdp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -426,7 +435,7 @@
             android:layout_marginTop="@dimen/_2sdp"
             android:background="@drawable/green_bg"
             android:backgroundTint="@color/text_color_grey"
-                android:visibility="gone"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="@+id/ivProviderFilter"
             app:layout_constraintTop_toBottomOf="@+id/ivProviderFilter">
 
@@ -436,8 +445,8 @@
                 android:layout_width="0dp"
                 android:layout_marginStart="@dimen/_10sdp"
                 android:layout_marginTop="@dimen/_4sdp"
-                android:onClick="@{v->vm.onClick(v)}"
                 android:gravity="start"
+                android:onClick="@{v->vm.onClick(v)}"
                 android:text="@string/newest"
                 android:textColor="@color/white"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -482,8 +491,8 @@
                 style="@style/TextView.Medium"
                 android:layout_width="0dp"
                 android:layout_marginTop="@dimen/_4sdp"
-                android:onClick="@{v->vm.onClick(v)}"
                 android:gravity="start"
+                android:onClick="@{v->vm.onClick(v)}"
                 android:text="@string/name_a_to_z"
                 android:textColor="@color/white"
                 app:layout_constraintEnd_toEndOf="parent"

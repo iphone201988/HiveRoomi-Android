@@ -107,7 +107,7 @@
             style="@style/TextView.Semibold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text='@{"Price: $"+bean.price}'
+            priceFormatted="@{bean.price}"
             android:textColor="@color/end_color"
             android:textSize="@dimen/_14ssp"
             app:layout_constraintStart_toStartOf="@+id/tvTitle"

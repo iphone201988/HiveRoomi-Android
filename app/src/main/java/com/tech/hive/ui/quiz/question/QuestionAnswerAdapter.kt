@@ -1,16 +1,21 @@
 package com.tech.hive.ui.quiz.question
 
+import android.content.Context.INPUT_METHOD_SERVICE
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
+import androidx.appcompat.widget.AppCompatAutoCompleteTextView
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.recyclerview.widget.RecyclerView
+import com.amazonaws.regions.Regions
 import com.tech.hive.R
+import com.tech.hive.base.location.LocationSearchManager
 import com.tech.hive.data.model.Option
 
 
@@ -23,7 +28,7 @@ class QuestionAnswerAdapter(
 
 
     inner class AnswerViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val etEmail = itemView.findViewById<AppCompatEditText>(R.id.etEmail)
+        private val etEmail = itemView.findViewById<AppCompatAutoCompleteTextView>(R.id.etEmail)
         private val tvAnswer = itemView.findViewById<AppCompatTextView>(R.id.tvAnswer)
         private val ivLocation = itemView.findViewById<AppCompatImageView>(R.id.ivLocation)
         private val ivFirstQuiz = itemView.findViewById<AppCompatImageView>(R.id.ivFirstQuiz)
@@ -77,6 +82,22 @@ class QuestionAnswerAdapter(
                     }
                 }
             })
+
+            val locationSearchManager = LocationSearchManager(
+                context = etEmail.context,
+                identityPoolId = "eu-north-1:c8a8cb6e-799b-43dc-ae59-737224071479",
+                region = Regions.EU_NORTH_1,
+                placeIndexName = etEmail.context.getString(R.string.place_index_name)
+            )
+
+            locationSearchManager.setupSearch(
+                autoCompleteTextView = etEmail, onResultSelected = { label, coordinate ->
+                    etEmail.clearFocus()
+                    // Hide keyboard
+                    val imm = etEmail.context.getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+                    imm.hideSoftInputFromWindow(etEmail.windowToken, 0)
+
+                })
 
             etEmail.setOnFocusChangeListener { _, hasFocus ->
                 if (hasFocus) {

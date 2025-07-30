@@ -33,7 +33,7 @@
             android:layout_width="@dimen/_45sdp"
             android:layout_height="@dimen/_45sdp"
             android:scaleType="centerCrop"
-            android:src="@drawable/ic_match_dummy"
+            android:src="@drawable/user_place_holder"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:shapeAppearance="@style/Shape50" />

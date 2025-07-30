@@ -93,9 +93,10 @@ class MessagesFragment : BaseFragment<FragmentMessagesBinding>() {
                                         binding.ivNotificationCount.visibility = View.GONE
                                     }
                                     if (count > 0) {
-                                        binding.tvMsgCount.text = "$count New Messages"
+                                        binding.tvMsgCount.text =
+                                            getString(R.string.new_messages, count.toString())
                                     } else {
-                                        binding.tvMsgCount.text = "0 New Message"
+                                        binding.tvMsgCount.text = getString(R.string._0_new_message)
                                     }
                                     chatAdapter.clearList()
                                     statusAdapter.clearList()

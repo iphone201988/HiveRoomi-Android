@@ -2,6 +2,8 @@
     <string name="facebook_app_id">890660845841511</string>
     <string name="client_token">e8354117461c1f7ae5902f859f61193e</string>
     <string name="default_web_client_id">AIzaSyAOH2Vq3kOpe3seWGeiDx4-UIKePgVAZ00.apps.googleusercontent.com</string>
+    <string name="map_name">hiveroomi</string>
+    <string name="place_index_name">hiveroomi</string>
 
 
     <string name="post_detail">Post Detail</string>
@@ -172,6 +174,7 @@
     <string name="no_parties_on_weekend">No Parties on weekend</string>
     <string name="elena_salvatore">Elena Salvatore</string>
     <string name="online">Online</string>
+    <string name="offline">Offline</string>
     <string name="block_user">Block User</string>
     <string name="report_user">Report User</string>
     <string name="type_message_here">type message here</string>
@@ -184,6 +187,7 @@
     <string name="media_shared">Media Shared</string>
     <string name="apartment_kitchen_images"><![CDATA[Apartment & Kitchen Images]]></string>
     <string name="like">Like</string>
+    <string name="delete">Delete</string>
     <string name="report">Report</string>
     <string name="chat">Chat</string>
     <string name="search_here">Search here</string>
@@ -263,11 +267,12 @@
     <string name="_34_matches">34 Matches</string>
     <string name="_6_months_min_stay">6 months min stay</string>
     <string name="create_new_listing">Create New Listing</string>
-    <string name="delete">Delete</string>
     <string name="are_you_sure_to_logout">Are you sure you want to logout ?</string>
     <string name="are_you_sure_to_block">Are you sure you want to block this user ?</string>
     <string name="are_you_sure_to_unblock">Are you sure you want to unblock this user ?</string>
     <string name="are_you_sure_to_delete_account">Are you sure you want to delete\nthis account?</string>
+    <string name="are_you_sure_to_delete_listing">Are you sure you want to delete\nthis listing?</string>
+    <string name="delete_listing">Delete Listing</string>
     <string name="welcome_to_nour_community">Welcome to\nOur Community</string>
     <string name="community_title">To keep our community safe, respectful, and inclusive, we’ve set a few ground rules. Please read and follow them to ensure a positive experience for everyone.</string>
     <string name="i_have_read_and_agree_to_follow_the_community_guidelines">I have read and agree to follow the community guidelines.</string>
@@ -478,42 +483,7 @@
     <string name="second_fragment_label">Second Fragment</string>
     <string name="previous">Previous</string>
 
-    <string name="lorem_ipsum">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam in scelerisque sem. Mauris
-        volutpat, dolor id interdum ullamcorper, risus dolor egestas lectus, sit amet mattis purus
-        dui nec risus. Maecenas non sodales nisi, vel dictum dolor. Class aptent taciti sociosqu ad
-        litora torquent per conubia nostra, per inceptos himenaeos. Suspendisse blandit eleifend
-        diam, vel rutrum tellus vulputate quis. Aliquam eget libero aliquet, imperdiet nisl a,
-        ornare ex. Sed rhoncus est ut libero porta lobortis. Fusce in dictum tellus.\n\n
-        Suspendisse interdum ornare ante. Aliquam nec cursus lorem. Morbi id magna felis. Vivamus
-        egestas, est a condimentum egestas, turpis nisl iaculis ipsum, in dictum tellus dolor sed
-        neque. Morbi tellus erat, dapibus ut sem a, iaculis tincidunt dui. Interdum et malesuada
-        fames ac ante ipsum primis in faucibus. Curabitur et eros porttitor, ultricies urna vitae,
-        molestie nibh. Phasellus at commodo eros, non aliquet metus. Sed maximus nisl nec dolor
-        bibendum, vel congue leo egestas.\n\n
-        Sed interdum tortor nibh, in sagittis risus mollis quis. Curabitur mi odio, condimentum sit
-        amet auctor at, mollis non turpis. Nullam pretium libero vestibulum, finibus orci vel,
-        molestie quam. Fusce blandit tincidunt nulla, quis sollicitudin libero facilisis et. Integer
-        interdum nunc ligula, et fermentum metus hendrerit id. Vestibulum lectus felis, dictum at
-        lacinia sit amet, tristique id quam. Cras eu consequat dui. Suspendisse sodales nunc ligula,
-        in lobortis sem porta sed. Integer id ultrices magna, in luctus elit. Sed a pellentesque
-        est.\n\n
-        Aenean nunc velit, lacinia sed dolor sed, ultrices viverra nulla. Etiam a venenatis nibh.
-        Morbi laoreet, tortor sed facilisis varius, nibh orci rhoncus nulla, id elementum leo dui
-        non lorem. Nam mollis ipsum quis auctor varius. Quisque elementum eu libero sed commodo. In
-        eros nisl, imperdiet vel imperdiet et, scelerisque a mauris. Pellentesque varius ex nunc,
-        quis imperdiet eros placerat ac. Duis finibus orci et est auctor tincidunt. Sed non viverra
-        ipsum. Nunc quis augue egestas, cursus lorem at, molestie sem. Morbi a consectetur ipsum, a
-        placerat diam. Etiam vulputate dignissim convallis. Integer faucibus mauris sit amet finibus
-        convallis.\n\n
-        Phasellus in aliquet mi. Pellentesque habitant morbi tristique senectus et netus et
-        malesuada fames ac turpis egestas. In volutpat arcu ut felis sagittis, in finibus massa
-        gravida. Pellentesque id tellus orci. Integer dictum, lorem sed efficitur ullamcorper,
-        libero justo consectetur ipsum, in mollis nisl ex sed nisl. Donec maximus ullamcorper
-        sodales. Praesent bibendum rhoncus tellus nec feugiat. In a ornare nulla. Donec rhoncus
-        libero vel nunc consequat, quis tincidunt nisl eleifend. Cras bibendum enim a justo luctus
-        vestibulum. Fusce dictum libero quis erat maximus, vitae volutpat diam dignissim.
-    </string>
+
     <string name="report_reason">Report Reason</string>
     <string name="please_describe">Please describe</string>
     <string name="you_have_block_this_user">"you have block this user "</string>
@@ -538,6 +508,7 @@
     <string name="_6_may">6 May</string>
     <string name="no_listing_data">No listing data.</string>
     <string name="no_roommate_data">No roommate data.</string>
+    <string name="no_listing_match_data">No listing match data.</string>
     <string name="no_room_data">No home data.</string>
     <string name="scheduled_visits">Scheduled Visits</string>
     <string name="type_of_provider">Type Of Provider</string>
@@ -565,5 +536,52 @@
     <string name="provider_information">Provider Information</string>
     <string name="provider_type">Provider Type</string>
     <string name="interested_peoples">Interested Peoples</string>
+    <string name="please_enter_the_otp_below_that_we_have_sent_to">Please enter the OTP below that we have sent to %1$s</string>
+    <string name="minimum_6_characters_1_capital_letter_required">* Minimum 6 characters, 1 capital letter required</string>
+    <string name="strong_password">Strong password</string>
+    <string name="good_password">Good password</string>
+    <string name="fair_password">Fair password</string>
+    <string name="per_month">/month</string>
+    <string name="months">Months</string>
+    <string name="view">Views</string>
+    <string name="utilities">Utilities</string>
+    <string name="available_room">Available Room</string>
+    <string name="sqm">" sqm"</string>
+    <string name="area">Area</string>
+    <string name="location_connectivity"><![CDATA[Location & Connectivity]]></string>
+    <string name="house_rules">House Rules</string>
+    <string name="current_roommates">Current Roommates</string>
+    <string name="pets_allowed">🐶 Pets Allowed</string>
+    <string name="no_pets">🐶 No Pets</string>
+    <string name="no_smoking">🚭 No Smoking</string>
+    <string name="yes_smoking">🚭 Yes Smoking</string>
+    <string name="wifi">Wifi,</string>
+    <string name="kitchen">Kitchen,</string>
+    <string name="balcony">Balcony</string>
+    <string name="parking">Parking</string>
+    <string name="air_conditioner">Air Conditioner,</string>
+    <string name="new_messages">%1$s New Messages</string>
+    <string name="_0_new_message">0 New Message</string>
+    <string name="events_on">Events on %1$s :</string>
+    <string name="scheduled_visits_events">Scheduled Visits/ Events</string>
+    <string name="no_address_found">📍 No Address found</string>
+    <string name="not_found">🛏 Not found</string>
+    <string name="not_roomates">👥 0 Roommates</string>
+    <string name="no_campus_info">No Campus Info</string>
+    <string name="price11">Price: $%1$s</string>
+    <string name="no_title_found">No Title Found</string>
+    <string name="no_address_found1">📍 No Address found</string>
+    <string name="not_found1">🛏 Not found</string>
+    <string name="yes_smoking1">💀 Yes Smoking</string>
+    <string name="no_smoking1">💀 No Smoking</string>
+    <string name="pets_allowed1">🐶 Pets Allowed</string>
+    <string name="no_pets1">🐶 No Pets</string>
+    <string name="_0_roommates1">👥 0 Roommates</string>
+    <string name="host">"Host "</string>
+    <string name="actions">Actions</string>
+    <string name="verified">Verified</string>
+    <string name="verification_status">Verification Status</string>
+    <string name="verification_host_info"><![CDATA[Verification & Host Info]]></string>
+    <string name="enter_profession">Enter profession</string>
 
 </resources>

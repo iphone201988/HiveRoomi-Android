@@ -63,9 +63,11 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <androidx.core.widget.NestedScrollView
+        <ScrollView
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:fillViewport="true"
+            android:overScrollMode="never"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@id/clHeader">
 
@@ -178,7 +180,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/etShortBio" />
 
-                <androidx.appcompat.widget.AppCompatEditText
+                <androidx.appcompat.widget.AppCompatAutoCompleteTextView
                     android:id="@+id/etLocation"
                     style="@style/EditText"
                     android:layout_marginHorizontal="@dimen/_12sdp"
@@ -191,29 +193,31 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/tvLocation" />
-                <FrameLayout
+
+
+
+                <androidx.cardview.widget.CardView
                     android:id="@+id/flMap"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/unselect_desc_bg"
-                    android:clipToOutline="true"
                     android:layout_marginHorizontal="@dimen/_12sdp"
                     android:layout_marginTop="@dimen/_15sdp"
-                    app:layout_constraintStart_toStartOf="parent"
+                    android:background="@drawable/unselect_desc_bg"
+                    android:clipToOutline="true"
+                    app:cardCornerRadius="@dimen/_9sdp"
                     app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/etLocation">
-                    <fragment
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/_120sdp"
-                        android:id="@+id/map"
-                        android:name="com.google.android.gms.maps.SupportMapFragment"/>
-                    <View
-                        android:id="@+id/map_touch_overlay"
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/_120sdp"
-                        android:background="@android:color/transparent" />
 
-                </FrameLayout>
+
+                    <com.mapbox.mapboxsdk.maps.MapView
+                        android:id="@+id/mapView"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_140sdp"/>
+
+
+                </androidx.cardview.widget.CardView>
+
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tvUploadImages"
@@ -278,6 +282,7 @@
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:scaleType="centerCrop"
+                    android:onClick="@{v->vm.onClick(v)}"
                     android:visibility="gone"
                     app:layout_constraintBottom_toBottomOf="@+id/tvVideo"
                     app:layout_constraintEnd_toEndOf="@+id/tvVideo"
@@ -302,6 +307,6 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tvVideo" />
             </androidx.constraintlayout.widget.ConstraintLayout>
-        </androidx.core.widget.NestedScrollView>
+        </ScrollView>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

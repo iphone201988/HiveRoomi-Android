@@ -38,7 +38,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/_105sdp"
             android:scaleType="centerCrop"
-            android:src="@drawable/card_image"
+            android:src="@drawable/user_place_holder"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -126,7 +126,7 @@
             style="@style/TextView.Semibold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text='@{"$"+String.valueOf(bean.price) + "/month"}'
+            android:text='@{"$" + String.valueOf(bean.price) + " " + @string/per_month}'
             android:textColor="@color/end_color"
             android:textSize="@dimen/_14ssp"
             app:layout_constraintStart_toStartOf="@+id/tvTitle"
@@ -175,7 +175,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_4sdp"
-            android:text='@{String.valueOf(bean.viewCount) + " Views"}'
+            android:text='@{String.valueOf(bean.viewCount) + @string/view}'
             android:textColor="@color/black_24"
             android:textSize="@dimen/_10ssp"
             app:layout_constraintBottom_toBottomOf="@+id/ivView"
@@ -199,7 +199,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_4sdp"
-            android:text='@{String.valueOf(bean.likeCount) + " Matches"}'
+            android:text='@{String.valueOf(bean.likeCount) + @string/matches}'
             android:textColor="@color/black_24"
             android:textSize="@dimen/_10ssp"
             app:layout_constraintBottom_toBottomOf="@+id/ivView"

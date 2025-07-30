@@ -7,22 +7,29 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.View
+import android.view.WindowManager
+import android.view.inputmethod.InputMethodManager
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.core.content.FileProvider
 import androidx.core.net.toUri
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import com.amazonaws.regions.Regions
 import com.github.dhaval2404.imagepicker.util.FileUtil
 import com.tech.hive.BR
 import com.tech.hive.R
 import com.tech.hive.base.BaseActivity
 import com.tech.hive.base.BaseViewModel
+import com.tech.hive.base.location.LocationSearchManager
 import com.tech.hive.base.SimpleRecyclerViewAdapter
 import com.tech.hive.base.utils.AppUtils
 import com.tech.hive.base.utils.BaseCustomDialog
 import com.tech.hive.base.utils.BindingUtils
 import com.tech.hive.base.utils.Status
 import com.tech.hive.base.utils.showErrorToast
+import com.tech.hive.base.utils.showSuccessToast
 import com.tech.hive.data.api.Constants
 import com.tech.hive.data.model.GetUserProfileResponse
 import com.tech.hive.databinding.ActivityEditProfileBinding
@@ -41,16 +48,17 @@ import java.io.IOException
 @AndroidEntryPoint
 class EditProfileActivity : BaseActivity<ActivityEditProfileBinding>() {
     private val viewModel: ProfileFragmentVM by viewModels()
-
     private var photoFile2: File? = null
     private var photoURI: Uri? = null
     private var multipartImage: MultipartBody.Part? = null
     private var personal: BaseCustomDialog<PersonalDialogItemBinding>? = null
     private lateinit var ageAdapter: SimpleRecyclerViewAdapter<String, UnPinLayoutBinding>
     private var type = 1
-    private var editType =0
+    private var editType = 0
     private var userIdProof = ""
     private var ownerShipProof = ""
+    private var lat : Double?=null
+    private var long : Double?=null
 
     override fun getLayoutResource(): Int {
         return R.layout.activity_edit_profile
@@ -74,15 +82,28 @@ class EditProfileActivity : BaseActivity<ActivityEditProfileBinding>() {
         val type = intent.getStringExtra("sendType")
         when (type) {
             "first" -> {
-                editType =1
+                editType = 1
                 binding.visibilityType = 1
             }
 
             "third" -> {
-                editType =2
+                editType = 2
                 binding.visibilityType = 2
             }
 
+        }
+
+        // Make keyboard resize layout
+        window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
+
+        // set status bar color
+        BindingUtils.statusBarStyle(this@EditProfileActivity)
+
+        // Keyboard insets listener to avoid send button getting hidden
+        ViewCompat.setOnApplyWindowInsetsListener(binding.main) { view, insets ->
+            val imeHeight = insets.getInsets(WindowInsetsCompat.Type.ime()).bottom
+            view.setPadding(0, 0, 0, imeHeight)
+            insets
         }
     }
 
@@ -100,7 +121,8 @@ class EditProfileActivity : BaseActivity<ActivityEditProfileBinding>() {
         // check state
         binding.fullNameType = ""
         binding.bioType = ""
-        binding.locationType = ""
+        binding.professionOther = ""
+        binding.locationName = ""
 
     }
 
@@ -115,20 +137,33 @@ class EditProfileActivity : BaseActivity<ActivityEditProfileBinding>() {
         val campus = binding.etCampus.text.toString().trim()
         val location = binding.etLocation.text.toString().trim()
 
+        if (professionRole.contains("Other")){
+            data["profession"] = binding.etProfessionOther.text.toString().trim().toRequestBody()
+        }else{
+            data["profession"] = professionRole.toRequestBody()
+        }
+
         if (professionRole.contains("Student")) {
             data["campus"] = campus.toRequestBody()
         }
 
+
         data["name"] = fullName.toRequestBody()
         data["gender"] = gender.toRequestBody()
         data["ageRange"] = age.toRequestBody()
-        data["profession"] = professionRole.toRequestBody()
+
         data["bio"] = shortBio.toRequestBody()
         data["address"] = location.toRequestBody()
-        data["latitude"] = BindingUtils.latitude.toString().toRequestBody()
-        data["longitude"] = BindingUtils.longitude.toString().toRequestBody()
+        if(lat!=null){
+            data["latitude"] = lat.toString().toRequestBody()
+        }
+        if(long!=null){
+            data["longitude"] = lat.toString().toRequestBody()
+        }
 
-        if (editType==2){
+
+
+        if (editType == 2) {
             data["providerType"] = binding.etProvider.text.toString().trim().toRequestBody()
         }
         viewModel.userUpdateProfile(data, multipartImage)
@@ -192,13 +227,16 @@ class EditProfileActivity : BaseActivity<ActivityEditProfileBinding>() {
                     val intent = Intent(this@EditProfileActivity, QuizActivity::class.java)
                     startActivity(intent)
                 }
-                R.id.etDocuments , R.id.ivDocuments->{
-                    val intent = Intent(this@EditProfileActivity, UpdateDocumentActivity::class.java)
-                    intent.putExtra("userIdImage",userIdProof)
-                    intent.putExtra("ownerIdImage",ownerShipProof)
+
+                R.id.etDocuments, R.id.ivDocuments -> {
+                    val intent =
+                        Intent(this@EditProfileActivity, UpdateDocumentActivity::class.java)
+                    intent.putExtra("userIdImage", userIdProof)
+                    intent.putExtra("ownerIdImage", ownerShipProof)
                     startActivity(intent)
                 }
-                R.id.etProvider , R.id.ivProvider->{
+
+                R.id.etProvider, R.id.ivProvider -> {
                     personalDialog(5)
                 }
             }
@@ -228,6 +266,14 @@ class EditProfileActivity : BaseActivity<ActivityEditProfileBinding>() {
                     binding.tvCampus.visibility = View.GONE
                     binding.ivCampus.visibility = View.GONE
                 }
+                if (s?.isNotEmpty() == true && s.contains("Other")){
+                    binding.tvProfessionRoleOther.visibility = View.VISIBLE
+                    binding.etProfessionOther.visibility = View.VISIBLE
+                    binding.etProfessionOther.clearFocus()
+                }else{
+                    binding.tvProfessionRoleOther.visibility = View.GONE
+                    binding.etProfessionOther.visibility = View.GONE
+                }
             }
 
         })
@@ -242,6 +288,14 @@ class EditProfileActivity : BaseActivity<ActivityEditProfileBinding>() {
             }
         }
 
+        binding.etProfessionOther.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
+            if (hasFocus) {
+                binding.professionOther = "professionRole"
+            } else {
+                binding.professionOther = ""
+            }
+        }
+
         // etShortBio
         binding.etShortBio.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
             if (hasFocus) {
@@ -250,15 +304,32 @@ class EditProfileActivity : BaseActivity<ActivityEditProfileBinding>() {
                 binding.bioType = ""
             }
         }
-
-        // etLocation
+        // etShortBio
         binding.etLocation.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
             if (hasFocus) {
-                binding.locationType = "location"
+                binding.locationName = "locationName"
             } else {
-                binding.locationType = ""
+                binding.locationName = ""
             }
         }
+
+        val locationSearchManager = LocationSearchManager(
+            context = this,
+            identityPoolId = "eu-north-1:c8a8cb6e-799b-43dc-ae59-737224071479",
+            region = Regions.EU_NORTH_1,
+            placeIndexName = getString(R.string.place_index_name)
+        )
+
+        locationSearchManager.setupSearch(
+            autoCompleteTextView = binding.etLocation, onResultSelected = { label, coordinate ->
+                binding.etLocation.clearFocus()
+                // Hide keyboard
+                val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+                imm.hideSoftInputFromWindow(binding.etLocation.windowToken, 0)
+                 lat = coordinate.latitude
+                 long = coordinate.longitude
+            })
+
 
     }
 
@@ -300,6 +371,7 @@ class EditProfileActivity : BaseActivity<ActivityEditProfileBinding>() {
                                 val myDataModel: GetUserProfileResponse? =
                                     BindingUtils.parseJson(it.data.toString())
                                 if (myDataModel?.data != null) {
+                                    showSuccessToast(myDataModel.message.toString())
                                     binding.bean = myDataModel.data
                                 }
                             } catch (e: Exception) {
@@ -359,6 +431,7 @@ class EditProfileActivity : BaseActivity<ActivityEditProfileBinding>() {
                         4 -> {
                             binding.etCampus.setText(m.toString())
                         }
+
                         5 -> {
                             binding.etProvider.setText(m.toString())
                         }
@@ -383,6 +456,7 @@ class EditProfileActivity : BaseActivity<ActivityEditProfileBinding>() {
             4 -> {
                 ageAdapter.list = campusList()
             }
+
             5 -> {
                 ageAdapter.list = providerList()
             }
@@ -568,7 +642,7 @@ class EditProfileActivity : BaseActivity<ActivityEditProfileBinding>() {
             getString(R.string.property_owner),
             getString(R.string.current_tenant_leaving_the_room),
 
-        )
+            )
     }
 
 }

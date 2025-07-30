@@ -34,6 +34,25 @@ class DiscoverQuestion(private val questions: List<DiscoverQuestionModel>) :
         }
     }
 
+    fun getSelectedAnswers(): List<Pair<String, String>> {
+        return questions.mapNotNull { question ->
+            val selectedIndex = question.selectedAnswerIndex
+            val answerList = question.answer
+
+            if (
+                selectedIndex != -1 &&
+                selectedIndex in answerList.indices &&
+                answerList[selectedIndex].answer.isNotBlank()
+            ) {
+                question.question to answerList[selectedIndex].answer
+            } else {
+                null
+            }
+        }
+    }
+
+
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): QuestionViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.rv_discover_questions, parent, false)

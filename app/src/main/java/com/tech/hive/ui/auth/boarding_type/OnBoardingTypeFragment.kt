@@ -1,11 +1,15 @@
 package com.tech.hive.ui.auth.boarding_type
 
+import android.Manifest
+import android.content.Context
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.tech.hive.R
 import com.tech.hive.base.BaseFragment
 import com.tech.hive.base.BaseViewModel
+import com.tech.hive.base.permission.PermissionHandler
+import com.tech.hive.base.permission.Permissions
 import com.tech.hive.base.utils.BindingUtils
 import com.tech.hive.databinding.FragmentOnBoardingTypeBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -29,6 +33,9 @@ class OnBoardingTypeFragment : BaseFragment<FragmentOnBoardingTypeBinding>() {
         sharedPrefManager.saveRole(1)
         // click
         initClick()
+        // check location permission
+        checkLocation()
+
     }
 
     /*** click event handel ***/
@@ -55,13 +62,29 @@ class OnBoardingTypeFragment : BaseFragment<FragmentOnBoardingTypeBinding>() {
                 // btnContinue button click
                 R.id.btnContinue -> {
                     BindingUtils.navigateWithSlide(
-                        findNavController(),
-                        R.id.navigateToLoginFragment,
-                        null
+                        findNavController(), R.id.navigateToLoginFragment, null
                     )
                 }
             }
         }
+    }
+
+    /* check location Function */
+    private fun checkLocation() {
+        Permissions.check(
+            requireContext(),
+            Manifest.permission.ACCESS_FINE_LOCATION,
+            0,
+            object : PermissionHandler() {
+                override fun onGranted() {
+
+                }
+
+                override fun onDenied(context: Context?, deniedPermissions: ArrayList<String>?) {
+                    super.onDenied(context, deniedPermissions)
+
+                }
+            })
     }
 
 

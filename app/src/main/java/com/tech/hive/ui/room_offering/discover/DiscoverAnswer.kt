@@ -34,6 +34,8 @@ class DiscoverAnswer(
         }
     }
 
+
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AnswerViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.rv_discover_answer_item, parent, false)

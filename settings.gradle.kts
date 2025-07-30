@@ -17,6 +17,7 @@ dependencyResolutionManagement {
         google()
         mavenCentral()
         maven("https://jitpack.io")
+        maven(url = "https://aws-sdk-android.s3.amazonaws.com/release")
     }
 }
 

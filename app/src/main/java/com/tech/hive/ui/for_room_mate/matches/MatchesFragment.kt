@@ -62,7 +62,7 @@ class MatchesFragment : BaseFragment<FragmentMatchesBinding>() {
                 data["type"] = "listing"
                 viewModel.getMatchApi(Constants.GET_MATCH, data)
             } else {
-                sharedPrefManager.saveSide("2")
+                sharedPrefManager.saveSide("3")
                 check = false
                 val data = HashMap<String, String>()
                 data["type"] = "listing"
@@ -277,11 +277,11 @@ class MatchesFragment : BaseFragment<FragmentMatchesBinding>() {
                     // view profile
                     R.id.ivImage -> {
                         val data = sharedPrefManager.getRole()
-                        if (data == 1) {
+                        if (sharedPrefManager.getSide() == "1") {
                             val intent = Intent(context, MatchedProfileActivity::class.java)
                             intent.putExtra("profileIdFirst", m.userId?._id)
                             requireContext().startActivity(intent)
-                        } else if (data == 2) {
+                        } else if (sharedPrefManager.getSide() == "2") {
                             val intent = Intent(context, SecondMatchActivity::class.java)
                             intent.putExtra("profileIdSecond", m.listingId?._id)
                             requireContext().startActivity(intent)

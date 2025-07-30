@@ -27,7 +27,7 @@
             android:layout_height="@dimen/_48sdp"
             app:shapeAppearance="@style/Shape50"
             setImageFromUrl="@{bean.otherUser.profileImage}"
-            android:src="@drawable/ic_match_dummy"
+            android:src="@drawable/user_place_holder"
             android:scaleType="centerCrop"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"/>

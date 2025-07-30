@@ -23,7 +23,7 @@
         <com.google.android.material.imageview.ShapeableImageView
             android:layout_width="@dimen/_80sdp"
             android:layout_height="@dimen/_80sdp"
-            android:src="@drawable/dummy_person"
+            android:src="@drawable/home_dummy_icon"
             app:shapeAppearance="@style/Shape10"
             android:scaleType="centerCrop"
             app:layout_constraintTop_toTopOf="parent"

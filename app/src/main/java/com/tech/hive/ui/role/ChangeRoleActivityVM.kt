@@ -19,7 +19,7 @@ class ChangeRoleActivityVM @Inject constructor(private val apiHelper: ApiHelper)
     val observeCommon = SingleRequestEvent<JsonObject>()
 
     // change language api
-    fun updateRoleAndLanguage(
+    fun updateLanguageApi(
         data: HashMap<String, RequestBody>,
         userPic: MultipartBody.Part?,
 
@@ -30,7 +30,31 @@ class ChangeRoleActivityVM @Inject constructor(private val apiHelper: ApiHelper)
                 val response =
                     apiHelper.apiForFormDataPutWithToken(Constants.USER_ME, data,userPic)
                 if (response.isSuccessful && response.body() != null) {
-                    observeCommon.postValue(Resource.success("updateRoleAndLanguage", response.body()))
+                    observeCommon.postValue(Resource.success("updateLanguageApi", response.body()))
+                } else {
+                    observeCommon.postValue(
+                        Resource.error(handleErrorResponse(response.errorBody(),response.code()), null)
+                    )
+                }
+            } catch (e: java.lang.Exception) {
+                observeCommon.postValue(Resource.error(e.message, null))
+            }
+        }
+    }
+
+    // change role api
+    fun updateRoleApi(
+        data: HashMap<String, RequestBody>,
+        userPic: MultipartBody.Part?,
+
+        ) {
+        CoroutineScope(Dispatchers.IO).launch {
+            observeCommon.postValue(Resource.loading(null))
+            try {
+                val response =
+                    apiHelper.apiForFormDataPutWithToken(Constants.USER_ME, data,userPic)
+                if (response.isSuccessful && response.body() != null) {
+                    observeCommon.postValue(Resource.success("updateRoleApi", response.body()))
                 } else {
                     observeCommon.postValue(
                         Resource.error(handleErrorResponse(response.errorBody(),response.code()), null)

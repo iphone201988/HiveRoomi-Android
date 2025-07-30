@@ -1,6 +1,7 @@
 package com.tech.hive.ui.for_room_mate.home
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Intent
 import android.os.Handler
 import android.text.Editable
@@ -8,11 +9,12 @@ import android.text.TextWatcher
 import android.util.Log
 import android.view.MotionEvent
 import android.view.View
-import android.view.animation.AccelerateInterpolator
-import android.view.animation.LinearInterpolator
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.widget.AppCompatImageView
+import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
-import androidx.recyclerview.widget.DefaultItemAnimator
 import com.tech.hive.BR
 import com.tech.hive.R
 import com.tech.hive.base.BaseFragment
@@ -20,51 +22,52 @@ import com.tech.hive.base.BaseViewModel
 import com.tech.hive.base.SimpleRecyclerViewAdapter
 import com.tech.hive.base.utils.BindingUtils
 import com.tech.hive.base.utils.Status
+import com.tech.hive.base.utils.showSuccessToast
 import com.tech.hive.data.api.Constants
 import com.tech.hive.data.model.CommonResponse
 import com.tech.hive.data.model.GetListingData
 import com.tech.hive.data.model.GetListingResponse
+import com.tech.hive.data.model.HomeApiData
 import com.tech.hive.data.model.HomeApiResponse
 import com.tech.hive.data.model.HomeFilterList
+import com.tech.hive.data.model.HomeModelClass
 import com.tech.hive.data.model.HomeRoomTData
 import com.tech.hive.data.model.HomeRoomType
+import com.tech.hive.data.model.RoommateModelClass
 import com.tech.hive.databinding.FragmentHomeBinding
 import com.tech.hive.databinding.RvDiscoverItemBinding
 import com.tech.hive.databinding.RvHomeFilterItemBinding
 import com.tech.hive.databinding.ThirdUserRvItemBinding
 import com.tech.hive.ui.for_room_mate.calenders.CalenderActivity
 import com.tech.hive.ui.for_room_mate.filters.FilterActivity
-import com.tech.hive.ui.for_room_mate.home.cardstackview.CardStackLayoutManager
-import com.tech.hive.ui.for_room_mate.home.cardstackview.CardStackListener
-import com.tech.hive.ui.for_room_mate.home.cardstackview.Direction
-import com.tech.hive.ui.for_room_mate.home.cardstackview.Duration
-import com.tech.hive.ui.for_room_mate.home.cardstackview.StackFrom
-import com.tech.hive.ui.for_room_mate.home.cardstackview.SwipeAnimationSetting
-import com.tech.hive.ui.for_room_mate.home.cardstackview.SwipeableMethod
-import com.tech.hive.ui.for_room_mate.home.sample.CardStackAdapter
+import com.tech.hive.ui.for_room_mate.filters.filter_source.FilterSource
+import com.tech.hive.ui.for_room_mate.home.adapter.HomeSwipeAdapter
+import com.tech.hive.ui.for_room_mate.home.adapter.RoommateSwipeAdapter
 import com.tech.hive.ui.for_room_mate.home.second.SecondMatchActivity
 import com.tech.hive.ui.for_room_mate.home.third.ThirdMatchActivity
 import com.tech.hive.ui.notification.NotificationActivity
 import com.tech.hive.ui.room_offering.basic_details.BasicDetailsActivity
 import com.tech.hive.ui.room_offering.discover.DiscoverySettingsActivity
+import com.yalantis.library.KolodaListener
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class HomeFragment : BaseFragment<FragmentHomeBinding>(), CardStackListener {
+class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     private val viewModel: HomeFragmentVM by viewModels()
-
+    private var currentSource: FilterSource? = null
+    private lateinit var commonLauncher: ActivityResultLauncher<Intent>
     private lateinit var homeAdapter: SimpleRecyclerViewAdapter<HomeRoomTData, RvDiscoverItemBinding>
     private lateinit var homeThirdAdapter: SimpleRecyclerViewAdapter<GetListingData, ThirdUserRvItemBinding>
     private lateinit var homeThirdFilterAdapter: SimpleRecyclerViewAdapter<HomeFilterList, RvHomeFilterItemBinding>
-    var createSpots = ArrayList<CardItem>()
     private var userTypeLike = 1
-    private val cardAdapter by lazy { CardStackAdapter(createSpots, requireContext()) }
-    private val manager by lazy { CardStackLayoutManager(requireActivity(), this) }
+    private var apiCallStop = false
     private var scrollType = ""
     private var searchHandler: Handler? = Handler()
     private var searchRunnable: Runnable? = null
     private var filterOpen = 0
     var progressType = false
+    private lateinit var adapter: RoommateSwipeAdapter
+    private lateinit var homeAdapterSwipe: HomeSwipeAdapter
     override fun getLayoutResource(): Int {
         return R.layout.fragment_home
     }
@@ -75,6 +78,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), CardStackListener {
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreateView(view: View) {
+        // launcher
+        initCommonLauncher()
         // click
         initOnClick()
         // observer
@@ -102,11 +107,30 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), CardStackListener {
             false
         }
 
+        apiCallFunction()
     }
 
 
+    /** api call function **/
+    private fun apiCallFunction() {
+        var userData = sharedPrefManager.getRole()
+        if (userData == 1) {
+            // api call
+            if (apiCallStop == false) {
+                val data = HashMap<String, String>()
+                viewModel.getHomeApi(Constants.MATCH_LOOKING_ROOMMATE, data)
+            }
+        } else if (userData == 2) {
+            if (apiCallStop == false) {
+                // api call
+                val data = HashMap<String, String>()
+                viewModel.getHomeApiListening(Constants.MATCH_LOOKING_LISTING, data)
+            }
+        }
+    }
+
     override fun onResume() {
-        super.onResume()
+        // api call
         var userData = sharedPrefManager.getRole()
         binding.clFilter.visibility = View.GONE
         binding.userType = userData
@@ -115,22 +139,133 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), CardStackListener {
         userTypeLike = userData
 
         if (userData == 1) {
-            // api call
-            viewModel.getHomeApi(Constants.MATCH_LOOKING_ROOMMATE)
             filterOpen = 1
+
         } else if (userData == 2) {
             filterOpen = 2
-            // api call
-            viewModel.getHomeApiListening(Constants.MATCH_LOOKING_LISTING)
+
         } else {
             filterOpen = 0
             // api call
             val data = HashMap<String, String>()
             viewModel.getListing(Constants.LISTING, data)
         }
+
+        if (BindingUtils.userRole == 2) {
+            binding.check = 2
+            binding.userType = 2
+            binding.buttonClick = 1
+            userTypeLike = 2
+            filterOpen = 2
+        } else if (BindingUtils.userRole == 1) {
+            binding.check = 1
+            binding.userType = 1
+            userTypeLike = 1
+            filterOpen = 1
+        }
+        super.onResume()
     }
 
+    /** common launcher **/
+    private fun initCommonLauncher() {
+        commonLauncher = registerForActivityResult(
+            ActivityResultContracts.StartActivityForResult()
+        ) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                val data = result.data
+                when (currentSource) {
+                    FilterSource.FILTER -> {
+                        val roommate =
+                            data?.getParcelableExtra<RoommateModelClass>("filtered_roommate")
+                        roommate?.let {
+                            apiCallStop = true
+                            val requestData = HashMap<String, String>()
+                            if (it.gender.isNotBlank()) requestData["gender"] = it.gender
+                            if (it.age.isNotBlank()) requestData["ageRange"] = it.age
+                            if (it.professionRole.isNotBlank()) requestData["profession"] =
+                                it.professionRole
+                            if (it.campus.isNotBlank()) requestData["campus"] = it.campus
+                            if (it.language.isNotBlank()) requestData["language"] = it.language
+                            //  if (it.location.isNotBlank()) requestData["location"] = it.location
+                            if (it.lat != null) requestData["latitude"] = it.lat.toString()
+                            if (it.long != null) requestData["longitude"] = it.long.toString()
+//                            requestData["latitude"] = BindingUtils.latitude.toString()
+//                            requestData["longitude"] = BindingUtils.longitude.toString()
+
+                            Log.d("gfdfggd", "initCommonLauncher: ")
+                            viewModel.getHomeApi(Constants.MATCH_LOOKING_ROOMMATE, requestData)
+                        }
+                    }
+
+                    FilterSource.DISCOVER -> {
+                        val home = data?.getParcelableExtra<HomeModelClass>("filtered_home")
+                        home?.let {
+                            val requestData = HashMap<String, String>()
+                            apiCallStop = true
+                            if (it.amenities.contains("Private Bathroom", ignoreCase = true)) {
+                                requestData["privateBathroom"] = "true"
+                            } else if (it.amenities.contains(
+                                    "Fast Wi-Fi (smart working/gaming)", ignoreCase = true
+                                )
+                            ) {
+                                requestData["wifi"] = "true"
+                            } else if (it.amenities.contains(
+                                    "Equipped Kitchen", ignoreCase = true
+                                )
+                            ) {
+                                requestData["kitchen"] = "true"
+                            } else if (it.amenities.contains(
+                                    "Washing Machine", ignoreCase = true
+                                )
+                            ) {
+                                requestData["washingMachine"] = "true"
+                            } else if (it.amenities.contains(
+                                    "Air Conditioning", ignoreCase = true
+                                )
+                            ) {
+                                requestData["airConditioner"] = "true"
+                            }
+
+                            if (it.propertyFeatures.contains(
+                                    "Balcony / Terrace", ignoreCase = true
+                                )
+                            ) {
+                                requestData["balcony"] = "true"
+                            } else if (it.propertyFeatures.contains(
+                                    "Parking Space", ignoreCase = true
+                                )
+                            ) {
+                                requestData["parking"] = "true"
+                            }
+
+
+                            val formattedFurnishingStatus = when (it.furnishedStatus) {
+                                "fully furnished" -> "fullyfurnished"
+                                "semi furnished" -> "partiallyfurnished"
+                                "unfurnished" -> "unfurnished"
+                                else -> ""
+                            }
+                            if (formattedFurnishingStatus.isNotBlank()) {
+                                requestData["furnishingStatus"] = formattedFurnishingStatus
+                            }
+//                            requestData["latitude"] = BindingUtils.latitude.toString()
+//                            requestData["longitude"] = BindingUtils.longitude.toString()
+                            viewModel.getHomeApiListening(
+                                Constants.MATCH_LOOKING_LISTING, requestData
+                            )
+                        }
+                    }
+
+
+                    else -> Unit
+                }
+            }
+        }
+    }
+
+
     /** handle adapter **/
+    @SuppressLint("NotifyDataSetChanged")
     private fun initAdapter() {
         // home adapter
         homeAdapter = SimpleRecyclerViewAdapter(R.layout.rv_discover_item, BR.bean) { v, m, pos ->
@@ -144,6 +279,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), CardStackListener {
         }
         binding.rvHome.adapter = homeAdapter
 
+
         homeThirdAdapter =
             SimpleRecyclerViewAdapter(R.layout.third_user_rv_item, BR.bean) { v, m, pos ->
                 when (v.id) {
@@ -152,13 +288,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), CardStackListener {
                         val intent = Intent(requireContext(), BasicDetailsActivity::class.java)
                         intent.putExtra("basicDetail", m)
                         startActivity(intent)
-
-//                        val isAlreadyChecked = m.check
-//                        for (i in homeThirdAdapter.list) {
-//                            i.check = false
-//                        }
-//                        m.check = !isAlreadyChecked
-//                        homeThirdAdapter.notifyDataSetChanged()
                     }
 
                     R.id.clImage -> {
@@ -265,20 +394,18 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), CardStackListener {
             when (it?.id) {
                 // filter click
                 R.id.ivFilter -> {
-
                     if (filterOpen == 1) {
-                        startActivity(Intent(requireContext(), FilterActivity::class.java))
+                        currentSource = FilterSource.FILTER
+                        val intent = Intent(requireContext(), FilterActivity::class.java)
+                        commonLauncher.launch(intent)
                     } else if (filterOpen == 2) {
-                        startActivity(
-                            Intent(
-                                requireContext(), DiscoverySettingsActivity::class.java
-                            )
-                        )
+                        currentSource = FilterSource.DISCOVER
+                        val intent = Intent(requireContext(), DiscoverySettingsActivity::class.java)
+                        commonLauncher.launch(intent)
                     }
                 }
 
                 R.id.ivCalender -> {
-
                     val intent = Intent(requireActivity(), CalenderActivity::class.java)
                     startActivity(intent)
                 }
@@ -296,27 +423,29 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), CardStackListener {
                 }
                 // btn roommate click
                 R.id.clRoommate -> {
-
                     scrollType = ""
                     binding.check = 1
                     binding.userType = 1
                     userTypeLike = 1
+                    binding.buttonClick = 1
                     filterOpen = 1
-                    viewModel.getHomeApi(Constants.MATCH_LOOKING_ROOMMATE)
+                    BindingUtils.userRole = 1
                 }
                 // btn home click
                 R.id.clHome -> {
                     scrollType = ""
                     binding.check = 2
                     binding.userType = 2
+                    BindingUtils.userRole = 2
                     binding.buttonClick = 1
                     userTypeLike = 2
                     filterOpen = 2
-                    viewModel.getHomeApiListening(Constants.MATCH_LOOKING_LISTING)
+
+
                 }
 
                 R.id.ivProviderFilter -> {
-                    if (binding.clFilter.visibility == View.GONE) {
+                    if (binding.clFilter.isGone) {
                         binding.clFilter.visibility = View.VISIBLE
                     } else {
                         binding.clFilter.visibility = View.GONE
@@ -354,39 +483,29 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), CardStackListener {
             }
         }
 
+
         binding.ivCard.setOnTouchListener { v, event ->
-            binding.clFilter.visibility = View.GONE
             if (event.action == MotionEvent.ACTION_UP) {
-                var data = sharedPrefManager.getRole()
                 val width = v.width
                 val clickedX = event.x
                 if (clickedX < width / 2) {
-                    val setting = SwipeAnimationSetting.Builder().setDirection(Direction.Left)
-                        .setDuration(Duration.Normal.duration)
-                        .setInterpolator(AccelerateInterpolator()).build()
-                    manager.setSwipeAnimationSetting(setting)
                     if (userTypeLike == 1) {
-                        binding.cardStackView.swipe()
+                        binding.cardStackView.onClickLeft()
                     } else {
-                        binding.cardStackView1.swipe()
+                        binding.kolodaHomeType.onClickLeft()
                     }
 
                 } else {
-                    val setting = SwipeAnimationSetting.Builder().setDirection(Direction.Right)
-                        .setDuration(Duration.Normal.duration)
-                        .setInterpolator(AccelerateInterpolator()).build()
-                    manager.setSwipeAnimationSetting(setting)
-                    if (data == 1) {
-                        binding.cardStackView.swipe()
+                    if (userTypeLike == 1) {
+                        binding.cardStackView.onClickRight()
                     } else {
-                        binding.cardStackView1.swipe()
+                        binding.kolodaHomeType.onClickRight()
                     }
 
                 }
             }
             true
         }
-
 
         binding.ivLine.setOnTouchListener { v, event ->
             binding.clFilter.visibility = View.GONE
@@ -403,16 +522,176 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), CardStackListener {
             true
         }
 
-        // undu button click
-        /* rewind.setOnClickListener {
-             val setting = RewindAnimationSetting.Builder()
-                 .setDirection(Direction.Bottom)
-                 .setDuration(Duration.Normal.duration)
-                 .setInterpolator(DecelerateInterpolator())
-                 .build()
-             manager.setRewindAnimationSetting(setting)
-             cardStackView.rewind()
-         }*/
+
+
+        binding.cardStackView.kolodaListener = object : KolodaListener {
+            override fun onCardSwipedLeft(position: Int) {
+                Log.d("Koloda", "Card finished swiping left at position $position")
+                val pos = if (position <= 0) {
+                    position + 1
+                } else {
+                    position - 1
+                }
+                val item = adapter.getItemAt(pos)
+                val id = item?._id
+                val data = HashMap<String, Any>()
+                data["id"] = id.toString()
+                data["action"] = "dislike"
+                data["type"] = "user"
+                viewModel.likeDisLike(Constants.MATCH_LIKE, data)
+
+            }
+
+
+            override fun onClickLeft(position: Int) {
+                val pos = if (position <= 0) {
+                    position + 1
+                } else {
+                    position - 1
+                }
+                val item = adapter.getItemAt(pos)
+                val id = item?._id
+                val data = HashMap<String, Any>()
+                data["id"] = id.toString()
+                data["action"] = "dislike"
+                data["type"] = "user"
+                viewModel.likeDisLike(Constants.MATCH_LIKE, data)
+            }
+
+
+            override fun onCardSwipedRight(position: Int) {
+                val pos = if (position <= 0) {
+                    position + 1
+                } else {
+                    position - 1
+                }
+                val item = adapter.getItemAt(pos)
+                val id = item?._id
+                val data = HashMap<String, Any>()
+                data["id"] = id.toString()
+                data["action"] = "like"
+                data["type"] = "user"
+                viewModel.likeDisLike(Constants.MATCH_LIKE, data)
+            }
+
+            override fun onClickRight(position: Int) {
+                val pos = if (position <= 0) {
+                    position + 1
+                } else {
+                    position - 1
+                }
+                val item = adapter.getItemAt(pos)
+                val id = item?._id
+                val data = HashMap<String, Any>()
+                data["id"] = id.toString()
+                data["action"] = "like"
+                data["type"] = "user"
+                viewModel.likeDisLike(Constants.MATCH_LIKE, data)
+            }
+
+
+            override fun onCardDrag(position: Int, cardView: View, progress: Float) {
+                val ivLike = cardView.findViewById<AppCompatImageView>(R.id.ivLike)
+                val ivDislike = cardView.findViewById<AppCompatImageView>(R.id.ivDislike)
+                if (progress > 0) {
+                    // Swiping right → show Like
+                    ivLike?.alpha = progress
+                    ivDislike?.alpha = 0f
+                } else if (progress < 0) {
+                    // Swiping left → show Dislike
+                    ivLike?.alpha = 0f
+                    ivDislike?.alpha = -progress // Make it positive
+                } else {
+                    // Neutral position
+                    ivLike?.alpha = 0f
+                    ivDislike?.alpha = 0f
+                }
+            }
+
+        }
+
+        binding.kolodaHomeType.kolodaListener = object : KolodaListener {
+            override fun onCardSwipedLeft(position: Int) {
+                val pos = if (position <= 0) {
+                    position + 1
+                } else {
+                    position - 1
+                }
+                val item = homeAdapterSwipe.homeGetItemAt(pos)
+                val id = item?._id
+                val data = HashMap<String, Any>()
+                data["id"] = id.toString()
+                data["action"] = "dislike"
+                data["type"] = "listing"
+                viewModel.likeDisLike(Constants.MATCH_LIKE, data)
+            }
+
+
+            override fun onClickLeft(position: Int) {
+                val pos = if (position <= 0) {
+                    position + 1
+                } else {
+                    position - 1
+                }
+                val item = homeAdapterSwipe.homeGetItemAt(pos)
+                val id = item?._id
+                val data = HashMap<String, Any>()
+                data["id"] = id.toString()
+                data["action"] = "dislike"
+                data["type"] = "listing"
+                viewModel.likeDisLike(Constants.MATCH_LIKE, data)
+            }
+
+
+            override fun onCardSwipedRight(position: Int) {
+                val pos = if (position <= 0) {
+                    position + 1
+                } else {
+                    position - 1
+                }
+                val item = homeAdapterSwipe.homeGetItemAt(pos)
+                val id = item?._id
+                val data = HashMap<String, Any>()
+                data["id"] = id.toString()
+                data["action"] = "like"
+                data["type"] = "listing"
+                viewModel.likeDisLike(Constants.MATCH_LIKE, data)
+            }
+
+            override fun onClickRight(position: Int) {
+                val pos = if (position <= 0) {
+                    position + 1
+                } else {
+                    position - 1
+                }
+                val item = homeAdapterSwipe.homeGetItemAt(pos)
+                val id = item?._id
+                val data = HashMap<String, Any>()
+                data["id"] = id.toString()
+                data["action"] = "like"
+                data["type"] = "listing"
+                viewModel.likeDisLike(Constants.MATCH_LIKE, data)
+            }
+
+
+            override fun onCardDrag(position: Int, cardView: View, progress: Float) {
+                val ivHomeLike = cardView.findViewById<AppCompatImageView>(R.id.ivHomeLike)
+                val ivHomeDisLike = cardView.findViewById<AppCompatImageView>(R.id.ivHomeDisLike)
+                if (progress > 0) {
+                    // Swiping right → show Like
+                    ivHomeLike?.alpha = progress
+                    ivHomeDisLike?.alpha = 0f
+                } else if (progress < 0) {
+                    // Swiping left → show Dislike
+                    ivHomeLike?.alpha = 0f
+                    ivHomeDisLike?.alpha = -progress // Make it positive
+                } else {
+                    // Neutral position
+                    ivHomeLike?.alpha = 0f
+                    ivHomeDisLike?.alpha = 0f
+                }
+            }
+        }
     }
 
     /** handle api response **/
@@ -420,16 +699,17 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), CardStackListener {
         viewModel.observeCommon.observe(viewLifecycleOwner) {
             when (it?.status) {
                 Status.LOADING -> {
-                    if (!progressType) {
-                        progressType = false
-                        showLoading()
-                    }
-
+                    showLoading()
                 }
 
                 Status.SUCCESS -> {
                     when (it.message) {
                         "getHomeApi" -> {
+                            val userData = sharedPrefManager.getRole()
+                            if (userData == 1) {
+                                val data = HashMap<String, String>()
+                                viewModel.getHomeApiListening(Constants.MATCH_LOOKING_LISTING, data)
+                            }
                             try {
                                 val myDataModel: HomeApiResponse? =
                                     BindingUtils.parseJson(it.data.toString())
@@ -444,27 +724,36 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), CardStackListener {
                                         binding.ivNotificationCount.visibility = View.GONE
                                     }
 
-                                    createSpots.clear()
-                                    myDataModel.data.filterNotNull().forEach { user ->
-                                        createSpots.add(CardItem.HomeRoom(user))
-                                    }
-                                    initialize()
 
-                                    if ((myDataModel.data.size > 0)) {
+                                    adapter = RoommateSwipeAdapter(
+                                        requireContext(), myDataModel.data as List<HomeApiData>
+                                    )
+
+                                    binding.cardStackView.adapter = adapter
+
+
+                                    if ((myDataModel.data.isNotEmpty())) {
                                         binding.tvEmpty.visibility = View.GONE
                                     } else {
                                         binding.tvEmpty.text = getString(R.string.no_roommate_data)
                                         binding.tvEmpty.visibility = View.VISIBLE
                                     }
+
+
                                 }
                             } catch (e: Exception) {
                                 Log.e("error", "getHomeApi: $e")
-                            } finally {
+                            }finally {
                                 hideLoading()
                             }
                         }
 
                         "getHomeApiListening" -> {
+                            val userData = sharedPrefManager.getRole()
+                            if (userData == 2) {
+                                val data = HashMap<String, String>()
+                                viewModel.getHomeApi(Constants.MATCH_LOOKING_ROOMMATE, data)
+                            }
                             try {
                                 val myDataModel: HomeRoomType? =
                                     BindingUtils.parseJson(it.data.toString())
@@ -478,18 +767,21 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), CardStackListener {
                                         binding.tvNotificationCount.visibility = View.GONE
                                         binding.ivNotificationCount.visibility = View.GONE
                                     }
-                                    createSpots.clear()
-                                    myDataModel.data.filterNotNull().forEach { room ->
-                                        createSpots.add(CardItem.RoomListing(room))
-                                    }
-                                    initialize()
+
+
+                                    homeAdapterSwipe = HomeSwipeAdapter(
+                                        requireContext(), myDataModel.data as List<HomeRoomTData>
+                                    )
+                                    binding.kolodaHomeType.adapter = homeAdapterSwipe
+
                                     homeAdapter.list = myDataModel.data
 
-                                    if (homeAdapter.list.size > 0) {
-                                        binding.tvEmpty.visibility = View.GONE
+                                    if (homeAdapter.list.isNotEmpty()) {
+                                        binding.tvEmptySecond.visibility = View.GONE
                                     } else {
-                                        binding.tvEmpty.text = getString(R.string.no_room_data)
-                                        binding.tvEmpty.visibility = View.VISIBLE
+                                        binding.tvEmptySecond.text =
+                                            getString(R.string.no_room_data)
+                                        binding.tvEmptySecond.visibility = View.VISIBLE
                                     }
 
                                 }
@@ -504,10 +796,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), CardStackListener {
                             try {
                                 val myDataModel: CommonResponse? =
                                     BindingUtils.parseJson(it.data.toString())
-                                if (myDataModel != null) {
-
-
-                                }
+                                showSuccessToast(myDataModel?.message.toString())
 
                             } catch (e: Exception) {
                                 Log.e("error", "likeDisLike: $e")
@@ -533,7 +822,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), CardStackListener {
                                     }
                                     homeThirdAdapter.list = myDataModel.data
 
-                                    if (homeThirdAdapter.list.size > 0) {
+                                    if (homeThirdAdapter.list.isNotEmpty()) {
                                         binding.tvEmpty.visibility = View.GONE
                                     } else {
                                         binding.tvEmpty.text = getString(R.string.no_listing_data)
@@ -565,7 +854,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), CardStackListener {
 
     }
 
-
     private fun filterList(): ArrayList<HomeFilterList> {
         val filterList = ArrayList<HomeFilterList>()
         filterList.add(HomeFilterList(0, getString(R.string.all), true))
@@ -574,130 +862,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), CardStackListener {
         filterList.add(HomeFilterList(3, getString(R.string.paused), false))
         filterList.add(HomeFilterList(4, getString(R.string.rented), false))
         return filterList
-    }
-
-
-    override fun onCardDragging(direction: Direction?, ratio: Float) {
-    }
-
-    override fun onCardSwiped(direction: Direction?) {
-        when (direction) {
-            Direction.Left -> {
-                scrollType = "left"
-            }
-
-            Direction.Right -> {
-                scrollType = "right"
-            }
-
-            else -> {}
-        }
-        val position = manager.topPosition - 1
-        if (position >= 0 && position < cardAdapter.getItems().size) {
-            val currentItem = cardAdapter.getItems()[position]
-
-            val id = when (currentItem) {
-                is CardItem.HomeRoom -> currentItem.user._id
-                is CardItem.RoomListing -> currentItem.room._id
-            } ?: ""
-
-            val data = hashMapOf<String, Any>(
-                "id" to id,
-                "action" to if (direction == Direction.Left) "dislike" else "like",
-                "type" to if (userTypeLike == 1) "user" else "listing"
-            )
-
-            Log.d("SwipeDebug", "Calling API with data: $data")
-            viewModel.likeDisLike(Constants.MATCH_LIKE, data)
-        } else {
-            Log.e("SwipeDebug", "Invalid position: $position")
-        }
-    }
-
-
-    override fun onCardRewound() {
-    }
-
-    override fun onCardCanceled() {
-    }
-
-    override fun onCardAppeared(view: View?, position: Int) {
-        Log.d("dgfgfgdff", "onCardAppeared: ")
-        val currentItem = cardAdapter.getItems()[position]
-
-        val id = when (currentItem) {
-            is CardItem.HomeRoom -> currentItem.user._id
-            is CardItem.RoomListing -> currentItem.room._id
-        } ?: ""
-
-        val data = HashMap<String, Any>()
-        data["id"] = id
-
-        when (scrollType) {
-            "left" -> {
-                data["action"] = "dislike"
-                data["type"] = if (userTypeLike == 1) "user" else "listing"
-                viewModel.likeDisLike(Constants.MATCH_LIKE, data)
-            }
-
-            "right" -> {
-                data["action"] = "like"
-                data["type"] = if (userTypeLike == 1) "user" else "listing"
-                viewModel.likeDisLike(Constants.MATCH_LIKE, data)
-            }
-        }
-    }
-
-
-    override fun onCardDisappeared(view: View?, position: Int) {
-        Log.d("dgfgfgdff", "onCardDisappeared: ")
-    }
-
-
-    private fun initialize() {
-        manager.setStackFrom(StackFrom.Bottom)
-        manager.setVisibleCount(2)
-        manager.setTranslationInterval(6.0f)
-        manager.setScaleInterval(0.90f)
-        manager.setSwipeThreshold(0.3f)
-        manager.setMaxDegree(20.0f)
-        manager.setDirections(Direction.HORIZONTAL)
-        manager.setCanScrollHorizontal(true)
-        manager.setCanScrollVertical(true)
-        manager.setSwipeableMethod(SwipeableMethod.AutomaticAndManual)
-        manager.setOverlayInterpolator(LinearInterpolator())
-
-        binding.cardStackView.layoutManager = manager
-        binding.cardStackView.adapter = cardAdapter
-        binding.cardStackView.itemAnimator.apply {
-            if (this is DefaultItemAnimator) {
-                supportsChangeAnimations = false
-            }
-        }
-
-
-        val newManager = CardStackLayoutManager(requireContext(), this).apply {
-            setStackFrom(StackFrom.Bottom)
-            setVisibleCount(2)
-            setTranslationInterval(6.0f)
-            setScaleInterval(0.90f)
-            setSwipeThreshold(0.3f)
-            setMaxDegree(20.0f)
-            setDirections(Direction.HORIZONTAL)
-            setCanScrollHorizontal(true)
-            setCanScrollVertical(true)
-            setSwipeableMethod(SwipeableMethod.AutomaticAndManual)
-            setOverlayInterpolator(LinearInterpolator())
-        }
-        binding.cardStackView1.layoutManager = newManager
-        binding.cardStackView1.adapter = cardAdapter
-        binding.cardStackView1.itemAnimator.apply {
-            if (this is DefaultItemAnimator) {
-                supportsChangeAnimations = false
-            }
-        }
-
-
     }
 
 

@@ -1,5 +1,6 @@
 package com.tech.hive.base
 
+import android.content.res.Configuration
 import android.os.Bundle
 import android.view.Gravity
 import android.view.View
@@ -20,6 +21,7 @@ import com.tech.hive.base.network.NetworkError
 import com.tech.hive.base.utils.AlertManager
 import com.tech.hive.base.utils.event.NoInternetSheet
 import com.tech.hive.base.utils.hideKeyboard
+import com.tech.hive.data.api.Constants
 import com.tech.hive.databinding.ViewProgressSheetBinding
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
@@ -27,6 +29,7 @@ import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.File
+import java.util.Locale
 import javax.inject.Inject
 
 abstract class BaseActivity<Binding : ViewDataBinding> : AppCompatActivity(),
@@ -34,6 +37,11 @@ abstract class BaseActivity<Binding : ViewDataBinding> : AppCompatActivity(),
     lateinit var progressDialogAvl: ProgressDialogAvl
     private var progressSheet: ProgressSheet? = null
     open val onRetry: (() -> Unit)? = null
+
+
+
+    @Inject
+    lateinit var sharedPrefManager: SharedPrefManager
 
 
     var onStartCount = 0
@@ -47,18 +55,35 @@ abstract class BaseActivity<Binding : ViewDataBinding> : AppCompatActivity(),
     @CallSuper
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         val layout: Int = getLayoutResource()
         binding = DataBindingUtil.setContentView(this, layout)
         binding.setVariable(BR.vm, getViewModel())
+        // set language
+        val deviceLanguage = Locale.getDefault().language
+        val savedLanguage = sharedPrefManager.getLocaleType()
+        if (savedLanguage != deviceLanguage && savedLanguage != "") {
+            Constants.userLanguage = savedLanguage.toString()
+            setLocale(savedLanguage!!)
+
+        }
         connectivityProvider = ConnectivityProvider.createProvider(this)
         connectivityProvider.addListener(this)
         progressDialogAvl = ProgressDialogAvl(this)
+
         onCreateView()
     }
 
-    @Inject
-    lateinit var sharedPrefManager: SharedPrefManager
+
+    private fun setLocale(languageCode: String) {
+        val locale = Locale(languageCode)
+        Locale.setDefault(locale)
+        val configuration: Configuration = resources.configuration
+        configuration.setLocale(locale)
+        resources.updateConfiguration(configuration, resources.displayMetrics)
+        recreate()
+    }
+
+
 
     protected abstract fun getLayoutResource(): Int
     protected abstract fun getViewModel(): BaseViewModel

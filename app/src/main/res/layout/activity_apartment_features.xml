@@ -21,8 +21,9 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/clHeader"
             android:layout_width="0dp"
-            android:layout_height="@dimen/_105sdp"
+            android:layout_height="wrap_content"
             android:background="@drawable/top_bg"
+            android:paddingBottom="@dimen/_15sdp"
             android:paddingHorizontal="@dimen/_12sdp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -41,11 +42,14 @@
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tvTitle"
                 style="@style/TextView.PoppinsBold"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_6sdp"
+                android:layout_marginTop="12dp"
+                android:gravity="start"
                 android:text="@string/apartment_features"
                 android:textSize="@dimen/_20sdp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/ivBack" />
         </androidx.constraintlayout.widget.ConstraintLayout>

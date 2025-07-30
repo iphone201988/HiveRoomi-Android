@@ -79,78 +79,82 @@
             style="@style/TextView.Medium"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:text="@string/user_data_is_empty"
             android:textColor="@color/black_24"
             android:textSize="@dimen/_14sdp"
             android:visibility="gone"
-            app:layout_constraintTop_toTopOf="parent"
-            android:text="@string/user_data_is_empty"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent" />
+
         <androidx.core.widget.NestedScrollView
             android:id="@+id/clNested"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginTop="-50dp"
+            android:fillViewport="true"
+            android:overScrollMode="never"
             android:layout_marginBottom="@dimen/_10sdp"
             android:clipToPadding="false"
-            android:visibility="gone"
             android:paddingBottom="@dimen/_20sdp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@id/clHeader">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/_12sdp">
+
 
 
                 <com.google.android.material.imageview.ShapeableImageView
                     android:id="@+id/ivImage"
+                    setImageFromUrl="@{bean.images[0]}"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_300sdp"
-                    android:layout_marginHorizontal="@dimen/_9sdp"
+                    android:layout_marginHorizontal="@dimen/_20sdp"
+                    android:clipToOutline="true"
+                    android:foreground="@drawable/gradient_overlay"
                     android:scaleType="centerCrop"
-                    setImageFromUrl="@{bean.images[0]}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:shapeAppearance="@style/Shape10" />
 
 
+
                 <View
                     android:id="@+id/reverse"
                     android:layout_width="0dp"
-                    app:layout_constraintStart_toStartOf="@+id/ivImage"
-                    app:layout_constraintTop_toTopOf="@+id/ivImage"
+                    android:layout_height="0dp"
                     android:onClick="@{v->vm.onClick(v)}"
                     android:layout_marginVertical="@dimen/_40sdp"
-                    app:layout_constraintEnd_toStartOf="@+id/skip"
                     app:layout_constraintBottom_toBottomOf="@+id/ivImage"
-                    android:layout_height="0dp"
-                    />
+                    app:layout_constraintEnd_toStartOf="@+id/skip"
+                    app:layout_constraintStart_toStartOf="@+id/ivImage"
+                    app:layout_constraintTop_toTopOf="@+id/ivImage" />
 
                 <View
                     android:id="@+id/skip"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
+                    android:onClick="@{v->vm.onClick(v)}"
                     android:layout_marginVertical="@dimen/_40sdp"
+                    app:layout_constraintBottom_toBottomOf="@+id/ivImage"
                     app:layout_constraintEnd_toEndOf="@+id/ivImage"
                     app:layout_constraintStart_toEndOf="@+id/reverse"
-                    android:onClick="@{v->vm.onClick(v)}"
-                    app:layout_constraintTop_toTopOf="@+id/ivImage"
-                    app:layout_constraintBottom_toBottomOf="@+id/ivImage"
-                    />
+                    app:layout_constraintTop_toTopOf="@+id/ivImage" />
 
                 <com.tech.hive.ui.for_room_mate.home.second.storiesprogressview.StoriesProgressView
                     android:id="@+id/storiesProgressView"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintStart_toStartOf="@+id/ivImage"
-                    app:layout_constraintEnd_toEndOf="@+id/ivImage"
                     android:layout_width="0dp"
-                    android:layout_margin="@dimen/_12sdp"
                     android:layout_height="@dimen/_14sdp"
-                    android:layout_marginTop="@dimen/_12sdp" />
+                    android:layout_margin="@dimen/_12sdp"
+                    android:layout_marginTop="@dimen/_12sdp"
+                    app:layout_constraintEnd_toEndOf="@+id/ivImage"
+                    app:layout_constraintStart_toStartOf="@+id/ivImage"
+                    app:layout_constraintTop_toTopOf="parent" />
 
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -159,8 +163,8 @@
                     android:layout_height="@dimen/_60sdp"
                     android:layout_marginHorizontal="@dimen/_5sdp"
                     android:layout_marginTop="@dimen/_10sdp"
-                    android:onClick="@{v->vm.onClick(v)}"
                     android:background="@drawable/gradiant_strock"
+                    android:onClick="@{v->vm.onClick(v)}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/ivImage">
@@ -194,8 +198,9 @@
                     android:id="@+id/rvField"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_5sdp"
+                    android:layout_marginTop="@dimen/_8sdp"
                     android:orientation="vertical"
+                    android:nestedScrollingEnabled="false"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -203,29 +208,24 @@
                     tools:itemCount="2"
                     tools:listitem="@layout/rv_field_item" />
 
-
-
                 <androidx.cardview.widget.CardView
                     android:id="@+id/flMap"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_2sdp"
                     android:background="@drawable/unselect_desc_bg"
                     android:clipToOutline="true"
                     app:cardCornerRadius="@dimen/_9sdp"
-                    android:layout_marginTop="@dimen/_2sdp"
-                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/rvField">
-                    <fragment
+
+
+                    <com.mapbox.mapboxsdk.maps.MapView
+                        android:id="@+id/mapView"
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/_120sdp"
-                        android:id="@+id/map"
-                        android:name="com.google.android.gms.maps.SupportMapFragment"/>
-                    <View
-                        android:id="@+id/map_touch_overlay"
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/_120sdp"
-                        android:background="@android:color/transparent" />
+                        android:layout_height="@dimen/_140sdp"/>
+
 
                 </androidx.cardview.widget.CardView>
 
@@ -237,6 +237,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_5sdp"
                     android:orientation="vertical"
+                    android:nestedScrollingEnabled="false"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -307,11 +308,11 @@
                     android:background="@drawable/bg_chat_corner_radius_10"
                     android:hint="@string/start_video_tour"
                     android:imeOptions="actionDone"
-                    android:visibility="gone"
                     android:paddingStart="@dimen/_14sdp"
                     android:paddingEnd="@dimen/_16sdp"
                     android:textColor="@color/et_hint_color"
                     android:textColorHint="@color/et_hint_color"
+                    android:visibility="gone"
                     app:layout_constraintEnd_toEndOf="@+id/clVideo"
                     app:layout_constraintStart_toStartOf="@+id/clVideo"
                     app:layout_constraintTop_toBottomOf="@+id/etVisit" />

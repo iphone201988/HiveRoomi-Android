@@ -1,5 +1,6 @@
 package com.tech.hive.ui.room_offering.basic_details
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.util.Log
 import androidx.activity.viewModels
@@ -13,8 +14,10 @@ import com.tech.hive.base.utils.BaseCustomDialog
 import com.tech.hive.base.utils.BindingUtils
 import com.tech.hive.base.utils.Status
 import com.tech.hive.base.utils.showErrorToast
+import com.tech.hive.base.utils.showInfoToast
 import com.tech.hive.data.api.Constants
 import com.tech.hive.data.model.GetListingData
+import com.tech.hive.data.model.ImageModel
 import com.tech.hive.data.model.PostListingResponse
 import com.tech.hive.data.model.RoomMateModelItem
 import com.tech.hive.databinding.ActivityHouseholdLifestyleBinding
@@ -31,6 +34,7 @@ import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Locale
+import java.util.TimeZone
 
 @AndroidEntryPoint
 class HouseholdLifestyleActivity : BaseActivity<ActivityHouseholdLifestyleBinding>() {
@@ -68,9 +72,14 @@ class HouseholdLifestyleActivity : BaseActivity<ActivityHouseholdLifestyleBindin
     private var editApiCall = false
 
     companion object {
-        var sendImage: MutableList<MultipartBody.Part> = mutableListOf()
+        var sendImage = mutableListOf<ImageModel>()
+        var changePosition = mutableListOf<String>()
+
         var sendVideo: File? = null
         var roomMateModelItem = ArrayList<RoomMateModelItem>()
+
+        var videoUrl : String?=null
+        var deleteImage = mutableListOf<String>()
     }
 
     // adapter
@@ -218,6 +227,9 @@ class HouseholdLifestyleActivity : BaseActivity<ActivityHouseholdLifestyleBindin
 
                         "basicDetailEditAPiCall" -> {
                             try {
+                                val myDataModel: PostListingResponse? =
+                                    BindingUtils.parseJson(it.data.toString())
+                                showInfoToast(myDataModel?.message.toString())
                                 val intent = Intent(this, DashboardActivity::class.java)
                                 intent.flags =
                                     Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
@@ -282,6 +294,7 @@ class HouseholdLifestyleActivity : BaseActivity<ActivityHouseholdLifestyleBindin
     }
 
     /** handle adapter **/
+    @SuppressLint("NotifyDataSetChanged")
     private fun initAdapterRoom(type: Int) {
         ageAdapter = SimpleRecyclerViewAdapter(R.layout.un_pin_layout, BR.bean) { v, m, pos ->
             when (v?.id) {
@@ -381,6 +394,11 @@ class HouseholdLifestyleActivity : BaseActivity<ActivityHouseholdLifestyleBindin
     private fun apiCallListingCreate() {
         val roomMatesJson = Gson().toJson(roomMateModelItem)
         val lookingJson = Gson().toJson(lookingAdapter.list)
+        val changeImagePosition = Gson().toJson(changePosition)
+        val deleteImageApi = Gson().toJson(deleteImage)
+
+
+
         if (sendVideo != null) {
             val requestFile = sendVideo!!.asRequestBody("video/*".toMediaTypeOrNull())
             val body: MultipartBody.Part = MultipartBody.Part.createFormData(
@@ -388,13 +406,19 @@ class HouseholdLifestyleActivity : BaseActivity<ActivityHouseholdLifestyleBindin
             )
             videoMultiplatform = body
         }
-        if (availableType?.isNotEmpty() == true) {
-            val inputFormat = SimpleDateFormat("MMMM dd yyyy", Locale.getDefault())
-            val outputFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-            val parsedDate = inputFormat.parse(availableType.toString())
-            val convertedDate = outputFormat.format(parsedDate!!)
-            formattedDate = convertedDate
 
+
+        if (availableType?.isNotEmpty() == true) {
+            try {
+                val inputFormat = SimpleDateFormat("MMMM dd yyyy", Locale.getDefault())
+                val parsedDate = inputFormat.parse(availableType.toString())
+                val outputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.US)
+                outputFormat.timeZone = TimeZone.getDefault()
+                val formattedDateq = outputFormat.format(parsedDate!!)
+                formattedDate = formattedDateq
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
         }
 
         var pets = binding.etPets.text.toString().trim()
@@ -433,19 +457,34 @@ class HouseholdLifestyleActivity : BaseActivity<ActivityHouseholdLifestyleBindin
             (parkingType?.lowercase()?.contains("yes") == true).toString().toRequestBody()
         data["roommates"] =
             roomMatesJson.toRequestBody()  // [{"gender":"men","age":"36"},{"gender":"women","age":"32"}]
-
         data["smoke"] = binding.etSmoking.text.toString().trim().toRequestBody()
         data["pets"] = (pets.lowercase().contains("yes") == true).toString().toRequestBody()
         data["cleanliness"] = binding.etClean.text.toString().trim().toRequestBody()
         data["lookingFor"] = lookingJson.toRequestBody() // ["student","workers","anyone"]
 
+        val onlyParts =
+            sendImage.dropLast(1).flatMap { it.imageMultiplatform.map { pair -> pair.second } }
+                .toMutableList()
+
         if (editApiCall) {
+            if (deleteImageApi.isNotEmpty()){
+                data["images"] = deleteImageApi.toRequestBody()
+            }
+
+            if (!videoUrl.isNullOrEmpty()){
+                data["videos"] = videoUrl.toString().toRequestBody()
+            }
+
+            data["newPositionImages"] = changeImagePosition.toRequestBody()
+
             listingData?._id?.let { id ->
-                viewModel.basicDetailEditAPiCall("listing/$id", data, sendImage, videoMultiplatform)
+                viewModel.basicDetailEditAPiCall(
+                    "listing/$id", data, onlyParts, videoMultiplatform
+                )
             }
         } else {
             viewModel.basicDetailApiCall(
-                Constants.LISTING_CREATE, data, sendImage, videoMultiplatform
+                Constants.LISTING_CREATE, data, onlyParts, videoMultiplatform
             )
         }
 

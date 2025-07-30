@@ -1,5 +1,6 @@
 package com.tech.hive.ui.auth
 
+import android.content.res.Configuration
 import androidx.activity.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -12,6 +13,7 @@ import com.tech.hive.base.BaseViewModel
 import com.tech.hive.databinding.ActivityAuthBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import java.util.Locale
 
 @AndroidEntryPoint
 class AuthActivity : BaseActivity<ActivityAuthBinding>() {
@@ -30,6 +32,8 @@ class AuthActivity : BaseActivity<ActivityAuthBinding>() {
     }
 
     override fun onCreateView() {
+
+
         // intent
         val rute = intent.getStringExtra("rute")
 
@@ -66,4 +70,6 @@ class AuthActivity : BaseActivity<ActivityAuthBinding>() {
 
 
     }
+
+
 }

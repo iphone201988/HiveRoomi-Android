@@ -41,6 +41,7 @@ import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.File
 import java.io.IOException
+import kotlin.collections.set
 
 
 @AndroidEntryPoint
@@ -66,6 +67,7 @@ class PersonalFragment : BaseFragment<FragmentPersonalBinding>() {
         binding.bioType = ""
         binding.linkType = ""
         binding.linkType1 = ""
+        binding.professionOther = ""
         // click
         initClick()
         // observer
@@ -98,17 +100,22 @@ class PersonalFragment : BaseFragment<FragmentPersonalBinding>() {
                             val instagramLink = binding.etInsta.text.toString().trim()
                             val campus = binding.etCampus.text.toString().trim()
                             val linkedLink = binding.etLink.text.toString().trim()
+                            val otherRole = binding.etProfessionOther.text.toString().trim()
 
                             val bundle = Bundle().apply {
                                 putString("selected_type", selectedType)
                                 putString("full_name", fullName)
                                 putString("age", age)
                                 putString("gender", gender)
-                                putString("profession_role", professionRole)
                                 putString("short_bio", shortBio)
                                 putString("instagram_link", instagramLink)
                                 putString("campus", campus)
                                 putString("linked_link", linkedLink)
+                                if (professionRole.contains("Other")){
+                                    putString("profession_role", otherRole)
+                                }else{
+                                    putString("profession_role", professionRole)
+                                }
                             }
 
                             BindingUtils.navigateWithSlide(findNavController(), R.id.navigateToUploadPhotoFragment, bundle)
@@ -191,6 +198,14 @@ class PersonalFragment : BaseFragment<FragmentPersonalBinding>() {
             }
         }
 
+        binding.etProfessionOther.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
+            if (hasFocus) {
+                binding.professionOther = "professionRole"
+            } else {
+                binding.professionOther = ""
+            }
+        }
+
         binding.etProfessionRole.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(
                 s: CharSequence?, start: Int, count: Int, after: Int
@@ -213,6 +228,15 @@ class PersonalFragment : BaseFragment<FragmentPersonalBinding>() {
                     binding.etCampus.visibility = View.GONE
                     binding.tvCampus.visibility = View.GONE
                     binding.ivCampus.visibility = View.GONE
+                }
+
+                if (s?.isNotEmpty() == true && s.contains("Other")){
+                    binding.tvProfessionRoleOther.visibility = View.VISIBLE
+                    binding.etProfessionOther.visibility = View.VISIBLE
+                    binding.etProfessionOther.clearFocus()
+                }else{
+                    binding.tvProfessionRoleOther.visibility = View.GONE
+                    binding.etProfessionOther.visibility = View.GONE
                 }
             }
 

@@ -25,6 +25,10 @@
             name="locationType"
             type="String" />
 
+        <variable
+            name="professionOther"
+            type="String" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -77,7 +81,7 @@
             android:layout_height="@dimen/_80sdp"
             android:layout_marginTop="-50dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/dummy_person"
+            android:src="@drawable/home_dummy_icon"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/clHeader"
@@ -276,6 +280,35 @@
                     app:layout_constraintTop_toTopOf="@+id/etProfessionRole" />
 
                 <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvProfessionRoleOther"
+                    style="@style/TextView.Regular"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:text="@string/profession"
+                    android:visibility="gone"
+                    android:textColor="@color/black_24"
+                    android:textSize="@dimen/_12ssp"
+                    app:layout_constraintStart_toStartOf="@+id/etGender"
+                    app:layout_constraintTop_toBottomOf="@+id/etProfessionRole" />
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/etProfessionOther"
+                    style="@style/EditText"
+                    android:layout_marginHorizontal="@dimen/_12sdp"
+                    android:layout_marginTop="@dimen/_6sdp"
+                    android:visibility="gone"
+                    android:background="@{professionOther.isEmpty()?@drawable/unselect_edit_text_bg_color:@drawable/select_edittext_bg_color}"
+                    android:hint="@string/enter_profession"
+                    android:imeOptions="actionNext"
+                    android:onClick="@{v->vm.onClick(v)}"
+                    android:nextFocusForward="@id/etShortBio"
+                    android:paddingStart="@dimen/_15sdp"
+                    android:paddingEnd="@dimen/_40sdp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvProfessionRoleOther" />
+
+
+                <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tvCampus"
                     style="@style/TextView.Regular"
                     android:layout_marginTop="@dimen/_15sdp"
@@ -284,7 +317,7 @@
                     android:visibility="gone"
                     android:textSize="@dimen/_12ssp"
                     app:layout_constraintStart_toStartOf="@+id/etGender"
-                    app:layout_constraintTop_toBottomOf="@+id/etProfessionRole" />
+                    app:layout_constraintTop_toBottomOf="@+id/etProfessionOther" />
 
                 <androidx.appcompat.widget.AppCompatEditText
                     android:id="@+id/etCampus"
@@ -358,7 +391,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/etShortBio" />
 
-                <androidx.appcompat.widget.AppCompatEditText
+                <androidx.appcompat.widget.AppCompatAutoCompleteTextView
                     android:id="@+id/etLocation"
                     style="@style/EditText"
                     android:layout_marginHorizontal="@dimen/_12sdp"

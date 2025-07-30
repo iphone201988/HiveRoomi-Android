@@ -1,5 +1,9 @@
 package com.tech.hive.ui.room_offering.discover
 
+import android.content.Intent
+import android.util.Log
+import android.view.View
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.tech.hive.BR
@@ -9,8 +13,11 @@ import com.tech.hive.base.BaseViewModel
 import com.tech.hive.base.SimpleRecyclerViewAdapter
 import com.tech.hive.base.utils.BaseCustomDialog
 import com.tech.hive.base.utils.BindingUtils
+import com.tech.hive.base.utils.showInfoToast
 import com.tech.hive.data.model.DiscoverAnswerModel
 import com.tech.hive.data.model.DiscoverQuestionModel
+import com.tech.hive.data.model.HomeModelClass
+import com.tech.hive.data.model.RoommateModelClass
 import com.tech.hive.databinding.ActivityDiscoverySettingsBinding
 import com.tech.hive.databinding.PersonalDialogItemBinding
 import com.tech.hive.databinding.UnPinLayoutBinding
@@ -19,6 +26,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class DiscoverySettingsActivity : BaseActivity<ActivityDiscoverySettingsBinding>() {
     private val viewModel: DiscoverySettingsActivityVM by viewModels()
+    private lateinit var  adapter : DiscoverQuestion
     private var personal: BaseCustomDialog<PersonalDialogItemBinding>? = null
     private lateinit var ageAdapter: SimpleRecyclerViewAdapter<String, UnPinLayoutBinding>
     override fun getLayoutResource(): Int {
@@ -36,7 +44,7 @@ class DiscoverySettingsActivity : BaseActivity<ActivityDiscoverySettingsBinding>
         // click
         initOnCLick()
         // adapter
-        val adapter = DiscoverQuestion(getQuestionSecondList())
+         adapter = DiscoverQuestion(getQuestionSecondList())
         binding.rvDiscover.layoutManager = LinearLayoutManager(this)
         binding.rvDiscover.adapter = adapter
 
@@ -47,18 +55,35 @@ class DiscoverySettingsActivity : BaseActivity<ActivityDiscoverySettingsBinding>
         viewModel.onClick.observe(this@DiscoverySettingsActivity) {
             when (it?.id) {
                 R.id.ivBack -> {
-                    onBackPressedDispatcher.onBackPressed()
+                    finish()
                 }
 
                 R.id.btnApply -> {
-                    onBackPressedDispatcher.onBackPressed()
+                    val selectedAnswers = adapter.getSelectedAnswers()
+                    val amenities = selectedAnswers.find { it.first.equals("Amenities", ignoreCase = true) }?.second ?: ""
+                    val propertyFeatures = selectedAnswers.find { it.first.equals("Property Features", ignoreCase = true) }?.second ?: ""
+                    var provider =  binding.etProvider.text.toString().trim().lowercase()
+
+                    val home = HomeModelClass(
+                        amenities = amenities,
+                        propertyFeatures = propertyFeatures,
+                        furnishedStatus = provider
+                    )
+
+                    val resultIntent = Intent()
+                    resultIntent.putExtra("filtered_home", home)
+                    setResult(RESULT_OK, resultIntent)
+                    finish()
                 }
+
 
                 R.id.etProvider, R.id.ivProvider -> {
                     personalDialog()
                 }
             }
         }
+
+
     }
 
 
@@ -95,15 +120,6 @@ class DiscoverySettingsActivity : BaseActivity<ActivityDiscoverySettingsBinding>
             getString(R.string.unfurnished),
             getString(R.string.partially_furnished),
             getString(R.string.fully_furnished),
-
-
-
-
-
-
-
-
-            getString(R.string.equipped_kitchen)
         )
     }
 
@@ -132,4 +148,6 @@ class DiscoverySettingsActivity : BaseActivity<ActivityDiscoverySettingsBinding>
         )
         return list
     }
+
+
 }

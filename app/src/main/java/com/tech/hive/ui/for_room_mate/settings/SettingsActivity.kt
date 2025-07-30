@@ -31,6 +31,7 @@ class SettingsActivity : BaseActivity<ActivitySettingsBinding>() {
     private val viewModel: SettingsVM by viewModels()
     private lateinit var settingsAdapter: SimpleRecyclerViewAdapter<SettingsModel, SettingsItemViewBinding>
     private var logoutDeleteDialog: BaseCustomDialog<DialogDeleteLogoutBinding>? = null
+    private var type = 0
     override fun getLayoutResource(): Int {
         return R.layout.activity_settings
     }
@@ -88,8 +89,14 @@ class SettingsActivity : BaseActivity<ActivitySettingsBinding>() {
                     }
 
                     R.id.tvLogout -> {
-                        val data = HashMap<String, Any>()
-                        viewModel.logoutApiCall(Constants.LOGOUT, data)
+                        if (type==2){
+                            val data = HashMap<String, Any>()
+                            viewModel.deleteApiCall(Constants.USER_DELETE_PROFILE, data)
+                        }else {
+                            val data = HashMap<String, Any>()
+                            viewModel.logoutApiCall(Constants.LOGOUT, data)
+                        }
+
                     }
                 }
 
@@ -132,6 +139,28 @@ class SettingsActivity : BaseActivity<ActivitySettingsBinding>() {
                     when (it.message) {
 
                         "logoutApiCall" -> {
+                            try {
+                                val myDataModel: CommonResponse? =
+                                    BindingUtils.parseJson(it.data.toString())
+                                if (myDataModel != null) {
+                                    showSuccessToast(myDataModel.message.toString())
+                                    sharedPrefManager.clear()
+                                    logoutDeleteDialog?.dismiss()
+                                    val intent =
+                                        Intent(this@SettingsActivity, AuthActivity::class.java)
+                                    intent.flags =
+                                        Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
+                                    startActivity(intent)
+                                    finishAffinity()
+                                }
+                            } catch (e: Exception) {
+                                Log.e("error", "getHomeApi: $e")
+                            } finally {
+                                hideLoading()
+                            }
+                        }
+
+                        "deleteApiCall" -> {
                             try {
                                 val myDataModel: CommonResponse? =
                                     BindingUtils.parseJson(it.data.toString())
@@ -215,10 +244,12 @@ class SettingsActivity : BaseActivity<ActivitySettingsBinding>() {
                             }
 
                             8 -> {
+                                type = 1
                                 showDialogItem(1)
                             }
 
                             9 -> {
+                                type = 2
                                 showDialogItem(2)
                             }
                         }

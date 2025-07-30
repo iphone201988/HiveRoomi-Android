@@ -92,7 +92,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_8sdp"
-                android:text='@{bean.isOnline() ? "Online" : "Offline"}'
+                android:text='@{bean.isOnline() ? @string/online : @string/offline}'
                 android:textSize="@dimen/_10ssp"
                 app:layout_constraintStart_toEndOf="@id/ivPerson"
                 app:layout_constraintTop_toBottomOf="@+id/tvTitle" />

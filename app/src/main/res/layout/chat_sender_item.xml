@@ -16,7 +16,7 @@
             android:background="@color/grey"
             android:scaleType="centerCrop"
             android:visibility="gone"
-            android:src="@drawable/ic_match_dummy"
+            android:src="@drawable/user_place_holder"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"

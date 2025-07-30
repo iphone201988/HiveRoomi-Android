@@ -2,9 +2,8 @@ package com.tech.hive.ui.for_room_mate.calenders
 
 
 import android.annotation.SuppressLint
-import android.content.Intent
 import android.util.Log
-import android.widget.Toast
+import android.view.View
 import androidx.activity.viewModels
 import com.applandeo.materialcalendarview.EventDay
 import com.applandeo.materialcalendarview.listeners.OnCalendarPageChangeListener
@@ -17,32 +16,22 @@ import com.tech.hive.base.SimpleRecyclerViewAdapter
 import com.tech.hive.base.utils.BindingUtils
 import com.tech.hive.base.utils.Status
 import com.tech.hive.base.utils.showErrorToast
-import com.tech.hive.base.utils.showSuccessToast
 import com.tech.hive.data.api.Constants
-import com.tech.hive.data.model.CommonResponse
-import com.tech.hive.data.model.GetListingData
-import com.tech.hive.data.model.GetUserData
-import com.tech.hive.data.model.GetUserMessageResponse
 import com.tech.hive.data.model.GetVisitResponse
-import com.tech.hive.data.model.UploadImageResponse
 import com.tech.hive.data.model.VisitData
 import com.tech.hive.databinding.ActivityCalenderBinding
-import com.tech.hive.databinding.ThirdUserRvItemBinding
 import com.tech.hive.databinding.VisitRvItemBinding
-import com.tech.hive.ui.for_room_mate.home.third.ThirdMatchActivity
-import com.tech.hive.ui.for_room_mate.messages.chat.ChatActivity
-import com.tech.hive.ui.room_offering.basic_details.BasicDetailsActivity
 import dagger.hilt.android.AndroidEntryPoint
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
-import java.util.TimeZone
 
 @AndroidEntryPoint
 class CalenderActivity : BaseActivity<ActivityCalenderBinding>() {
     private val viewModel: CalenderActivityVM by viewModels()
     private lateinit var calendar: Calendar
     private lateinit var calenderAdapter: SimpleRecyclerViewAdapter<VisitData, VisitRvItemBinding>
+    private var currentMonth = ""
     override fun getLayoutResource(): Int {
         return R.layout.activity_calender
     }
@@ -75,6 +64,7 @@ class CalenderActivity : BaseActivity<ActivityCalenderBinding>() {
         val yearFormat = SimpleDateFormat("yyyy", Locale.getDefault())
         val currentMonthName = monthFormat.format(calendar.time)
         val currentYear = yearFormat.format(calendar.time)
+        currentMonth = currentMonthName
         binding.tvMonth.text = currentMonthName
         binding.tvYear.text = currentYear
 
@@ -87,6 +77,7 @@ class CalenderActivity : BaseActivity<ActivityCalenderBinding>() {
                 calendar.set(Calendar.DAY_OF_MONTH, 1)
                 val monthName = monthFormat.format(calendar.time)
                 val year = yearFormat.format(calendar.time)
+                currentMonth = currentMonthName
                 binding.tvMonth.text = monthName
                 binding.tvYear.text = year
                 updateStartAndEndOfMonth(calendar)
@@ -100,6 +91,7 @@ class CalenderActivity : BaseActivity<ActivityCalenderBinding>() {
                 calendar.set(Calendar.DAY_OF_MONTH, 1)
                 val monthName = monthFormat.format(calendar.time)
                 val year = yearFormat.format(calendar.time)
+                currentMonth = currentMonthName
                 binding.tvMonth.text = monthName
                 binding.tvYear.text = year
                 updateStartAndEndOfMonth(calendar)
@@ -144,6 +136,13 @@ class CalenderActivity : BaseActivity<ActivityCalenderBinding>() {
                                     BindingUtils.parseJson(it.data.toString())
                                 if (myDataModel != null) {
                                     calenderAdapter.list = myDataModel.data
+                                    if (calenderAdapter.list.isNotEmpty()) {
+                                        binding.tvEvents.visibility = View.VISIBLE
+                                        binding.tvEvents.text =
+                                            getString(R.string.events_on, currentMonth)
+                                    } else {
+                                        binding.tvEvents.visibility = View.GONE
+                                    }
                                 }
                             } catch (e: Exception) {
                                 Log.e("error", "getHomeApi: $e")
@@ -178,6 +177,10 @@ class CalenderActivity : BaseActivity<ActivityCalenderBinding>() {
                 // Format clicked date to yyyy-MM-dd
                 val sdf = SimpleDateFormat("yyyy-MM-dd")
                 val selectedDateStr = sdf.format(clickedDayCalendar)
+                // Format to "15 Jan, Thursday"
+                val displayFormat = SimpleDateFormat("d MMM, EEEE", Locale.US)
+                val clickedDayInfo = displayFormat.format(clickedDayCalendar)
+                currentMonth = clickedDayInfo
                 val data = HashMap<String, String>()
                 data["startDate"] = selectedDateStr
                 data["endDate"] = selectedDateStr

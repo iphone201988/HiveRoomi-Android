@@ -3,6 +3,7 @@ package com.tech.hive.ui
 import android.Manifest
 import android.content.Context
 import android.content.Intent
+import android.content.res.Configuration
 import android.location.Location
 import androidx.activity.viewModels
 import com.tech.hive.R
@@ -22,9 +23,10 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import java.util.Locale
 
 @AndroidEntryPoint
-class MySplashActivity : BaseActivity<ActivityMySplashBinding>(), LocationResultListener {
+class MySplashActivity : BaseActivity<ActivityMySplashBinding>() {
     private val viewModel: MySplashActivityVM by viewModels()
     private var locationHandler: LocationHandler? = null
     override fun getLayoutResource(): Int {
@@ -39,16 +41,16 @@ class MySplashActivity : BaseActivity<ActivityMySplashBinding>(), LocationResult
         // set status bar color
         BindingUtils.statusBarStyle(this@MySplashActivity)
         BindingUtils.statusBarTextColor(this@MySplashActivity, false)
+
         // check login or verification
         checkLogin()
         // click
         initClick()
-        CoroutineScope(Dispatchers.Main).launch {
-            delay(1000)
-            // check location
-            checkLocation()
-        }
+
     }
+
+
+
 
     /** check login function **/
     private fun checkLogin() {
@@ -105,37 +107,6 @@ class MySplashActivity : BaseActivity<ActivityMySplashBinding>(), LocationResult
             }
 
         }
-    }
-
-    /* check location Function */
-    private fun checkLocation() {
-        Permissions.check(
-            this@MySplashActivity,
-            Manifest.permission.ACCESS_FINE_LOCATION,
-            0,
-            object : PermissionHandler() {
-                override fun onGranted() {
-                    createLocationHandler()
-                }
-
-                override fun onDenied(context: Context?, deniedPermissions: ArrayList<String>?) {
-                    super.onDenied(context, deniedPermissions)
-
-                }
-            })
-    }
-
-
-    /**** location handler ***/
-    private fun createLocationHandler() {
-        locationHandler = LocationHandler(this@MySplashActivity, this)
-        locationHandler?.getUserLocation()
-        locationHandler?.removeLocationUpdates()
-    }
-
-    override fun getLocation(location: Location) {
-        BindingUtils.latitude = location.latitude
-        BindingUtils.longitude = location.longitude
     }
 
 

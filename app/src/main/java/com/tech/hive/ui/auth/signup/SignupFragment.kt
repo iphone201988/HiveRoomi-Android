@@ -38,6 +38,7 @@ import com.tech.hive.base.BaseFragment
 import com.tech.hive.base.BaseViewModel
 import com.tech.hive.base.utils.BindingUtils
 import com.tech.hive.base.utils.Status
+import com.tech.hive.base.utils.showErrorToast
 import com.tech.hive.data.api.Constants
 import com.tech.hive.data.model.LoginResponse
 import com.tech.hive.databinding.FragmentSignupBinding
@@ -231,7 +232,7 @@ class SignupFragment : BaseFragment<FragmentSignupBinding>() {
                                 // Strong
                                 binding.viewBackgroundProgression.setBackgroundResource(R.drawable.green_bg)
                                 setProgress(binding.progressionGuideline, 100)
-                                binding.tvProgress.text = "Strong password"
+                                binding.tvProgress.text = getString(R.string.strong_password)
                                 binding.tvProgress.setTextColor(
                                     ContextCompat.getColor(
                                         requireContext(), R.color.green
@@ -246,7 +247,7 @@ class SignupFragment : BaseFragment<FragmentSignupBinding>() {
                                 // Good (Uppercase + Special)
                                 binding.viewBackgroundProgression.setBackgroundResource(R.drawable.yellow_bg)
                                 setProgress(binding.progressionGuideline, 70)
-                                binding.tvProgress.text = "Good password"
+                                binding.tvProgress.text = getString(R.string.good_password)
                                 binding.tvProgress.setTextColor(
                                     ContextCompat.getColor(
                                         requireContext(), R.color.yellow
@@ -262,7 +263,7 @@ class SignupFragment : BaseFragment<FragmentSignupBinding>() {
                                 // Good (Uppercase + Number)
                                 binding.viewBackgroundProgression.setBackgroundResource(R.drawable.yellow_bg)
                                 setProgress(binding.progressionGuideline, 70)
-                                binding.tvProgress.text = "Good password"
+                                binding.tvProgress.text = getString(R.string.good_password)
                                 binding.tvProgress.setTextColor(
                                     ContextCompat.getColor(
                                         requireContext(), R.color.yellow
@@ -277,7 +278,7 @@ class SignupFragment : BaseFragment<FragmentSignupBinding>() {
                                 //  Fair (Only letters + Uppercase)
                                 binding.viewBackgroundProgression.setBackgroundResource(R.drawable.orange_bg)
                                 setProgress(binding.progressionGuideline, 50)
-                                binding.tvProgress.text = "Fair password"
+                                binding.tvProgress.text = getString(R.string.fair_password)
                                 binding.tvProgress.setTextColor(
                                     ContextCompat.getColor(
                                         requireContext(), R.color.orange
@@ -337,11 +338,13 @@ class SignupFragment : BaseFragment<FragmentSignupBinding>() {
                             callSignUpApi(user.email!!, user.uid, idToken)
                         }
                     } else {
+                        showErrorToast(task.exception.toString())
                         Log.e("FirebaseToken", "Error getting token", task.exception)
                     }
                 }
             } else {
                 hideLoading()
+                showErrorToast(task.exception.toString())
                 Log.e("FirebaseSignUp", "Error creating user", task.exception)
             }
         }

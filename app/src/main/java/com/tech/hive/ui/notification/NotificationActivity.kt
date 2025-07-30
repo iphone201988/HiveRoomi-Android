@@ -60,7 +60,7 @@ class NotificationActivity : BaseActivity<ActivityNotificationBinding>() {
         viewModel.onClick.observe(this) {
             when (it?.id) {
                 R.id.ivBack -> {
-                    onBackPressedDispatcher.onBackPressed()
+                    finish()
                 }
             }
         }

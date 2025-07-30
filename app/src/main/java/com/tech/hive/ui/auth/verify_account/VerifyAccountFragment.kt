@@ -50,10 +50,13 @@ class VerifyAccountFragment : BaseFragment<FragmentVerifyAccountBinding>() {
 
         if (userEmail.isNullOrEmpty()) {
             val userData = sharedPrefManager.getLoginData()
+            binding.tvChoose.text = getString(R.string.please_enter_the_otp_below_that_we_have_sent_to, userData)
             val data = HashMap<String, Any>()
             data["email"] = userData?.email.toString()
             data["type"] = 2
             viewModel.resendOtpApi(Constants.userLanguage, data, Constants.RESEND_OTP)
+        } else {
+            binding.tvChoose.text = getString(R.string.please_enter_the_otp_below_that_we_have_sent_to, userEmail)
         }
     }
 

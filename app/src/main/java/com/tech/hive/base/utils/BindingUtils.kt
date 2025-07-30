@@ -9,7 +9,6 @@ import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.view.View
-import android.view.WindowManager
 import android.widget.ImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -29,8 +28,6 @@ import com.google.gson.Gson
 import com.tech.hive.R
 import com.tech.hive.data.api.Constants
 import com.tech.hive.data.model.GetListingData
-import com.tech.hive.data.model.GetMatchData
-import com.tech.hive.data.model.GetMatchListingId
 import com.tech.hive.data.model.HomeRoomTData
 import com.tech.hive.data.model.ImageModel
 import com.tech.hive.data.model.NotificationData
@@ -43,7 +40,7 @@ import java.util.TimeZone
 object BindingUtils {
     var latitude: Double? = null
     var longitude: Double? = null
-
+    var userRole = 0
 
     fun navigateWithSlide(navController: NavController, destinationId: Int, bundle: Bundle?) {
         val navOptions = NavOptions.Builder().build()
@@ -119,20 +116,24 @@ object BindingUtils {
     @JvmStatic
     fun setFilterName(textView: AppCompatTextView, data: GetListingData?) {
         if (data != null) {
-            when(data.status) {
-               0->{
-                   textView.text = textView.context.getString(R.string.all)
-               }
-                1->{
+            when (data.status) {
+                0 -> {
+                    textView.text = textView.context.getString(R.string.all)
+                }
+
+                1 -> {
                     textView.text = textView.context.getString(R.string.draft)
                 }
-                2->{
+
+                2 -> {
                     textView.text = textView.context.getString(R.string.active)
                 }
-                3->{
+
+                3 -> {
                     textView.text = textView.context.getString(R.string.paused)
                 }
-                4->{
+
+                4 -> {
                     textView.text = textView.context.getString(R.string.rented)
                 }
             }
@@ -178,10 +179,10 @@ object BindingUtils {
     @JvmStatic
     fun setImageByIdMatch(imageView: ShapeableImageView, url: String?) {
         if (url != null) {
-                Glide.with(imageView.context).load(Constants.BASE_URL_IMAGE + url)
-                    .placeholder(R.drawable.progress_animation_small)
-                    .error(R.drawable.user_place_holder)
-                    .diskCacheStrategy(DiskCacheStrategy.ALL).into(imageView)
+            Glide.with(imageView.context).load(Constants.BASE_URL_IMAGE + url)
+                .placeholder(R.drawable.progress_animation_small)
+                .error(R.drawable.user_place_holder).diskCacheStrategy(DiskCacheStrategy.ALL)
+                .into(imageView)
 
         } else {
             Glide.with(imageView.context).load(R.drawable.user_place_holder).into(imageView)
@@ -196,8 +197,8 @@ object BindingUtils {
             val imageUrl = url.userId?.profileImage
             Glide.with(imageView.context).load(Constants.BASE_URL_IMAGE + imageUrl)
                 .placeholder(R.drawable.progress_animation_small)
-                .error(R.drawable.user_place_holder)
-                .diskCacheStrategy(DiskCacheStrategy.ALL).into(imageView)
+                .error(R.drawable.user_place_holder).diskCacheStrategy(DiskCacheStrategy.ALL)
+                .into(imageView)
 //            when {
 //                url.type?.contains("user") == true -> {
 //                    val imageUrl = url.userId?.profileImage
@@ -264,6 +265,13 @@ object BindingUtils {
         }
     }
 
+    @BindingAdapter("priceFormatted")
+    @JvmStatic
+    fun priceFormatted(text: AppCompatTextView, price: Int?) {
+        price?.let {
+            text.text = "${text.context.getString(R.string.price)}:$ ${price}"
+        }
+    }
 
     @BindingAdapter("setSingleData")
     @JvmStatic
@@ -272,19 +280,21 @@ object BindingUtils {
             val address = if (date.address?.isNotEmpty() == true) {
                 "📍 ${date.address}"
             } else {
-                "📍 No Address found"
+                text.context.getString(R.string.no_address_found)
             }
 
             val roomType = if (date.roomType?.isNotEmpty() == true) {
                 "🛏 ${date.roomType}"
             } else {
-                "🛏 Not found"
+                text.context.getString(R.string.not_found)
             }
 
             val roommates = if (date.roommates?.isNotEmpty() == true) {
-                "\uD83D\uDC65 ${date.roommates.size} Roommates"
+                "\uD83D\uDC65 ${date.roommates.size} ${text.context.getString(R.string.roommates)}"
+
             } else {
-                "\uD83D\uDC65 0 Roommates"
+                text.context.getString(R.string.not_roomates)
+
             }
             text.text = "$address $roomType $roommates"
         }
@@ -297,15 +307,15 @@ object BindingUtils {
     fun setSmokingData(text: AppCompatTextView, date: HomeRoomTData?) {
         if (date != null) {
             val smokingText = if (date.smoke?.contains("yes", ignoreCase = true) == true) {
-                "\uD83D\uDEAD Yes Smoking"
+                text.context.getString(R.string.yes_smoking)
             } else {
-                "\uD83D\uDEAD No Smoking"
+                text.context.getString(R.string.no_smoking)
             }
 
             val petsText = if (date.pets == true) {
-                "\uD83D\uDC36 Pets Allowed"
+                text.context.getString(R.string.pets_allowed)
             } else {
-                "\uD83D\uDC36 No Pets"
+                text.context.getString(R.string.no_pets)
             }
 
 

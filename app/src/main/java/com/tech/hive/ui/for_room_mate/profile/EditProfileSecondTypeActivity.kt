@@ -7,27 +7,35 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.View
+import android.view.WindowManager
+import android.view.inputmethod.InputMethodManager
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.core.content.FileProvider
 import androidx.core.net.toUri
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import com.amazonaws.regions.Regions
 import com.github.dhaval2404.imagepicker.util.FileUtil
 import com.tech.hive.BR
 import com.tech.hive.R
 import com.tech.hive.base.BaseActivity
 import com.tech.hive.base.BaseViewModel
 import com.tech.hive.base.SimpleRecyclerViewAdapter
+import com.tech.hive.base.location.LocationSearchManager
 import com.tech.hive.base.utils.AppUtils
 import com.tech.hive.base.utils.BaseCustomDialog
 import com.tech.hive.base.utils.BindingUtils
 import com.tech.hive.base.utils.Status
 import com.tech.hive.base.utils.showErrorToast
+import com.tech.hive.base.utils.showSuccessToast
 import com.tech.hive.data.api.Constants
 import com.tech.hive.data.model.GetUserProfileResponse
 import com.tech.hive.databinding.ActivityEditProfileSecondTypeBinding
 import com.tech.hive.databinding.PersonalDialogItemBinding
 import com.tech.hive.databinding.UnPinLayoutBinding
+import com.tech.hive.ui.for_room_mate.profile.EditProfileActivity
 import com.tech.hive.ui.quiz.QuizActivity
 import dagger.hilt.android.AndroidEntryPoint
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -48,7 +56,8 @@ class EditProfileSecondTypeActivity : BaseActivity<ActivityEditProfileSecondType
     private var multipartImage: MultipartBody.Part? = null
     private var personal: BaseCustomDialog<PersonalDialogItemBinding>? = null
     private lateinit var ageAdapter: SimpleRecyclerViewAdapter<String, UnPinLayoutBinding>
-
+    private var lat : Double?=null
+    private var long : Double?=null
 
     override fun getLayoutResource(): Int {
         return R.layout.activity_edit_profile_second_type
@@ -67,12 +76,24 @@ class EditProfileSecondTypeActivity : BaseActivity<ActivityEditProfileSecondType
         binding.fullNameType = ""
         binding.bioType = ""
         binding.locationType = ""
+        binding.professionOther = ""
         // api call for profile
         viewModel.getUserProfile(Constants.USER_ME)
         // observer
         initObserver()
 
+        // Make keyboard resize layout
+        window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
 
+        // set status bar color
+        BindingUtils.statusBarStyle(this@EditProfileSecondTypeActivity)
+
+        // Keyboard insets listener to avoid send button getting hidden
+        ViewCompat.setOnApplyWindowInsetsListener(binding.main) { view, insets ->
+            val imeHeight = insets.getInsets(WindowInsetsCompat.Type.ime()).bottom
+            view.setPadding(0, 0, 0, imeHeight)
+            insets
+        }
     }
 
     /** handle view **/
@@ -113,6 +134,7 @@ class EditProfileSecondTypeActivity : BaseActivity<ActivityEditProfileSecondType
                                 val myDataModel: GetUserProfileResponse? =
                                     BindingUtils.parseJson(it.data.toString())
                                 if (myDataModel?.data != null) {
+                                    showSuccessToast(myDataModel.message.toString())
                                     binding.bean = myDataModel.data
                                 }
                             } catch (e: Exception) {
@@ -153,14 +175,25 @@ class EditProfileSecondTypeActivity : BaseActivity<ActivityEditProfileSecondType
             data["campus"] = campus.toRequestBody()
         }
 
+        if (professionRole.contains("Other")){
+            data["profession"] = binding.etProfessionOther.text.toString().trim().toRequestBody()
+        }else{
+            data["profession"] = professionRole.toRequestBody()
+        }
+
+        if(lat!=null){
+            data["latitude"] = lat.toString().toRequestBody()
+        }
+        if(long!=null){
+            data["longitude"] = lat.toString().toRequestBody()
+        }
+
         data["name"] = fullName.toRequestBody()
         data["gender"] = gender.toRequestBody()
         data["ageRange"] = age.toRequestBody()
-        data["profession"] = professionRole.toRequestBody()
         data["bio"] = shortBio.toRequestBody()
         data["address"] = location.toRequestBody()
-        data["latitude"] = BindingUtils.latitude.toString().toRequestBody()
-        data["longitude"] = BindingUtils.longitude.toString().toRequestBody()
+
         viewModel.userUpdateProfile(data, multipartImage)
     }
 
@@ -250,6 +283,14 @@ class EditProfileSecondTypeActivity : BaseActivity<ActivityEditProfileSecondType
                     binding.tvCampus.visibility = View.GONE
                     binding.ivCampus.visibility = View.GONE
                 }
+                if (s?.isNotEmpty() == true && s.contains("Other")){
+                    binding.tvProfessionRoleOther.visibility = View.VISIBLE
+                    binding.etProfessionOther.visibility = View.VISIBLE
+                    binding.etProfessionOther.clearFocus()
+                }else{
+                    binding.tvProfessionRoleOther.visibility = View.GONE
+                    binding.etProfessionOther.visibility = View.GONE
+                }
             }
 
         })
@@ -261,6 +302,15 @@ class EditProfileSecondTypeActivity : BaseActivity<ActivityEditProfileSecondType
                 binding.fullNameType = "name"
             } else {
                 binding.fullNameType = ""
+            }
+        }
+
+        // etProfession other
+        binding.etProfessionOther.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
+            if (hasFocus) {
+                binding.professionOther = "professionRole"
+            } else {
+                binding.professionOther = ""
             }
         }
 
@@ -283,6 +333,26 @@ class EditProfileSecondTypeActivity : BaseActivity<ActivityEditProfileSecondType
                 binding.locationType = ""
             }
         }
+
+
+
+        val locationSearchManager = LocationSearchManager(
+            context = this,
+            identityPoolId = "eu-north-1:c8a8cb6e-799b-43dc-ae59-737224071479",
+            region = Regions.EU_NORTH_1,
+            placeIndexName = getString(R.string.place_index_name)
+        )
+
+        locationSearchManager.setupSearch(
+            autoCompleteTextView = binding.etLocation, onResultSelected = { label, coordinate ->
+                binding.etLocation.clearFocus()
+                // Hide keyboard
+                val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+                imm.hideSoftInputFromWindow(binding.etLocation.windowToken, 0)
+                lat = coordinate.latitude
+                long = coordinate.longitude
+            })
+
 
     }
 

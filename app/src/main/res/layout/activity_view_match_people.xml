@@ -93,5 +93,20 @@
             tools:itemCount="12"
             tools:listitem="@layout/match_by_id_rv_item" />
 
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvEmptySecond"
+            style="@style/TextView.Medium"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/no_listing_match_data"
+            android:textColor="@color/black_24"
+            android:textSize="@dimen/_14sdp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

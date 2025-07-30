@@ -34,12 +34,18 @@ android {
             buildConfigField("String", "SOCKET_URL", "\"http://13.51.228.96:8111\"")
             buildConfigField("String", "MEDIA_BASE_URL", "\"http://13.51.228.96:8111\"")
 
+
+            buildConfigField("String", "MAP_API_KEY", "\"7EeVfge3KFVo7AlXanER\"")
+            buildConfigField("String", "MAP_ID", "\"streets-v2\"")
+
         }
         release {
             isMinifyEnabled = false
             buildConfigField("String", "BASE_URL", "\"http://13.51.228.96:8111/api/v1/\"")
             buildConfigField("String", "SOCKET_URL", "\"http://13.51.228.96:8111\"")
             buildConfigField("String", "MEDIA_BASE_URL", "\"http://13.51.228.96:8111\"")
+            buildConfigField("String", "MAP_API_KEY", "\"7EeVfge3KFVo7AlXanER\"")
+            buildConfigField("String", "MAP_ID", "\"streets-v2\"")
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
             )
@@ -52,6 +58,7 @@ android {
     kotlinOptions {
         jvmTarget = "21"
     }
+
 }
 
 dependencies {
@@ -119,5 +126,20 @@ dependencies {
     implementation ("com.google.android.exoplayer:exoplayer-core:2.18.1")
     implementation ("com.google.android.exoplayer:exoplayer-ui:2.18.1")
     implementation ("com.google.android.exoplayer:exoplayer-smoothstreaming:2.18.1")
+
+
+    implementation ("com.github.Yalantis:Koloda-Android:v0.0.2-alpha")
+
+
+    implementation ("com.amazonaws:aws-android-sdk-core:2.22.7")
+    implementation ("com.amazonaws:aws-android-sdk-cognitoidentityprovider:2.22.7")
+    implementation ("com.amazonaws:aws-android-sdk-auth-userpools:2.22.7")
+    implementation ("com.amazonaws:aws-android-sdk-auth-core:2.22.7")
+
+    implementation ("com.amazonaws:aws-android-sdk-location:2.57.0")
+
+    implementation ("org.maplibre.gl:android-sdk:10.0.2")
+
+
 
 }

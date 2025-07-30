@@ -252,7 +252,7 @@
                 android:textColor="@color/red"
                 android:gravity="start"
                 android:visibility="gone"
-                android:text="* Minimum 6 characters, 1 capital letter required"
+                android:text="@string/minimum_6_characters_1_capital_letter_required"
                 android:layout_marginStart="@dimen/_4sdp"
                 android:textSize="@dimen/_11ssp"
                 app:layout_constraintStart_toStartOf="@+id/etPassword"

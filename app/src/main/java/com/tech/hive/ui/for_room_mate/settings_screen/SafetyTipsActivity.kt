@@ -13,11 +13,9 @@ import com.tech.hive.base.utils.showErrorToast
 import com.tech.hive.base.utils.showSuccessToast
 import com.tech.hive.data.model.CommonQuestionsData
 import com.tech.hive.data.model.CommonQuestionsResponse
-import com.tech.hive.data.model.SafetyModel
 import com.tech.hive.databinding.ActivitySafetyTipsBinding
 import com.tech.hive.databinding.SafteyItemViewBinding
 import com.tech.hive.ui.for_room_mate.settings.SettingsVM
-import com.tech.hive.ui.for_room_mate.settings_screen.CommunityActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -61,7 +59,7 @@ class SafetyTipsActivity : BaseActivity<ActivitySafetyTipsBinding>() {
             when (it?.id) {
                 // back button
                 R.id.ivBack -> {
-                   finish()
+                    finish()
                 }
                 // got it button
                 R.id.btnContinue -> {

@@ -19,6 +19,8 @@ class SharedPrefManager @Inject constructor(private val sharedPreferences: Share
         const val OTP_TOKEN = "otpToken"
         const val PROFILE_TOKEN = "profileToken"
         const val QUIZ_TOKEN = "quizToken"
+        const val LOCALE = "locale_key"
+        const val SELECT = "select"
     }
 
     fun setLoginData(bean: LoginData) {
@@ -45,6 +47,21 @@ class SharedPrefManager @Inject constructor(private val sharedPreferences: Share
     }
 
 
+    fun setLocaleType(type: String?) {
+        sharedPreferences.saveValue(KEY.LOCALE, type)
+    }
+
+    fun getLocaleType(): String? {
+        return sharedPreferences.getString(KEY.LOCALE, "")
+    }
+
+    fun setSelectType(type: String?) {
+        sharedPreferences.saveValue(KEY.SELECT, type)
+    }
+
+    fun getSelectType(): String? {
+        return sharedPreferences.getString(KEY.SELECT, "1")
+    }
 
 
 

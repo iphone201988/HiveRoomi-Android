@@ -6,8 +6,10 @@ import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import androidx.activity.viewModels
-import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.OnMapReadyCallback
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.mapbox.mapboxsdk.camera.CameraPosition
+import com.mapbox.mapboxsdk.geometry.LatLng
 import com.tech.hive.BR
 import com.tech.hive.R
 import com.tech.hive.base.BaseActivity
@@ -27,7 +29,6 @@ import com.tech.hive.databinding.RvFieldItemBinding
 import com.tech.hive.databinding.RvFieldSecondItemBinding
 import com.tech.hive.ui.for_room_mate.home.HomeFragmentVM
 import com.tech.hive.ui.for_room_mate.home.second.storiesprogressview.StoriesProgressView
-import com.tech.hive.ui.for_room_mate.home.third.ThirdMatchActivity
 import com.tech.hive.ui.for_room_mate.messages.chat.ChatActivity
 import com.tech.hive.ui.for_room_mate.settings_screen.ReportActivity
 import com.tech.hive.ui.video.ShowVideoPlayerActivity
@@ -35,13 +36,13 @@ import dagger.hilt.android.AndroidEntryPoint
 
 
 @AndroidEntryPoint
-class SecondMatchActivity : BaseActivity<ActivitySecondMatchBinding>(), OnMapReadyCallback,
-    StoriesProgressView.StoriesListener {
+class SecondMatchActivity : BaseActivity<ActivitySecondMatchBinding>() {
     private val viewModel: HomeFragmentVM by viewModels()
     var profileIdSecond = ""
     var commonId = ""
     var videosUrl = ""
     var chatClick = false
+
     // adapter
     private lateinit var matchAdapter: SimpleRecyclerViewAdapter<MatchProfileModel, RvFieldItemBinding>
     private lateinit var secondMatchAdapter: SimpleRecyclerViewAdapter<SecondMatchProfileModel, RvFieldSecondItemBinding>
@@ -55,7 +56,9 @@ class SecondMatchActivity : BaseActivity<ActivitySecondMatchBinding>(), OnMapRea
         return viewModel
     }
 
+
     override fun onCreateView() {
+
         // view
         initView()
         // click
@@ -64,14 +67,43 @@ class SecondMatchActivity : BaseActivity<ActivitySecondMatchBinding>(), OnMapRea
         initObserver()
 
         // intent data
-        profileIdSecond = intent.getStringExtra("profileIdSecond").toString()
+        profileIdSecond = intent.getStringExtra("profileIdSecond") ?: ""
         if (profileIdSecond.isNotEmpty()) {
             val data = HashMap<String, String>()
-            viewModel.getMatchedProfileSecond(data, Constants.MATCH_LISTING + "$profileIdSecond")
+            viewModel.getMatchedProfileSecond(data, Constants.MATCH_LISTING + profileIdSecond)
         }
 
-
+        binding.mapView.setOnTouchListener({ v, event ->
+            v.getParent().requestDisallowInterceptTouchEvent(true)
+            false
+        })
     }
+
+    override fun onStart() {
+        super.onStart()
+        binding.mapView.onStart()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        binding.mapView.onResume()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        binding.mapView.onPause()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        binding.mapView.onStop()
+    }
+
+    override fun onLowMemory() {
+        super.onLowMemory()
+        binding.mapView.onLowMemory()
+    }
+
 
     /** handle view **/
     private fun initView() {
@@ -103,13 +135,32 @@ class SecondMatchActivity : BaseActivity<ActivitySecondMatchBinding>(), OnMapRea
                 }
 
                 R.id.reverse -> {
-                    binding.storiesProgressView.reverse()
+                    if (currentImageIndex > 0) {
+                        currentImageIndex--
+                        loadImage(currentImageIndex)
+
+                        binding.storiesProgressView.destroy()
+                        binding.storiesProgressView.setStoriesCount(images.size)
+                        binding.storiesProgressView.setStoryDuration(3000L)
+                        binding.storiesProgressView.startStories(
+                            currentImageIndex
+                        )
+                    }
                 }
 
                 R.id.skip -> {
-                    binding.storiesProgressView.skip()
-                }
+                    if (currentImageIndex < images.size - 1) {
+                        currentImageIndex++
+                        loadImage(currentImageIndex)
 
+                        binding.storiesProgressView.destroy()
+                        binding.storiesProgressView.setStoriesCount(images.size)
+                        binding.storiesProgressView.setStoryDuration(3000L)
+                        binding.storiesProgressView.startStories(
+                            currentImageIndex
+                        )
+                    }
+                }
 
                 R.id.ivLikeBefore, R.id.tvLikeBefore -> {
                     val data = HashMap<String, Any>()
@@ -144,9 +195,10 @@ class SecondMatchActivity : BaseActivity<ActivitySecondMatchBinding>(), OnMapRea
                     startActivity(intent)
                 }
 
-                R.id.clVideo->{
+                R.id.clVideo -> {
                     BindingUtils.preventMultipleClick(it)
-                    val intent = Intent(this@SecondMatchActivity, ShowVideoPlayerActivity::class.java)
+                    val intent =
+                        Intent(this@SecondMatchActivity, ShowVideoPlayerActivity::class.java)
                     intent.putExtra("videoUrl", videosUrl)
                     startActivity(intent)
                 }
@@ -164,6 +216,7 @@ class SecondMatchActivity : BaseActivity<ActivitySecondMatchBinding>(), OnMapRea
                     x < sectionWidth -> {
 
                     }
+
                     x < sectionWidth * 2 -> {
                         if (chatClick) {
                             val intent = Intent(this@SecondMatchActivity, ChatActivity::class.java)
@@ -172,6 +225,7 @@ class SecondMatchActivity : BaseActivity<ActivitySecondMatchBinding>(), OnMapRea
                             startActivity(intent)
                         }
                     }
+
                     else -> {
                         val intent = Intent(this@SecondMatchActivity, ReportActivity::class.java)
                         intent.putExtra("reportId", commonId)
@@ -208,6 +262,8 @@ class SecondMatchActivity : BaseActivity<ActivitySecondMatchBinding>(), OnMapRea
 
     }
 
+    var images = listOf<String>()
+    var currentImageIndex = 0
 
     /** handle api response **/
     private fun initObserver() {
@@ -248,32 +304,70 @@ class SecondMatchActivity : BaseActivity<ActivitySecondMatchBinding>(), OnMapRea
                                             binding.secondMatchType = 1
                                         }
                                     }
-                                    val imageCount = myDataModel.data.images?.size ?: 0
-                                    binding.storiesProgressView.setStoriesCount(imageCount)
-                                    binding.storiesProgressView.setStoryDuration(3000L)
-                                    binding.storiesProgressView.setStoriesListener(this)
-                                    if (imageCount > 0) {
-                                        binding.storiesProgressView.startStories()
-                                    }
 
+                                    val styleUrl =
+                                        "https://api.maptiler.com/maps/${Constants.MAP_ID}/style.json?key=${Constants.MAP_API_KEY}"
+
+                                    binding.mapView.getMapAsync { mapboxMap ->
+                                        mapboxMap.setStyle(styleUrl) { style ->
+                                            mapboxMap.uiSettings.isScrollGesturesEnabled = false
+                                            mapboxMap.uiSettings.isZoomGesturesEnabled =
+                                                false // (optional)
+                                            mapboxMap.uiSettings.isRotateGesturesEnabled =
+                                                false // (optional)
+                                            mapboxMap.uiSettings.isTiltGesturesEnabled = false
+                                            mapboxMap.uiSettings.areAllGesturesEnabled()
+                                            val latitude = myDataModel.data.latitude ?: 0.0
+                                            val longitude = myDataModel.data.longitude ?: 0.0
+                                            val latLng = LatLng(latitude, longitude)
+                                            mapboxMap.cameraPosition =
+                                                CameraPosition.Builder().target(latLng).zoom(14.0)
+                                                    .build()
+                                            mapboxMap.addMarker(
+                                                com.mapbox.mapboxsdk.annotations.MarkerOptions()
+                                                    .position(latLng)
+                                                    .title(getString(R.string.map_name))
+                                            )
+                                        }
+                                    }
                                     val availableRoomDate =
                                         BindingUtils.formatDateToMonthDay(myDataModel.data.availableFrom)
                                     val smoke =
-                                        if (myDataModel.data.smoke?.contains("yes") == true) "\uD83D\uDEAD Yes Smoking" else "\uD83D\uDEAD No Smoking"
+                                        if (myDataModel.data.smoke?.contains("yes") == true) getString(
+                                            R.string.yes_smoking
+                                        ) else getString(
+                                            R.string.no_smoking
+                                        )
                                     val pets =
-                                        if (myDataModel.data.pets == true) "\uD83D\uDC36 Pets Allowed" else "\uD83D\uDC36 No Pets"
+                                        if (myDataModel.data.pets == true) getString(
+                                            R.string.pets_allowed
+                                        ) else getString(
+                                            R.string.no_pets
+                                        )
                                     var houseRule = "$smoke $pets"
-                                    var wifi = if (myDataModel.data.wifi == true) "Wifi," else "-"
+                                    var wifi = if (myDataModel.data.wifi == true) getString(
+                                        R.string.wifi
+                                    ) else "-"
                                     var kitchen =
-                                        if (myDataModel.data.wifi == true) "Kitchen," else ""
+                                        if (myDataModel.data.wifi == true) getString(
+                                            R.string.kitchen
+                                        ) else ""
                                     var washingMachine =
-                                        if (myDataModel.data.wifi == true) "Washing Machine," else ""
+                                        if (myDataModel.data.wifi == true) getString(
+                                            R.string.washing_machine
+                                        ) else ""
                                     var airConditioner =
-                                        if (myDataModel.data.wifi == true) "Air Conditioner," else ""
+                                        if (myDataModel.data.wifi == true) getString(
+                                            R.string.air_conditioner
+                                        ) else ""
                                     var balcony =
-                                        if (myDataModel.data.wifi == true) "Balcony" else ""
+                                        if (myDataModel.data.wifi == true) getString(
+                                            R.string.balcony
+                                        ) else ""
                                     var parking =
-                                        if (myDataModel.data.wifi == true) "Parking" else ""
+                                        if (myDataModel.data.wifi == true) getString(
+                                            R.string.parking
+                                        ) else ""
                                     var amenities =
                                         "$wifi $kitchen $washingMachine $airConditioner $balcony $parking"
                                     val roommatesDisplay =
@@ -287,131 +381,205 @@ class SecondMatchActivity : BaseActivity<ActivitySecondMatchBinding>(), OnMapRea
 
                                     val detailsList = listOf(
                                         MatchProfileModel(
-                                            "Price",
+                                            getString(
+                                                R.string.price
+                                            ),
                                             "$" + myDataModel.data.price?.toString()
-                                                .orEmpty() + "/month",
+                                                .orEmpty() + getString(
+                                                R.string.per_month
+                                            ),
                                             "",
                                             false
                                         ),
                                         MatchProfileModel(
-                                            "Utilities",
+                                            getString(
+                                                R.string.utilities
+                                            ),
                                             "$" + myDataModel.data.utilitiesPrice?.toString()
-                                                .orEmpty() + "/month",
+                                                .orEmpty() + getString(
+                                                R.string.per_month
+                                            ),
                                             "",
                                             false
                                         ),
                                         MatchProfileModel(
-                                            "Deposit",
+                                            getString(
+                                                R.string.deposit
+                                            ),
                                             "$" + myDataModel.data.deposit?.toString().orEmpty(),
                                             "",
                                             false
                                         ),
                                         MatchProfileModel(
-                                            "Contract",
+                                            getString(
+                                                R.string.contract
+                                            ),
                                             myDataModel.data.contractLength.orEmpty(),
                                             "",
                                             false
                                         ),
                                         MatchProfileModel(
-                                            "Available Room",
+                                            getString(
+                                                R.string.available_room
+                                            ),
                                             availableRoomDate,
-                                            "Room Details",
+                                            getString(
+                                                R.string.room_details
+                                            ),
                                             false
                                         ),
-                                        MatchProfileModel("", "", "Room Details", true),
+                                        MatchProfileModel("", "", getString(
+                                            R.string.room_details
+                                        ), true),
                                         MatchProfileModel(
-                                            "Type",
-                                            myDataModel.data.roomType.orEmpty(),
+                                            getString(
+                                                R.string.type
+                                            ), myDataModel.data.roomType.orEmpty(), "", false
+                                        ),
+                                        MatchProfileModel(
+                                            getString(
+                                                R.string.size
+                                            ),
+                                            myDataModel.data.size.orEmpty() + getString(
+                                                R.string.sqm
+                                            ),
                                             "",
                                             false
                                         ),
                                         MatchProfileModel(
-                                            "Size",
-                                            myDataModel.data.size.orEmpty() + "sqm",
-                                            "",
-                                            false
-                                        ),
-                                        MatchProfileModel(
-                                            "Furnished",
+                                            getString(
+                                                R.string.furnished
+                                            ),
                                             myDataModel.data.furnishingStatus.orEmpty(),
                                             "",
                                             false
                                         ),
-                                        MatchProfileModel("", "", "Apartment Features", true),
+                                        MatchProfileModel("", "", getString(
+                                            R.string.apartment_features
+                                        ), true),
                                         MatchProfileModel(
-                                            "Floor",
-                                            myDataModel.data.floor.orEmpty() + "Floor",
+                                            getString(
+                                                R.string.floor
+                                            ),
+                                            myDataModel.data.floor.orEmpty() + getString(
+                                                R.string.floor
+                                            ),
                                             "",
                                             false
                                         ),
                                         MatchProfileModel(
-                                            "Elevator",
-                                            if (myDataModel.data.elevator == true) "Yes" else "No",
+                                            getString(
+                                                R.string.elevator
+                                            ),
+                                            if (myDataModel.data.elevator == true) getString(
+                                                R.string.yes
+                                            ) else getString(
+                                                R.string.no
+                                            ),
                                             "",
                                             false
                                         ),
                                         MatchProfileModel(
-                                            "Heating",
-                                            myDataModel.data.address.orEmpty(),
-                                            "",
-                                            false
+                                            getString(
+                                                R.string.heating
+                                            ), myDataModel.data.address.orEmpty(), "", false
                                         ),
-                                        MatchProfileModel("Amenities", amenities, "", false),
-                                        MatchProfileModel("", "", "Household & Lifestyle", true),
+                                        MatchProfileModel(getString(
+                                            R.string.amenities
+                                        ), amenities, "", false),
+                                        MatchProfileModel("", "", getString(
+                                            R.string.household_lifestyle
+                                        ), true),
                                         MatchProfileModel(
-                                            "Current Roommates",
-                                            roommatesDisplay,
-                                            "",
-                                            false
+                                            getString(
+                                                R.string.current_roommates
+                                            ), roommatesDisplay, "", false
                                         ),
                                         MatchProfileModel(
-                                            "Looking For",
+                                            getString(
+                                                R.string.looking_for
+                                            ),
                                             myDataModel.data.lookingFor?.joinToString(", ")
                                                 .orEmpty(),
                                             "",
                                             false
                                         ),
-                                        MatchProfileModel("House Rules", houseRule, "", false),
+                                        MatchProfileModel(getString(
+                                            R.string.house_rules
+                                        ), houseRule, "", false),
                                         MatchProfileModel(
-                                            "Cleanliness",
+                                            getString(
+                                                R.string.cleanliness
+                                            ),
                                             myDataModel.data.cleanliness?.toString()
                                                 .orEmpty() + "/5",
                                             "",
                                             false
                                         ),
-                                        MatchProfileModel("", "", "Location & Connectivity", true),
+                                        MatchProfileModel("", "", getString(
+                                            R.string.location_connectivity
+                                        ), true),
                                         MatchProfileModel(
-                                            "Area",
-                                            myDataModel.data.address.orEmpty(),
-                                            "",
-                                            false
+                                            getString(
+                                                R.string.area
+                                            ), myDataModel.data.address.orEmpty(), "", false
                                         ),
                                     )
 
                                     val hostList = listOf(
                                         SecondMatchProfileModel(
-                                            "",
-                                            "",
-                                            "Verification & Host Info",
-                                            true
+                                            "", "", getString(R.string.verification_host_info), true
                                         ),
                                         SecondMatchProfileModel(
-                                            "Verification Status",
-                                            "Verified",
-                                            "",
-                                            false
+                                            getString(R.string.verification_status),
+                                            getString(R.string.verified), "", false
                                         ),
-                                        SecondMatchProfileModel("Host ", "Anna R.", "", false),
-                                        SecondMatchProfileModel("", "", "Actions", true),
+                                        SecondMatchProfileModel(getString(R.string.host), "Anna R.", "", false),
+                                        SecondMatchProfileModel("", "",
+                                            getString(R.string.actions), true),
                                     )
                                     secondMatchAdapter.list = hostList
                                     matchAdapter.list = detailsList
+
+
+                                    // status
+                                    images =
+                                        (myDataModel.data.images ?: emptyList()) as List<String>
+                                    if (images.isNotEmpty()) {
+                                        loadImage(currentImageIndex)
+
+                                        binding.storiesProgressView.setStoriesCount(images.size)
+                                        binding.storiesProgressView.setStoryDuration(3000L)
+                                        binding.storiesProgressView.setStoriesListener(object :
+                                            StoriesProgressView.StoriesListener {
+                                            override fun onNext() {
+                                                currentImageIndex++
+                                                if (currentImageIndex < images.size) {
+                                                    loadImage(currentImageIndex)
+                                                }
+                                            }
+
+                                            override fun onPrev() {
+                                                currentImageIndex =
+                                                    (currentImageIndex - 1).coerceAtLeast(0)
+                                                loadImage(currentImageIndex)
+                                            }
+
+                                            override fun onComplete() {
+                                                // Optional: loop or reset
+                                            }
+                                        })
+
+                                        binding.storiesProgressView.startStories(currentImageIndex)
+                                    }
+
+
                                 }
                             } catch (e: Exception) {
                                 Log.e("error", "getHomeApi: $e")
                             } finally {
-                                binding.clNested.visibility= View.VISIBLE
-                                binding.tvEmpty.visibility= View.GONE
+                                // binding.clNested.visibility = View.VISIBLE
+                                binding.tvEmpty.visibility = View.GONE
                                 hideLoading()
                             }
                         }
@@ -438,8 +606,8 @@ class SecondMatchActivity : BaseActivity<ActivitySecondMatchBinding>(), OnMapRea
                 }
 
                 Status.ERROR -> {
-                    binding.clNested.visibility= View.GONE
-                    binding.tvEmpty.visibility= View.VISIBLE
+                    // binding.clNested.visibility = View.GONE
+                    binding.tvEmpty.visibility = View.VISIBLE
                     hideLoading()
                     showErrorToast(it.message.toString())
                 }
@@ -451,7 +619,13 @@ class SecondMatchActivity : BaseActivity<ActivitySecondMatchBinding>(), OnMapRea
         }
     }
 
-
+    fun loadImage(index: Int) {
+        if (index in images.indices) {
+            Glide.with(binding.ivImage.context).load(Constants.BASE_URL_IMAGE + images[index])
+                .placeholder(R.drawable.progress_animation_small).error(R.drawable.home_dummy_icon)
+                .diskCacheStrategy(DiskCacheStrategy.ALL).into(binding.ivImage)
+        }
+    }
     /** handle adapter **/
     private fun initAdapter() {
         matchAdapter = SimpleRecyclerViewAdapter(R.layout.rv_field_item, BR.bean) { v, m, pos ->
@@ -464,47 +638,20 @@ class SecondMatchActivity : BaseActivity<ActivitySecondMatchBinding>(), OnMapRea
             SimpleRecyclerViewAdapter(R.layout.rv_field_second_item, BR.bean) { v, m, pos ->
 
             }
-        secondMatchAdapter.list = getSecondList()
+
         binding.rvSecondField.adapter = secondMatchAdapter
 
 
     }
 
 
-    // get List
-    private fun getSecondList(): ArrayList<SecondMatchProfileModel> {
-        val list = ArrayList<SecondMatchProfileModel>()
-        list.add(SecondMatchProfileModel("", "", "Verification & Host Info", true))
-        list.add(SecondMatchProfileModel("Verification Status", "Verified", "", false))
-        list.add(SecondMatchProfileModel("Host ", "Anna R.", "", false))
-        //list.add(SecondMatchProfileModel("Ratings", "4.4 (24 reviews) ratings", "", false))
-        list.add(SecondMatchProfileModel("", "", "Actions", true))
 
 
-        return list
-    }
-
-
-    override fun onMapReady(p0: GoogleMap) {
-
-    }
-
-    override fun onNext() {
-        //   binding.ivImage.setImageResource(resources[++counter])
-    }
-
-    override fun onPrev() {
-        //   if ((counter - 1) < 0) return
-        //   binding.ivImage.setImageResource(resources[--counter])
-    }
-
-    override fun onComplete() {
-
-    }
 
     override fun onDestroy() {
         // Very important !
         binding.storiesProgressView.destroy()
+        binding.mapView.onDestroy()
         super.onDestroy()
     }
 

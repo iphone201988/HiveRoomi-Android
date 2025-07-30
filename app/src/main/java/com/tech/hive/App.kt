@@ -4,7 +4,10 @@ import android.app.Application
 import android.content.Intent
 import android.util.Log
 import androidx.lifecycle.ProcessLifecycleOwner
+import com.amazonaws.auth.CognitoCachingCredentialsProvider
+import com.amazonaws.regions.Regions
 import com.google.firebase.FirebaseApp
+import com.mapbox.mapboxsdk.Mapbox
 import com.tech.hive.base.AppLifecycleListener
 import dagger.hilt.android.HiltAndroidApp
 
@@ -19,6 +22,15 @@ class App : Application() {
     override fun onCreate() {
         super.onCreate()
         FirebaseApp.initializeApp(this)
+
+        // Init MapLibre
+        Mapbox.getInstance(this)
+//        val credentialsProvider = CognitoCachingCredentialsProvider(
+//            applicationContext,
+//            "IDENTITY_POOL_ID", // Replace with your pool ID
+//            Regions.US_EAST_1 // Replace with your region
+//        )
+
         ProcessLifecycleOwner.get().lifecycle.addObserver(AppLifecycleListener(this@App))
     }
 

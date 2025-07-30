@@ -1,5 +1,7 @@
 package com.tech.hive.ui.role
 
+import android.content.Intent
+import android.content.res.Configuration
 import android.util.Log
 import androidx.activity.viewModels
 import com.tech.hive.R
@@ -9,12 +11,15 @@ import com.tech.hive.base.utils.BindingUtils
 import com.tech.hive.base.utils.Resource
 import com.tech.hive.base.utils.Status
 import com.tech.hive.base.utils.showErrorToast
+import com.tech.hive.data.api.Constants
 import com.tech.hive.data.model.RoleChangeResponse
 import com.tech.hive.databinding.ActivityChangeRoleBinding
+import com.tech.hive.ui.dashboard.DashboardActivity
 import com.tech.hive.ui.dashboard.DashboardActivity.Companion.bottomNavigationItemCountChange
 import dagger.hilt.android.AndroidEntryPoint
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
+import java.util.Locale
 
 @AndroidEntryPoint
 class ChangeRoleActivity : BaseActivity<ActivityChangeRoleBinding>() {
@@ -68,11 +73,12 @@ class ChangeRoleActivity : BaseActivity<ActivityChangeRoleBinding>() {
         val data = HashMap<String, RequestBody>()
         if (type == 1) {
             data["profileRole"] = roleType.toString().toRequestBody()
+            viewModel.updateRoleApi(data, null)
         } else if (type == 2) {
             data["language"] = language.toRequestBody()
+            viewModel.updateLanguageApi(data, null)
         }
 
-        viewModel.updateRoleAndLanguage(data, null)
 
     }
 
@@ -86,20 +92,54 @@ class ChangeRoleActivity : BaseActivity<ActivityChangeRoleBinding>() {
 
                 Status.SUCCESS -> {
                     when (it.message) {
-                        "updateRoleAndLanguage" -> {
+                        "updateRoleApi" -> {
                             try {
                                 val myDataModel: RoleChangeResponse? =
                                     BindingUtils.parseJson(it.data.toString())
                                 if (myDataModel?.data != null) {
                                     sharedPrefManager.saveRole(myDataModel.data.profileRole)
-                                    bottomNavigationItemCountChange.postValue(
-                                        Resource.success(
-                                            "changeItemCount",
-                                            true
-                                        )
+
+                                    val intent = Intent(
+                                        this@ChangeRoleActivity,
+                                        DashboardActivity::class.java
                                     )
-                                    finish()
+                                    intent.flags =
+                                        Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                                    startActivity(intent)
                                 }
+                            } catch (e: Exception) {
+                                Log.e("error", "getHomeApi: $e")
+                            } finally {
+                                hideLoading()
+                            }
+                        }
+
+                        "updateLanguageApi" -> {
+                            try {
+                                val myDataModel: RoleChangeResponse? =
+                                    BindingUtils.parseJson(it.data.toString())
+                                if (myDataModel?.data != null) {
+                                    sharedPrefManager.saveRole(myDataModel.data.profileRole)
+                                    if (myDataModel.data.language?.contains("en") == true){
+                                        Constants.userLanguage = "en"
+                                        setLocale("en")
+                                        sharedPrefManager.setSelectType("1")
+                                        sharedPrefManager.setLocaleType("en")
+                                    }else if (myDataModel.data.language?.contains("it") == true){
+                                        sharedPrefManager.setSelectType("2")
+                                        Constants.userLanguage = "it"
+                                        setLocale("it")
+                                        sharedPrefManager.setLocaleType("it")
+                                    }
+                                    val intent = Intent(
+                                        this@ChangeRoleActivity,
+                                        DashboardActivity::class.java
+                                    )
+                                    intent.flags =
+                                        Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                                    startActivity(intent)
+                                }
+
                             } catch (e: Exception) {
                                 Log.e("error", "getHomeApi: $e")
                             } finally {
@@ -120,6 +160,18 @@ class ChangeRoleActivity : BaseActivity<ActivityChangeRoleBinding>() {
                 }
             }
         }
+    }
+
+
+
+    private fun setLocale(languageCode: String) {
+        val locale = Locale(languageCode)
+        Locale.setDefault(locale)
+        val configuration: Configuration = resources.configuration
+        configuration.setLocale(locale)
+        resources.updateConfiguration(configuration, resources.displayMetrics)
+        // recreate activity to reflect the locale change
+        recreate()
     }
 
 

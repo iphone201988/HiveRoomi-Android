@@ -2,6 +2,7 @@ package com.tech.hive.ui.for_room_mate.home.third
 
 import android.content.Intent
 import android.util.Log
+import android.view.View
 import androidx.activity.viewModels
 import com.tech.hive.BR
 import com.tech.hive.R
@@ -87,6 +88,12 @@ class ViewMatchPeopleActivity : BaseActivity<ActivityViewMatchPeopleBinding>() {
                                 if (myDataModel != null) {
                                     byIdMatchesAdapter.list = myDataModel.data
 
+                                    if (byIdMatchesAdapter.list.isNotEmpty()){
+                                        binding.tvEmptySecond.visibility = View.GONE
+                                    }else{
+                                        binding.tvEmptySecond.visibility = View.VISIBLE
+                                    }
+
                                 }
                             } catch (e: Exception) {
                                 Log.e("error", "getHomeApi: $e")
@@ -145,11 +152,16 @@ class ViewMatchPeopleActivity : BaseActivity<ActivityViewMatchPeopleBinding>() {
                     }
                     // like
                     R.id.ivLike -> {
-                        position = pos
-                        val data = HashMap<String, Any>()
-                        data["action"] = "accept"
-                        data["id"] = m._id.toString()
-                        viewModel.acceptRejectAPi(Constants.MATCH_ACCEPT_REJECT, data)
+//                        position = pos
+//                        val data = HashMap<String, Any>()
+//                        data["action"] = "accept"
+//                        data["id"] = m._id.toString()
+//                        viewModel.acceptRejectAPi(Constants.MATCH_ACCEPT_REJECT, data)
+
+                        val intent = Intent(this@ViewMatchPeopleActivity, ChatActivity::class.java)
+                        intent.putExtra("socketId", m.userId?._id)
+                        intent.putExtra("matchId", m.userId?._id)
+                        startActivity(intent)
                     }
                     // chat
                     R.id.ivChat -> {

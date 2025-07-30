@@ -23,17 +23,19 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent">
+
             <TextView
                 android:id="@+id/tvTitle"
                 style="@style/TextView.PoppinsBold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/chats"
+                android:layout_marginTop="20dp"
                 android:includeFontPadding="false"
+                android:text="@string/chats"
                 android:textSize="@dimen/_22ssp"
-                android:layout_marginTop="@dimen/_20sdp"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"/>
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
             <TextView
                 android:id="@+id/tvMsgCount"
                 style="@style/TextView.Regular"
