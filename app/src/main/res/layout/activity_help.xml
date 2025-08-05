@@ -85,7 +85,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/we_re_here_to_help"
                     android:textColor="@color/heading_color"
-                    android:textSize="@dimen/_23ssp"
+                    android:textSize="@dimen/_20ssp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 

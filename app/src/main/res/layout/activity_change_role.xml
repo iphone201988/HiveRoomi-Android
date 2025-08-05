@@ -32,7 +32,7 @@
             android:layout_height="@dimen/_18sdp"
             android:layout_marginStart="@dimen/_14sdp"
             android:onClick="@{v->vm.onClick(v)}"
-            android:layout_marginTop="@dimen/_15sdp"
+            android:layout_marginTop="@dimen/_25sdp"
             android:src="@drawable/iv_back"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

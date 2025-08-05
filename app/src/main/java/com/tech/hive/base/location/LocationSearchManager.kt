@@ -29,14 +29,15 @@ class LocationSearchManager(
         autoCompleteTextView: AutoCompleteTextView,
         onResultSelected: (String, Coordinate) -> Unit
     ) {
-        autoCompleteTextView.threshold = 2
+        autoCompleteTextView.threshold = 1
+
 
         autoCompleteTextView.addTextChangedListener(object : android.text.TextWatcher {
             private var searchJob: Job? = null
 
             override fun afterTextChanged(s: android.text.Editable?) {
                 val query = s.toString()
-                if (query.length < 3) return
+                if (query.isEmpty()) return
 
                 searchJob?.cancel()
                 searchJob = searchScope.launch {
@@ -44,14 +45,14 @@ class LocationSearchManager(
                         val request = SearchPlaceIndexForTextRequest()
                             .withIndexName(placeIndexName)
                             .withText(query)
-                            .withMaxResults(5)
+                            .withMaxResults(10)
 
                         val result = client.searchPlaceIndexForText(request)
                         val addresses = result.results.mapNotNull {
                             val label = it.place.label
                             val point = it.place.geometry.point
                             if (label != null && point != null) {
-                                label to Coordinate(point[1], point[0]) // lat, lon
+                                label to Coordinate(point[1], point[0])
                             } else null
                         }
 

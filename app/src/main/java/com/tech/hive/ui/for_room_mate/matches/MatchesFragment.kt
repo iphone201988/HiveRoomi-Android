@@ -84,7 +84,7 @@ class MatchesFragment : BaseFragment<FragmentMatchesBinding>() {
     /** handle view **/
     private fun initView() {
         // adapter
-        initMatchAdapter()
+       initMatchAdapter()
         initPendingMatchAdapter()
 
     }
@@ -216,7 +216,6 @@ class MatchesFragment : BaseFragment<FragmentMatchesBinding>() {
                                     binding.tvEmpty.visibility = View.GONE
                                     pendingMatchesAdapter.clearList()
                                     pendingMatchesAdapter.list = myDataModel.data
-
                                     if (pendingMatchesAdapter.list.isNotEmpty()) {
                                         binding.tvEmpty.visibility = View.GONE
                                     } else {
@@ -277,11 +276,11 @@ class MatchesFragment : BaseFragment<FragmentMatchesBinding>() {
                     // view profile
                     R.id.ivImage -> {
                         val data = sharedPrefManager.getRole()
-                        if (sharedPrefManager.getSide() == "1") {
+                        if (data == 1) {
                             val intent = Intent(context, MatchedProfileActivity::class.java)
                             intent.putExtra("profileIdFirst", m.userId?._id)
                             requireContext().startActivity(intent)
-                        } else if (sharedPrefManager.getSide() == "2") {
+                        } else if (data == 2) {
                             val intent = Intent(context, SecondMatchActivity::class.java)
                             intent.putExtra("profileIdSecond", m.listingId?._id)
                             requireContext().startActivity(intent)
@@ -296,6 +295,7 @@ class MatchesFragment : BaseFragment<FragmentMatchesBinding>() {
 
         binding.rvMatches.adapter = matchesAdapter
     }
+
 
     private fun initPendingMatchAdapter() {
         pendingMatchesAdapter =

@@ -179,7 +179,6 @@ class QuizQuestionFragment : BaseFragment<FragmentQuizQuestionBinding>() {
                     } else {
                       var selectedData =  allQuestions.flatMap { buildUserAnswers(it) }
                         var sendRequestData = AnswerSendRequest(selectedData)
-
                           viewModel.quizAnswerApi(
                          Constants.userLanguage, Constants.QUIZ_ANSWER, request = sendRequestData)
 

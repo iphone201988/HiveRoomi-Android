@@ -48,7 +48,7 @@
     <string name="already_have_an_account">Already have an account?</string>
     <string name="log_inw">Log in</string>
     <string name="enter_your_name">Enter name</string>
-    <string name="enter_confirm_password">Enter confirm password</string>
+    <string name="enter_confirm_password">Enter confirm Password</string>
     <string name="enter_your_password">Enter password</string>
     <string name="verify_its_you">Verify its you</string>
     <string name="please_enter_the_otp_below_that_we_have_sent_to_your_email">Please enter the OTP below that we have sent to your email.</string>
@@ -73,6 +73,7 @@
     <string name="your_account_has_been_successfully_created">Your account has been successfully created</string>
     <string name="account_created_nsuccessfully">Account Created\nSuccessfully</string>
     <string name="change_password">Change Password</string>
+    <string name="set_up_password">Setup your new\npassword</string>
     <string name="enter_your_email_or_phone_number_here">Enter your email or Phone number here</string>
     <string name="verify_it_s_you">Verify it’s you</string>
     <string name="we_have_sent_you_4_digit_verification_code_to_you_email_address">We have sent you 4-digit verification code to you email address.</string>
@@ -496,7 +497,7 @@
     <string name="save">Save</string>
     <string name="change">Change</string>
     <string name="update">Update</string>
-    <string name="no_yet_notification">No yet notification.</string>
+    <string name="no_yet_notification">No notifications available.</string>
     <string name="private_bathroom">Private Bathroom</string>
     <string name="fast_wi_fi">Fast Wi-Fi</string>
     <string name="equipped_kitchen">Equipped Kitchen</string>
@@ -506,10 +507,11 @@
     <string name="parking_space">Parking Space</string>
     <string name="_6_months">6 months</string>
     <string name="_6_may">6 May</string>
-    <string name="no_listing_data">No listing data.</string>
-    <string name="no_roommate_data">No roommate data.</string>
+    <string name="no_listing_data">No listing founds.</string>
+    <string name="no_roommate_data">No home user found.</string>
+    <string name="no_schedule_visit">No scheduled visit found.</string>
     <string name="no_listing_match_data">No listing match data.</string>
-    <string name="no_room_data">No home data.</string>
+    <string name="no_room_data">No room listings found.</string>
     <string name="scheduled_visits">Scheduled Visits</string>
     <string name="type_of_provider">Type Of Provider</string>
     <string name="tenant_subletting">Tenant Subletting</string>
@@ -563,17 +565,18 @@
     <string name="new_messages">%1$s New Messages</string>
     <string name="_0_new_message">0 New Message</string>
     <string name="events_on">Events on %1$s :</string>
+    <string name="events_in">Events in %1$s</string>
     <string name="scheduled_visits_events">Scheduled Visits/ Events</string>
     <string name="no_address_found">📍 No Address found</string>
     <string name="not_found">🛏 Not found</string>
     <string name="not_roomates">👥 0 Roommates</string>
     <string name="no_campus_info">No Campus Info</string>
-    <string name="price11">Price: $%1$s</string>
+    <string name="price11">Price: %1$s%2$s</string>
     <string name="no_title_found">No Title Found</string>
     <string name="no_address_found1">📍 No Address found</string>
     <string name="not_found1">🛏 Not found</string>
-    <string name="yes_smoking1">💀 Yes Smoking</string>
-    <string name="no_smoking1">💀 No Smoking</string>
+    <string name="yes_smoking1">🚭 Yes Smoking</string>
+    <string name="no_smoking1">🚭 No Smoking</string>
     <string name="pets_allowed1">🐶 Pets Allowed</string>
     <string name="no_pets1">🐶 No Pets</string>
     <string name="_0_roommates1">👥 0 Roommates</string>
@@ -583,5 +586,8 @@
     <string name="verification_status">Verification Status</string>
     <string name="verification_host_info"><![CDATA[Verification & Host Info]]></string>
     <string name="enter_profession">Enter profession</string>
+    <string name="enter_age">Enter age</string>
+    <string name="gallery">Gallery</string>
+    <string name="camera">Camera</string>
 
 </resources>

@@ -53,7 +53,9 @@ class HomeSwipeAdapter(
 
         // --- Text setup ---
         val price = item.price?.toString() ?: "0.0"
-        viewHolder.name.text = context.getString(R.string.price11, price)
+        val perMonth = context.getString(R.string.per_month)
+        viewHolder.name.text = context.getString(R.string.price11, "$$price.0", perMonth)
+
         viewHolder.title.text = item.title ?: context.getString(R.string.no_title_found)
         val address = if (!item.address.isNullOrEmpty()) "📍 ${item.address}" else context.getString(
             R.string.no_address_found1
@@ -142,7 +144,7 @@ class HomeSwipeAdapter(
             viewHolder.storiesProgressView.startStories(currentImageIndex)
         }
 
-        viewHolder.ivCardView.setOnClickListener {
+        viewHolder.ivSend.setOnClickListener {
             val intent = Intent(context, SecondMatchActivity::class.java)
             intent.putExtra("profileIdSecond", item._id)
             context.startActivity(intent)
@@ -157,6 +159,7 @@ class HomeSwipeAdapter(
         val name: AppCompatTextView = view.findViewById(R.id.tvName)
         val title: AppCompatTextView = view.findViewById(R.id.tvTitle)
         val personImage: AppCompatImageView = view.findViewById(R.id.ivPerson)
+        val ivSend: AppCompatImageView = view.findViewById(R.id.ivSend)
         val previous: View = view.findViewById(R.id.reverse)
         val next: View = view.findViewById(R.id.skip)
         var storiesProgressView: StoriesProgressView = view.findViewById(R.id.storiesProgressView)

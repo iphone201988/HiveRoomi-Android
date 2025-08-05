@@ -137,6 +137,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         binding.buttonClick = 1
         binding.check = userData
         userTypeLike = userData
+        binding.invalidateAll()
 
         if (userData == 1) {
             filterOpen = 1
@@ -185,7 +186,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                             if (it.professionRole.isNotBlank()) requestData["profession"] =
                                 it.professionRole
                             if (it.campus.isNotBlank()) requestData["campus"] = it.campus
-                            if (it.language.isNotBlank()) requestData["language"] = it.language
+                       //     if (it.language.isNotBlank()) requestData["language"] = it.language
                             //  if (it.location.isNotBlank()) requestData["location"] = it.location
                             if (it.lat != null) requestData["latitude"] = it.lat.toString()
                             if (it.long != null) requestData["longitude"] = it.long.toString()

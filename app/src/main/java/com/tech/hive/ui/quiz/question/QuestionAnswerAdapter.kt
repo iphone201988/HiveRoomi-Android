@@ -39,11 +39,9 @@ class QuestionAnswerAdapter(
              answer.selectedAnswer = isSelected
             if (isSelected) {
                 ivFirstQuiz.setImageResource(R.drawable.selected_circle)
-                etEmail.setBackgroundResource(R.drawable.select_edittext_bg_color)
                 tvAnswer.setBackgroundResource(R.drawable.select_edittext_bg_color)
             } else {
                 ivFirstQuiz.setImageResource(R.drawable.un_selected_circle)
-                etEmail.setBackgroundResource(R.drawable.white_et_bg)
                 tvAnswer.setBackgroundResource(R.drawable.white_et_bg)
             }
 

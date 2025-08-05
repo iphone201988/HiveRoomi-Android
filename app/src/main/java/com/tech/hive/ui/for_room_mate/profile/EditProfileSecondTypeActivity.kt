@@ -35,7 +35,6 @@ import com.tech.hive.data.model.GetUserProfileResponse
 import com.tech.hive.databinding.ActivityEditProfileSecondTypeBinding
 import com.tech.hive.databinding.PersonalDialogItemBinding
 import com.tech.hive.databinding.UnPinLayoutBinding
-import com.tech.hive.ui.for_room_mate.profile.EditProfileActivity
 import com.tech.hive.ui.quiz.QuizActivity
 import dagger.hilt.android.AndroidEntryPoint
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -56,8 +55,8 @@ class EditProfileSecondTypeActivity : BaseActivity<ActivityEditProfileSecondType
     private var multipartImage: MultipartBody.Part? = null
     private var personal: BaseCustomDialog<PersonalDialogItemBinding>? = null
     private lateinit var ageAdapter: SimpleRecyclerViewAdapter<String, UnPinLayoutBinding>
-    private var lat : Double?=null
-    private var long : Double?=null
+    private var lat: Double? = null
+    private var long: Double? = null
 
     override fun getLayoutResource(): Int {
         return R.layout.activity_edit_profile_second_type
@@ -77,6 +76,7 @@ class EditProfileSecondTypeActivity : BaseActivity<ActivityEditProfileSecondType
         binding.bioType = ""
         binding.locationType = ""
         binding.professionOther = ""
+        binding.ageType = ""
         // api call for profile
         viewModel.getUserProfile(Constants.USER_ME)
         // observer
@@ -175,16 +175,16 @@ class EditProfileSecondTypeActivity : BaseActivity<ActivityEditProfileSecondType
             data["campus"] = campus.toRequestBody()
         }
 
-        if (professionRole.contains("Other")){
+        if (professionRole.contains("Other")) {
             data["profession"] = binding.etProfessionOther.text.toString().trim().toRequestBody()
-        }else{
+        } else {
             data["profession"] = professionRole.toRequestBody()
         }
 
-        if(lat!=null){
+        if (lat != null) {
             data["latitude"] = lat.toString().toRequestBody()
         }
-        if(long!=null){
+        if (long != null) {
             data["longitude"] = lat.toString().toRequestBody()
         }
 
@@ -210,7 +210,7 @@ class EditProfileSecondTypeActivity : BaseActivity<ActivityEditProfileSecondType
                     updateProfile()
                 }
                 // camera button click
-                R.id.ivCamera -> {
+                R.id.clCamera -> {
                     if (!BindingUtils.hasPermissions(
                             this@EditProfileSecondTypeActivity, BindingUtils.permissions
                         )
@@ -222,7 +222,7 @@ class EditProfileSecondTypeActivity : BaseActivity<ActivityEditProfileSecondType
                     }
                 }
                 // Gallery button click
-                R.id.ivGallery -> {
+                R.id.clGallery -> {
                     if (!BindingUtils.hasPermissions(
                             this@EditProfileSecondTypeActivity, BindingUtils.permissions
                         )
@@ -235,9 +235,7 @@ class EditProfileSecondTypeActivity : BaseActivity<ActivityEditProfileSecondType
                     }
                 }
 
-                R.id.ivAge, R.id.etAge -> {
-                    personalDialog(1)
-                }
+
 
                 R.id.ivGender, R.id.etGender -> {
                     personalDialog(2)
@@ -253,7 +251,8 @@ class EditProfileSecondTypeActivity : BaseActivity<ActivityEditProfileSecondType
 
                 R.id.tvEditPreferencesDetails, R.id.ivChangeLanguage -> {
                     Constants.quiz = true
-                    val intent = Intent(this@EditProfileSecondTypeActivity, QuizActivity::class.java)
+                    val intent =
+                        Intent(this@EditProfileSecondTypeActivity, QuizActivity::class.java)
                     startActivity(intent)
                 }
             }
@@ -283,11 +282,11 @@ class EditProfileSecondTypeActivity : BaseActivity<ActivityEditProfileSecondType
                     binding.tvCampus.visibility = View.GONE
                     binding.ivCampus.visibility = View.GONE
                 }
-                if (s?.isNotEmpty() == true && s.contains("Other")){
+                if (s?.isNotEmpty() == true && s.contains("Other")) {
                     binding.tvProfessionRoleOther.visibility = View.VISIBLE
                     binding.etProfessionOther.visibility = View.VISIBLE
                     binding.etProfessionOther.clearFocus()
-                }else{
+                } else {
                     binding.tvProfessionRoleOther.visibility = View.GONE
                     binding.etProfessionOther.visibility = View.GONE
                 }
@@ -304,15 +303,23 @@ class EditProfileSecondTypeActivity : BaseActivity<ActivityEditProfileSecondType
                 binding.fullNameType = ""
             }
         }
-
-        // etProfession other
-        binding.etProfessionOther.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
+        binding.etAge.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
             if (hasFocus) {
-                binding.professionOther = "professionRole"
+                binding.ageType = "ageType"
             } else {
-                binding.professionOther = ""
+                binding.ageType = ""
             }
         }
+
+        // etProfession other
+        binding.etProfessionOther.onFocusChangeListener =
+            View.OnFocusChangeListener { _, hasFocus ->
+                if (hasFocus) {
+                    binding.professionOther = "professionRole"
+                } else {
+                    binding.professionOther = ""
+                }
+            }
 
 
         // etShortBio
@@ -333,7 +340,6 @@ class EditProfileSecondTypeActivity : BaseActivity<ActivityEditProfileSecondType
                 binding.locationType = ""
             }
         }
-
 
 
         val locationSearchManager = LocationSearchManager(

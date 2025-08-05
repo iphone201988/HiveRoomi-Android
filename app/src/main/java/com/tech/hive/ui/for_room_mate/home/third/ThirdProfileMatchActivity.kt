@@ -101,7 +101,8 @@ class ThirdProfileMatchActivity : BaseActivity<ActivityThirdProfileMatchBinding>
                         }
 
                     }
-                    R.id.ivClose->{
+
+                    R.id.ivClose -> {
                         ratingDialogItem?.dismiss()
                     }
                 }
@@ -243,12 +244,13 @@ class ThirdProfileMatchActivity : BaseActivity<ActivityThirdProfileMatchBinding>
                                     binding.bean = myDataModel.data
                                     ratingCount = myDataModel.data.totalRatings ?: 0
                                     ratingAverage = myDataModel.data.averageRating ?: 0.0
+                                    binding.tvStarCount.text = ratingAverage.toString()
                                     commonId = myDataModel.data._id.toString()
-                                     if (!myDataModel.data.linkedin.isNullOrEmpty()){
-                                         binding.tvLinkedin.text = myDataModel.data.linkedin
-                                     }else{
-                                         binding.tvLinkedin.text = getString(R.string.not_connected)
-                                     }
+                                    if (!myDataModel.data.linkedin.isNullOrEmpty()) {
+                                        binding.tvLinkedin.text = myDataModel.data.linkedin
+                                    } else {
+                                        binding.tvLinkedin.text = getString(R.string.not_connected)
+                                    }
                                     if (!myDataModel.data.instagram.isNullOrEmpty()) {
                                         binding.tvInstagram.text = myDataModel.data.instagram
                                     } else {
@@ -291,12 +293,15 @@ class ThirdProfileMatchActivity : BaseActivity<ActivityThirdProfileMatchBinding>
                                             "acceptSmokers" -> {
                                                 binding.tvSmoking.text = i.answer
                                             }
+
                                             "guests" -> {
                                                 binding.tvOverNight.text = i.answer
                                             }
+
                                             "cleaning" -> {
                                                 binding.tvClean.text = i.answer
                                             }
+
                                             "lifestyle" -> {
                                                 binding.tvSleep.text = i.answer
                                             }

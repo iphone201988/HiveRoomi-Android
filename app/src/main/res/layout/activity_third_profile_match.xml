@@ -105,7 +105,7 @@
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/clStar"
                     android:layout_width="0dp"
-                    android:layout_height="@dimen/_35sdp"
+                    android:layout_height="@dimen/_28sdp"
                     android:layout_marginEnd="@dimen/_20sdp"
                     android:layout_marginTop="@dimen/_20sdp"
                     android:background="@drawable/btn_bg_color"
@@ -116,7 +116,7 @@
                         android:id="@+id/ivStar"
                         android:layout_width="@dimen/_18sdp"
                         android:layout_height="@dimen/_18sdp"
-                        android:layout_marginStart="@dimen/_15sdp"
+                        android:layout_marginStart="@dimen/_10sdp"
                         android:layout_marginEnd="@dimen/_5sdp"
                         android:src="@drawable/ic_star"
                         app:layout_constraintStart_toStartOf="parent"
@@ -131,7 +131,6 @@
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="@dimen/_15sdp"
                         android:textSize="@dimen/_12ssp"
-                        android:text="@{String.valueOf(bean.totalRatings)}"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />

@@ -669,16 +669,19 @@ class SignupFragment : BaseFragment<FragmentSignupBinding>() {
             showInfoToast("Please enter a valid email")
             return false
         } else if (password.isEmpty()) {
+            showInfoToast("Please enter password")
             return false
         } else if (password.length < 6) {
+            showInfoToast("Password must be at least 6 characters")
             return false
         } else if (!password.any { it.isUpperCase() }) {
+            showInfoToast("Password must contain at least one uppercase letter")
             return false
         } else if (confirmPassword.isEmpty()) {
             showInfoToast("Please enter confirm password")
             return false
         } else if (password != confirmPassword) {
-            showInfoToast("Confirm password does not match password")
+            showInfoToast("Password and Confirm password do not match")
             return false
         }
 

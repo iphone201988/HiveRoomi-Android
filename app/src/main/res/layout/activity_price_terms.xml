@@ -57,7 +57,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_6sdp"
                 android:text="@string/price_amp_terms"
-                android:textSize="@dimen/_20sdp"
+                android:textSize="@dimen/_22ssp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/ivBack" />
         </androidx.constraintlayout.widget.ConstraintLayout>

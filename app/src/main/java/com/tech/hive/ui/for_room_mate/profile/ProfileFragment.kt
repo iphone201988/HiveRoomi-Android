@@ -132,18 +132,19 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
                                             binding.typeCheck = 3
                                         }
                                     }
-                                    if (myDataModel.data.instagram?.isEmpty() == true) {
-                                        binding.tvInstagram.text = "Not Connected"
+                                    val insta = myDataModel.data.instagram
+                                    if (insta.isNullOrEmpty() || insta == "null") {
+                                        binding.tvInstagram.text = getString(R.string.not_connected)
+                                    } else {
+                                        binding.tvInstagram.text = insta
                                     }
-                                    else {
-                                        binding.tvInstagram.text = myDataModel.data.instagram
+                                    val linkedin = myDataModel.data.linkedin
+                                    if (linkedin.isNullOrEmpty() || linkedin == "null") {
+                                        binding.tvLinkedin.text = getString(R.string.not_connected)
+                                    } else {
+                                        binding.tvLinkedin.text = linkedin
                                     }
-                                    if (myDataModel.data.linkedin?.isEmpty() == true) {
-                                        binding.tvLinkedin.text = "Not Connected"
-                                    }
-                                    else {
-                                        binding.tvLinkedin.text = myDataModel.data.linkedin
-                                    }
+
                                     binding.bean = myDataModel.data
                                     userLanguage = myDataModel.data.language ?: ""
                                     for (i in myDataModel.data.quizs!!) {

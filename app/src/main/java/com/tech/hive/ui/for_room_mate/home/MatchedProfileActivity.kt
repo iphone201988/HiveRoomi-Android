@@ -238,6 +238,7 @@ class MatchedProfileActivity : BaseActivity<ActivityMatchedProfileBinding>() {
                                     ratingCount = myDataModel.data.totalRatings ?: 0
                                     ratingAverage = myDataModel.data.averageRating ?: 0.0
                                     commonId = myDataModel.data._id.toString()
+                                    binding.tvStarCount.text = ratingAverage.toString()
                                     if (!myDataModel.data.linkedin.isNullOrEmpty()){
                                         binding.tvLinkedin.text = myDataModel.data.linkedin
                                     }else{

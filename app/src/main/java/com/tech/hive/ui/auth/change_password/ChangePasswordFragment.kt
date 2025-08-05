@@ -4,6 +4,9 @@ import android.graphics.Rect
 import android.util.Log
 import android.util.Patterns
 import android.view.View
+import android.view.WindowManager
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
@@ -36,7 +39,14 @@ class ChangePasswordFragment : BaseFragment<FragmentChangePasswordBinding>() {
         initClick()
         // observer
         initObserver()
-
+        // Make keyboard resize layout
+        requireActivity().window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
+        // Keyboard insets listener to avoid send button getting hidden
+        ViewCompat.setOnApplyWindowInsetsListener(binding.main) { view, insets ->
+            val imeHeight = insets.getInsets(WindowInsetsCompat.Type.ime()).bottom
+            view.setPadding(0, 0, 0, imeHeight)
+            insets
+        }
     }
 
     /*** click event handel ***/

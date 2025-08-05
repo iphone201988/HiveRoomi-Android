@@ -188,11 +188,18 @@ class SetUpNewPasswordFragment : BaseFragment<FragmentSetUpNewPasswordBinding>()
         if (newPassword.isEmpty()) {
             showInfoToast("Please enter new password")
             return false
-        } else if (confirmPassword.isEmpty()) {
+        }else if (newPassword.length < 6) {
+            showInfoToast("Password must be at least 6 characters")
+            return false
+        } else if (!newPassword.any { it.isUpperCase() }) {
+            showInfoToast("Password must contain at least one uppercase letter")
+            return false
+        }
+        else if (confirmPassword.isEmpty()) {
             showInfoToast("Please enter confirm password")
             return false
         } else if (newPassword != confirmPassword) {
-            showInfoToast("Confirm password does not match password")
+            showInfoToast("New password and Confirm password do not match")
             return false
         }
         return true

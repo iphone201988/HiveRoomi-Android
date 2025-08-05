@@ -68,6 +68,7 @@ class PersonalFragment : BaseFragment<FragmentPersonalBinding>() {
         binding.linkType = ""
         binding.linkType1 = ""
         binding.professionOther = ""
+        binding.ageType = ""
         // click
         initClick()
         // observer
@@ -125,7 +126,7 @@ class PersonalFragment : BaseFragment<FragmentPersonalBinding>() {
                     }
                 }
                 // camera button click
-                R.id.ivCamera -> {
+                R.id.clCamera -> {
                     if (!BindingUtils.hasPermissions(
                             requireContext(), BindingUtils.permissions
                         )
@@ -137,7 +138,7 @@ class PersonalFragment : BaseFragment<FragmentPersonalBinding>() {
                     }
                 }
                 // Gallery button click
-                R.id.ivGallery -> {
+                R.id.clGallery -> {
                     if (!BindingUtils.hasPermissions(
                             requireContext(), BindingUtils.permissions
                         )
@@ -150,9 +151,6 @@ class PersonalFragment : BaseFragment<FragmentPersonalBinding>() {
                     }
                 }
 
-                R.id.ivAge, R.id.etAge -> {
-                    personalDialog(1)
-                }
 
                 R.id.ivGender, R.id.etGender -> {
                     personalDialog(2)
@@ -174,6 +172,13 @@ class PersonalFragment : BaseFragment<FragmentPersonalBinding>() {
                 binding.fullNameType = "fullName"
             } else {
                 binding.fullNameType = ""
+            }
+        }
+        binding.etAge.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
+            if (hasFocus) {
+                binding.ageType = "age"
+            } else {
+                binding.ageType = ""
             }
         }
         binding.etShortBio.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->

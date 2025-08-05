@@ -67,7 +67,7 @@
             android:layout_marginTop="@dimen/_15sdp"
             android:text="@string/welcome_to_nour_community"
             android:textColor="@color/heading_color"
-            android:textSize="@dimen/_23ssp"
+            android:textSize="@dimen/_20ssp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/clHeader" />

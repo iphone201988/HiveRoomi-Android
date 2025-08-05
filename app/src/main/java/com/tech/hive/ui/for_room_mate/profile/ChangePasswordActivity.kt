@@ -1,12 +1,14 @@
 package com.tech.hive.ui.for_room_mate.profile
 
-import android.text.Editable
 import android.text.InputType
-import android.text.TextWatcher
+import android.view.View
 import androidx.activity.viewModels
+import com.google.firebase.auth.EmailAuthProvider
+import com.google.firebase.auth.FirebaseAuth
 import com.tech.hive.R
 import com.tech.hive.base.BaseActivity
 import com.tech.hive.base.BaseViewModel
+import com.tech.hive.base.utils.showSuccessToast
 import com.tech.hive.databinding.ActivityChangePasswordBinding
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -26,8 +28,6 @@ class ChangePasswordActivity : BaseActivity<ActivityChangePasswordBinding>() {
         initView()
         // click
         initOnClick()
-        // observer
-        initObserver()
     }
 
     /** handle view **/
@@ -60,58 +60,65 @@ class ChangePasswordActivity : BaseActivity<ActivityChangePasswordBinding>() {
                 }
                 // btnChange Password button click
                 R.id.btnChangePassword -> {
-                    onBackPressedDispatcher.onBackPressed()
+                    if (validate()) {
+                        val user = FirebaseAuth.getInstance().currentUser
+                        val userEmail = sharedPrefManager.getLoginData()?.email
+                        val oldPassword = binding.etPassword.text.toString().trim()
+                        val newPassword = binding.etNewPassword.text.toString().trim()
+                        val credential =
+                            EmailAuthProvider.getCredential(userEmail.toString(), oldPassword)
+
+                        user?.reauthenticate(credential)?.addOnCompleteListener { authTask ->
+                            if (authTask.isSuccessful) {
+                                user.updatePassword(newPassword)
+                                    .addOnCompleteListener { updateTask ->
+                                        if (updateTask.isSuccessful) {
+                                            onBackPressedDispatcher.onBackPressed()
+                                            showSuccessToast("Password changed successfully")
+                                        } else {
+                                            showToast(updateTask.exception?.message.toString())
+
+                                        }
+                                    }
+                            } else {
+                                showToast(authTask.exception?.message.toString())
+                            }
+                        }
+                    }
                 }
             }
 
         }
         // etPassword
-        binding.etPassword.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-
+        binding.etPassword.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
+            if (hasFocus) {
+                binding.passwordType = "passwordType"
+            } else {
+                binding.passwordType = ""
             }
+        }
 
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-
-            }
-
-            override fun afterTextChanged(p0: Editable?) {
-                binding.passwordType = p0.toString()
-            }
-
-        })
 
         // etNewPassword
-        binding.etNewPassword.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-
+        binding.etNewPassword.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
+            if (hasFocus) {
+                binding.newType = "newType"
+            } else {
+                binding.newType = ""
             }
+        }
 
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-
-            }
-
-            override fun afterTextChanged(p0: Editable?) {
-                binding.newType = p0.toString()
-            }
-
-        })
 
         // etConfirmPassword
-        binding.etConfirmPassword.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-
+        binding.etConfirmPassword.onFocusChangeListener =
+            View.OnFocusChangeListener { _, hasFocus ->
+                if (hasFocus) {
+                    binding.confirmType = "confirmType"
+                } else {
+                    binding.confirmType = ""
+                }
             }
 
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-
-            }
-
-            override fun afterTextChanged(p0: Editable?) {
-                binding.confirmType = p0.toString()
-            }
-
-        })
     }
 
     /*** show or confirm hide password **/
@@ -160,12 +167,39 @@ class ChangePasswordActivity : BaseActivity<ActivityChangePasswordBinding>() {
     }
 
 
-    /** handle api response **/
-    private fun initObserver() {
-        viewModel.profileObserver.observe(this) {
+    /*** add validation ***/
+    private fun validate(): Boolean {
+        val password = binding.etPassword.text.toString().trim()
+        val newPassword = binding.etNewPassword.text.toString().trim()
+        val confirmPassword = binding.etConfirmPassword.text.toString().trim()
 
+        if (password.isEmpty()) {
+            showInfoToast("Please enter old password")
+            return false
+        } else if (password.length < 6) {
+            showInfoToast("Password must be at least 6 characters")
+            return false
+        } else if (!password.any { it.isUpperCase() }) {
+            showInfoToast("Password must contain at least one uppercase letter")
+            return false
+        }
+        if (newPassword.isEmpty()) {
+            showInfoToast("Please enter new password")
+            return false
+        } else if (newPassword.length < 6) {
+            showInfoToast("Password must be at least 6 characters")
+            return false
+        } else if (!newPassword.any { it.isUpperCase() }) {
+            showInfoToast("Password must contain at least one uppercase letter")
+            return false
+        } else if (confirmPassword.isEmpty()) {
+            showInfoToast("Please enter confirm password")
+            return false
+        } else if (newPassword != confirmPassword) {
+            showInfoToast("New password and Confirm password do not match")
+            return false
         }
 
+        return true
     }
-
 }

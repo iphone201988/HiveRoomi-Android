@@ -32,6 +32,7 @@ class CalenderActivity : BaseActivity<ActivityCalenderBinding>() {
     private lateinit var calendar: Calendar
     private lateinit var calenderAdapter: SimpleRecyclerViewAdapter<VisitData, VisitRvItemBinding>
     private var currentMonth = ""
+    private var currentYearName = ""
     override fun getLayoutResource(): Int {
         return R.layout.activity_calender
     }
@@ -63,10 +64,14 @@ class CalenderActivity : BaseActivity<ActivityCalenderBinding>() {
         val monthFormat = SimpleDateFormat("MMMM", Locale.getDefault())
         val yearFormat = SimpleDateFormat("yyyy", Locale.getDefault())
         val currentMonthName = monthFormat.format(calendar.time)
-        val currentYear = yearFormat.format(calendar.time)
+        var currentYear = yearFormat.format(calendar.time)
         currentMonth = currentMonthName
+        currentYearName = currentYear
         binding.tvMonth.text = currentMonthName
         binding.tvYear.text = currentYear
+
+        binding.tvEvents.text =
+            getString(R.string.events_on, currentMonth)
 
         updateStartAndEndOfMonth(calendar)
 
@@ -78,6 +83,7 @@ class CalenderActivity : BaseActivity<ActivityCalenderBinding>() {
                 val monthName = monthFormat.format(calendar.time)
                 val year = yearFormat.format(calendar.time)
                 currentMonth = currentMonthName
+                currentYearName = year
                 binding.tvMonth.text = monthName
                 binding.tvYear.text = year
                 updateStartAndEndOfMonth(calendar)
@@ -92,6 +98,7 @@ class CalenderActivity : BaseActivity<ActivityCalenderBinding>() {
                 val monthName = monthFormat.format(calendar.time)
                 val year = yearFormat.format(calendar.time)
                 currentMonth = currentMonthName
+                currentYearName = year
                 binding.tvMonth.text = monthName
                 binding.tvYear.text = year
                 updateStartAndEndOfMonth(calendar)
@@ -137,11 +144,13 @@ class CalenderActivity : BaseActivity<ActivityCalenderBinding>() {
                                 if (myDataModel != null) {
                                     calenderAdapter.list = myDataModel.data
                                     if (calenderAdapter.list.isNotEmpty()) {
-                                        binding.tvEvents.visibility = View.VISIBLE
-                                        binding.tvEvents.text =
-                                            getString(R.string.events_on, currentMonth)
+                                        binding.tvEvents.text = getString(R.string.events_on, currentMonth)
+                                        binding.tvEmpty.visibility = View.GONE
                                     } else {
-                                        binding.tvEvents.visibility = View.GONE
+                                        binding.tvEvents.text = getString(R.string.events_in,
+                                            "$currentMonth $currentYearName"
+                                        )
+                                        binding.tvEmpty.visibility = View.VISIBLE
                                     }
                                 }
                             } catch (e: Exception) {

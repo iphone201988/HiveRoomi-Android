@@ -7,7 +7,10 @@ import android.text.TextWatcher
 import android.util.Log
 import android.view.KeyEvent
 import android.view.View
+import android.view.WindowManager
 import androidx.appcompat.widget.AppCompatEditText
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.tech.hive.R
@@ -47,17 +50,28 @@ class VerifyAccountFragment : BaseFragment<FragmentVerifyAccountBinding>() {
         userEmail = arguments?.getString("userEmail")
         // start timer
         startOtpTimer()
+        // Make keyboard resize layout
+        requireActivity().window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
+        // Keyboard insets listener to avoid send button getting hidden
+        ViewCompat.setOnApplyWindowInsetsListener(binding.main) { view, insets ->
+            val imeHeight = insets.getInsets(WindowInsetsCompat.Type.ime()).bottom
+            view.setPadding(0, 0, 0, imeHeight)
+            insets
+        }
 
         if (userEmail.isNullOrEmpty()) {
             val userData = sharedPrefManager.getLoginData()
-            binding.tvChoose.text = getString(R.string.please_enter_the_otp_below_that_we_have_sent_to, userData)
+            binding.tvChoose.text =
+                getString(R.string.please_enter_the_otp_below_that_we_have_sent_to, userData?.email)
             val data = HashMap<String, Any>()
             data["email"] = userData?.email.toString()
             data["type"] = 2
             viewModel.resendOtpApi(Constants.userLanguage, data, Constants.RESEND_OTP)
         } else {
-            binding.tvChoose.text = getString(R.string.please_enter_the_otp_below_that_we_have_sent_to, userEmail)
+            binding.tvChoose.text =
+                getString(R.string.please_enter_the_otp_below_that_we_have_sent_to, userEmail)
         }
+
     }
 
     /*** click event handel ***/
@@ -178,6 +192,10 @@ class VerifyAccountFragment : BaseFragment<FragmentVerifyAccountBinding>() {
                                     BindingUtils.parseJson(it.data.toString())
                                 if (myDataModel != null) {
                                     if (myDataModel.data != null) {
+                                        binding.otpET1.setText("")
+                                        binding.otpET2.setText("")
+                                        binding.otpET3.setText("")
+                                        binding.otpET4.setText("")
                                         startOtpTimer()
                                     }
 

@@ -47,7 +47,7 @@
                 android:layout_marginTop="12dp"
                 android:gravity="start"
                 android:text="@string/apartment_features"
-                android:textSize="@dimen/_20sdp"
+                android:textSize="@dimen/_20ssp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"

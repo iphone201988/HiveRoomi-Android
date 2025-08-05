@@ -43,8 +43,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_20sdp"
-                android:visibility="invisible"
                 android:text="@string/profile"
+                android:visibility="invisible"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -52,9 +52,9 @@
                 android:id="@+id/ivSettings"
                 android:layout_width="@dimen/_18sdp"
                 android:layout_height="@dimen/_18sdp"
-                android:visibility="invisible"
                 android:onClick="@{v->vm.onClick(v)}"
                 android:src="@drawable/ic_settings"
+                android:visibility="invisible"
                 app:layout_constraintBottom_toBottomOf="@id/tvTitle"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/tvTitle" />
@@ -63,10 +63,10 @@
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/ivPerson"
+            setImageFromUrl="@{bean.profileImage}"
             android:layout_width="@dimen/_80sdp"
             android:layout_height="@dimen/_80sdp"
             android:layout_marginTop="-50dp"
-            setImageFromUrl="@{bean.profileImage}"
             android:scaleType="centerCrop"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -79,8 +79,8 @@
             android:layout_height="@dimen/_18sdp"
             android:layout_marginTop="@dimen/_5sdp"
             android:layout_marginEnd="@dimen/_3sdp"
-            android:visibility="invisible"
             android:src="@drawable/ic_check_mark"
+            android:visibility="invisible"
             app:layout_constraintEnd_toStartOf="@id/tvPersonName"
             app:layout_constraintTop_toBottomOf="@id/ivPerson" />
 
@@ -130,6 +130,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="end"
                     android:text="@{bean.name}"
+                    android:textColor="@color/black_24"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@id/tvNameTitle"
                     app:layout_constraintTop_toTopOf="@id/tvNameTitle" />
@@ -152,6 +153,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="end"
                     android:text="@{bean.ageRange}"
+                    android:textColor="@color/black_24"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@id/tvAgeTitle"
                     app:layout_constraintTop_toTopOf="@id/tvAgeTitle" />
@@ -174,6 +176,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="end"
                     android:text="@{bean.gender}"
+                    android:textColor="@color/black_24"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@id/tvGenderTitle"
                     app:layout_constraintTop_toTopOf="@id/tvGenderTitle" />
@@ -196,6 +199,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="end"
                     android:text="@{bean.profession}"
+                    android:textColor="@color/black_24"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@id/tvProfessionTitle"
                     app:layout_constraintTop_toTopOf="@id/tvProfessionTitle" />
@@ -218,6 +222,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="end"
                     android:text="@{bean.address}"
+                    android:textColor="@color/black_24"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@id/tvLocationTitle"
                     app:layout_constraintTop_toTopOf="@id/tvLocationTitle" />
@@ -229,6 +234,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_8sdp"
                     android:text="@string/bio"
+                    android:textColor="@color/black_24"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tvLocation" />
 
@@ -239,6 +245,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_5sdp"
                     android:text="@{bean.bio}"
+                    android:textColor="@color/black_24"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tvBioTitle" />
@@ -285,6 +292,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="end"
                         android:text="Studio"
+                        android:textColor="@color/black_24"
                         android:visibility="@{typeCheck==2?View.VISIBLE:View.GONE}"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@id/tvRoomTitle"
@@ -308,6 +316,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="end"
                         android:text="$700"
+                        android:textColor="@color/black_24"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@id/tvBudgetTitle"
                         app:layout_constraintTop_toTopOf="@id/tvBudgetTitle" />
@@ -330,6 +339,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="end"
                         android:text="Allowed"
+                        android:textColor="@color/black_24"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@id/tvPetsTitle"
                         app:layout_constraintTop_toTopOf="@id/tvPetsTitle" />
@@ -352,6 +362,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="end"
                         android:text="No"
+                        android:textColor="@color/black_24"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@id/tvSmokingTitle"
                         app:layout_constraintTop_toTopOf="@id/tvSmokingTitle" />
@@ -374,6 +385,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="end"
                         android:text="Occassionally"
+                        android:textColor="@color/black_24"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@id/tvOverNightTitle"
                         app:layout_constraintTop_toTopOf="@id/tvOverNightTitle" />
@@ -396,6 +408,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="end"
                         android:text="4/5"
+                        android:textColor="@color/black_24"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@id/tvCleanTitle"
                         app:layout_constraintTop_toTopOf="@id/tvCleanTitle" />
@@ -418,6 +431,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="end"
                         android:text="11 PM"
+                        android:textColor="@color/black_24"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@id/tvSleepTitle"
                         app:layout_constraintTop_toTopOf="@id/tvSleepTitle" />
@@ -441,6 +455,7 @@
                         style="@style/TextView.Medium2"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+
                         android:layout_marginTop="@dimen/_8sdp"
                         android:text="@string/room_type"
                         android:visibility="@{typeCheck==12?View.VISIBLE:View.GONE}"
@@ -455,6 +470,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="end"
                         android:text="Studio"
+                        android:textColor="@color/black_24"
                         android:visibility="@{typeCheck==12?View.VISIBLE:View.GONE}"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@id/tvRoomTitle2"
@@ -479,6 +495,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="end"
                         android:text="Never"
+                        android:textColor="@color/black_24"
                         android:visibility="@{typeCheck==12?View.VISIBLE:View.GONE}"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@id/tvSmokingTitle2"
@@ -503,6 +520,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="end"
                         android:text="Yes"
+                        android:textColor="@color/black_24"
                         android:visibility="@{typeCheck==12?View.VISIBLE:View.GONE}"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@id/tvPetsTitle2"
@@ -527,6 +545,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="end"
                         android:text="Workers"
+                        android:textColor="@color/black_24"
                         android:visibility="@{typeCheck==12?View.VISIBLE:View.GONE}"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@id/tvHouseMateTitle2"
@@ -551,6 +570,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="end"
                         android:text="4/5"
+                        android:textColor="@color/black_24"
                         android:visibility="@{typeCheck==12?View.VISIBLE:View.GONE}"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@id/tvCleanTitle2"
@@ -597,6 +617,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="end"
                         android:text="Berlin, Kreuzberg"
+                        android:textColor="@color/black_24"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@id/tvAreaTitle"
                         app:layout_constraintTop_toTopOf="@id/tvAreaTitle" />
@@ -619,6 +640,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="end"
                         android:text="$600 – 900/month"
+                        android:textColor="@color/black_24"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@id/tvBudgetTitle2"
                         app:layout_constraintTop_toTopOf="@id/tvBudgetTitle2" />
@@ -641,6 +663,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="end"
                         android:text="ASAP"
+                        android:textColor="@color/black_24"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@id/tvMoveTitle"
                         app:layout_constraintTop_toTopOf="@id/tvMoveTitle" />
@@ -663,6 +686,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="end"
                         android:text="Yes"
+                        android:textColor="@color/black_24"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@id/tvWifiTitle"
                         app:layout_constraintTop_toTopOf="@id/tvWifiTitle" />
@@ -685,6 +709,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="end"
                         android:text="Yes"
+                        android:textColor="@color/black_24"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@id/tvElevatorTitle"
                         app:layout_constraintTop_toTopOf="@id/tvElevatorTitle" />
@@ -707,6 +732,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="end"
                         android:text="Fully Furnished"
+                        android:textColor="@color/black_24"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@id/tvFurnishedTitle"
                         app:layout_constraintTop_toTopOf="@id/tvFurnishedTitle" />
@@ -729,6 +755,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="end"
                         android:text="Independent"
+                        android:textColor="@color/black_24"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@id/tvHeatingTitle"
                         app:layout_constraintTop_toTopOf="@id/tvHeatingTitle" />
@@ -751,6 +778,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="end"
                         android:text="Yes"
+                        android:textColor="@color/black_24"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@id/tvSearchPetsTitle"
                         app:layout_constraintTop_toTopOf="@id/tvSearchPetsTitle" />
@@ -786,6 +814,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:gravity="end"
+                    android:textColor="@color/black_24"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@id/tvInstagramAcc"
                     app:layout_constraintTop_toTopOf="@id/tvInstagramAcc" />
@@ -807,6 +836,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:gravity="end"
+                    android:textColor="@color/black_24"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@id/tvLinkedinAcc"
                     app:layout_constraintTop_toTopOf="@id/tvLinkedinAcc" />
@@ -830,6 +860,7 @@
                     android:layout_height="@dimen/_38sdp"
                     android:layout_marginTop="@dimen/_8sdp"
                     android:background="@drawable/unselect_edit_text_bg_color"
+                    android:backgroundTint="@color/et_corner_color"
                     android:gravity="center_vertical"
                     android:onClick="@{v->vm.onClick(v)}"
                     android:paddingStart="@dimen/_15sdp"
@@ -859,6 +890,7 @@
                     android:layout_height="@dimen/_38sdp"
                     android:layout_marginTop="@dimen/_8sdp"
                     android:background="@drawable/unselect_edit_text_bg_color"
+                    android:backgroundTint="@color/et_corner_color"
                     android:gravity="center_vertical"
                     android:onClick="@{v->vm.onClick(v)}"
                     android:paddingStart="@dimen/_15sdp"
@@ -882,8 +914,6 @@
                     app:layout_constraintTop_toTopOf="@+id/tvChangePassword" />
 
 
-
-
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tvChangeRole"
                     style="@style/TextView.Medium2"
@@ -891,6 +921,7 @@
                     android:layout_height="@dimen/_38sdp"
                     android:layout_marginTop="@dimen/_8sdp"
                     android:background="@drawable/unselect_edit_text_bg_color"
+                    android:backgroundTint="@color/et_corner_color"
                     android:gravity="center_vertical"
                     android:onClick="@{v->vm.onClick(v)}"
                     android:paddingStart="@dimen/_15sdp"
@@ -914,7 +945,6 @@
                     app:layout_constraintTop_toTopOf="@+id/tvChangeRole" />
 
 
-
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tvChangeLanguage"
                     style="@style/TextView.Medium2"
@@ -922,6 +952,7 @@
                     android:layout_height="@dimen/_38sdp"
                     android:layout_marginTop="@dimen/_8sdp"
                     android:background="@drawable/unselect_edit_text_bg_color"
+                    android:backgroundTint="@color/et_corner_color"
                     android:gravity="center_vertical"
                     android:onClick="@{v->vm.onClick(v)}"
                     android:paddingStart="@dimen/_15sdp"
@@ -949,9 +980,9 @@
                     style="@style/TextView.Medium2"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_38sdp"
-                    android:visibility="@{typeCheck==3?View.VISIBLE:View.GONE}"
                     android:layout_marginTop="@dimen/_8sdp"
                     android:background="@drawable/unselect_edit_text_bg_color"
+                    android:backgroundTint="@color/et_corner_color"
                     android:gravity="center_vertical"
                     android:onClick="@{v->vm.onClick(v)}"
                     android:paddingStart="@dimen/_15sdp"
@@ -967,7 +998,6 @@
                     android:layout_height="@dimen/_27sdp"
                     android:layout_marginEnd="@dimen/_14sdp"
                     android:onClick="@{v->vm.onClick(v)}"
-                    android:visibility="@{typeCheck==3?View.VISIBLE:View.GONE}"
                     android:padding="@dimen/_5sdp"
                     android:rotation="270"
                     android:src="@drawable/arrow_up"

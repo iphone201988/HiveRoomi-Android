@@ -24,7 +24,7 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="select_the_language">Seleziona la lingua</string>
     <string name="choose_your_preferred_language_to_continue">Scegli la tua lingua preferita per continuare</string>
-    <string name="english">Inglese</string>
+    <string name="english">English</string>
     <string name="italian">Italiano</string>
     <string name="next">Avanti</string>
     <string name="welcome">Benvenuto!</string>
@@ -48,7 +48,7 @@
     <string name="already_have_an_account">Hai già un account?</string>
     <string name="log_inw">Accedi</string>
     <string name="enter_your_name">Inserisci nome</string>
-    <string name="enter_confirm_password">Inserisci conferma password</string>
+    <string name="enter_confirm_password">Inserisci conferma Password</string>
     <string name="enter_your_password">Inserisci password</string>
     <string name="verify_its_you">Verificalo sei tu</string>
     <string name="please_enter_the_otp_below_that_we_have_sent_to_your_email">Inserisci l’OTP che abbiamo inviato alla tua email.</string>
@@ -71,6 +71,7 @@
     <string name="add_link">Aggiungi link</string>
     <string name="your_account_has_been_successfully_created">Il tuo account è stato creato con successo</string>
     <string name="account_created_nsuccessfully">Account creato\ncon successo</string>
+    <string name="set_up_password">Imposta la tua nuova\npassword</string>
     <string name="change_password">Cambia password</string>
     <string name="enter_your_email_or_phone_number_here">Inserisci il tuo email o numero di telefono qui</string>
     <string name="verify_it_s_you">Verifica che sei tu</string>
@@ -483,7 +484,7 @@
     <string name="save">Salva</string>
     <string name="change">Cambia</string>
     <string name="update">Aggiorna</string>
-    <string name="no_yet_notification">Nessuna notifica ancora.</string>
+    <string name="no_yet_notification">Nessuna notifica disponibile.</string>
     <string name="private_bathroom">Bagno privato</string>
     <string name="fast_wi_fi">Wi-Fi veloce</string>
     <string name="equipped_kitchen">Cucina attrezzata</string>
@@ -493,10 +494,10 @@
     <string name="parking_space">Posto auto</string>
     <string name="_6_months">6 mesi</string>
     <string name="_6_may">6 Maggio</string>
-    <string name="no_listing_data">Nessun dato dell\'annuncio.</string>
-    <string name="no_roommate_data">Nessun dato del coinquilino.</string>
+    <string name="no_listing_data">Nessun annuncio trovato.</string>
+    <string name="no_roommate_data">Nessun utente domestico trovato.</string>
     <string name="no_listing_match_data">Nessuna corrispondenza per l\'annuncio.</string>
-    <string name="no_room_data">Nessun dato della casa.</string>
+    <string name="no_room_data">Nessun annuncio di stanza trovato.</string>
     <string name="scheduled_visits">Visite programmate</string>
     <string name="type_of_provider">Tipo di fornitore</string>
     <string name="tenant_subletting">Inquilino subaffittuario</string>
@@ -551,24 +552,23 @@
     <string name="_0_new_message">0 nuovi messaggi</string>
     <string name="online">In linea</string>
     <string name="events_on">Eventi del %1$s :</string>
+    <string name="events_in">Eventi a %1$s :</string>
     <string name="offline">Disconnesso</string>
     <string name="scheduled_visits_events">Visite / Eventi Programmati</string>
     <string name="no_address_found">📍 Nessun indirizzo trovato</string>
     <string name="not_found">🛏 Non trovato</string>
     <string name="not_roomates">👥 0 Coinquilini</string>
 
-
     <string name="no_campus_info">Nessuna informazione sul campus</string>
-    <string name="price11">Prezzo: $%1$s</string>
+    <string name="price11">Prezzo: %1$s%2$s</string>
     <string name="no_title_found">Nessun titolo trovato</string>
     <string name="no_address_found1">📍 Nessun indirizzo trovato</string>
     <string name="not_found1">🛏 Non trovato</string>
-    <string name="yes_smoking1">💀 Fumo consentito</string>
-    <string name="no_smoking1">💀 Vietato fumare</string>
+    <string name="yes_smoking1">🚭 Fumo consentito</string>
+    <string name="no_smoking1">🚭 Vietato fumare</string>
     <string name="pets_allowed1">🐶 Animali ammessi</string>
     <string name="no_pets1">🐶 Animali non ammessi</string>
     <string name="_0_roommates1">👥 0 Coinquilini</string>
-
 
     <string name="host">Host</string>
     <string name="actions">Azioni</string>
@@ -579,5 +579,12 @@
     <string name="are_you_sure_to_delete_listing">Sei sicuro di voler eliminare\nquesto annuncio?</string>
     <string name="delete_listing">Elimina annuncio</string>
     <string name="enter_profession">Inserisci la professione</string>
+    <string name="enter_age">Inserisci l\'età</string>
+    <string name="no_schedule_visit">Nessuna visita programmata trovata.</string>
+
+
+    <string name="gallery">Galleria</string>
+    <string name="camera">Fotocamera</string>
+
 
 </resources>

@@ -269,7 +269,8 @@ object BindingUtils {
     @JvmStatic
     fun priceFormatted(text: AppCompatTextView, price: Int?) {
         price?.let {
-            text.text = "${text.context.getString(R.string.price)}:$ ${price}"
+            val perMonth = text.context.getString(R.string.per_month)
+            text.text = text.context.getString(R.string.price11, "$$price.0", perMonth)
         }
     }
 

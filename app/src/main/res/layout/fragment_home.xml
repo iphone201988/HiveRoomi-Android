@@ -35,7 +35,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/clHeader"
             android:layout_width="0dp"
-            android:layout_height="@dimen/_90sdp"
+            android:layout_height="@dimen/_95sdp"
             android:background="@drawable/top_bg"
             android:paddingHorizontal="@dimen/_12sdp"
             app:layout_constraintEnd_toEndOf="parent"

@@ -123,6 +123,7 @@ class EditProfileActivity : BaseActivity<ActivityEditProfileBinding>() {
         binding.bioType = ""
         binding.professionOther = ""
         binding.locationName = ""
+        binding.ageType = ""
 
     }
 
@@ -181,7 +182,7 @@ class EditProfileActivity : BaseActivity<ActivityEditProfileBinding>() {
                     updateProfile()
                 }
                 // camera button click
-                R.id.ivCamera -> {
+                R.id.clCamera -> {
                     if (!BindingUtils.hasPermissions(
                             this@EditProfileActivity, BindingUtils.permissions
                         )
@@ -193,7 +194,7 @@ class EditProfileActivity : BaseActivity<ActivityEditProfileBinding>() {
                     }
                 }
                 // Gallery button click
-                R.id.ivGallery -> {
+                R.id.clGallery -> {
                     if (!BindingUtils.hasPermissions(
                             this@EditProfileActivity, BindingUtils.permissions
                         )
@@ -206,9 +207,7 @@ class EditProfileActivity : BaseActivity<ActivityEditProfileBinding>() {
                     }
                 }
 
-                R.id.ivAge, R.id.etAge -> {
-                    personalDialog(1)
-                }
+
 
                 R.id.ivGender, R.id.etGender -> {
                     personalDialog(2)
@@ -285,6 +284,13 @@ class EditProfileActivity : BaseActivity<ActivityEditProfileBinding>() {
                 binding.fullNameType = "name"
             } else {
                 binding.fullNameType = ""
+            }
+        }
+        binding.etAge.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
+            if (hasFocus) {
+                binding.ageType = "ageType"
+            } else {
+                binding.ageType = ""
             }
         }
 

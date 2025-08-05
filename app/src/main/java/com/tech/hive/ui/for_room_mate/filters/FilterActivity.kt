@@ -69,14 +69,14 @@ class FilterActivity() : BaseActivity<ActivityFilterBinding>() {
                         val profession = binding.etProfession.text.toString().trim()
                         val campus = binding.etCampus.text.toString().trim()
                         val gender = binding.etGender.text.toString().trim().lowercase()
-                        val language = binding.etLanguage.text.toString().trim()
+                       // val language = binding.etLanguage.text.toString().trim()
                         val location = binding.etLocation.text.toString().trim()
                         val roommate = RoommateModelClass(
                             age = age,
                             professionRole = profession,
                             campus = campus,
                             gender = gender,
-                            language = language,
+                       //     language = language,
                             location = location,
                             lat = lat,
                             long = long

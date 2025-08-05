@@ -8,14 +8,12 @@ import com.tech.hive.R
 import com.tech.hive.base.BaseActivity
 import com.tech.hive.base.BaseViewModel
 import com.tech.hive.base.utils.BindingUtils
-import com.tech.hive.base.utils.Resource
 import com.tech.hive.base.utils.Status
 import com.tech.hive.base.utils.showErrorToast
 import com.tech.hive.data.api.Constants
 import com.tech.hive.data.model.RoleChangeResponse
 import com.tech.hive.databinding.ActivityChangeRoleBinding
 import com.tech.hive.ui.dashboard.DashboardActivity
-import com.tech.hive.ui.dashboard.DashboardActivity.Companion.bottomNavigationItemCountChange
 import dagger.hilt.android.AndroidEntryPoint
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
@@ -100,12 +98,12 @@ class ChangeRoleActivity : BaseActivity<ActivityChangeRoleBinding>() {
                                     sharedPrefManager.saveRole(myDataModel.data.profileRole)
 
                                     val intent = Intent(
-                                        this@ChangeRoleActivity,
-                                        DashboardActivity::class.java
+                                        this@ChangeRoleActivity, DashboardActivity::class.java
                                     )
                                     intent.flags =
                                         Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                                     startActivity(intent)
+                                    finishAffinity()
                                 }
                             } catch (e: Exception) {
                                 Log.e("error", "getHomeApi: $e")
@@ -120,15 +118,15 @@ class ChangeRoleActivity : BaseActivity<ActivityChangeRoleBinding>() {
                                     BindingUtils.parseJson(it.data.toString())
                                 if (myDataModel?.data != null) {
                                     sharedPrefManager.saveRole(myDataModel.data.profileRole)
-                                    if (myDataModel.data.language?.contains("en") == true){
+                                    if (myDataModel.data.language?.contains("en") == true) {
                                         Constants.userLanguage = "en"
                                         setLocale("en")
                                         sharedPrefManager.setSelectType("1")
                                         sharedPrefManager.setLocaleType("en")
-                                    }else if (myDataModel.data.language?.contains("it") == true){
-                                        sharedPrefManager.setSelectType("2")
+                                    } else if (myDataModel.data.language?.contains("it") == true) {
                                         Constants.userLanguage = "it"
                                         setLocale("it")
+                                        sharedPrefManager.setSelectType("2")
                                         sharedPrefManager.setLocaleType("it")
                                     }
                                     val intent = Intent(
@@ -138,6 +136,7 @@ class ChangeRoleActivity : BaseActivity<ActivityChangeRoleBinding>() {
                                     intent.flags =
                                         Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                                     startActivity(intent)
+                                    finishAffinity()
                                 }
 
                             } catch (e: Exception) {
@@ -161,7 +160,6 @@ class ChangeRoleActivity : BaseActivity<ActivityChangeRoleBinding>() {
             }
         }
     }
-
 
 
     private fun setLocale(languageCode: String) {

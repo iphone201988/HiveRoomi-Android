@@ -38,10 +38,10 @@
                 android:id="@+id/ivBack"
                 android:layout_width="@dimen/_28sdp"
                 android:layout_height="@dimen/_28sdp"
-                android:onClick="@{v->vm.onClick(v)}"
-                android:rotation="90"
-                android:padding="@dimen/_5sdp"
                 android:layout_marginStart="-8dp"
+                android:onClick="@{v->vm.onClick(v)}"
+                android:padding="@dimen/_5sdp"
+                android:rotation="90"
                 android:src="@drawable/arrow_up"
                 app:layout_constraintBottom_toBottomOf="@+id/ivPerson"
                 app:layout_constraintStart_toStartOf="parent"
@@ -99,20 +99,36 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvChat"
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/nested"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginHorizontal="@dimen/_2sdp"
-            android:orientation="vertical"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintBottom_toTopOf="@id/clBottom"
+            android:fillViewport="true"
+            android:fitsSystemWindows="true"
+            android:overScrollMode="never"
+            android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@id/ivAdd"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/clHeader"
-            tools:itemCount="4"
-            tools:listitem="@layout/chat_sender_item" />
+            app:layout_constraintTop_toBottomOf="@+id/clHeader">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvChat"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginHorizontal="@dimen/_2sdp"
+                android:clipToPadding="false"
+                android:orientation="vertical"
+                android:paddingBottom="@dimen/_12sdp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintBottom_toTopOf="@id/ivAdd"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/clHeader"
+                tools:itemCount="4"
+                tools:listitem="@layout/chat_sender_item" />
+
+        </androidx.core.widget.NestedScrollView>
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/ivCategory"

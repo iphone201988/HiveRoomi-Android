@@ -69,7 +69,7 @@ data class RoommateModelClass(
     var professionRole: String,
     var campus: String,
     var gender: String,
-    var language: String,
+ //   var language: String,
     var location: String,
     var lat: Double?,
     var long: Double?

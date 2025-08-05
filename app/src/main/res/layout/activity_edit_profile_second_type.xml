@@ -22,6 +22,10 @@
             type="String" />
 
         <variable
+            name="ageType"
+            type="String" />
+
+        <variable
             name="locationType"
             type="String" />
 
@@ -87,29 +91,90 @@
             app:layout_constraintTop_toBottomOf="@+id/clHeader"
             app:shapeAppearance="@style/ShapeAppearanceOverlay.App.CornerSize10Percent" />
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/ivCamera"
-            android:layout_width="@dimen/_65sdp"
-            android:layout_height="@dimen/_22sdp"
-            android:layout_marginTop="@dimen/_22sdp"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/clCamera"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="@{v->vm.onClick(v)}"
+            android:paddingVertical="@dimen/_3sdp"
+            android:paddingHorizontal="@dimen/_10sdp"
             android:layout_marginEnd="@dimen/_6sdp"
-            android:onClick="@{v->vm.onClick(v)}"
-            android:src="@drawable/iv_camera"
-            app:layout_constraintBottom_toBottomOf="@+id/ivPerson"
-            app:layout_constraintEnd_toStartOf="@+id/ivGallery"
-            app:layout_constraintStart_toStartOf="@+id/ivPerson" />
+            android:layout_marginTop="-20dp"
+            android:background="@drawable/unselect_edit_text_bg_color"
+            android:backgroundTint="@color/black_24"
+            app:layout_constraintTop_toBottomOf="@+id/ivPerson"
+            app:layout_constraintEnd_toStartOf="@+id/clGallery"
+            app:layout_constraintStart_toStartOf="@+id/ivPerson">
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/ivGallery"
-            android:layout_width="@dimen/_65sdp"
-            android:layout_height="@dimen/_22sdp"
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/ivCamera"
+                android:layout_width="@dimen/_13sdp"
+                android:layout_height="@dimen/_13sdp"
+                android:tint="@color/end_color"
+                android:src="@drawable/ic_camera"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvCamera"
+                style="@style/TextView.Regular"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:text="@string/camera"
+                android:textColor="@color/end_color"
+                android:textSize="@dimen/_12ssp"
+                app:layout_constraintBottom_toBottomOf="@+id/ivCamera"
+                app:layout_constraintStart_toEndOf="@+id/ivCamera"
+                app:layout_constraintTop_toTopOf="@+id/ivCamera" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/clGallery"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingVertical="@dimen/_3sdp"
             android:layout_marginStart="@dimen/_6sdp"
-            android:layout_marginTop="@dimen/_22sdp"
+            android:paddingHorizontal="@dimen/_10sdp"
+            android:background="@drawable/unselect_edit_text_bg_color"
+            android:backgroundTint="@color/black_24"
             android:onClick="@{v->vm.onClick(v)}"
-            android:src="@drawable/iv_gallery"
-            app:layout_constraintBottom_toBottomOf="@+id/ivCamera"
+            app:layout_constraintTop_toTopOf="@+id/clCamera"
+            app:layout_constraintBottom_toBottomOf="@+id/clCamera"
             app:layout_constraintEnd_toEndOf="@+id/ivPerson"
-            app:layout_constraintStart_toEndOf="@+id/ivCamera" />
+            app:layout_constraintStart_toEndOf="@+id/clCamera">
+
+
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/ivGallery"
+                android:layout_width="@dimen/_13sdp"
+                android:layout_height="@dimen/_13sdp"
+                android:tint="@color/white"
+                android:src="@drawable/ic_gallery"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvGallery"
+                style="@style/TextView.Regular"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:text="@string/gallery"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_12ssp"
+                app:layout_constraintBottom_toBottomOf="@+id/ivGallery"
+                app:layout_constraintStart_toEndOf="@+id/ivGallery"
+                app:layout_constraintTop_toTopOf="@+id/ivGallery" />
+
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
@@ -175,9 +240,10 @@
                     style="@style/EditText"
                     android:layout_marginHorizontal="@dimen/_12sdp"
                     android:layout_marginTop="@dimen/_6sdp"
-                    android:background="@drawable/unselect_edit_text_bg_color"
-                    android:focusable="false"
-                    android:hint="@string/_18_22"
+                    android:background="@{ageType.isEmpty()?@drawable/unselect_edit_text_bg_color:@drawable/select_edittext_bg_color}"
+                    android:hint="@string/enter_age"
+                    android:inputType="number"
+                    android:maxLength="3"
                     android:onClick="@{v->vm.onClick(v)}"
                     android:paddingStart="@dimen/_15sdp"
                     android:paddingEnd="@dimen/_16sdp"
@@ -194,6 +260,7 @@
                     android:onClick="@{v->vm.onClick(v)}"
                     android:padding="@dimen/_5sdp"
                     android:src="@drawable/arrow_up"
+                    android:visibility="gone"
                     app:layout_constraintBottom_toBottomOf="@+id/etAge"
                     app:layout_constraintEnd_toEndOf="@+id/etAge"
                     app:layout_constraintTop_toTopOf="@+id/etAge" />
@@ -217,8 +284,8 @@
                     android:background="@drawable/unselect_edit_text_bg_color"
                     android:focusable="false"
                     android:hint="@string/male"
-                    android:paddingStart="@dimen/_15sdp"
                     android:onClick="@{v->vm.onClick(v)}"
+                    android:paddingStart="@dimen/_15sdp"
                     android:paddingEnd="@dimen/_40sdp"
                     android:text="@{bean.gender}"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -258,8 +325,8 @@
                     android:background="@drawable/unselect_edit_text_bg_color"
                     android:focusable="false"
                     android:hint="@string/student"
-                    android:paddingStart="@dimen/_15sdp"
                     android:onClick="@{v->vm.onClick(v)}"
+                    android:paddingStart="@dimen/_15sdp"
                     android:paddingEnd="@dimen/_40sdp"
                     android:text="@{bean.profession}"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -284,9 +351,9 @@
                     style="@style/TextView.Regular"
                     android:layout_marginTop="@dimen/_15sdp"
                     android:text="@string/profession"
-                    android:visibility="gone"
                     android:textColor="@color/black_24"
                     android:textSize="@dimen/_12ssp"
+                    android:visibility="gone"
                     app:layout_constraintStart_toStartOf="@+id/etGender"
                     app:layout_constraintTop_toBottomOf="@+id/etProfessionRole" />
 
@@ -295,14 +362,14 @@
                     style="@style/EditText"
                     android:layout_marginHorizontal="@dimen/_12sdp"
                     android:layout_marginTop="@dimen/_6sdp"
-                    android:visibility="gone"
                     android:background="@{professionOther.isEmpty()?@drawable/unselect_edit_text_bg_color:@drawable/select_edittext_bg_color}"
                     android:hint="@string/enter_profession"
                     android:imeOptions="actionNext"
-                    android:onClick="@{v->vm.onClick(v)}"
                     android:nextFocusForward="@id/etShortBio"
+                    android:onClick="@{v->vm.onClick(v)}"
                     android:paddingStart="@dimen/_15sdp"
                     android:paddingEnd="@dimen/_40sdp"
+                    android:visibility="gone"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/tvProfessionRoleOther" />
@@ -314,8 +381,8 @@
                     android:layout_marginTop="@dimen/_15sdp"
                     android:text="@string/campus"
                     android:textColor="@color/black_24"
-                    android:visibility="gone"
                     android:textSize="@dimen/_12ssp"
+                    android:visibility="gone"
                     app:layout_constraintStart_toStartOf="@+id/etGender"
                     app:layout_constraintTop_toBottomOf="@+id/etProfessionOther" />
 
@@ -323,16 +390,16 @@
                     android:id="@+id/etCampus"
                     style="@style/EditText"
                     android:layout_marginHorizontal="@dimen/_12sdp"
-                    android:text="@{bean.campus}"
                     android:layout_marginTop="@dimen/_6sdp"
                     android:background="@drawable/unselect_edit_text_bg_color"
+                    android:focusable="false"
                     android:hint="Univercity of Milan (La Statale)"
                     android:imeOptions="actionDone"
                     android:onClick="@{v->vm.onClick(v)}"
-                    android:focusable="false"
                     android:paddingStart="@dimen/_10sdp"
-                    android:visibility="gone"
                     android:paddingEnd="@dimen/_40sdp"
+                    android:text="@{bean.campus}"
+                    android:visibility="gone"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/tvCampus" />
@@ -342,10 +409,10 @@
                     android:layout_width="@dimen/_27sdp"
                     android:layout_height="@dimen/_27sdp"
                     android:layout_marginEnd="@dimen/_14sdp"
-                    android:visibility="gone"
                     android:onClick="@{v->vm.onClick(v)}"
                     android:padding="@dimen/_5sdp"
                     android:src="@drawable/arrow_up"
+                    android:visibility="gone"
                     app:layout_constraintBottom_toBottomOf="@+id/etCampus"
                     app:layout_constraintEnd_toEndOf="@+id/etCampus"
                     app:layout_constraintTop_toTopOf="@+id/etCampus" />
@@ -440,6 +507,7 @@
                     android:layout_marginTop="@dimen/_15sdp"
                     android:background="@drawable/unselect_edit_text_bg_color"
                     android:gravity="center_vertical"
+                    android:backgroundTint="@color/et_corner_color"
                     android:onClick="@{v->vm.onClick(v)}"
                     android:paddingStart="@dimen/_15sdp"
                     android:paddingEnd="@dimen/_40sdp"

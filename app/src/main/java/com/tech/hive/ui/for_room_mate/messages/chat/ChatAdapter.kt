@@ -79,19 +79,24 @@ class ChatAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     }
 
 
+    fun addToList(list: List<GetUserData?>?) {
+        val newDataList: List<GetUserData?>? = list
+        if (newDataList != null) {
+            listItem.addAll(0, newDataList as Collection<out GetUserData>)
+        }
+        notifyDataSetChanged()
+    }
+
+
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val item = listItem[position]
 
         if (Constants.userId == item.sender?._id) {
             (holder as ConversationRightViewHolder).binding.apply {
-                tvSend.text = item.content
-                Glide.with(ivImageSender.context).load(Constants.BASE_URL_IMAGE + item.content)
-                    .placeholder(R.drawable.progress_animation_small)
-                    .diskCacheStrategy(DiskCacheStrategy.ALL).into(ivImageSender)
-
                 val isText = item.contentType?.contains("text") == true
                 val image = item.contentType?.contains("file") == true
                 val document = item.contentType?.contains("document") == true
+                tvSend.text = item.content
 
                 if (image) {
                     ivImageSender.visibility = View.VISIBLE
@@ -100,6 +105,9 @@ class ChatAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                     ivPdf1.visibility = View.GONE
                     clRight.visibility = View.GONE
                     ivPdf.visibility = View.GONE
+                    Glide.with(ivImageSender.context).load(Constants.BASE_URL_IMAGE + item.content)
+                        .placeholder(R.drawable.progress_animation_small)
+                        .diskCacheStrategy(DiskCacheStrategy.ALL).into(ivImageSender)
                 }
 
                 if (isText) {
@@ -109,6 +117,8 @@ class ChatAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                     tvSend.visibility = View.VISIBLE
                     clRight.visibility = View.VISIBLE
                     ivHuk.visibility = View.VISIBLE
+
+
                 }
 
                 if (document) {
@@ -137,19 +147,11 @@ class ChatAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             }
         } else {
             (holder as ConversationLeftViewHolder).binding.apply {
-                tvReceiver.text = item.content
-                Glide.with(ivImageReceiver.context).load(Constants.BASE_URL_IMAGE + item.content)
-                    .placeholder(R.drawable.progress_animation_small)
-                    .diskCacheStrategy(DiskCacheStrategy.ALL).into(ivImageReceiver)
+
                 val isText = item.contentType?.contains("text") == true
                 val image = item.contentType?.contains("file") == true
                 val document = item.contentType?.contains("document") == true
-
-                ivImageReceiver.visibility = if (isText) View.GONE else View.VISIBLE
-                tvReceiver.visibility = if (isText) View.VISIBLE else View.GONE
-                ivHuk.visibility = if (isText) View.VISIBLE else View.GONE
-
-
+                tvReceiver.text = item.content
                 if (image) {
                     ivImageReceiver.visibility = View.VISIBLE
                     ivHuk.visibility = View.GONE
@@ -157,9 +159,14 @@ class ChatAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                     clLeft.visibility = View.GONE
                     ivPdf1.visibility = View.GONE
                     ivPdf.visibility = View.GONE
+                    Glide.with(ivImageReceiver.context)
+                        .load(Constants.BASE_URL_IMAGE + item.content)
+                        .placeholder(R.drawable.progress_animation_small)
+                        .diskCacheStrategy(DiskCacheStrategy.ALL).into(ivImageReceiver)
                 }
 
                 if (isText) {
+
                     ivImageReceiver.visibility = View.GONE
                     ivPdf.visibility = View.GONE
                     tvReceiver.visibility = View.VISIBLE
@@ -198,10 +205,7 @@ class ChatAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
 
     fun loadPdfThumbnail(
-        context: Context,
-        pdfUrl: String,
-        imageView: ImageView,
-        imageView1: ImageView
+        context: Context, pdfUrl: String, imageView: ImageView, imageView1: ImageView
     ) {
         CoroutineScope(Dispatchers.IO).launch {
             try {

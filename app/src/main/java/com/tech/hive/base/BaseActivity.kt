@@ -64,7 +64,6 @@ abstract class BaseActivity<Binding : ViewDataBinding> : AppCompatActivity(),
         if (savedLanguage != deviceLanguage && savedLanguage != "") {
             Constants.userLanguage = savedLanguage.toString()
             setLocale(savedLanguage!!)
-
         }
         connectivityProvider = ConnectivityProvider.createProvider(this)
         connectivityProvider.addListener(this)
@@ -80,7 +79,6 @@ abstract class BaseActivity<Binding : ViewDataBinding> : AppCompatActivity(),
         val configuration: Configuration = resources.configuration
         configuration.setLocale(locale)
         resources.updateConfiguration(configuration, resources.displayMetrics)
-        recreate()
     }
 
 

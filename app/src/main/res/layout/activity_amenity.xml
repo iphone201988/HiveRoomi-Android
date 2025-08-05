@@ -49,7 +49,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_6sdp"
                     android:text="@string/amenities"
-                    android:textSize="@dimen/_20sdp"
+                    android:textSize="@dimen/_20ssp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/ivBack" />
             </androidx.constraintlayout.widget.ConstraintLayout>

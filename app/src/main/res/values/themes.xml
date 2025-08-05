@@ -224,7 +224,7 @@
 
     <style name="TextView.Semibold">
         <item name="android:textColor">@color/white</item>
-        <item name="android:textSize">@dimen/_16ssp</item>
+        <item name="android:textSize">@dimen/_13ssp</item>
         <item name="android:lineSpacingMultiplier">1.0</item>
         <item name="android:gravity">center</item>
         <item name="android:lineSpacingExtra">0dp</item>
@@ -395,5 +395,7 @@
             <enum name="december" value="11" />
         </attr>
     </declare-styleable>
+
+
 
 </resources>

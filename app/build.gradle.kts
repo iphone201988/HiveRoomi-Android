@@ -102,9 +102,9 @@ dependencies {
     //firebase
     implementation(platform("com.google.firebase:firebase-bom:34.0.0"))
     implementation("com.google.android.gms:play-services-auth:21.3.0")
-    implementation ("com.google.firebase:firebase-messaging")
-    implementation ("com.google.firebase:firebase-auth")
-    implementation ("com.google.firebase:firebase-messaging-ktx:24.0.1")
+    implementation("com.google.firebase:firebase-messaging")
+    implementation("com.google.firebase:firebase-auth")
+    implementation("com.google.firebase:firebase-messaging-ktx:24.0.1")
 
 
     //facebook login dependency
@@ -123,23 +123,22 @@ dependencies {
     implementation("com.github.wdsqjq:AndRatingBar:1.0.6")
 
     // Video Player
-    implementation ("com.google.android.exoplayer:exoplayer-core:2.18.1")
-    implementation ("com.google.android.exoplayer:exoplayer-ui:2.18.1")
-    implementation ("com.google.android.exoplayer:exoplayer-smoothstreaming:2.18.1")
+    implementation("com.google.android.exoplayer:exoplayer-core:2.18.1")
+    implementation("com.google.android.exoplayer:exoplayer-ui:2.18.1")
+    implementation("com.google.android.exoplayer:exoplayer-smoothstreaming:2.18.1")
 
 
-    implementation ("com.github.Yalantis:Koloda-Android:v0.0.2-alpha")
+    implementation("com.github.Yalantis:Koloda-Android:v0.0.2-alpha")
 
 
-    implementation ("com.amazonaws:aws-android-sdk-core:2.22.7")
-    implementation ("com.amazonaws:aws-android-sdk-cognitoidentityprovider:2.22.7")
-    implementation ("com.amazonaws:aws-android-sdk-auth-userpools:2.22.7")
-    implementation ("com.amazonaws:aws-android-sdk-auth-core:2.22.7")
+    implementation("com.amazonaws:aws-android-sdk-core:2.22.7")
+    implementation("com.amazonaws:aws-android-sdk-cognitoidentityprovider:2.22.7")
+    implementation("com.amazonaws:aws-android-sdk-auth-userpools:2.22.7")
+    implementation("com.amazonaws:aws-android-sdk-auth-core:2.22.7")
 
-    implementation ("com.amazonaws:aws-android-sdk-location:2.57.0")
+    implementation("com.amazonaws:aws-android-sdk-location:2.57.0")
 
-    implementation ("org.maplibre.gl:android-sdk:10.0.2")
-
+    implementation("org.maplibre.gl:android-sdk:10.0.2")
 
 
 }

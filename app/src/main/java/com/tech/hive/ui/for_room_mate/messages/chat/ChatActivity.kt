@@ -17,6 +17,7 @@ import androidx.core.content.FileProvider
 import androidx.core.net.toUri
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.widget.NestedScrollView
 import com.applandeo.materialcalendarview.EventDay
 import com.applandeo.materialcalendarview.listeners.OnCalendarPageChangeListener
 import com.applandeo.materialcalendarview.listeners.OnDayClickListener
@@ -74,7 +75,9 @@ class ChatActivity : BaseActivity<ActivityChatBinding>() {
     private var selectedDate = ""
     private var selectedTime = ""
     private lateinit var socket: Socket
-
+    private var scroll: Int = 1
+    private var otherUserChatId = ""
+    private var matchUserChatId = ""
 
     override fun getLayoutResource(): Int {
         return R.layout.activity_chat
@@ -109,6 +112,24 @@ class ChatActivity : BaseActivity<ActivityChatBinding>() {
             view.setPadding(0, 0, 0, imeHeight)
             insets
         }
+        // pagination
+        binding.nested.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
+            if (scrollY == 0) {
+                if (scroll == 1) {
+                    currentPage++
+                    val data = HashMap<String, String>()
+                    if (matchUserChatId.isNotEmpty()) {
+                        data["userId"] = matchUserChatId.toString()
+                    } else if (otherUserChatId.isNotEmpty()) {
+                        data["chatId"] = otherUserChatId.toString()
+                    }
+
+
+                    data["page"] = currentPage.toString()
+                    viewModel.getChatWithIdApi(Constants.CHAT_MESSAGE, data)
+                }
+            }
+        })
     }
 
     /** socket handel **/
@@ -200,6 +221,7 @@ class ChatActivity : BaseActivity<ActivityChatBinding>() {
     }
 
     /** handle api response **/
+    private var chatData: GetUserMessageResponse? = null
     private fun initObserver() {
         viewModel.chatObserver.observe(this@ChatActivity) {
             when (it?.status) {
@@ -214,13 +236,24 @@ class ChatActivity : BaseActivity<ActivityChatBinding>() {
                                 val myDataModel: GetUserMessageResponse? =
                                     BindingUtils.parseJson(it.data.toString())
                                 if (myDataModel?.data != null) {
+                                    chatData = myDataModel
+                                    binding.nested.visibility = View.VISIBLE
                                     binding.bean = myDataModel.otherUser
-                                    chatAdapter.setList(myDataModel.data.reversed() as List<GetUserData>?)
                                     blockById = myDataModel.checkUserBlock?.blockBy ?: ""
                                     if (myDataModel.isBlocked == true) {
                                         unBockBottomSheet(1)
                                     }
+                                    if (currentPage == 1) {
+                                        chatAdapter.setList(chatData?.data?.reversed() as List<GetUserData>?)
+                                    } else {
+                                        chatAdapter.addToList(ArrayList(chatData?.data))
+                                    }
 
+                                    scroll = if (chatData?.pagination?.totalPages != currentPage) {
+                                        1
+                                    } else {
+                                        0
+                                    }
                                 }
                             } catch (e: Exception) {
                                 Log.e("error", "getHomeApi: $e")
@@ -371,22 +404,20 @@ class ChatActivity : BaseActivity<ActivityChatBinding>() {
         var matchId = intent.getStringExtra("matchId")
         socketId = intent.getStringExtra("socketId")
         if (userId?.isNotEmpty() == true) {
+            otherUserChatId = userId.toString()
             val data = HashMap<String, String>()
             data["chatId"] = userId.toString()
             data["page"] = currentPage.toString()
-            data["limit"] = "10"
             viewModel.getChatWithIdApi(Constants.CHAT_MESSAGE, data)
         } else {
             if (matchId?.isNotEmpty() == true) {
+                matchUserChatId = matchId.toString()
                 val data = HashMap<String, String>()
                 data["userId"] = matchId.toString()
                 data["page"] = currentPage.toString()
-                data["limit"] = "10"
                 viewModel.getChatWithIdApi(Constants.CHAT_MESSAGE, data)
             }
-
         }
-
         // adapter initialize
         chatAdapter = ChatAdapter()
         binding.rvChat.adapter = chatAdapter

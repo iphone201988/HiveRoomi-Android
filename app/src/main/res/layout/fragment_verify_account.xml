@@ -11,6 +11,7 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/main"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".ui.auth.verify_account.VerifyAccountFragment">
@@ -140,29 +141,34 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+        <View
+            android:id="@+id/view"
+            android:layout_width="@dimen/_1sdp"
+            android:layout_height="match_parent"
+            android:background="@color/transparent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvResend"
             style="@style/TextView.Regular"
             android:layout_marginTop="@dimen/_12sdp"
-            android:layout_marginEnd="@dimen/_45sdp"
             android:onClick="@{v->vm.onClick(v)}"
             android:text="@string/resend_otp_in"
             android:textColor="@color/black_24"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/view"
             app:layout_constraintTop_toBottomOf="@+id/clOtt" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvResendTime"
             style="@style/TextView.Medium"
-            android:layout_marginStart="@dimen/_5sdp"
             android:onClick="@{v->vm.onClick(v)}"
+            android:layout_marginStart="@dimen/_2sdp"
             android:text="@string/_26"
             android:textColor="@color/start_color"
             android:textSize="@dimen/_12ssp"
             app:layout_constraintBottom_toBottomOf="@+id/tvResend"
-            app:layout_constraintStart_toEndOf="@+id/tvResend"
+            app:layout_constraintStart_toEndOf="@+id/view"
             app:layout_constraintTop_toTopOf="@+id/tvResend" />
 
         <androidx.appcompat.widget.AppCompatTextView

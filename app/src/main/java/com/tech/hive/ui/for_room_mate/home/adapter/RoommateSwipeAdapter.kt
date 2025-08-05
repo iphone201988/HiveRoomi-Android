@@ -73,7 +73,7 @@ class RoommateSwipeAdapter(
             .diskCacheStrategy(DiskCacheStrategy.ALL)
             .into(viewHolder.image)
 
-        viewHolder.ivCardView.setOnClickListener {
+        viewHolder.ivSend.setOnClickListener {
             val intent = Intent(context, MatchedProfileActivity::class.java)
             intent.putExtra("profileIdFirst", item._id)
             context.startActivity(intent)
@@ -90,6 +90,7 @@ class RoommateSwipeAdapter(
         val money: AppCompatTextView = view.findViewById(R.id.tvMoney)
         val parties: AppCompatTextView = view.findViewById(R.id.tvParties)
         val image: AppCompatImageView = view.findViewById(R.id.ivPerson)
+        val ivSend: AppCompatImageView = view.findViewById(R.id.ivSend)
         val clFirst: ConstraintLayout = view.findViewById(R.id.clFirst)
         val ivCardView: CardView = view.findViewById(R.id.ivCardView)
     }
